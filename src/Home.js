@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, StatusBar, Text, FlatList, View, Alert, ScrollView, PermissionsAndroid, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Platform } from 'react-native';
+import { Modal, StatusBar, Text, FlatList, View, 
+  Alert, ScrollView, PermissionsAndroid, StyleSheet, 
+  SafeAreaView, Image, TouchableOpacity, 
+  ImageBackground, Platform, BackHandler } from 'react-native';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from './Styles';
@@ -128,6 +131,7 @@ export default class Home extends Component {
   }
   componentDidMount() {
     // this.getnotification();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     var that = this;
     PushNotification.configure({
       onNotification: function (notification) {
@@ -189,7 +193,19 @@ export default class Home extends Component {
   }
 
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
 
+  handleBackButton = () => {
+    console.log('Back button is pressed', this.props.route.name);
+    if(this.props.route.name == "Home"){
+      return true;
+    }else{
+      return false;
+    }
+    
+  }
 
 
   getnotification_Call = async () => {
