@@ -117,19 +117,8 @@ export default class Splash extends Component {
     }, 2000);
   }
 
-  new_authenticatesessinon = async () => {
-
-    let result = await localStorage.getItemObject('user_arr');
-    let logindetail = await localStorage.getItemObject('user_login');
-    console.log('splasedata', logindetail)
-    if (result != null) {
-
-      console.log("result ", result)
-      //  if(result.otp_verify == 1)
-      //  {
-      //&& result.profile_complete==0
-
-      let result1 = await localStorage.getItemObject('user_signup');
+  checkAuthUserLogin = async (result, logindetail) => {
+    let result1 = await localStorage.getItemObject('user_signup');
 
       let email = logindetail.email_phone
       let password = logindetail.password
@@ -168,6 +157,60 @@ export default class Splash extends Component {
         console.log("-------- error ------- " + error);
 
       });
+  }
+
+  checkLogout = async (result, logindetail) => {
+    
+    let user_id = result.user_id;
+    let url = config.baseURL + "api-check-login";
+    var data = new FormData();
+    data.append("user_id", user_id);
+    data.append("fcm_token", fcmtoken);
+
+    console.log("url", url);
+    console.log("data", data);
+    apifuntion
+      .postApi(url, data, 1)
+      .then((obj) => {
+        console.log("obj checkLogout: ", obj);
+        if (obj.result == true) {
+          this.checkAuthUserLogin(result, logindetail);
+          
+        } else {
+          this.logout()
+        }
+      })
+      .catch((error) => {
+        console.log("-------- error ------- " + error);
+      });
+  }
+
+  logout = async () => {
+    await localStorage.removeItem("user_arr");
+    await localStorage.removeItem("user_login");
+    // await localStorage.removeItem('password');
+    // await localStorage.clear();
+    // this.setState({ show: false });
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
+  };
+
+  new_authenticatesessinon = async () => {
+
+    let result = await localStorage.getItemObject('user_arr');
+    let logindetail = await localStorage.getItemObject('user_login');
+    console.log('splasedata', logindetail)
+    if (result != null) {
+
+      console.log("result ", result)
+      this.checkLogout(result, logindetail)
+      //  if(result.otp_verify == 1)
+      //  {
+      //&& result.profile_complete==0
+
+      
     }
     else {
       this.props.navigation.navigate('Login')

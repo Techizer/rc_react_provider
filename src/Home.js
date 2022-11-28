@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, StatusBar, Text, FlatList, View, 
-  Alert, ScrollView, PermissionsAndroid, StyleSheet, 
-  SafeAreaView, Image, TouchableOpacity, 
-  ImageBackground, Platform, BackHandler } from 'react-native';
+import {
+  Modal, StatusBar, Text, FlatList, View,
+  Alert, ScrollView, PermissionsAndroid, StyleSheet,
+  SafeAreaView, Image, TouchableOpacity,
+  ImageBackground, Platform, BackHandler
+} from 'react-native';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from './Styles';
@@ -129,18 +131,33 @@ export default class Home extends Component {
     };
     screens = 'Home'
   }
+  logout = async () => {
+    await localStorage.removeItem("user_arr");
+    await localStorage.removeItem("user_login");
+    // await localStorage.removeItem('password');
+    // await localStorage.clear();
+    // this.setState({ show: false });
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
+  };
   componentDidMount() {
     // this.getnotification();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     var that = this;
     PushNotification.configure({
       onNotification: function (notification) {
+        console.log("NOTIFICATION:", notification);
+        if (notification.data?.type == "Logout") {
+          that.logout();
+        }
         if (notification.userInteraction) {
           // Handle notification click
           console.log('PushNotification.configure', notification)
           if (notification.data?.type == "patient_to_doctor_video_call") {
-            let data = (Platform.OS == "ios") ? 
-            JSON.parse(notification.data.notidata) : notification.data
+            let data = (Platform.OS == "ios") ?
+              JSON.parse(notification.data.notidata) : notification.data
             Alert.alert(
               "Incoming Video call",
               data.message,
@@ -199,12 +216,12 @@ export default class Home extends Component {
 
   handleBackButton = () => {
     console.log('Back button is pressed', this.props.route.name);
-    if(this.props.route.name == "Home"){
+    if (this.props.route.name == "Home") {
       return true;
-    }else{
+    } else {
       return false;
     }
-    
+
   }
 
 
@@ -244,9 +261,16 @@ export default class Home extends Component {
       },
       (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
     )
+    var that = this;
     messaging().onMessage(async remoteMessage => {
       console.log('hello', JSON.stringify(remoteMessage))
+
+      console.log('remoteMessage.data?.type', remoteMessage.data?.type)
       //alert(JSON.stringify(remoteMessage));
+
+      if (remoteMessage.data?.type == "Logout") {
+        that.logout();
+      }
 
       PushNotification.localNotification({
         channelId: 'rootscares1', //his must be same with channelid in createchannel
@@ -345,7 +369,8 @@ export default class Home extends Component {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     console.log("user_typeuser_type:: ", user_type);
-    this.setState({ address_show: address_arr, 
+    this.setState({
+      address_show: address_arr,
       address_old: user_details.current_address,
       user_type: user_type
     })
