@@ -1509,21 +1509,15 @@ export default class MyProfile extends Component {
                       </View>
 
                       <View style={{
-                        width: '100%', alignSelf: 'center',
+                        width: '100%',
                         marginTop: mobileW * 2 / 100,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
                       }}>
                         <View style={{
                           flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'flex-start'
+                          alignItems:'center'
                         }}>
                           <MaterialCommunityIcons
                             style={{
-                              alignSelf: 'center',
-                              marginRight: (mobileW * 1) / 100,
                             }}
                             name={"email-outline"}
                             size={(mobileW * 4.5) / 100}
@@ -1536,17 +1530,17 @@ export default class MyProfile extends Component {
                               fontFamily: Font.fontregular,
                               fontSize: 12, //(mobileW * 3) / 100,
                               textAlign: config.textRotate,
+                              paddingHorizontal: 8
+
                             }}>{this.state.email}</Text>
                         </View>
                         <View style={{
                           flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'flex-end'
+                          alignItems:'center',
+                          marginTop: 8
                         }}>
                           <Feather
                             style={{
-                              alignSelf: 'center',
-                              marginRight: (mobileW * 1) / 100,
                             }}
                             name={"phone"}
                             size={(mobileW * 4.5) / 100}
@@ -1556,7 +1550,8 @@ export default class MyProfile extends Component {
                               color: Colors.placeholder_textcolorlight,
                               fontFamily: Font.fontregular,
                               fontSize: 12, //(mobileW * 3) / 100,
-                              textAlign: config.textRotate,
+                              textAlign: config.textRotate, 
+                              paddingHorizontal: 8
                             }}>{this.state.phone_number}</Text>
                         </View>
                       </View>

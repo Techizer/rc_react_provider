@@ -250,8 +250,7 @@ export default class Appointmentdetails extends Component {
 
   }
 
-  handleGetDirections = (lat, long) => {
-    console.log("lat, long:  ", lat, long);
+  handleGetDirections = (lat, long, address) => {
     const data = {
       // source: {
       //   latitude: -33.8356372,
@@ -259,7 +258,8 @@ export default class Appointmentdetails extends Component {
       // },
       destination: {
         latitude: lat, //-33.8600024,
-        longitude: long //18.697459
+        longitude: long, //18.697459
+        address: address
       },
       // params: [
       //   {
@@ -950,7 +950,7 @@ export default class Appointmentdetails extends Component {
         res.uri,
         res.type, // mime type
         res.name,
-        res.size
+        res.size,
       );
 
       const source = {
@@ -3004,7 +3004,8 @@ export default class Appointmentdetails extends Component {
 
                           <View>
                             <TouchableOpacity onPress={() => {
-                              this.handleGetDirections(item.patient_lat, item.patient_long)
+                              console.log({item});
+                              this.handleGetDirections(item?.patient_lat, item?.patient_long, item?.patient_address)
                             }}>
                               <Text
                                 style={{

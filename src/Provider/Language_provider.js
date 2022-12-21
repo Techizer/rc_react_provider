@@ -129,7 +129,7 @@ class Language_provider {
   postissuetext = ['Post Issue', 'إصدار آخر'];
   create_new_pass = ['Create New Password', 'إنشاء كلمة مرور جديدة  ']
   SearchLocation = ['Search for area, street name..', 'ابحث عن المنطقة واسم الشارع']
-  Currentlocation = ['Current Location', 'الموقع الحالي']
+  Currentlocation = ['Get Current location', 'الموقع الحالي']
   Using_gpsofyoudevice = ['Using GPS of your device', 'استخدام  نظام تحديد المواقع  بجهازك']
   //---------------home screen----------------
   MyDashboard = ['Home', ' الرئيسية  ']

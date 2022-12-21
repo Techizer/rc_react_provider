@@ -33,6 +33,10 @@ import {
     apifuntion,
     msgTitle,
 } from '../Provider/utilslib/Utils';
+import { s, vs } from 'react-native-size-matters';
+import ScreenHeader from './ScreenHeader';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import SimpleToast from 'react-native-simple-toast';
 
 let ScreenHeight = Dimensions.get('window').height;
 
@@ -53,13 +57,189 @@ class SearchPlaceScreen extends Component {
         this.getPlaceKey()
     }
 
+    getadddressfromlatlong = (event) => {
+        // alert('hi')
+
+        fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + config.mapkey + '&language=' + config.maplanguage)
+
+            .then((response) => response.json())
+            .then((resp) => {
+                let responseJson = resp.results[0]
+                let city = '';
+                let administrative_area_level_1 = '';
+                for (let i = 0; i < responseJson.address_components.length; i++) {
+                    if (responseJson.address_components[i].types[0] == "locality") {
+                        city = responseJson.address_components[i].long_name
+                        break;
+                    }
+                    else if (responseJson.address_components[i].types[0] == "administrative_area_level_2") {
+                        city = responseJson.address_components[i].long_name
+                    }
+
+                }
+                for (let j = 0; j < responseJson.address_components.length; j++) {
+                    if (responseJson.address_components[j].types[0] == "administrative_area_level_1") {
+                        administrative_area_level_1 = responseJson.address_components[j].long_name
+                    }
+
+                }
+                let details = responseJson
+                let data2 = { 'latitude': details.geometry.location.lat, 'longitude': details.geometry.location.lng, 'address': details.formatted_address, 'city': city, 'administrative_area_level_1': administrative_area_level_1, 'description': details?.formatted_address }
+
+                post_location = data2
+                // consolepro.consolelog('responseJson1234', add_location)
+                this.GooglePlacesRef && this.GooglePlacesRef.setAddressText(details.formatted_address)
+                console.log({ data2, details })
+                this.setState(
+                    {
+                        latitude: details.geometry.location.lat,
+                        longitude: details.geometry.location.lng,
+                    },
+                    () => {
+                        this.props.selectGooglePlace({
+                            data: data2,
+                            details,
+                            latitude: details.geometry.location.lat,
+                            longitude: details.geometry.location.lng,
+                        });
+                    },
+                );
+                localStorage.setItemObject('address_arr', post_location.address);
+                console.log('dfhhdfgb', data2)
+            })
+
+
+
+    }
+
+    getalldata = (position) => {
+
+        let longitude = position.coords.longitude
+        let latitude = position.coords.latitude
+        console.log('positionlatitude', position.coords)
+        console.log('positionlongitude', longitude)
+        this.setState({ latitude: latitude, longitude: longitude, loading: false })
+        // myLatitude = latitude,
+        //   myLongitude = longitude
+        current_lat_long = position
+
+        let event = { latitude: latitude, longitude: longitude, latitudeDelta: this.state.latdelta, longitudeDelta: this.state.longdelta }
+        this.getadddressfromlatlong(event)
+        this.update_adress()
+    }
+
+    callLocation = async (that) => {
+        this.setState({ loading: true })
+        localStorage.getItemObject('position').then((position) => {
+
+            if (position != null) {
+                var pointcheck1 = 0
+                this.getalldata(position)
+                Geolocation.getCurrentPosition(
+                    //Will give you the current location
+                    (position) => {
+
+                        localStorage.setItemObject('position', position)
+                        this.getalldata(position);
+                        pointcheck1 = 1
+                    },
+                    (error) => {
+                        let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.longitude } }
+
+                        this.getalldata(position)
+                    },
+                    { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
+                );
+                that.watchID = Geolocation.watchPosition((position) => {
+
+
+                    if (pointcheck1 != 1) {
+                        localStorage.setItemObject('position', position)
+                        this.getalldata(position)
+                    }
+
+                });
+
+            }
+            else {
+
+                var pointcheck = 0
+                Geolocation.getCurrentPosition(
+                    //Will give you the current location
+                    (position) => {
+
+                        localStorage.setItemObject('position', position)
+
+                        this.getalldata(position)
+                        pointcheck = 1
+                    },
+                    (
+                        error) => {
+                        let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.longitude } }
+
+                        this.getalldata(position)
+                    },
+                    { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
+                );
+                that.watchID = Geolocation.watchPosition((position) => {
+                    //Will give you the location on location change
+                    console.log('data', position);
+
+                    if (pointcheck != 1) {
+
+                        localStorage.setItemObject('position', position)
+                        this.getalldata(position)
+                    }
+
+                });
+            }
+        })
+    }
+
+    getlatlong = async () => {
+
+        let permission = await localStorage.getItemString('permission')
+        if (permission != 'denied') {
+            var that = this;
+            //Checking for the permission just after component loaded
+            if (Platform.OS === 'ios') {
+                this.callLocation(that);
+            } else {
+                // this.callLocation(that);
+                async function requestLocationPermission() {
+                    try {
+                        const granted = await PermissionsAndroid.request(
+                            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+                            'title': 'Location Access Required',
+                            'message': 'This App needs to Access your location'
+                        }
+                        )
+                        console.log('granted', PermissionsAndroid.RESULTS.GRANTED)
+                        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                            that.callLocation(that);
+                        } else {
+                            let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.latitude } }
+                            that.getalldata(position)
+                            localStorage.setItemString('permission', 'denied')
+
+                        }
+                    } catch (err) { console.warn(err) }
+                }
+                requestLocationPermission();
+            }
+        } else {
+            let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.longitude } }
+            this.getalldata(position)
+        }
+    }
+
     getPlaceKey = async () => {
         let user_details = await localStorage.getItemObject('user_arr');
         console.log("user_details:: ", user_details);
         let place_key = user_details['place_key'];
         this.setState({
             place_key: place_key
-        },()=>{
+        }, () => {
             setTimeout(() => this.locationRef.focus(), 100)
         })
     }
@@ -70,222 +250,147 @@ class SearchPlaceScreen extends Component {
         });
     };
 
-    /**
-     * render() this the main function which used to display different view
-     * and contain all view related information.
-     */
-
-
     render() {
 
         return (
             <Modal
                 propagateSwipe={50}
                 animationType="fade"
-                transparent={true}
+                transparent={false}
                 visible={true}
                 coverScreen={true}
                 onRequestClose={() => {
                 }}>
-                {/* <ScrollView
-                    scrollEnabled={enableScrollViewScroll}
-                    showsVerticalScrollIndicator={false}> */}
                 <View style={{
                     flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                    <View style={{
-                        margin: 0,
-                        backgroundColor: 'white',
-                        borderRadius: 6,
-                        padding: 15,
-                        paddingTop: 40,
-                        width: '100%',
-                        height: ScreenHeight,
-                        flex: 1
-                    }}>
-                        <TouchableOpacity
-                            style={{
-                                alignSelf: 'flex-end',
-                                position: "relative",
-                                right: 0,
-                                top: 0,
-                                zIndex: 1,
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                textAlign: 'center',
-                            }}
-                            onPress={() => {
-                                this.closeModalAction(false);
-                            }}>
-                            <Image
-                                // source={require('../assets/images/close.png')}
-                                source={localimag.cross}
-                                style={{ width: 25, height: 25 }}
-                            />
-
-                        </TouchableOpacity>
-
-                        {/* <View>
-                            <Text>Current Location</Text>
-                            <Text>Using GPS of your device</Text>
-                        </View>
-
-                        <View>
-                            <Text>Current Location</Text>
-                            <Text>Using GPS of your device</Text>
-                        </View> */}
-
+                    <ScreenHeader navigation={this.props.navigation} title='Service Location' leftIcon={true} onBackPress={() => {
+                        this.closeModalAction(false);
+                    }} />
+                    <KeyboardAwareScrollView>
                         <View
                             style={{
                                 flex: 1,
-                                backgroundColor: '#fff',
                                 padding: 10,
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}>
-                            {/* {
-                                (this.state.place_key != '') && */}
-                                <GooglePlacesAutocomplete
-                                    ref={instance => {
-                                        this.locationRef = instance;
-                                    }}
-                                    clearButtonMode={'while-editing'}
-                                    // styles={[{
-                                    //     height: 44,
-                                    //     color: '#25252E',
-                                    //     marginBottom: 15,
-                                    //     backgroundColor: '#ffffff',
-                                    //     borderColor: '#ECECEC',
-                                    //     borderWidth: 1,
-                                    //     borderRadius: 4,
-                                    //     paddingLeft: 10,
-                                    //     paddingRight: 10,
-                                    //     fontSize: 16,
-                                    // }, {
-                                    //     color: '#7C7C7C',
-                                    //     //backgroundColor: 'red'
-                                    // }]}
-                                    placeholder='Search for area, street name..'
-                                    placeholderTextColor="#7C7C7C"
-                                    minLength={2}
-                                    autoFocus={true}
-                                    returnKeyType={'default'}
-                                    fetchDetails={true}
-                                    enablePoweredByContainer={false}
-                                    query={{
-                                        key: this.state.place_key, //'AIzaSyDh_I54vPj40JriRJy4LBbS3zTBC41WXjk',//'AIzaSyAFnw06GvFjnUL-po_jmrQAwHyZ9trWO2Y',
-                                        language: 'en',
-                                        // types: 'geocode', //<=== use this to only show country cities
-                                        // components: 'country:uk', //, <=== use this to restrict to country
-                                    }}
-                                    GooglePlacesDetailsQuery={{
-                                        fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
-                                    }}
-                                    textInputProps={{
-                                        // ref: textInput => {
+                            <GooglePlacesAutocomplete
+                                ref={instance => {
+                                    this.locationRef = instance;
+                                }}
+                                clearButtonMode={'while-editing'}
+                                currentLocation
+                                currentLocationLabel='Current'
+                                placeholder='Search for area, street name..'
+                                placeholderTextColor="#7C7C7C"
+                                minLength={2}
+                                autoFocus={true}
+                                returnKeyType={'default'}
+                                fetchDetails={true}
+                                enablePoweredByContainer={false}
+                                query={{
+                                    key: this.state.place_key, //'AIzaSyDh_I54vPj40JriRJy4LBbS3zTBC41WXjk',//'AIzaSyAFnw06GvFjnUL-po_jmrQAwHyZ9trWO2Y',
+                                    language: 'en',
+                                    // types: 'geocode', //<=== use this to only show country cities
+                                    // components: 'country:uk', //, <=== use this to restrict to country
+                                }}
+                                GooglePlacesDetailsQuery={{
+                                    fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
+                                }}
+                                textInputProps={{
 
-                                        //     if (this.props.autofocus) {
-                                        //         textInput && textInput.focus();
-                                        //     }
-                                        //     if (this.state.showMap) {
-                                        //         textInput && textInput.blur();
-                                        //     }
-                                        // },
-                                        // ref: (textInput) => {
-                                        //     setTimeout(() => textInput && textInput.focus(), 100);
-                                        //   },
-                                        placeholderTextColor: '#7C7C7C',
-                                        backgroundColor: '#F2F3F2',
-                                        height: 40,
-                                        fontFamily: Font.fontregular,
-                                        fontSize: 14,
-                                        //borderBottomWidth: 1,
-                                        //borderBottomColor: "#7C7C7C",
-                                        //borderBottomWidth: 0.5,
-                                        //marginTop: 10
-                                        color: Colors.blackColor,
-                                        // paddingRight:"20%"
-                                    }}
-                                    onFail={error => {
-                                        //console.log('error ', error);
-                                    }}
-                                    onPress={(data, details = null) => {
-                                        // 'details' is provided when fetchDetails = true
-                                        console.log(data);
-                                        console.log(details);
-                                        this.setState(
-                                            {
+                                    placeholderTextColor: '#7C7C7C',
+                                    backgroundColor: '#F2F3F2',
+                                    fontFamily: Font.fontregular,
+                                    fontSize: 14,
+
+                                    color: Colors.textblack,
+                                }}
+                                onFail={error => {
+                                    //console.log('error ', error);
+                                }}
+                                onPress={(data, details = null) => {
+                                    console.log({ data, details })
+                                    this.setState(
+                                        {
+                                            latitude: details.geometry.location.lat,
+                                            longitude: details.geometry.location.lng,
+                                        },
+                                        () => {
+                                            console.log({ data });
+                                            this.props.selectGooglePlace({
+                                                data,
+                                                details,
                                                 latitude: details.geometry.location.lat,
                                                 longitude: details.geometry.location.lng,
-                                            },
-                                            () => {
-                                                // global.latitude = this.state.latitude;
-                                                // global.longitude = this.state.longitude;
-                                                console.log('latitude:: ', this.state.latitude)
-                                                console.log('longitude:: ', this.state.longitude)
+                                            });
+                                        },
+                                    );
+                                }}
+                                styles={{
+                                    textInputContainer: {
+                                        width: '100%',
+                                        // marginLeft: 5,
 
-                                                // for (var i = 0; i < details.address_components.length; i++) {
-                                                //     for (var j = 0; j < details.address_components[i].types.length; j++) {
-                                                //       if (details.address_components[i].types[j] == "postal_code") {
-                                                //         // document.getElementById('postal_code').innerHTML = details.address_components[i].long_name;
-                                                //         console.log('details.address_components[i].long_name:: ', details.address_components[i].long_name)
-                                                //       }
-                                                //     }
-                                                //   }
-                                                // global.userAddress = data.description;
-                                                // global.userLat = this.state.latitude;
-                                                // global.userLong = this.state.longitude;
-                                                this.props.selectGooglePlace({
-                                                    data,
-                                                    details,
-                                                    latitude: details.geometry.location.lat,
-                                                    longitude: details.geometry.location.lng,
-                                                });
-                                            },
-                                        );
-                                    }}
-                                    styles={{
-                                        textInputContainer: {
-                                            width: '100%',
-                                            // marginLeft: 5,
+                                    },
+                                    textInput: {
+                                        color: Colors.blackColor
+                                    },
+                                    predefinedPlacesDescription: {
+                                        color: '#000',
+                                    },
+                                    separator: {
+                                        height: 0.5,
+                                    },
+                                    loader: {
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-end',
+                                        height: 20,
+                                    },
+                                }}
+                            />
 
-                                        },
-                                        textInput: {
-                                            color: Colors.blackColor
-                                            //lineHeight: 20,
-                                            // fontSize: 14,
-                                            // borderColor: '#f9fafe',
-                                            // width: 50,
-                                            //backgroundColor: 'green'
-                                            //color: 'red', 
-                                        },
-                                        predefinedPlacesDescription: {
-                                            color: '#000',
-                                        },
-                                        // listView: {
-                                        //     position: 'absolute',
-                                        //     top: 45,
-                                        //     left: -10,
-                                        //     width: Dimen.width - 30,
-                                        //     height: 200,
-                                        //     zIndex: 9999
-                                        // },
-                                        separator: {
-                                            height: 0.5,
-                                        },
-                                        loader: {
-                                            flexDirection: 'row',
-                                            justifyContent: 'flex-end',
-                                            height: 20,
-                                        },
-                                    }}
-                                />
-                            {/* } */}
                         </View>
+                        <TouchableOpacity onPress={() => {
+                            SimpleToast.show('Getting current location')
+                            this.getlatlong()
+                        }} style={{ flexDirection: 'row', width: '100%', alignSelf: 'flex-start', paddingVertical: 16 }}>
+                            <View style={{ width: '12%', alignItems: 'center' }}>
+                                <Image
+                                    source={require('../icons/locations_current.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                    }} resizeMethod='scale' resizeMode='contain' >
+                                </Image>
+                            </View>
+                            <View style={{ width: '88%' }}>
+                                <Text style={{ textAlign: config.textRotate, fontSize: 16, fontFamily: Font.bold_font_family, color: '#17181A' }}>{Lang_chg.Currentlocation[config.language]}</Text>
+                                <Text style={{ textAlign: config.textRotate, fontSize: 14, fontFamily: Font.fontregular, color: '#6D737E', marginTop: vs(4) }}>{Lang_chg.Using_gpsofyoudevice[config.language]}</Text>
+                            </View>
+                        </TouchableOpacity>
 
-                    </View>
+                        <View style={{ flexDirection: 'row', width: '94%', alignSelf: 'center', paddingVertical: 16, paddingHorizontal: 10, backgroundColor: '#E5E5E58D', borderRadius: 6 }}>
+                            <View style={{ width: '12%', alignItems: 'center', }}>
+                                <Image
+                                    source={require('../icons/information_button.png')}
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        tintColor: '#17181A'
+                                    }} resizeMethod='scale' resizeMode='contain' >
+                                </Image>
+                            </View>
+                            <View style={{ width: '88%' }}>
+                                <Text style={{ textAlign: config.textRotate, fontSize: s(11), fontFamily: Font.fontregular, color: '#6D737E', lineHeight: 16 }}>
+                                    {`Customer will be able to see the distance between your and their address after your 'Service Address' is setup properly.\n\nDistance between a Patient and Medical Health Service Provider is very much important to know before someone complete a booking. Rootscare booking engine has been programmed in a manner where we calculate distance fees which will help you travel to customer/patients distance.\n\nWe recommend to all of our Medical Health Service Provider to point their address using google map accurately so they`}
+                                </Text>
+                            </View>
+                        </View>
+                    </KeyboardAwareScrollView>
                 </View>
                 {/* </ScrollView> */}
             </Modal>

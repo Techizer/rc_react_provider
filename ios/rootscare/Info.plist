@@ -44,6 +44,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>comgooglemaps-x-callback</string>
+		<string>googleMaps</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Rootscare would like to access your Camera for profile or patient photos. Your photos won't be shared without your permission. It is safe and secure.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

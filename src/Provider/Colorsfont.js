@@ -3,6 +3,7 @@ const windowWidth = Dimensions.get('window').width;
 const themecolor = '#0168B3';
 const statusbar = '#fff';
 export const Colors = {
+  Highlight: '#E2E7EE82',
   statusbarcolor: statusbar,
   internetbackcolor: themecolor,
   onlinebackcolor: themecolor,

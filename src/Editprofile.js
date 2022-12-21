@@ -3592,11 +3592,14 @@ export default class Editprofile extends Component {
                   <View style={{
                     width: '90%', alignSelf: 'center',
                     marginTop: mobileW * 3 / 100,
+                    justifyContent: 'flex-start'
                     // borderColor: this.state.selectissuefocus == true ? '#0057A5' : Colors.bordercolor, borderWidth: mobileW * 0.3 / 100, borderRadius: mobileW * 2 / 100, height: mobileW * 40 / 100
                   }}>
                     <AuthInputBoxSec
                       mainContainer={{
                         width: '100%',
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start'
                       }}
                       inputFieldStyle={{
                         // marginTop: mobileW * 1 / 100,
@@ -3607,6 +3610,8 @@ export default class Editprofile extends Component {
                         fontSize: Font.placeholdersize,
                         textAlign: config.textalign,
                         fontFamily: Font.placeholderfontfamily,
+                        textAlignVertical: 'top',
+                        alignSelf: 'flex-start'
                         // paddingVertical: mobileW * 3 / 100,
 
                       }}

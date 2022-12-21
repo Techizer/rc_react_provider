@@ -4,27 +4,24 @@ import { Switch, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, Toucha
 import {
   Colors,
   Font,
-  mobileH,
-  Mapprovider,
   msgProvider,
-  msgText,
   config,
   mobileW,
   localStorage,
   localimag,
   consolepro,
-  handleback,
   Lang_chg,
   apifuntion,
-  msgTitle,
 } from './Provider/utilslib/Utils';
 import Moment from "moment-timezone";
 import Styles from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Footer from './Footer';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { SearchPlaceScreen, AuthInputBoxSec, DropDownboxSec, Button } from './components'
-import { Dropdown } from 'react-native-material-dropdown';
+// import Footer from './Footer';
+// import HideWithKeyboard from 'react-native-hide-with-keyboard';
+import { SearchPlaceScreen, Button } from './components'
+import { Dropdown } from 'react-native-material-dropdown-v2';
+import ListBottomSheet from './components/ListBottomSheet';
+import { Arrow } from './icons/SvgIcons/Index';
 const radiusArr = [
   {
     id: 1,
@@ -76,50 +73,6 @@ const radiusArr = [
   },
 ]
 
-const weekArr = [
-  {
-    id: 1,
-    value: 'MON',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'TUE',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'WED',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'THU',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'FRI',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'SAT',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'SUN',
-    symbol: 'km',
-    status: true,
-  },
-]
 
 export default class AvailabilitySchedule extends Component {
   constructor(props) {
@@ -148,6 +101,7 @@ export default class AvailabilitySchedule extends Component {
       // tabheadings: tabheadings,
       task_details: "",
       isEnabled: false,
+      flag: true,
       timeArray: [
         { value: '00:00 AM' },
         { value: '00:30 AM' },
@@ -206,6 +160,11 @@ export default class AvailabilitySchedule extends Component {
       service_long: "",
       service_radius: "",
       radiusArr: radiusArr,
+
+      currentIndex: 0,
+      currentItem: { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
+
+
       slotArr: [
         { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
         { "slot_day": "TUE", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
@@ -226,11 +185,7 @@ export default class AvailabilitySchedule extends Component {
 
   get_Services = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
-    console.log("user_details:: ", user_details);
     let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
-    console.log('this.props.page:: ', this.props.pageName);
-
     let task_type = ""
     if (this.props.page == "onlinehomeschedule") {  //doctor
       task_type = "api-doctor-get-timeslot"
@@ -247,10 +202,7 @@ export default class AvailabilitySchedule extends Component {
     let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
 
     let url = config.baseURL + apishow;
-    console.log("url", url)
-
     var data = new FormData();
-    // data.append('lgoin_user_id', user_id)
     data.append('user_id', user_id)
     data.append('service_type', user_type)
 
@@ -351,15 +303,16 @@ export default class AvailabilitySchedule extends Component {
           console.log("Start Time is less than end time");
         }
       })
-      console.log("this.state.service_radius:: ", this.state.service_radius);
       if (isError) {
         msgProvider.showError("End time should be greater than Start time")
       } else {
         if (this.state.service_address == "") {
           msgProvider.showError("Please select service location to continue")
-        } else if (this.state.service_radius == "" || this.state.service_radius == undefined) {
-          msgProvider.showError("Please select booking eligibility radius to continue")
-        } else {
+        }
+        // else if (this.state.service_radius == "" || this.state.service_radius == undefined) {
+        //   msgProvider.showError("Please select booking eligibility radius to continue")
+        // } 
+        else {
           this.insertUpdatePriceList()
         }
 
@@ -437,7 +390,7 @@ export default class AvailabilitySchedule extends Component {
     data.append('service_address', "Riyadh Road, Al Hofuf Saudi Arabia")
     data.append('service_lat', "25.3535551")
     data.append('service_long', "49.5264586")
-    data.append('service_radius', this.state.service_radius)
+    data.append('service_radius', "")
 
     var myData = JSON.stringify({
       accept_booking: this.state.accept_booking,
@@ -450,8 +403,19 @@ export default class AvailabilitySchedule extends Component {
       service_long: this.state.service_long,
       service_radius: this.state.service_radius,
     });
-
-
+    console.log('-------------------------------');
+    console.log({
+      accept_booking: this.state.accept_booking,
+      user_id: user_id,
+      slot_type: task_type,
+      service_type: user_type,
+      slots: this.state.slotArr,
+      service_address: this.state.service_address,
+      service_lat: this.state.service_lat,
+      service_long: this.state.service_long,
+      service_radius: this.state.service_radius,
+    });
+    console.log('-------------------------------');
     consolepro.consolelog('myDatamyData', myData)
     apifuntion.postRawApi(url, myData).then((obj) => {
       consolepro.consolelog("obj", obj)
@@ -514,6 +478,7 @@ export default class AvailabilitySchedule extends Component {
   };
 
   validationTime = (strStartTime, strEndTime, isStart, index) => {
+    console.log({ strStartTime, strEndTime, isStart, index });
     var isError = false;
     var strStartTime = strStartTime //value;
     var strEndTime = strEndTime //item?.slot_end_time;
@@ -539,13 +504,13 @@ export default class AvailabilitySchedule extends Component {
     if (isError) {
       msgProvider.showError("End time should be greater than Start time")
       // this.firstDropdown[index].setState({ value: arr[index].slot_start_time });
-      setTimeout(() => {
-        if (isStart) {
-          this["firstDropdown" + index].setState({ value: arr[index].slot_start_time });
-        } else {
-          this["secondDropdown" + index].setState({ value: arr[index].slot_end_time });
-        }
-      }, 800);
+      // setTimeout(() => {
+      //   if (isStart) {
+      //     this.firstDropdown[index].setState({ value: arr[index].slot_start_time });
+      //   } else {
+      //     this.secondDropdown[index].setState({ value: arr[index].slot_end_time });
+      //   }
+      // }, 800);
 
 
     }
@@ -574,6 +539,27 @@ export default class AvailabilitySchedule extends Component {
         flex: 1,
         //  backgroundColor: 'white',
       }}>
+        <ListBottomSheet
+          data={this.state.timeArray}
+          onRequestClose={() => { this.setState({ modalVisible: false }) }}
+          visible={this.state.modalVisible}
+          title='Select time'
+          currentIndex={this.state.currentIndex}
+          currentItem={this.state.currentItem}
+          flag={this.state.flag}
+          onSelectTime={(value, cIndex, cItem, flag) => {
+            console.log({ Coming: { value, cIndex, cItem, flag } });
+            var arr = this.state.slotArr
+            if (flag) {
+              this.validationTime(value, this.state.slotArr[cIndex].slot_end_time, flag, cIndex)
+              // arr[cIndex].slot_start_time = value
+              // this.setState({slotArr: arr})
+            } else {
+              this.validationTime(this.state.slotArr[cIndex].slot_start_time, value, flag, cIndex)
+              // arr[cIndex].slot_end_time = value
+              // this.setState({slotArr: arr})
+            }
+          }} />
         {this.state.searchPlaceVisible ? (
           <SearchPlaceScreen
             closeGooglePlace={this.closeGooglePlace.bind(this)}
@@ -643,19 +629,28 @@ export default class AvailabilitySchedule extends Component {
                               alignSelf: 'center',
                               flexDirection: 'row',
                             }}>
-                            <Icon style={{ alignSelf: 'center' }}
+
+                            <View style={{
+                              width: 22,
+                              height: 22,
+                              borderRadius: 22,
+                              borderWidth: (this.state.accept == false) ? 1 : 6,
+                              borderColor: (this.state.accept == false) ? 'grey' : Colors.textblue
+                            }} />
+
+                            {/* <Icon style={{ alignSelf: 'center' }}
                               name={(this.state.accept == false) ? "circle-thin" : "dot-circle-o"}
                               size={22}
-                              color={(this.state.accept == false) ? '#8F98A7' : '#0168B3'}></Icon>
+                              color={(this.state.accept == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
 
                             <View style={{ width: '70%', alignSelf: 'center' }}>
                               <Text
                                 style={{
                                   marginLeft: mobileW * 1.5 / 100,
                                   textAlign: config.textRotate,
-                                  color: Colors.placeholder_text,
-                                  fontFamily: Font.fontregular,
-                                  fontSize: Font.placeholdersize,
+                                  color: (this.state.accept == false) ? Colors.placeholder_text : 'black',
+                                  fontFamily: (this.state.accept == false) ? Font.fontregular : Font.fontregular,
+                                  fontSize: Font.placeholdersize + 1,
                                 }}>
                                 Accept Booking
                               </Text>
@@ -692,19 +687,25 @@ export default class AvailabilitySchedule extends Component {
                               flexDirection: 'row',
                               alignItems: 'center'
                             }}>
-                            <Icon style={{ alignSelf: 'center' }}
+                            <View style={{
+                              width: 22,
+                              height: 22,
+                              borderRadius: 22,
+                              borderWidth: (this.state.hide == false) ? 1 : 6,
+                              borderColor: (this.state.hide == false) ? 'grey' : Colors.textblue
+                            }} />
+                            {/* <Icon style={{ alignSelf: 'center' }}
                               name={(this.state.hide == false) ? "circle-thin" : "dot-circle-o"}
                               size={22}
-                              color={(this.state.hide == false) ? '#8F98A7' : '#0168B3'}></Icon>
+                              color={(this.state.hide == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
 
                             <Text
                               style={{
-                                textAlign: config.textRotate,
                                 marginLeft: mobileW * 1.5 / 100,
-                                color: Colors.placeholder_text,
-                                fontFamily: Font.fontregular,
-                                fontSize: Font.placeholdersize,
-                                // alignSelf: 'center',
+                                textAlign: config.textRotate,
+                                color: (this.state.hide == false) ? Colors.placeholder_text : 'black',
+                                fontFamily: (this.state.hide == false) ? Font.fontregular : Font.fontregular,
+                                fontSize: Font.placeholdersize + 1,
                               }}>
                               Hide Booking
                             </Text>
@@ -770,19 +771,27 @@ export default class AvailabilitySchedule extends Component {
                                             alignSelf: 'center',
                                             flexDirection: 'row',
                                           }}>
-                                          <Icon style={{ alignSelf: 'center' }}
+
+                                          <View style={{
+                                            width: 22,
+                                            height: 22,
+                                            borderRadius: 22,
+                                            borderWidth: (this.state.mabtn == false) ? 1 : 6,
+                                            borderColor: (this.state.mabtn == false) ? 'grey' : Colors.textblue
+                                          }} />
+                                          {/* <Icon style={{ alignSelf: 'center' }}
                                             name={(this.state.mabtn == false) ? "circle-thin" : "dot-circle-o"}
                                             size={22}
-                                            color={(this.state.mabtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+                                            color={(this.state.mabtn == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
 
                                           <View style={{ width: '70%', alignSelf: 'center' }}>
                                             <Text
                                               style={{
                                                 marginLeft: mobileW * 1.5 / 100,
                                                 textAlign: config.textRotate,
-                                                color: Colors.placeholder_text,
                                                 fontFamily: Font.fontregular,
-                                                fontSize: Font.placeholdersize,
+                                                color: (this.state.mabtn == false) ? Colors.placeholder_text : 'black',
+                                                fontSize: Font.placeholdersize + 1,
                                               }}>
                                               15 Min Slots
                                             </Text>
@@ -831,19 +840,27 @@ export default class AvailabilitySchedule extends Component {
                                             alignSelf: 'center',
                                             flexDirection: 'row',
                                           }}>
-                                          <Icon style={{ alignSelf: 'center' }}
+
+                                          <View style={{
+                                            width: 22,
+                                            height: 22,
+                                            borderRadius: 22,
+                                            borderWidth: (this.state.mabtn == false) ? 1 : 6,
+                                            borderColor: (this.state.mabtn == false) ? 'grey' : Colors.textblue
+                                          }} />
+                                          {/* <Icon style={{ alignSelf: 'center' }}
                                             name={(this.state.mabtn == false) ? "circle-thin" : "dot-circle-o"}
                                             size={22}
-                                            color={(this.state.mabtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+                                            color={(this.state.mabtn == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
 
                                           <View style={{ width: '70%', alignSelf: 'center' }}>
                                             <Text
                                               style={{
                                                 marginLeft: mobileW * 1.5 / 100,
                                                 textAlign: config.textRotate,
-                                                color: Colors.placeholder_text,
                                                 fontFamily: Font.fontregular,
-                                                fontSize: Font.placeholdersize,
+                                                color: (this.state.mabtn == false) ? Colors.placeholder_text : 'black',
+                                                fontSize: Font.placeholdersize + 1,
                                               }}>
                                               45 Min Slots
                                             </Text>
@@ -892,19 +909,26 @@ export default class AvailabilitySchedule extends Component {
                                         alignSelf: 'center',
                                         flexDirection: 'row',
                                       }}>
-                                      <Icon style={{ alignSelf: 'center' }}
+                                      <View style={{
+                                        width: 22,
+                                        height: 22,
+                                        borderRadius: 22,
+                                        borderWidth: (this.state.mabtn == false) ? 1 : 6,
+                                        borderColor: (this.state.mabtn == false) ? 'grey' : Colors.textblue
+                                      }} />
+                                      {/* <Icon style={{ alignSelf: 'center' }}
                                         name={(this.state.mabtn == false) ? "circle-thin" : "dot-circle-o"}
                                         size={22}
-                                        color={(this.state.mabtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+                                        color={(this.state.mabtn == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
 
                                       <View style={{ width: '70%', alignSelf: 'center' }}>
                                         <Text
                                           style={{
                                             marginLeft: mobileW * 1.5 / 100,
                                             textAlign: config.textRotate,
-                                            color: Colors.placeholder_text,
                                             fontFamily: Font.fontregular,
-                                            fontSize: Font.placeholdersize,
+                                            color: (this.state.mabtn == false) ? Colors.placeholder_text : 'black',
+                                            fontSize: Font.placeholdersize + 1,
                                           }}>
                                           {(this.props.page == 'taskschedule') ? '30 Min Slots' : (this.props.page == 'labschedule') ? '45 Min Slots' : '2, 4, 6, 8, 12 Hours'}
                                         </Text>
@@ -938,9 +962,9 @@ export default class AvailabilitySchedule extends Component {
 
                       {
                         this.state.slotArr.map((item, index) => {
+
                           return (
                             <>
-
                               <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
@@ -959,7 +983,7 @@ export default class AvailabilitySchedule extends Component {
                                   height: (mobileW * 14) / 100,
                                 }}>
                                   <View style={{
-                                    width: '40%',
+                                    width: '30%',
                                     height: (mobileW * 12) / 100,
                                     // backgroundColor: 'blue',
                                   }}>
@@ -999,192 +1023,127 @@ export default class AvailabilitySchedule extends Component {
                                     </View>
                                   </View>
                                   <View style={{
-                                    width: '30%',
+                                    width: '35%',
                                     height: (mobileW * 12) / 100,
-                                    alignItems: 'flex-end',
+                                    alignItems: 'center',
                                     justifyContent: 'center',
                                     // backgroundColor: 'yellow',
                                   }}>
-                                    {/* <DropDownboxSec
-                                    lableText={item?.slot_start_time}
-                                    dHeight={25}
-                                    isDisabled={(item?.slot_day_enable == "1") ? false : true}
-                                  // boxPressAction={() => { this.showUsertypeModal(true) }}
-                                  /> */}
-                                    <View style={{
-                                      // backgroundColor: 'red',
-                                      width: '85%',
-                                      height: 28
-                                    }}>
-                                      <Dropdown
-                                        containerStyle={{
-                                          width: '100%',
-                                          height: 28,
-                                        }}
-                                        inputContainerStyle={{
-                                          // height: 30,
-                                          // backgroundColor:'red',
-                                          backgroundColor: Colors.tab_background_color,
-                                          borderColor: Colors.field_border_color,
-                                          borderWidth: 1,
-                                          borderBottomColor: Colors.field_border_color,
-                                          borderBottomWidth: 1,
-                                          borderRadius: 5,
-                                          paddingTop: 3,
-                                          paddingLeft: 6,
-                                          // paddingRight: 6,
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
 
-                                        }}
-                                        fontSize={(mobileW * 3) / 100}
-                                        textColor={Colors.placeholder_text_color}
-                                        dropdownOffset={{ 'top': 0 }}
-                                        pickerStyle={{
-                                          // borderBottomColor:'red',
-                                          // borderWidth: 1,
-                                          marginTop: (mobileW * 19) / 100,
-                                          marginLeft: (mobileW * 42) / 100,
-                                          width: (mobileW * 25) / 100,
-                                          height: (mobileW * 50) / 100
-                                        }}
-                                        // itemPadding={20}
-                                        // label='Favorite Fruit'
-                                        disabled={(item?.slot_day_enable == "1") ? false : true}
-                                        value={item?.slot_start_time}
-                                        onChangeText={(value) => {
-                                          this.validationTime(value, item?.slot_end_time, true, index)
-                                        }}
-                                        data={this.state.timeArray}
-                                        // ref={c => (this.firstDropdown[index] = c)}
-                                        ref={c => (this["firstDropdown" + index] = c)}
+                                    <TouchableOpacity
+                                      onPress={() => {
+                                        this.setState({
+                                          currentIndex: index,
+                                          currentItem: item,
+                                          modalVisible: true,
+                                          flag: true
+                                        })
+                                      }}
+                                      disabled={(item?.slot_day_enable == "1") ? false : true}
+                                      style={{
+                                        backgroundColor: 'rgb(229,229,229)',
+                                        padding: 6,
+                                        paddingHorizontal: 12,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly'
+                                      }} >
+                                      <Text style={{
+                                        color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
+                                        fontFamily: Font.fontregular,
+                                        fontSize: (mobileW * 3.5) / 100
+                                      }} allowFontScaling={false}>
+                                        {item?.slot_start_time}
+                                      </Text>
+                                      <View style={{
+                                        justifyContent: 'space-evenly',
+                                        paddingHorizontal: 4
+                                      }}>
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black',
+                                          transform: [{ rotateX: '180deg' }]
+                                        }} resizeMethod='resize' resizeMode='contain' />
 
-                                      />
-                                    </View>
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black'
+                                        }} resizeMethod='resize' resizeMode='contain' />
+
+                                      </View>
+                                    </TouchableOpacity>
+
 
                                   </View>
                                   <View style={{
-                                    width: '30%',
+                                    width: '35%',
                                     height: (mobileW * 12) / 100,
-                                    alignItems: 'flex-end',
+                                    alignItems: 'center',
                                     justifyContent: 'center',
-                                    // backgroundColor: 'green',
+                                    // backgroundColor: 'yellow',
                                   }}>
-                                    {/* <DropDownboxSec
-                                    lableText={item?.slot_end_time}
-                                    dHeight={25}
-                                    isDisabled={(item?.slot_day_enable == "1") ? false : true}
-                                  // boxPressAction={() => { this.showUsertypeModal(true) }}
-                                  /> */}
-                                    <View style={{
-                                      // backgroundColor: 'red',
-                                      width: '85%',
-                                      height: 28
-                                    }}>
-                                      <Dropdown
-                                        containerStyle={{
-                                          width: '100%',
-                                          height: 28,
 
-                                        }}
-                                        inputContainerStyle={{
-                                          // height: 30,
-                                          // backgroundColor:'red',
-                                          backgroundColor: Colors.tab_background_color,
-                                          borderColor: Colors.field_border_color,
-                                          borderWidth: 1,
-                                          borderBottomColor: Colors.field_border_color,
-                                          borderBottomWidth: 1,
-                                          borderRadius: 5,
-                                          // marginTop: 0,
-                                          paddingTop: 3,
-                                          // paddingBottom: 0,
-                                          paddingLeft: 6,
-                                          // paddingRight: 6,
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
+                                    <TouchableOpacity
+                                      onPress={() => {
+                                        this.setState({
+                                          currentIndex: index,
+                                          currentItem: item,
+                                          modalVisible: true,
+                                          flag: false
+                                        })
+                                      }}
+                                      disabled={(item?.slot_day_enable == "1") ? false : true}
+                                      style={{
+                                        backgroundColor: 'rgb(229,229,229)',
+                                        padding: 6,
+                                        paddingHorizontal: 12,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly'
+                                      }} >
+                                      <Text style={{
+                                        color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
+                                        fontFamily: Font.fontregular,
+                                        fontSize: (mobileW * 3.5) / 100
+                                      }} allowFontScaling={false}>
+                                        {item?.slot_end_time}
+                                      </Text>
+                                      <View style={{
+                                        justifyContent: 'space-evenly',
+                                        paddingHorizontal: 4
+                                      }}>
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black',
+                                          transform: [{ rotateX: '180deg' }]
+                                        }} resizeMethod='resize' resizeMode='contain' />
 
-                                        }}
-                                        fontSize={(mobileW * 3) / 100}
-                                        textColor={Colors.placeholder_text_color}
-                                        dropdownOffset={{ 'top': 0 }}
-                                        pickerStyle={{
-                                          // borderBottomColor:'red',
-                                          // borderWidth: 1,
-                                          marginTop: (mobileW * 19) / 100,
-                                          marginLeft: (mobileW * 70) / 100,
-                                          width: (mobileW * 25) / 100,
-                                          height: (mobileW * 50) / 100
-                                        }}
-                                        // itemPadding={20}
-                                        // label='Favorite Fruit'
-                                        disabled={(item?.slot_day_enable == "1") ? false : true}
-                                        value={item?.slot_end_time}
-                                        onChangeText={(value, indexSelect, data) => {
-                                          console.log("slot_end_time value:: ", value);
-                                          console.log("slot_end_time index:: ", indexSelect);
-                                          console.log("slot_end_time data:: ", data);
-                                          this.validationTime(item?.slot_start_time, value, false, index)
-                                          // console.log("slot_end_time value:: ", value);
-                                          // let arr = [...this.state.slotArr]
-                                          // arr[index].slot_end_time = value
-                                          // this.setState({
-                                          //   slotArr: arr
-                                          // })
-                                        }}
-                                        data={this.state.timeArray}
-                                        // ref={c => (this.secondDropdown[index] = c)}
-                                        ref={c => (this["secondDropdown" + index] = c)}
-                                      />
-                                    </View>
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black'
+                                        }} resizeMethod='resize' resizeMode='contain' />
+
+                                      </View>
+                                    </TouchableOpacity>
+
                                   </View>
                                 </View>
                               </View>
 
-                              {/* <View style={{
-                              position: 'absolute',
-                              top: 42,
-                              left: 165,
-                              backgroundColor: Colors.gray4,
-                              width: 150,
-                              height: 280
-                            }}>
-
-                            </View>
-                            <View style={{
-                              position: 'absolute',
-                              top: 42,
-                              right: 20,
-                              backgroundColor: Colors.gray6,
-                              width: 150,
-                              height: 280
-                            }}>
-
-                            </View> */}
                             </>
                           )
                         })
                       }
 
-
-
                     </View>
 
                     <View style={{
-                      marginTop: 15,
+                      marginTop: 28,
                       paddingLeft: 15,
-                      paddingRight: 15
-                    }}>
-                      <Text style={Styles.textheading}>Add Service Radius</Text>
-                      <Text style={[Styles.textcontent, {
-                        marginTop: 6
-                      }]}>Set the Kilometre Distance Radius for your service, where you prefer to provide service and not outside.</Text>
-                    </View>
-
-                    <View style={{
-                      marginTop: 15,
-                      paddingLeft: 15,
-                      paddingRight: 15
+                      paddingRight: 15,
+                      paddingBottom: 16
                     }}>
                       <Text style={Styles.textheading}>Point Your Service Location</Text>
                       <Text style={[Styles.textcontent, {
@@ -1198,7 +1157,7 @@ export default class AvailabilitySchedule extends Component {
                       <View style={{
                         // backgroundColor: 'red',
                         flexDirection: 'row',
-                        justifyContent: 'flex-end',
+                        justifyContent: 'flex-start',
                         alignItems: 'center',
                         marginTop: 8
                       }}>
@@ -1225,93 +1184,7 @@ export default class AvailabilitySchedule extends Component {
 
                     </View>
 
-                    <View style={{
-                      marginTop: 15,
-                      paddingLeft: 15,
-                      paddingRight: 15
-                    }}>
-                      <Text style={Styles.textheading}>Booking Eligibility Radius</Text>
-                      <View
-                        style={{
-                          width: '100%',
-                          alignSelf: 'center',
-                          marginTop: (mobileW * 1) / 100,
-                          marginBottom: (mobileW * 2 / 100),
-                          flexDirection: 'row',
-                          flexWrap: 'wrap',
-                          alignItems: 'center',
-                        }}>
-                        {
-                          this.state.radiusArr.map((item, index) => {
-                            return (
-                              <>
-                                <View
-                                  style={{
-                                    width: '25%',
-                                    alignSelf: 'center',
-                                    flexDirection: 'row',
-                                    // backgroundColor: 'red',
-                                    marginTop: 15
-                                  }}>
-                                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                      {/* {this.state.mabtn == false && */}
-                                      <TouchableOpacity
-                                        onPress={() => {
-                                          // this.setState({ mabtn: true, febtn: false, gender: 'Male' });
-                                          console.log("valuevalue:: ", item?.value, index);
-                                          let arr = [...this.state.radiusArr]
-                                          arr.map((v, i) => {
-                                            if (index == i) {
-                                              v.status = true
-                                            } else {
-                                              v.status = false
-                                            }
-                                          });
-                                          this.setState({
-                                            radiusArr: arr,
-                                            service_radius: item?.value
-                                          })
-                                        }}
-                                        style={{
-                                          width: '100%',
-                                          alignSelf: 'center',
-                                          flexDirection: 'row',
-                                        }}>
-                                        <Icon style={{ alignSelf: 'center' }}
-                                          name={(item?.status == false) ? "circle-thin" : "dot-circle-o"}
-                                          size={22}
-                                          color={(item?.status == false) ? '#8F98A7' : '#0168B3'}></Icon>
 
-                                        <View style={{ width: '70%', alignSelf: 'center' }}>
-                                          <Text
-                                            style={{
-                                              marginLeft: mobileW * 1.5 / 100,
-                                              textAlign: config.textRotate,
-                                              color: Colors.placeholder_text,
-                                              fontFamily: Font.fontregular,
-                                              fontSize: Font.placeholdersize,
-                                            }}>
-                                            {item?.value}{item?.symbol}
-                                          </Text>
-                                        </View>
-                                      </TouchableOpacity>
-
-
-
-                                    </View>
-
-
-                                  </View>
-                                </View>
-                              </>
-                            )
-                          })
-                        }
-
-
-                      </View>
-                    </View>
                   </>
                 }
 
@@ -1319,7 +1192,7 @@ export default class AvailabilitySchedule extends Component {
             </ScrollView>
 
             <View style={{
-              // backgroundColor: 'red',
+              //backgroundColor: 'red',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: 15,

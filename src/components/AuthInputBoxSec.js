@@ -87,12 +87,15 @@ const AuthInputBoxSec = ({
               +0
             </Text>
           ) : null} */}
-          <View style={{ width: '100%', alignSelf: 'center', 
+          <View style={{ width: '100%', //alignSelf: 'center', 
           // backgroundColor: 'red'
            }}>
             <TextInput //OutlineInput
               style={[styles.inputFieldStyle, inputFieldStyle, {
                 backgroundColor: (props.editable == false) ? Colors.tab_background_color : 'white',
+                alignSelf: 'flex-start',
+                justifyContent: 'flex-start',
+                textAlignVertical: 'top'
               }]}
               ref={(r) => {
                 inputRef && inputRef(r);
@@ -181,13 +184,12 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     width: "90%",
+    justifyContent: 'flex-start'
     //paddingLeft: 10,
     //paddingRight: 10,
     // borderBottomWidth: 0.5,
     // borderBottomColor: "lightgrey",
     //paddingVertical: 5,
-    justifyContent: "center",
-    alignSelf: "center",
     // marginBottom: 10,
   },
   imgView: {
@@ -216,7 +218,8 @@ const styles = StyleSheet.create({
     margin: 0,
     includeFontPadding: false,
     backgroundColor: 'white',
-    lineHeight: 48
+    lineHeight: 48,
+    textAlignVertical: 'top'
     // borderColor: 'red', //Colors.placeholder_border
   },
   errorLayout: {

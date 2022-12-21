@@ -55,13 +55,13 @@ export default Styles = StyleSheet.create({
     fontSize: mobileW * 3.7 / 100
   },
   textheading: {
-    fontFamily: Font.fontregular,
+    fontFamily: Font.fontmedium,
     fontSize: mobileW * 3.85 / 100,
     color: Colors.placeholder_text_color
   },
   textcontent: {
     fontFamily: Font.fontregular,
-    fontSize: mobileW * 3.6 / 100,
+    fontSize: mobileW * 3.75 / 100,
     color: Colors.splashtextcolor
   },
   cardtitle: {
