@@ -1189,7 +1189,7 @@ export default class Editprofile extends Component {
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
               }}>
-              {(this.state.id_image != undefined) ? this.state.id_image.filename : 'No Attachment'}
+              {(this.state.id_image != undefined) ? this.state.id_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1417,8 +1417,8 @@ export default class Editprofile extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }}>
-              {(this.state.certificate != undefined) ? this.state.certificate.filename : 'No Attachment'}
+              }} numberOfLines={1}>
+              {(this.state.certificate != undefined) ? this.state.certificate.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1563,8 +1563,8 @@ export default class Editprofile extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }}>
-              {(this.state.scfhs_image != undefined) ? this.state.scfhs_image.filename : 'No Attachment'}
+              }} numberOfLines={1}>
+              {(this.state.scfhs_image != undefined) ? this.state.scfhs_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1683,8 +1683,8 @@ export default class Editprofile extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }}>
-              {(this.state.certificate != undefined) ? this.state.certificate.filename : 'No Attachment'}
+              }} numberOfLines={1}>
+              {(this.state.certificate != undefined) ? this.state.certificate.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1854,7 +1854,7 @@ export default class Editprofile extends Component {
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
               }}>
-              {(this.state.moh_lic_image != undefined) ? this.state.moh_lic_image.filename : 'No Attachment'}
+              {(this.state.moh_lic_image != undefined) ? this.state.moh_lic_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1974,8 +1974,8 @@ export default class Editprofile extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }}>
-              {(this.state.hosp_reg_image != undefined) ? this.state.hosp_reg_image.filename : 'No Attachment'}
+              }} numberOfLines={1}>
+              {(this.state.hosp_reg_image != undefined) ? this.state.hosp_reg_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>

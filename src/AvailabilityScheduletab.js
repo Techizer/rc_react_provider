@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from 'react';
-import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList } from 'react-native';
+import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, Dimensions, StatusBar } from 'react-native';
 import {
   Colors,
   Font,
@@ -21,6 +21,7 @@ import {
 import Styles from './Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import AvailabilitySchedule from './AvailabilitySchedule';
+import ScreenHeader from './components/ScreenHeader';
 const tabheadings = [
   {
     id: 1,
@@ -219,8 +220,20 @@ export default function Appointmenttab({ navigation }) {
     }
   };
 
+
+  const windowHeight = Math.round(Dimensions.get("window").height);
+  const windowWidth = Math.round(Dimensions.get("window").width);
+  const deviceHeight = Dimensions.get('screen').height;
+  const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+  let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+  headerHeight += (Platform.OS === 'ios') ? 28 : -60
+
   return (
     <View style={{ flex: 1 }}>
+      <ScreenHeader onBackPress={() => {
+        navigation.goBack();
+      }} leftIcon navigation={navigation} title={Lang_chg.scheduleavailability_heading[config.language]} 
+      style={{paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight}}/>
       <View
         style={{
           flex: 1,
@@ -235,7 +248,7 @@ export default function Appointmenttab({ navigation }) {
           {/* <Text>Home</Text> */}
 
           {/* header */}
-          <View style={{ backgroundColor: 'white' }}>
+          {/* <View style={{ backgroundColor: 'white' }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -283,16 +296,14 @@ export default function Appointmenttab({ navigation }) {
                 }}>
 
                 <Text style={Styles.headertext}>{Lang_chg.scheduleavailability_heading[config.language]}
-                  {/* {this.state.title == 'undefined'
-                    ? Lang_chg.MyAppointments[config.language]
-                    : this.state.title} */}
 
-                  {/* {Lang_chg.MyAppointments[config.language]} */}
                 </Text>
               </View>
 
             </View>
-          </View>
+          </View> */}
+
+
 
           {/* tabheadings */}
           {

@@ -32,14 +32,13 @@ import { s, vs } from "react-native-size-matters";
 // console.log(windowHeight + '   ' + Platform.OS);
 // console.log('Status Bar Height', StatusbarHeight + '   ' + Platform.OS);
 
-
-const windowHeight = mobileH
-const deviceHeight = Dimensions.get("screen").height
-const windowWidth = mobileW
-const StatusbarHeight = (Platform.OS==='android') ? StatusBar.currentHeight : windowHeight-deviceHeight + s(40);
+const windowHeight = Math.round(Dimensions.get("window").height);
+const windowWidth = Math.round(Dimensions.get("window").width);
+const deviceHeight = Dimensions.get('screen').height;
+const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
 
 let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
-headerHeight += (Platform.OS === 'ios') ? 28 : -50
+headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
 const ScreenHeader = ({
     onBackPress,
@@ -49,20 +48,21 @@ const ScreenHeader = ({
     leftIcon,
     addressOld,
     addressShow,
-    notiCount
+    notiCount,
+    style = {}
 }) => {
     return (
         title != 'Home' ?
             (
                 <View
-                    style={{
+                    style={[{
                         width: windowWidth,
-                        height: headerHeight + StatusbarHeight,
                         backgroundColor: 'white',
-                        paddingTop: StatusbarHeight,
                         borderBottomWidth: 1,
-                        borderBottomColor: Colors.bordercolor
-                    }}
+                        borderBottomColor: Colors.bordercolor,
+                        height: headerHeight + StatusbarHeight,
+                        paddingTop: (Platform.OS === 'ios') ? StatusbarHeight : 0
+                    }, style]}
                 >
                     <View
                         style={{

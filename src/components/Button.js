@@ -89,6 +89,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.buttoncolorblue,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: (windowWidth * 6) / 100,
+    marginBottom: (windowWidth * 4) / 100,
   },
   mainContainer1: {
     width: '90%',

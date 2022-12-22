@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View,ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, TextInput, FlatList, Keyboard} from 'react-native';
+import { Text, View,ScrollView, StyleSheet, Image, TouchableOpacity, ImageBackground, TextInput, FlatList, Keyboard} from 'react-native';
 import {Colors,Font,mobileH,Mapprovider,msgProvider,msgText,config,mobileW,localStorage,localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle,} from './Provider/utilslib/Utils';
 // import Footer from './src/Provider/Footer';
 

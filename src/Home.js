@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {
   Modal, StatusBar, Text, FlatList, View,
-  Alert, ScrollView, PermissionsAndroid, StyleSheet,
-  SafeAreaView, Image, TouchableOpacity,
+  Alert, ScrollView, PermissionsAndroid, StyleSheet, Image, TouchableOpacity,
   ImageBackground, Platform, BackHandler
 } from 'react-native';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';

@@ -12,7 +12,10 @@ import {
     ActivityIndicator,
     ScrollView,
     Alert,
-    Dimensions
+    Dimensions,
+    Platform,
+    StatusBar,
+    PermissionsAndroid
 } from 'react-native';
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -41,6 +44,7 @@ import SimpleToast from 'react-native-simple-toast';
 let ScreenHeight = Dimensions.get('window').height;
 
 class SearchPlaceScreen extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -240,7 +244,7 @@ class SearchPlaceScreen extends Component {
         this.setState({
             place_key: place_key
         }, () => {
-            setTimeout(() => this.locationRef.focus(), 100)
+            //setTimeout(() => this.locationRef.focus(), 100)
         })
     }
 
@@ -255,6 +259,14 @@ class SearchPlaceScreen extends Component {
         const lLan = config.language
         const lRot = config.textRotate
 
+        const windowHeight = Math.round(Dimensions.get("window").height);
+        const windowWidth = Math.round(Dimensions.get("window").width);
+        const deviceHeight = Dimensions.get('screen').height;
+        const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+
+        let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+        headerHeight += (Platform.OS === 'ios') ? 28 : -60
+        console.log({windowHeight});
         return (
             <Modal
                 propagateSwipe={50}
@@ -266,117 +278,123 @@ class SearchPlaceScreen extends Component {
                 }}>
                 <View style={{
                     flex: 1,
-                    justifyContent: "center",
                     alignItems: "center",
                 }}>
                     <ScreenHeader navigation={this.props.navigation} title='Service Location' leftIcon={true} onBackPress={() => {
                         this.closeModalAction(false);
                     }} />
-                    <KeyboardAwareScrollView>
-                        <View
-                            style={{
-                                flex: 1,
-                                padding: 10,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}>
-                            <GooglePlacesAutocomplete
-                                ref={instance => {
-                                    this.locationRef = instance;
-                                }}
-                                clearButtonMode={'while-editing'}
-                                currentLocation
-                                currentLocationLabel='Current'
-                                placeholder='Search for area, street name..'
-                                placeholderTextColor="#7C7C7C"
-                                minLength={2}
-                                autoFocus={true}
-                                returnKeyType={'default'}
-                                fetchDetails={true}
-                                enablePoweredByContainer={false}
-                                renderLeftButton={() => (
-                                    <View style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
+                    <View
+                        style={{
+                            flex: 0.5,
+                            position: 'absolute',
+                            zIndex: 999,
+                            paddingHorizontal: 10,
+                            paddingTop: 8,
+                            justifyContent: 'center',
+                            marginTop: headerHeight + StatusbarHeight,
+                            width: '100%',
+                        }}>
+                        <GooglePlacesAutocomplete
+                            ref={instance => {
+                                this.locationRef = instance;
+                            }}
+                            clearButtonMode={'while-editing'}
+                            currentLocation
+                            currentLocationLabel='Current'
+                            placeholder='Search for area, street name..'
+                            placeholderTextColor="#7C7C7C"
+                            minLength={2}
+                            autoFocus={true}
+                            returnKeyType={'default'}
+                            fetchDetails={true}
+                            enablePoweredByContainer={false}
+                            renderLeftButton={() => (
+                                <View style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'flex-end',
 
-                                    }}>
-                                        <Image
-                                            source={require('../icons/search.png')}
-                                            style={{
-                                                width: 22,
-                                                height: 22,
-                                            }} resizeMethod='scale' resizeMode='contain' >
-                                        </Image>
-                                    </View>
+                                }}>
+                                    <Image
+                                        source={require('../icons/search.png')}
+                                        style={{
+                                            width: 18,
+                                            height: 18,
+                                        }} resizeMethod='scale' resizeMode='contain' >
+                                    </Image>
+                                </View>
 
-                                )}
-                                query={{
-                                    key: this.state.place_key, //'AIzaSyDh_I54vPj40JriRJy4LBbS3zTBC41WXjk',//'AIzaSyAFnw06GvFjnUL-po_jmrQAwHyZ9trWO2Y',
-                                    language: 'en',
-                                    // types: 'geocode', //<=== use this to only show country cities
-                                    // components: 'country:uk', //, <=== use this to restrict to country
-                                }}
-                                GooglePlacesDetailsQuery={{
-                                    fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
-                                }}
-                                textInputProps={{
+                            )}
+                            query={{
+                                key: this.state.place_key, //'AIzaSyDh_I54vPj40JriRJy4LBbS3zTBC41WXjk',//'AIzaSyAFnw06GvFjnUL-po_jmrQAwHyZ9trWO2Y',
+                                language: 'en',
+                                // types: 'geocode', //<=== use this to only show country cities
+                                // components: 'country:uk', //, <=== use this to restrict to country
+                            }}
+                            GooglePlacesDetailsQuery={{
+                                fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
+                            }}
+                            textInputProps={{
 
-                                    placeholderTextColor: '#7C7C7C',
-                                    backgroundColor: '#F2F3F2',
-                                    fontFamily: Font.fontregular,
-                                    fontSize: 14,
-                                    color: Colors.textblack,
-                                }}
-                                onFail={error => {
-                                    //console.log('error ', error);
-                                }}
-                                onPress={(data, details = null) => {
-                                    console.log({ data, details })
-                                    this.setState(
-                                        {
+                                placeholderTextColor: '#7C7C7C',
+                                backgroundColor: '#F2F3F2',
+                                fontFamily: Font.fontregular,
+                                fontSize: 14,
+                                color: Colors.textblack,
+                            }}
+                            onFail={error => {
+                                //console.log('error ', error);
+                            }}
+                            onPress={(data, details = null) => {
+                                console.log({ data, details })
+                                this.setState(
+                                    {
+                                        latitude: details.geometry.location.lat,
+                                        longitude: details.geometry.location.lng,
+                                    },
+                                    () => {
+                                        console.log({ data });
+                                        this.props.selectGooglePlace({
+                                            data,
+                                            details,
                                             latitude: details.geometry.location.lat,
                                             longitude: details.geometry.location.lng,
-                                        },
-                                        () => {
-                                            console.log({ data });
-                                            this.props.selectGooglePlace({
-                                                data,
-                                                details,
-                                                latitude: details.geometry.location.lat,
-                                                longitude: details.geometry.location.lng,
-                                            });
-                                        },
-                                    );
-                                }}
-                                styles={{
-                                    textInputContainer: {
-                                        width: '100%',
-                                        backgroundColor: '#F2F3F2',
-                                        justifyContent: 'center',
-                                        paddingHorizontal: 5,
+                                        });
+                                    },
+                                );
+                            }}
+                            styles={{
+                                textInputContainer: {
+                                    width: '100%',
+                                    backgroundColor: '#F2F3F2',
+                                    justifyContent: 'center',
+                                    paddingHorizontal: 8,
 
-                                    },
-                                    textInput: {
-                                        color: Colors.blackColor,
-                                        textAlignVertical: 'center',
-                                        justifyContent: 'center'
-                                    },
-                                    predefinedPlacesDescription: {
-                                        color: '#000',
-                                    },
-                                    separator: {
-                                        height: 0.5,
-                                    },
-                                    loader: {
-                                        flexDirection: 'row',
-                                        justifyContent: 'flex-end',
-                                        height: 20,
-                                    },
-                                }}
-                            />
+                                },
+                                textInput: {
+                                    color: Colors.blackColor,
+                                    textAlignVertical: 'center',
+                                    justifyContent: 'center',
+                                    paddingBottom: -(windowHeight/300)
+                                },
+                                predefinedPlacesDescription: {
+                                    color: '#000',
+                                },
+                                separator: {
+                                    height: 0.5,
+                                },
+                                loader: {
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-end',
+                                    height: 20,
+                                },
+                            }}
+                        />
 
+                    </View>
 
-                        </View>
+                    <View style={{
+                        marginTop: (Platform.OS==='ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8
+                    }}>
                         <TouchableOpacity onPress={() => {
                             SimpleToast.show('Getting current location')
                             this.getlatlong()
@@ -412,7 +430,6 @@ class SearchPlaceScreen extends Component {
                                 </View>
                             }
                         </TouchableOpacity>
-
                         <View style={{ flexDirection: 'row', width: '94%', alignSelf: 'center', paddingVertical: 16, paddingHorizontal: 10, backgroundColor: '#E5E5E58D', borderRadius: 6 }}>
                             {
                                 (lLan == 0) &&
@@ -446,7 +463,8 @@ class SearchPlaceScreen extends Component {
                                 </View>
                             }
                         </View>
-                    </KeyboardAwareScrollView>
+                    </View>
+
                 </View>
                 {/* </ScrollView> */}
             </Modal>

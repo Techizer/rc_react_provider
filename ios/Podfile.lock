@@ -388,7 +388,7 @@ PODS:
     - React-Core
   - react-native-spinkit (1.4.1):
     - React
-  - react-native-twilio-video-webrtc (2.1.1):
+  - react-native-twilio-video-webrtc (3.0.0):
     - React
     - TwilioVideo (~> 4.6)
   - react-native-webview (11.13.0):
@@ -902,7 +902,7 @@ SPEC CHECKSUMS:
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
   react-native-slider: d3ae4270cf8a8cc45a69912db0cc42b151560d5a
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
-  react-native-twilio-video-webrtc: 0a8fbdcfc58ba25b0258885619738b02955439c4
+  react-native-twilio-video-webrtc: a1d072a2e0c9df0c5179ca5162ce8ddeee8c647e
   react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162

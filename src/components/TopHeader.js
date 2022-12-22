@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     Platform, Text, View, Image, Alert,
     ActivityIndicator,
-    TouchableOpacity, TextInput, SafeAreaView, FlatList, Keyboard, ScrollView
+    TouchableOpacity, TextInput, FlatList, Keyboard, ScrollView
 } from 'react-native';
 import styles, { ThemeColors } from '../styles/main.style';
 import { Images } from '../utils'

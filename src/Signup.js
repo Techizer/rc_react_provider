@@ -702,7 +702,7 @@ export default class Signup extends Component {
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
               }}>
-              {(this.state.id_image != undefined) ? this.state.id_image.filename : 'No Attachment'}
+              {(this.state.id_image != undefined) ? this.state.id_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -931,8 +931,8 @@ export default class Signup extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }}>
-              {(this.state.certificate != undefined) ? this.state.certificate.filename : 'No Attachment'}
+              }} numberOfLines={1}>
+              {(this.state.certificate != undefined) ? this.state.certificate.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1076,8 +1076,8 @@ export default class Signup extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }}>
-              {(this.state.scfhs_image != undefined) ? this.state.scfhs_image.filename : 'No Attachment'}
+              }} numberOfLines={1}>
+              {(this.state.scfhs_image != undefined) ? this.state.scfhs_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1196,8 +1196,8 @@ export default class Signup extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }}>
-              {(this.state.certificate != undefined) ? this.state.certificate.filename : 'No Attachment'}
+              }} numberOfLines={1}>
+              {(this.state.certificate != undefined) ? this.state.certificate.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1366,7 +1366,7 @@ export default class Signup extends Component {
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
               }}>
-              {(this.state.id_image != undefined) ? this.state.id_image.filename : 'No Attachment'}
+              {(this.state.id_image != undefined) ? this.state.id_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>
@@ -1486,7 +1486,7 @@ export default class Signup extends Component {
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
               }}>
-              {(this.state.certificate != undefined) ? this.state.certificate.filename : 'No Attachment'}
+              {(this.state.certificate != undefined) ? this.state.certificate.filename.trim() : 'No Attachment'}
             </Text>
           </View>
         </View>

@@ -104,11 +104,7 @@ export default class Drawerscreen extends Component {
   }
   render() {
     return (
-      <SafeAreaView style={{
-        flex: 1,
-        backgroundColor: '#0888D1' //Colors.theme_color
-      }}>
-        <ScrollView
+      <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ flex: 1, backgroundColor: '#0888D1' }}>
           <View
@@ -837,7 +833,6 @@ export default class Drawerscreen extends Component {
             </Modal>
           </View>
         </ScrollView>
-      </SafeAreaView>
     );
   }
 }

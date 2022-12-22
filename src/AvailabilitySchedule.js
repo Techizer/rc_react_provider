@@ -160,7 +160,7 @@ export default class AvailabilitySchedule extends Component {
       service_long: "",
       service_radius: "",
       radiusArr: radiusArr,
-
+      shouldShow: false,
       currentIndex: 0,
       currentItem: { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
 
@@ -186,6 +186,7 @@ export default class AvailabilitySchedule extends Component {
   get_Services = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
+    let user_type = user_details['user_type']
     let task_type = ""
     if (this.props.page == "onlinehomeschedule") {  //doctor
       task_type = "api-doctor-get-timeslot"
@@ -247,15 +248,9 @@ export default class AvailabilitySchedule extends Component {
           service_address: (obj.result.service_address == null) ? '' : obj.result.service_address,
           service_lat: (obj.result.service_lat == null) ? '' : obj.result.service_lat,
           service_long: (obj.result.service_long == null) ? '' : obj.result.service_long,
-          message: obj.message
+          message: obj.message,
+          shouldShow: true
         })
-        console.log('obj.result',
-          obj.result,
-          'obj.result.slots:: ',
-          obj.result.slots[0]
-        )
-
-
 
       } else {
 
@@ -266,7 +261,6 @@ export default class AvailabilitySchedule extends Component {
         //   bankdetails: obj.result.bankdetails,
         //   message: obj.message
         // })
-        console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
@@ -286,21 +280,16 @@ export default class AvailabilitySchedule extends Component {
       arr.map((item, index) => {
         var strStartTime = item.slot_start_time //value;
         var strEndTime = item?.slot_end_time;
-        console.log("strStartTime:: ", strStartTime);
-        console.log("strEndTime:: ", strEndTime);
         var startTime = new Date().setHours(this.GetHours(strStartTime), this.GetMinutes(strStartTime), 0);
         var endTime = new Date(startTime)
         endTime = endTime.setHours(this.GetHours(strEndTime), this.GetMinutes(strEndTime), 0);
         if (startTime > endTime) {
-          console.log("Start Time is greater than end time");
           isError = true
         }
         if (startTime == endTime) {
-          console.log("Start Time equals end time");
           isError = true
         }
         if (startTime < endTime) {
-          console.log("Start Time is less than end time");
         }
       })
       if (isError) {
@@ -326,7 +315,8 @@ export default class AvailabilitySchedule extends Component {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    console.log('this.props.pageName:: ', this.props.pageName);
+
+    console.log({ user_details });
 
 
     let apiname = (this.props.page == "onlinehomeschedule") ?
@@ -336,7 +326,6 @@ export default class AvailabilitySchedule extends Component {
     let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
 
     let url = config.baseURL + apishow;
-    console.log("url", url)
 
     var data = new FormData();
     // data.append('lgoin_user_id', user_id)
@@ -416,21 +405,16 @@ export default class AvailabilitySchedule extends Component {
       service_radius: this.state.service_radius,
     });
     console.log('-------------------------------');
-    consolepro.consolelog('myDatamyData', myData)
     apifuntion.postRawApi(url, myData).then((obj) => {
-      consolepro.consolelog("obj", obj)
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         msgProvider.showSuccess(obj.message)
-        console.log('obj.result', obj.result)
 
       } else {
         msgProvider.showError(obj.message)
-        console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
 
     });
 
@@ -460,7 +444,6 @@ export default class AvailabilitySchedule extends Component {
   };
 
   selectGooglePlace = (info) => {
-    console.log("info:: ", info);
     this.setState(
       {
         searchPlaceVisible: false,
@@ -478,25 +461,19 @@ export default class AvailabilitySchedule extends Component {
   };
 
   validationTime = (strStartTime, strEndTime, isStart, index) => {
-    console.log({ strStartTime, strEndTime, isStart, index });
     var isError = false;
     var strStartTime = strStartTime //value;
     var strEndTime = strEndTime //item?.slot_end_time;
-    console.log("strStartTime:: ", strStartTime);
-    console.log("strEndTime:: ", strEndTime);
     var startTime = new Date().setHours(this.GetHours(strStartTime), this.GetMinutes(strStartTime), 0);
     var endTime = new Date(startTime)
     endTime = endTime.setHours(this.GetHours(strEndTime), this.GetMinutes(strEndTime), 0);
     if (startTime > endTime) {
-      console.log("Start Time is greater than end time");
       isError = true
     }
     if (startTime == endTime) {
-      console.log("Start Time equals end time");
       isError = true
     }
     if (startTime < endTime) {
-      console.log("Start Time is less than end time");
       isError = false
     }
     var arr = [...this.state.slotArr]
@@ -515,9 +492,6 @@ export default class AvailabilitySchedule extends Component {
 
     }
     else {
-
-      console.log("index: ", index)
-      console.log("arrarr: ", arr)
       if (isStart) {
         arr[index].slot_start_time = strStartTime
       } else {
@@ -535,10 +509,13 @@ export default class AvailabilitySchedule extends Component {
     var rescdule = this.state.rescdule_data
 
     return (
-      <View style={{
-        flex: 1,
-        //  backgroundColor: 'white',
-      }}>
+
+      <>
+        {(this.state.shouldShow) && 
+          < View style={{
+            flex: 1,
+            //  backgroundColor: 'white',
+          }}>
         <ListBottomSheet
           data={this.state.timeArray}
           onRequestClose={() => { this.setState({ modalVisible: false }) }}
@@ -548,16 +525,15 @@ export default class AvailabilitySchedule extends Component {
           currentItem={this.state.currentItem}
           flag={this.state.flag}
           onSelectTime={(value, cIndex, cItem, flag) => {
-            console.log({ Coming: { value, cIndex, cItem, flag } });
             var arr = this.state.slotArr
             if (flag) {
               this.validationTime(value, this.state.slotArr[cIndex].slot_end_time, flag, cIndex)
-              // arr[cIndex].slot_start_time = value
-              // this.setState({slotArr: arr})
+              arr[cIndex].slot_start_time = value
+              this.setState({ slotArr: arr })
             } else {
               this.validationTime(this.state.slotArr[cIndex].slot_start_time, value, flag, cIndex)
-              // arr[cIndex].slot_end_time = value
-              // this.setState({slotArr: arr})
+              arr[cIndex].slot_end_time = value
+              this.setState({ slotArr: arr })
             }
           }} />
         {this.state.searchPlaceVisible ? (
@@ -1005,7 +981,6 @@ export default class AvailabilitySchedule extends Component {
                                           marginRight: -8.5
                                         }}
                                         onValueChange={(value) => {
-                                          console.log("valuevalue:: ", value);
                                           let arr = [...this.state.slotArr]
                                           arr[index].slot_day_enable = (value) ? "1" : "0"
                                           this.setState({
@@ -1215,6 +1190,10 @@ export default class AvailabilitySchedule extends Component {
           </View>
         }
       </View>
+}
+
+      </>
+
     );
   }
 }
