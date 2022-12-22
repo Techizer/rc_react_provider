@@ -252,6 +252,9 @@ class SearchPlaceScreen extends Component {
 
     render() {
 
+        const lLan = config.language
+        const lRot = config.textRotate
+
         return (
             <Modal
                 propagateSwipe={50}
@@ -291,6 +294,22 @@ class SearchPlaceScreen extends Component {
                                 returnKeyType={'default'}
                                 fetchDetails={true}
                                 enablePoweredByContainer={false}
+                                renderLeftButton={() => (
+                                    <View style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+
+                                    }}>
+                                        <Image
+                                            source={require('../icons/search.png')}
+                                            style={{
+                                                width: 22,
+                                                height: 22,
+                                            }} resizeMethod='scale' resizeMode='contain' >
+                                        </Image>
+                                    </View>
+
+                                )}
                                 query={{
                                     key: this.state.place_key, //'AIzaSyDh_I54vPj40JriRJy4LBbS3zTBC41WXjk',//'AIzaSyAFnw06GvFjnUL-po_jmrQAwHyZ9trWO2Y',
                                     language: 'en',
@@ -306,7 +325,6 @@ class SearchPlaceScreen extends Component {
                                     backgroundColor: '#F2F3F2',
                                     fontFamily: Font.fontregular,
                                     fontSize: 14,
-
                                     color: Colors.textblack,
                                 }}
                                 onFail={error => {
@@ -333,11 +351,15 @@ class SearchPlaceScreen extends Component {
                                 styles={{
                                     textInputContainer: {
                                         width: '100%',
-                                        // marginLeft: 5,
+                                        backgroundColor: '#F2F3F2',
+                                        justifyContent: 'center',
+                                        paddingHorizontal: 5,
 
                                     },
                                     textInput: {
-                                        color: Colors.blackColor
+                                        color: Colors.blackColor,
+                                        textAlignVertical: 'center',
+                                        justifyContent: 'center'
                                     },
                                     predefinedPlacesDescription: {
                                         color: '#000',
@@ -353,42 +375,76 @@ class SearchPlaceScreen extends Component {
                                 }}
                             />
 
+
                         </View>
                         <TouchableOpacity onPress={() => {
                             SimpleToast.show('Getting current location')
                             this.getlatlong()
-                        }} style={{ flexDirection: 'row', width: '100%', alignSelf: 'flex-start', paddingVertical: 16 }}>
-                            <View style={{ width: '12%', alignItems: 'center' }}>
-                                <Image
-                                    source={require('../icons/locations_current.png')}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                    }} resizeMethod='scale' resizeMode='contain' >
-                                </Image>
-                            </View>
+                        }} style={{ flexDirection: 'row', width: '100%', alignSelf: 'flex-start', paddingTop: 4, paddingBottom: 32 }}>
+                            {
+                                (lLan === 0) &&
+                                <View style={{ width: '12%', alignItems: 'center' }}>
+                                    <Image
+                                        source={require('../icons/locations_current.png')}
+                                        style={{
+                                            width: 22,
+                                            height: 22,
+                                        }} resizeMethod='scale' resizeMode='contain' >
+                                    </Image>
+                                </View>
+                            }
+
                             <View style={{ width: '88%' }}>
-                                <Text style={{ textAlign: config.textRotate, fontSize: 16, fontFamily: Font.bold_font_family, color: '#17181A' }}>{Lang_chg.Currentlocation[config.language]}</Text>
-                                <Text style={{ textAlign: config.textRotate, fontSize: 14, fontFamily: Font.fontregular, color: '#6D737E', marginTop: vs(4) }}>{Lang_chg.Using_gpsofyoudevice[config.language]}</Text>
+                                <Text style={{ textAlign: lRot, fontSize: 16, fontFamily: Font.bold_font_family, color: '#17181A' }}>{Lang_chg.Currentlocation[lLan]}</Text>
+                                <Text style={{ textAlign: lRot, fontSize: 14, fontFamily: Font.fontregular, color: '#6D737E', marginTop: vs(4) }}>{Lang_chg.Using_gpsofyoudevice[lLan]}</Text>
                             </View>
+
+                            {
+                                (lLan === 1) &&
+                                <View style={{ width: '12%', alignItems: 'center' }}>
+                                    <Image
+                                        source={require('../icons/locations_current.png')}
+                                        style={{
+                                            width: 22,
+                                            height: 22,
+                                        }} resizeMethod='scale' resizeMode='contain' >
+                                    </Image>
+                                </View>
+                            }
                         </TouchableOpacity>
 
                         <View style={{ flexDirection: 'row', width: '94%', alignSelf: 'center', paddingVertical: 16, paddingHorizontal: 10, backgroundColor: '#E5E5E58D', borderRadius: 6 }}>
-                            <View style={{ width: '12%', alignItems: 'center', }}>
-                                <Image
-                                    source={require('../icons/information_button.png')}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                        tintColor: '#17181A'
-                                    }} resizeMethod='scale' resizeMode='contain' >
-                                </Image>
-                            </View>
+                            {
+                                (lLan == 0) &&
+                                <View style={{ width: '12%', alignItems: 'center', }}>
+                                    <Image
+                                        source={require('../icons/information_button.png')}
+                                        style={{
+                                            width: 18,
+                                            height: 18,
+                                            tintColor: '#17181A'
+                                        }} resizeMethod='scale' resizeMode='contain' >
+                                    </Image>
+                                </View>
+                            }
                             <View style={{ width: '88%' }}>
-                                <Text style={{ textAlign: config.textRotate, fontSize: s(11), fontFamily: Font.fontregular, color: '#6D737E', lineHeight: 16 }}>
-                                    {`Customer will be able to see the distance between your and their address after your 'Service Address' is setup properly.\n\nDistance between a Patient and Medical Health Service Provider is very much important to know before someone complete a booking. Rootscare booking engine has been programmed in a manner where we calculate distance fees which will help you travel to customer/patients distance.\n\nWe recommend to all of our Medical Health Service Provider to point their address using google map accurately so they`}
+                                <Text style={{ textAlign: lRot, fontSize: s(11), fontFamily: Font.fontregular, color: '#6D737E', lineHeight: 16 }}>
+                                    {Lang_chg.SearchScreenNote[lLan]}
                                 </Text>
                             </View>
+                            {
+                                (lLan == 1) &&
+                                <View style={{ width: '12%', alignItems: 'center', }}>
+                                    <Image
+                                        source={require('../icons/information_button.png')}
+                                        style={{
+                                            width: 18,
+                                            height: 18,
+                                            tintColor: '#17181A'
+                                        }} resizeMethod='scale' resizeMode='contain' >
+                                    </Image>
+                                </View>
+                            }
                         </View>
                     </KeyboardAwareScrollView>
                 </View>

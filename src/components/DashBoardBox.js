@@ -121,10 +121,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white_color,
     // paddingVertical: (mobileW * 4) / 100,
     marginTop: 10, //(mobileW * 1) / 100,
-    shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    // shadowColor: '#171717',
+    // shadowOffset: { width: -2, height: 4 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 3,
 
   },
   mainContainer1: {
