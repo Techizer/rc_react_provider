@@ -9,11 +9,11 @@ global.player_id_me1 = '123456';
 // global.fcmtoken='123456';
 //--------------------------- Config Provider Start -----------------------
 class configProvider {
-	baseURL    =    'https://teq-dev-var19.co.in/rootscare/'  
-	img_url     =    'http://teq-dev-var19.co.in/rootscare/images/200X200/'
-	img_url1    =    'http://teq-dev-var19.co.in/rootscare/images/400X400/'
-	img_url2    =    'http://teq-dev-var19.co.in/rootscare/images/700X700/'
-	img_url3    =    'https://teq-dev-var19.co.in/rootscare/uploads/images/'
+	// baseURL    =    'https://teq-dev-var19.co.in/rootscare/'  
+	// img_url     =    'http://teq-dev-var19.co.in/rootscare/images/200X200/'
+	// img_url1    =    'http://teq-dev-var19.co.in/rootscare/images/400X400/'
+	// img_url2    =    'http://teq-dev-var19.co.in/rootscare/images/700X700/'
+	// img_url3    =    'https://teq-dev-var19.co.in/rootscare/uploads/images/'
 
 	// baseURL = 'https://rootscare.net/'  
 	// img_url = 'https://rootscare.net/uploads/images/200X200/'
@@ -21,12 +21,12 @@ class configProvider {
 	// img_url2 = 'https://rootscare.net/uploads/images/700X700/'
 	// img_url3 = 'https://rootscare.net/application/uploads/images/'
 
-	//live url
-	// baseURL = 'https://rootscare.net/application/'
-	// img_url = 'https://rootscare.net/application/uploads/images/200X200/'
-	// img_url1 = 'https://rootscare.net/application/uploads/images/400X400/'
-	// img_url2 = 'https://rootscare.net/application/uploads/images/700X700/'
-	// img_url3 = 'https://rootscare.net/application/uploads/images/'
+	// live url
+	baseURL = 'https://rootscare.net/application/'
+	img_url = 'https://rootscare.net/application/uploads/images/200X200/'
+	img_url1 = 'https://rootscare.net/application/uploads/images/400X400/'
+	img_url2 = 'https://rootscare.net/application/uploads/images/700X700/'
+	img_url3 = 'https://rootscare.net/application/uploads/images/'
 	
 	term_url_eng = 'https://rootscare.net/application/terms-and-conditions/eng'
 	term_url_ar = 'https://rootscare.net/application/terms-and-conditions/ar'
