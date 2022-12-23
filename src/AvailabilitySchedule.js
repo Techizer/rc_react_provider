@@ -313,6 +313,7 @@ export default class AvailabilitySchedule extends Component {
 
   insertUpdatePriceList = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
+    console.log({user_details});
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
@@ -1120,7 +1121,7 @@ export default class AvailabilitySchedule extends Component {
                       paddingRight: 15,
                       paddingBottom: 16
                     }}>
-                      <Text style={Styles.textheading}>Point Your Service Location</Text>
+                      <Text style={Styles.textheading}>Service Address or Pickup Point</Text>
                       <Text style={[Styles.textcontent, {
                         marginTop: 6,
                         borderColor: Colors.field_border_color,

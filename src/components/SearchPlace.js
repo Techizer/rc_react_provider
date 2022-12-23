@@ -51,14 +51,32 @@ class SearchPlaceScreen extends Component {
             contacts: [],
             listData: [],
             isVisible: true,
-            place_key: ''
+            place_key: '',
+            countryKey: ''
             // loginUserData: JSON.parse(global.loginUserData),
         };
     }
 
     componentDidMount() {
         // this.locationRef.focus()
+        this.getSpecificCountryCode()
         this.getPlaceKey()
+    }
+
+    getSpecificCountryCode = async () => {
+
+        let user_details = await localStorage.getItemObject('user_arr');
+        const {work_area} = user_details
+        if (work_area === 'UAE') {
+            this.setState({
+                countryKey: 'AE'
+            })
+        }
+        else if (work_area === 'Saudi Arabia') {
+            this.setState({
+                countryKey: 'SA'
+            })
+        }
     }
 
     getadddressfromlatlong = (event) => {
@@ -256,6 +274,8 @@ class SearchPlaceScreen extends Component {
 
     render() {
 
+
+
         const lLan = config.language
         const lRot = config.textRotate
 
@@ -266,7 +286,7 @@ class SearchPlaceScreen extends Component {
 
         let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
         headerHeight += (Platform.OS === 'ios') ? 28 : -60
-        console.log({windowHeight});
+
         return (
             <Modal
                 propagateSwipe={50}
@@ -280,7 +300,7 @@ class SearchPlaceScreen extends Component {
                     flex: 1,
                     alignItems: "center",
                 }}>
-                    <ScreenHeader navigation={this.props.navigation} title='Service Location' leftIcon={true} onBackPress={() => {
+                    <ScreenHeader navigation={this.props.navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
                         this.closeModalAction(false);
                     }} />
                     <View
@@ -298,6 +318,7 @@ class SearchPlaceScreen extends Component {
                             ref={instance => {
                                 this.locationRef = instance;
                             }}
+
                             clearButtonMode={'while-editing'}
                             currentLocation
                             currentLocationLabel='Current'
@@ -327,6 +348,8 @@ class SearchPlaceScreen extends Component {
                             query={{
                                 key: this.state.place_key, //'AIzaSyDh_I54vPj40JriRJy4LBbS3zTBC41WXjk',//'AIzaSyAFnw06GvFjnUL-po_jmrQAwHyZ9trWO2Y',
                                 language: 'en',
+                                components: `country:${this.state.countryKey}`
+
                                 // types: 'geocode', //<=== use this to only show country cities
                                 // components: 'country:uk', //, <=== use this to restrict to country
                             }}
@@ -342,7 +365,6 @@ class SearchPlaceScreen extends Component {
                                 color: Colors.textblack,
                             }}
                             onFail={error => {
-                                //console.log('error ', error);
                             }}
                             onPress={(data, details = null) => {
                                 console.log({ data, details })
@@ -374,7 +396,7 @@ class SearchPlaceScreen extends Component {
                                     color: Colors.blackColor,
                                     textAlignVertical: 'center',
                                     justifyContent: 'center',
-                                    paddingBottom: -(windowHeight/300)
+                                    paddingBottom: -(windowHeight / 300)
                                 },
                                 predefinedPlacesDescription: {
                                     color: '#000',
@@ -393,7 +415,7 @@ class SearchPlaceScreen extends Component {
                     </View>
 
                     <View style={{
-                        marginTop: (Platform.OS==='ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8
+                        marginTop: (Platform.OS === 'ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8
                     }}>
                         <TouchableOpacity onPress={() => {
                             SimpleToast.show('Getting current location')

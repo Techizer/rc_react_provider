@@ -3107,7 +3107,8 @@ export default class Appointmentdetails extends Component {
                                   // backgroundColor: 'red',
                                   alignItems: 'center',
                                   textAlign: 'center',
-                                  padding: 0
+                                  padding: 0,
+                                  color: 'black'
                                 }}
                                 onChangeText={(text) => {
                                   this.setState({
