@@ -430,7 +430,7 @@ export default class Home extends Component {
                     textAlign: config.textalign,
                     fontSize: mobileW * 4.5 / 100,
                     color: Colors.textblack,
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     alignSelf: 'center'
                   }}>
                     {Lang_chg.dashboardtext[config.language]}
@@ -438,7 +438,7 @@ export default class Home extends Component {
                 </View>
                 {/* <TouchableOpacity onPress={() => { this.props.navigation.navigate('Show_currentlocation') }} style={{ flexDirection: 'row', width: '25%', alignItems: 'center', marginLeft: mobileW * 2 / 100 }}>
                   <Text style={{
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: (mobileW * 3.5) / 100,
                   }}>{Lang_chg.MyDashboard[config.language]}</Text>
                   <Image
@@ -456,7 +456,7 @@ export default class Home extends Component {
                     numberOfLines={1}
                     style={{
                       color: '#6D737E',
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: Font.sregulartext_size,
                       textAlign: config.textRotate,
                       marginLeft: mobileW * 2 / 100,
@@ -468,7 +468,7 @@ export default class Home extends Component {
                     numberOfLines={1}
                     style={{
                       color: '#6D737E',
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: Font.sregulartext_size,
                       textAlign: config.textRotate,
                       marginLeft: mobileW * 2 / 100,
@@ -626,7 +626,7 @@ const styles_new = StyleSheet.create({
     borderRadius: (mobileW * 2) / 100,
   },
   noteboxtxt: {
-    fontFamily: Font.fontregular,
+    fontFamily: Font.Regular,
     lineHeight: (mobileW * 5) / 100,
   },
   notecard: {
@@ -672,9 +672,9 @@ const styles_new = StyleSheet.create({
   checkboxtext: {
     color: '#666666',
     fontSize: Font.smalltextsize,
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     // fontSize: Font.smalltextsize,
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     flex: 0.88,
   },
   buttonstyle: {
@@ -690,7 +690,7 @@ const styles_new = StyleSheet.create({
     backgroundColor: '#4C94DB',
     textAlign: 'center',
     color: Colors.whiteColor,
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: (mobileW * 4.2) / 100,
   },
 
@@ -727,7 +727,7 @@ const styles_new = StyleSheet.create({
     // alignSelf: 'flex-end',
     alignSelf: 'center',
     fontSize: Font.ssregulartext_size,
-    fontFamily: Font.fontlight,
+    fontFamily: Font.Light,
     // backgroundColor: 'red',
     // color: Colors.gray3,
     // color: 'red',
@@ -748,7 +748,7 @@ const styles_new = StyleSheet.create({
     borderRadius: (mobileW * 2) / 100,
   },
   noteboxtxt: {
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     fontSize: (mobileW * 3.8) / 100,
     lineHeight: (mobileW * 5) / 100,
   },
@@ -785,7 +785,7 @@ const styles_new = StyleSheet.create({
   },
   insideviewtext: {
     alignSelf: 'flex-end',
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: Font.bigheadingfont,
     color: '#4B4B4B',
     marginRight: (mobileW * 0.2) / 100,
@@ -800,7 +800,7 @@ const styles_new = StyleSheet.create({
   },
   insideviewname: {
     alignSelf: 'center',
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: Font.mini,
     color: '#4B4B4B',
   },

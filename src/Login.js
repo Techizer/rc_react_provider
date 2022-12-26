@@ -990,7 +990,7 @@ export default class Login extends Component {
                       <Text
                         style={{
                           color: Colors.regulartextcolor,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           // paddingLeft:mobileW*2/100,
                           // textAlign: config.textalign,
                           fontSize: Font.Remember,
@@ -1009,7 +1009,7 @@ export default class Login extends Component {
                         <Text
                           style={{
                             color: Colors.regulartextcolor,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             // paddingLeft:mobileW*2/100,
                             // textAlign: config.textalign,
                             fontSize: Font.Remember,
@@ -1030,7 +1030,7 @@ export default class Login extends Component {
                       }}
                       style={{
                         color: Colors.textblue,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: Font.Forgot,
                         alignSelf: 'flex-end',
                         textAlign: config.textalign,
@@ -1055,7 +1055,7 @@ export default class Login extends Component {
                   <Text
                     style={{
                       color: Colors.textwhite,
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize: Font.buttontextsize,
                       textAlign: config.textalign,
                       alignSelf: 'center',
@@ -1135,7 +1135,7 @@ export default class Login extends Component {
                   <Text
                     style={{
                       textAlign: config.textalign,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: Font.Forgot,
                       alignSelf: 'center',
                       color: Colors.regulartextcolor,
@@ -1167,7 +1167,7 @@ export default class Login extends Component {
                   <Text
                     style={{
                       textAlign: config.textalign,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: Font.Forgot,
                       alignSelf: 'center',
                       color: Colors.regulartextcolor,

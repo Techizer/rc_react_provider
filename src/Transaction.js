@@ -257,7 +257,7 @@ export default class Transaction extends Component {
                         // marginLeft: mobileW * 1.5 / 100,
                         textAlign: config.textRotate,
                         color: Colors.placeholder_text_color,
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       Id
@@ -273,7 +273,7 @@ export default class Transaction extends Component {
                       style={{
                         textAlign: config.textRotate,
                         color: Colors.placeholder_text_color,
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       Date
@@ -289,7 +289,7 @@ export default class Transaction extends Component {
                       style={{
                         textAlign: config.textRotate,
                         color: Colors.placeholder_text_color,
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       Provider
@@ -298,7 +298,7 @@ export default class Transaction extends Component {
                       style={{
                         textAlign: config.textRotate,
                         color: Colors.textblue,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: mobileW * 2.5 / 100,
                       }}>
                       Fee ({this.state.currency_symbol})
@@ -314,7 +314,7 @@ export default class Transaction extends Component {
                       style={{
                         textAlign: config.textRotate,
                         color: Colors.placeholder_text_color,
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       Admin
@@ -323,7 +323,7 @@ export default class Transaction extends Component {
                       style={{
                         textAlign: config.textRotate,
                         color: Colors.textblue,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: mobileW * 2.5 / 100,
                       }}>
                       Fee ({this.state.currency_symbol})
@@ -339,7 +339,7 @@ export default class Transaction extends Component {
                       style={{
                         textAlign: config.textRotate,
                         color: Colors.placeholder_text_color,
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       Status
@@ -392,7 +392,7 @@ export default class Transaction extends Component {
                                 // marginLeft: mobileW * 1.5 / 100,
                                 textAlign: config.textRotate,
                                 color: Colors.textblue,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 3 / 100,
                               }}>
                               {item?.order_id}
@@ -408,7 +408,7 @@ export default class Transaction extends Component {
                               style={{
                                 textAlign: config.textRotate,
                                 color: Colors.placeholder_text_color,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 3 / 100,
                               }}>
                               {item?.date}
@@ -425,7 +425,7 @@ export default class Transaction extends Component {
                               style={{
                                 textAlign: config.textRotate,
                                 color: Colors.placeholder_text_color,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 3 / 100,
                               }}>
                               {item?.price}
@@ -442,7 +442,7 @@ export default class Transaction extends Component {
                               style={{
                                 textAlign: config.textRotate,
                                 color: Colors.placeholder_text_color,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 3 / 100,
                               }}>
                               {item?.paymentType}
@@ -466,7 +466,7 @@ export default class Transaction extends Component {
                                 style={{
                                   textAlign: 'center',
                                   color: Colors.white_color,
-                                  fontFamily: Font.fontmedium,
+                                  fontFamily: Font.Medium,
                                   fontSize: mobileW * 2.3 / 100,
 
                                 }}>
@@ -528,7 +528,7 @@ export default class Transaction extends Component {
                                   // marginLeft: mobileW * 1.5 / 100,
                                   textAlign: config.textRotate,
                                   color: Colors.textblue,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 3 / 100,
                                 }}>
                                 ORD84059
@@ -544,7 +544,7 @@ export default class Transaction extends Component {
                                 style={{
                                   textAlign: config.textRotate,
                                   color: Colors.placeholder_text_color,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 3 / 100,
                                 }}>
                                 27/05/22
@@ -561,7 +561,7 @@ export default class Transaction extends Component {
                                 style={{
                                   textAlign: config.textRotate,
                                   color: Colors.placeholder_text_color,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 3 / 100,
                                 }}>
                                 4862.00
@@ -578,7 +578,7 @@ export default class Transaction extends Component {
                                 style={{
                                   textAlign: config.textRotate,
                                   color: Colors.placeholder_text_color,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 3 / 100,
                                 }}>
                                 1623.6
@@ -602,7 +602,7 @@ export default class Transaction extends Component {
                                   style={{
                                     textAlign: 'center',
                                     color: Colors.white_color,
-                                    fontFamily: Font.fontmedium,
+                                    fontFamily: Font.Medium,
                                     fontSize: mobileW * 2.3 / 100,
 
                                   }}>
@@ -663,7 +663,7 @@ export default class Transaction extends Component {
                           // marginLeft: mobileW * 1.5 / 100,
                           textAlign: config.textRotate,
                           color: Colors.textblue,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize: mobileW * 3.6 / 100,
                         }}>
                         {this.state.content?.heading}
@@ -731,26 +731,6 @@ export default class Transaction extends Component {
 
                         //stylesheet={HTMLstyles}
                       />
-                      {/* <Text
-                        style={{
-                          // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: config.textRotate,
-                          color: Colors.placeholder_border,
-                          fontFamily: Font.fontregular,
-                          fontSize: mobileW * 3.6 / 100,
-                        }}>
-                        We charge 30% from all the transactions.
-                        Medical Service Providers can read more about
-                        Roots Care <Text
-                          style={{
-                            // marginLeft: mobileW * 1.5 / 100,
-                            textAlign: config.textRotate,
-                            color: Colors.placeholdertextcolor,
-                            fontFamily: Font.fontmedium,
-                            fontSize: mobileW * 3.6 / 100,
-                          }}>Terms and Conditions,
-                          Payment Policies.</Text>
-                      </Text> */}
                     </View>
 
 

@@ -236,7 +236,7 @@ export default class AddBank extends Component {
                   <Text
                     style={{
                       textAlign: config.textalign,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: (mobileW * 4) / 100,
                       alignSelf: 'center',
                       color: Colors.textwhite,
@@ -299,16 +299,16 @@ export default class AddBank extends Component {
                 <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
                   source={require('./icons/ryt_opp.png')}></Image>
               }
-              <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.fontmedium, textAlign: config.textalign, }}>{Lang_chg.thank[config.language]}
+              <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: config.textalign, }}>{Lang_chg.thank[config.language]}
 
 
               </Text>
-              <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.fontmedium, textAlign: config.textalign }}>{Lang_chg.success[config.language]}
+              <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: config.textalign }}>{Lang_chg.success[config.language]}
 
 
               </Text>
 
-              <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.fontmedium, textAlign: config.textalign, color: Colors.textgray }}>{Lang_chg.text_of_modal[config.language]}
+              <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.Medium, textAlign: config.textalign, color: Colors.textgray }}>{Lang_chg.text_of_modal[config.language]}
 
 
               </Text>
@@ -318,7 +318,7 @@ export default class AddBank extends Component {
               }}
 
                 style={{ width: '15%', alignSelf: 'center', borderColor: Colors.bordercolorblue, borderWidth: 1, paddingVertical: mobileW * 2 / 100, marginTop: mobileW * 5 / 100, borderRadius: mobileW * 3 / 100 }}>
-                <Text style={{ fontSize: mobileW * 3 / 100, alignSelf: 'center', fontFamily: Font.fontmedium, textAlign: config.textalign, alignSelf: 'center', color: Colors.terms_text_color_blue, }}>{Lang_chg.close_txt[config.language]}</Text>
+                <Text style={{ fontSize: mobileW * 3 / 100, alignSelf: 'center', fontFamily: Font.Medium, textAlign: config.textalign, alignSelf: 'center', color: Colors.terms_text_color_blue, }}>{Lang_chg.close_txt[config.language]}</Text>
 
 
               </TouchableOpacity>
@@ -640,7 +640,7 @@ export default class AddBank extends Component {
                   <Text
                     style={{
                       color: Colors.regulartextcolor,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       // paddingLeft:mobileW*2/100,
                       // textAlign: config.textalign,
                       fontSize: Font.Remember,

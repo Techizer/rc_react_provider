@@ -154,7 +154,7 @@ const LabPackageListing = (props) => {
               <Text
                 style={{
                   textAlign: "center",
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: (mobileW * 4) / 100,
                 }}
               >
@@ -178,7 +178,7 @@ const LabPackageListing = (props) => {
                 // marginTop: (mobileW * 4) / 100,
                 paddingHorizontal: (mobileW * 2) / 100,
                 color: "#000",
-                fontFamily: Font.fontmedium,
+                fontFamily: Font.Medium,
                 fontSize: (mobileW * 4.5) / 100,
                 textAlign: "left",
               }}
@@ -250,7 +250,7 @@ const LabPackageListing = (props) => {
                         // marginTop: (mobileW * 3) / 100,
                         paddingHorizontal: (mobileW * 2) / 100,
                         color: "#000",
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: (mobileW * 4.5) / 100,
                         textAlign: "left",
                       }}
@@ -293,7 +293,7 @@ const LabPackageListing = (props) => {
                     style={{
                       paddingVertical: (mobileW * 2) / 100,
                       paddingHorizontal: (mobileW * 2) / 100,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       textAlign: "left",
                       color: Colors.tablightcolo,
                       fontSize: Font.sregulartext_size,
@@ -305,7 +305,7 @@ const LabPackageListing = (props) => {
                     style={{
                       paddingVertical: (mobileW * 1.5) / 100,
                       paddingHorizontal: (mobileW * 2) / 100,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: Font.sregulartext_size,
                       color: Colors.theme_color,
                       textAlign: config.textRotate,
@@ -320,7 +320,7 @@ const LabPackageListing = (props) => {
                         <Text
                           style={{
                             paddingHorizontal: (mobileW * 2) / 100,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             textAlign: "left",
                             fontSize: Font.sregulartext_size,
                             marginTop: (mobileW * 3) / 100,
@@ -343,7 +343,7 @@ const LabPackageListing = (props) => {
                           <Text
                             style={{
                               textAlign: config.textalign,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: (mobileW * 4) / 100,
                             }}
                           >
@@ -364,7 +364,7 @@ const LabPackageListing = (props) => {
                           >
                             <Text
                               style={{
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 textAlign: "left",
                                 color: Colors.textGreenColor,
                                 fontSize: Font.sregulartext_size,
@@ -379,7 +379,7 @@ const LabPackageListing = (props) => {
                         <Text
                           style={{
                             paddingHorizontal: (mobileW * 2) / 100,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             textAlign: "left",
                             fontSize: Font.sregulartext_size,
                             marginTop: (mobileW * 3) / 100,
@@ -402,7 +402,7 @@ const LabPackageListing = (props) => {
                           <Text
                             style={{
                               textAlign: config.textalign,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: (mobileW * 4) / 100,
                             }}
                           >
@@ -423,7 +423,7 @@ const LabPackageListing = (props) => {
                     >
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           textAlign: "left",
                           color: Colors.textGreenColor,
                           fontSize: Font.sregulartext_size,

@@ -1,4 +1,4 @@
-import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform } from 'react-native';
+import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform, Dimensions } from 'react-native';
 import React, { Component } from 'react';
 import Footer from './Footer';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,6 +11,7 @@ import MonthPicker from 'react-native-month-year-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
 import { Col } from 'ionic-angular';
+import ScreenHeader from './components/ScreenHeader';
 const bloodModal_arr = [
   {
     id: 1,
@@ -1086,7 +1087,7 @@ export default class Editprofile extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Identity Number
@@ -1163,7 +1164,7 @@ export default class Editprofile extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1184,7 +1185,7 @@ export default class Editprofile extends Component {
               numberOfLines={1}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1210,7 +1211,7 @@ export default class Editprofile extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Speciality, Experience & Certificates
@@ -1393,7 +1394,7 @@ export default class Editprofile extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1413,7 +1414,7 @@ export default class Editprofile extends Component {
               }}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1539,7 +1540,7 @@ export default class Editprofile extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1559,7 +1560,7 @@ export default class Editprofile extends Component {
               }}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1585,7 +1586,7 @@ export default class Editprofile extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Experience & Certificates
@@ -1659,7 +1660,7 @@ export default class Editprofile extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1679,7 +1680,7 @@ export default class Editprofile extends Component {
               }}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1754,7 +1755,7 @@ export default class Editprofile extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Health Registration ID
@@ -1831,7 +1832,7 @@ export default class Editprofile extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1849,7 +1850,7 @@ export default class Editprofile extends Component {
               numberOfLines={1}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1875,7 +1876,7 @@ export default class Editprofile extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Company Registration Certificate
@@ -1952,7 +1953,7 @@ export default class Editprofile extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1970,7 +1971,7 @@ export default class Editprofile extends Component {
               numberOfLines={1}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1984,6 +1985,13 @@ export default class Editprofile extends Component {
   }
 
   render() {
+    
+    const windowHeight = Math.round(Dimensions.get("window").height);
+    const windowWidth = Math.round(Dimensions.get("window").width);
+    const deviceHeight = Dimensions.get('screen').height;
+    const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+    let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+    headerHeight += (Platform.OS === 'ios') ? 28 : -60
     return (
       //
       <View style={{ flex: 1, }}>
@@ -2077,7 +2085,7 @@ export default class Editprofile extends Component {
                   <Text
                     style={{
                       textAlign: config.textRotate,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: (mobileW * 4) / 100,
                       alignSelf: 'center',
                       color: Colors.textwhite,
@@ -2195,7 +2203,7 @@ export default class Editprofile extends Component {
                     <Text
                       style={{
                         textAlign: config.textRotate,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: (mobileW * 4) / 100,
                         alignSelf: 'center',
                         color: Colors.textwhite,
@@ -2280,7 +2288,7 @@ export default class Editprofile extends Component {
                   <Text
                     style={{
                       textAlign: config.textRotate,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: (mobileW * 4) / 100,
 
                       color: Colors.textwhite,
@@ -2344,7 +2352,7 @@ export default class Editprofile extends Component {
             <View style={{ width: '70%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
               <View style={{ width: '100%', backgroundColor: Colors.backgroundcolorblue, paddingVertical: mobileW * 2 / 100 }}>
 
-                <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{Lang_chg.blood[config.language]}</Text>
+                <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{Lang_chg.blood[config.language]}</Text>
 
               </View>
 
@@ -2383,80 +2391,16 @@ export default class Editprofile extends Component {
         {/* ------------------------------------------------------------------------------------------------------------ */}
 
         <View style={{ flex: 1, }}>
-          <View
-            style={{
-              backgroundColor: '#fff',
-              width: '100%',
-              paddingVertical: (mobileW * 3) / 100,
-              borderBottomColor: Colors.LIGHT_CLIENT_BORDER,
-              borderBottomWidth: 1,
-              // shadowColor:'#000',
-              // shadowOffset:{width:1,height:1},
-              // elevation:3,
-
-              // shadowOpacity:0.6,
-              // shadowRadius:4,
-
-
-            }}>
-            <View
-              style={{
-                width: '95%',
-                alignSelf: 'center',
-                backgroundColor: 'white',
-                //  height: (mobileW * 12) / 100,
-                flexDirection: 'row',
-
-
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  // this.props.navigation.navigate('Home');
-                  this.props.navigation.goBack();
-                }}
-                style={{ width: '10%', alignSelf: 'center' }}>
-                <Image
-                  source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}
-                  style={{
-                    height: (mobileW * 8) / 100,
-                    width: (mobileW * 8) / 100,
-                  }}>
-                  {/* {localimag.backarrow} */}
-                </Image>
-              </TouchableOpacity>
-
-              <View style={{ width: '80%', alignSelf: 'center' }}>
-                <Text
-                  style={{
-                    color: Colors.textblack,
-                    fontFamily: Font.blackheadingfontfamily,
-                    fontSize: Font.headingblack_txt_size_edit,
-                    alignSelf: 'flex-end',
-
-                    alignSelf: 'center',
-                  }}>
-                  {Lang_chg.Editprofile[config.language]}
-                </Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('Notifications');
-                }}>
-                <View style={{ width: '10%', alignSelf: 'center' }}>
-                  <Image
-                    source={this.state.notification_count > 0 ? localimag.notifications : localimag.notifications_sec}
-                    style={{
-                      height: (mobileW * 6) / 100,
-                      width: (mobileW * 6) / 100,
-                      resizeMode: 'contain',
-                    }}>
-                    {/* {localimag.backarrow} */}
-                  </Image>
-                </View>
-              </TouchableOpacity>
-
-            </View>
-          </View>
+          <ScreenHeader
+            onBackPress={() => {
+              this.props.navigation.goBack();
+            }}
+            leftIcon
+            rightIcon={true}
+            navigation={this.props.navigation}
+            notiCount={this.state.notification_count > 0 ? this.state.notification_count : false}
+            title={Lang_chg.Editprofile[config.language]}
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
           <ScrollView
             style={{ backgroundColor: 'white', marginTop: 10 }}
             contentContainerStyle={{ paddingBottom: mobileW * 15 / 100 }}
@@ -2632,7 +2576,7 @@ export default class Editprofile extends Component {
                           color: Colors.placeholder_text_color,
                           // fontFamily: Font.blackheadingfontfamily, 
                           // fontSize: Font.tabtextsize, 
-                          fontFamily: Font.fontmedium, fontSize: 18,
+                          fontFamily: Font.Medium, fontSize: 18,
                           textAlign: config.textRotate,
                         }}>{this.state.name}</Text>
                       </View>
@@ -2641,7 +2585,7 @@ export default class Editprofile extends Component {
                         <Text
                           style={{
                             color: Colors.placeholder_textcolorlight,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14, //(mobileW * 3) / 100,
                             textAlign: config.textRotate,
                           }}>{this.state.email}
@@ -2711,7 +2655,7 @@ export default class Editprofile extends Component {
                           borderRightColor: Colors.placeholder_border
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 12,
                             color: Colors.placeholder_textcolorlight,
                           }}>User Type</Text>
@@ -2726,7 +2670,7 @@ export default class Editprofile extends Component {
                           paddingLeft: 10
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 15,
                             color: '#041A27'
                           }}>{this.state.display_user_type}</Text>
@@ -2739,7 +2683,7 @@ export default class Editprofile extends Component {
                           justifyContent: 'center'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 10,
                             color: Colors.placeholder_textcolorlight
                           }}>Non Editable</Text>
@@ -3098,7 +3042,7 @@ export default class Editprofile extends Component {
                         <Text style={{
                           width: '78%', textAlign: config.textRotate,
                           color: Colors.placeholder_text,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize: Font.placeholdersize,
                         }}>{this.state.dob_date.length <= 0 ? (this.state.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
@@ -3198,7 +3142,7 @@ export default class Editprofile extends Component {
                         <Text
                           style={{
                             color: Colors.placeholder_text,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
                             textAlign: config.textRotate,
                           }}>
@@ -3236,7 +3180,7 @@ export default class Editprofile extends Component {
                                     marginLeft: mobileW * 1.5 / 100,
                                     textAlign: config.textRotate,
                                     color: Colors.placeholder_text,
-                                    fontFamily: Font.fontregular,
+                                    fontFamily: Font.Regular,
                                     fontSize: Font.placeholdersize,
                                   }}>
                                   {Lang_chg.male[config.language]}
@@ -3278,7 +3222,7 @@ export default class Editprofile extends Component {
                                   textAlign: config.textRotate,
                                   marginLeft: mobileW * 1.5 / 100,
                                   color: Colors.placeholder_text,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: Font.placeholdersize,
                                   // alignSelf: 'center',
                                 }}>
@@ -4750,7 +4694,7 @@ export default class Editprofile extends Component {
                       <Text
                         style={{
                           color: Colors.textwhite,
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize: Font.buttontextsize,
                           alignSelf: 'flex-end',
 
@@ -4824,7 +4768,7 @@ export default class Editprofile extends Component {
                             justifyContent: 'space-between'
                           }}>
                           {/* <View style={{width: '80%'}}> */}
-                          <Text style={{ fontSize: (mobileW * 3.7) / 100, fontFamily: Font.fontregular, textAlign: config.textRotate }}>
+                          <Text style={{ fontSize: (mobileW * 3.7) / 100, fontFamily: Font.Regular, textAlign: config.textRotate }}>
                             {this.state.smoking.length <= 0 ? Lang_chg.select[config.language] : this.state.smoking}
                           </Text>
                           {/* </View> */}

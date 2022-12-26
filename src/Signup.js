@@ -600,7 +600,7 @@ export default class Signup extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Identity Number
@@ -676,7 +676,7 @@ export default class Signup extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -697,7 +697,7 @@ export default class Signup extends Component {
               numberOfLines={1}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -723,7 +723,7 @@ export default class Signup extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Speciality, Experience & Certificates
@@ -907,7 +907,7 @@ export default class Signup extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -927,7 +927,7 @@ export default class Signup extends Component {
               }}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1052,7 +1052,7 @@ export default class Signup extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1072,7 +1072,7 @@ export default class Signup extends Component {
               }}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1098,7 +1098,7 @@ export default class Signup extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Experience & Certificates
@@ -1172,7 +1172,7 @@ export default class Signup extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1192,7 +1192,7 @@ export default class Signup extends Component {
               }}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1267,7 +1267,7 @@ export default class Signup extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Health Registration ID
@@ -1343,7 +1343,7 @@ export default class Signup extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1361,7 +1361,7 @@ export default class Signup extends Component {
               numberOfLines={1}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -1387,7 +1387,7 @@ export default class Signup extends Component {
             style={{
               textAlign: config.textRotate,
               fontSize: Font.buttontextsize,
-              fontFamily: Font.fontbold,
+              fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
             Company Registration Certificate
@@ -1463,7 +1463,7 @@ export default class Signup extends Component {
               <Text
                 style={{
                   color: Colors.textblue,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: config.textalign,
                   fontSize: Font.Remember,
@@ -1481,7 +1481,7 @@ export default class Signup extends Component {
               numberOfLines={1}
               style={{
                 color: Colors.textgray,
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
@@ -2075,7 +2075,7 @@ export default class Signup extends Component {
                         <View style={{ width: '100%', height: Font.placeholder_height, marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row' }}>
                           <Text style={{
                             width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: Font.placeholdersize,
                           }}>{this.state.dob_date.length <= 0 ? Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                           <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
@@ -2123,7 +2123,7 @@ export default class Signup extends Component {
                         <Text
                           style={{
                             color: Colors.placeholder_text,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
                             textAlign: config.textRotate,
                           }}>
@@ -2161,7 +2161,7 @@ export default class Signup extends Component {
                                     marginLeft: mobileW * 1.5 / 100,
                                     textAlign: config.textRotate,
                                     color: Colors.placeholder_text,
-                                    fontFamily: Font.fontregular,
+                                    fontFamily: Font.Regular,
                                     fontSize: Font.placeholdersize,
                                   }}>
                                   {Lang_chg.male[config.language]}
@@ -2203,7 +2203,7 @@ export default class Signup extends Component {
                                   textAlign: config.textRotate,
                                   marginLeft: mobileW * 1.5 / 100,
                                   color: Colors.placeholder_text,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: Font.placeholdersize,
                                   // alignSelf: 'center',
                                 }}>
@@ -2551,7 +2551,7 @@ export default class Signup extends Component {
                       style={{
                         textAlign: config.textalign,
                         fontSize: (mobileW * 3.6) / 100,
-                        fontFamily: Font.fontsemibold,
+                        fontFamily: Font.SemiBold,
                         color: Colors.terms_text_color_blue,
 
                       }}>
@@ -2590,7 +2590,7 @@ export default class Signup extends Component {
                   style={{
                     textAlign: config.textalign,
                     fontSize: (mobileW * 3.8) / 100,
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     color: Colors.placeholder_text,
                   }}>
                   {Lang_chg.allreadyhaveaccounttext[config.language]}
@@ -2630,11 +2630,11 @@ export default class Signup extends Component {
 
                     <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
                       <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
-                      <Text style={{ fontFamily: Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.registration[config.language]}</Text>
+                      <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.registration[config.language]}</Text>
                     </View>
 
                     <View style={{ alignSelf: 'flex-start', paddingLeft: mobileW * 4 / 100, width: '90%', marginTop: mobileW * 1.5 / 100 }}>
-                      <Text style={{ fontFamily: Font.fontlight, color: '#000', fontSize: mobileW * 4 / 100, }}>{this.state.error_msg}</Text>
+                      <Text style={{ fontFamily: Font.Light, color: '#000', fontSize: mobileW * 4 / 100, }}>{this.state.error_msg}</Text>
                     </View>
 
                     <View style={{
@@ -2650,7 +2650,7 @@ export default class Signup extends Component {
                         }
                       }}
                         style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                        <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.theme_color, alignSelf: 'center', textAlign: config.textalign }}>{Lang_chg.OK[config.language]}</Text>
+                        <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.theme_color, alignSelf: 'center', textAlign: config.textalign }}>{Lang_chg.OK[config.language]}</Text>
                       </TouchableOpacity>
 
 

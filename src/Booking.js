@@ -1063,7 +1063,7 @@ console.log('muska test',sum)
             width: '80%',
           }}>
           <Text style={{ textAlign: 'center',
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: (mobileW * 4) / 100,}}>{Lang_chg.Booking[config.language]}</Text>
         </View>
         <View
@@ -1119,7 +1119,7 @@ console.log('muska test',sum)
               <View style={{width: '70%',marginLeft:mobileW*2/100}}>
                 <Text
                   style={{
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: Font.name,
                     textAlign:config.textRotate
                   }}>{item.provider_name}
@@ -1179,7 +1179,7 @@ console.log('muska test',sum)
                     borderColor: Colors.theme_color,
                     marginTop:mobileW*2/100,
                   }}></Image>
-                <Text style={{alignSelf: 'center',fontFamily:Font.fontmedium,paddingBottom:mobileW*2/100,marginTop:mobileW*1/100,paddingHorizontal:mobileW*0.5/100}} numberOfLines={1}>{this.state.name}</Text>
+                <Text style={{alignSelf: 'center',fontFamily:Font.Medium,paddingBottom:mobileW*2/100,marginTop:mobileW*1/100,paddingHorizontal:mobileW*0.5/100}} numberOfLines={1}>{this.state.name}</Text>
               </TouchableOpacity>
               <View style={{width:'60%',alignSelf:'center',marginLeft:mobileW*3/100,alignItems:'flex-start'}}>
               <FlatList
@@ -1230,7 +1230,7 @@ console.log('muska test',sum)
                     </TouchableOpacity>
                   </ImageBackground>
                   </View>
-                <Text style={{fontFamily:Font.fontlight,paddingBottom:mobileW*2/100,textAlign:'center',marginTop:mobileW*1.2/100,fontSize:mobileW*3.2/100}} numberOfLines={1}>{item.first_name}</Text>
+                <Text style={{fontFamily:Font.Light,paddingBottom:mobileW*2/100,textAlign:'center',marginTop:mobileW*1.2/100,fontSize:mobileW*3.2/100}} numberOfLines={1}>{item.first_name}</Text>
               </TouchableOpacity>
 
                   )}
@@ -1267,7 +1267,7 @@ console.log('muska test',sum)
                     marginLeft:mobileW*3/100,marginRight:mobileW*3/100,
                     borderColor: Colors.theme_color,
                   }}></Image>
-                <Text style={{fontFamily:Font.fontregular,fontSize:mobileW*3/100,textAlign:'center',marginTop:mobileW*2/100}}>{Lang_chg.Add[config.language]}</Text>
+                <Text style={{fontFamily:Font.Regular,fontSize:mobileW*3/100,textAlign:'center',marginTop:mobileW*2/100}}>{Lang_chg.Add[config.language]}</Text>
               </TouchableOpacity>
             </View>
 
@@ -1293,7 +1293,7 @@ console.log('muska test',sum)
                         ? {
                             color: Colors.textblue,
 
-                            fontFamily:Font.fontmedium,
+                            fontFamily:Font.Medium,
                             fontSize:mobileW*4/100,
                             textAlign: config.textalign,
                             alignSelf: 'center',
@@ -1301,7 +1301,7 @@ console.log('muska test',sum)
                           }
                         : {
                             color: Colors.tablightcolo,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize:mobileW*4/100,
                             textAlign: config.textalign,
                             alignSelf: 'center',
@@ -1347,7 +1347,7 @@ console.log('muska test',sum)
                         ? {
                             color: Colors.textblue,
 
-                            fontFamily:Font.fontmedium,
+                            fontFamily:Font.Medium,
                             fontSize:mobileW*4/100,
                             textAlign: config.textalign,
                             alignSelf: 'center',
@@ -1355,7 +1355,7 @@ console.log('muska test',sum)
                           }
                         : {
                             color: Colors.tablightcolo,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize:mobileW*4/100,
                             textAlign: config.textalign,
                             alignSelf: 'center',
@@ -1422,7 +1422,7 @@ console.log('muska test',sum)
         style={{
           color: Colors.white_color,
           fontSize: Font.textsize,
-          fontFamily: Font.fontlight,
+          fontFamily: Font.Light,
 
           
          // paddingHorizontal: (mobileW * 2) / 100,
@@ -1541,7 +1541,7 @@ console.log('muska test',sum)
                           textAlign:config.textRotate,
                           alignSelf: 'center',
                           fontSize:mobileW*3.6/100,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                         
                           color:'#000',
                       
@@ -1555,7 +1555,7 @@ console.log('muska test',sum)
                           width: '25%',
                        
                           fontSize:mobileW*3.6/100,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           color:'#000',
                
                          textAlign: 'right',
@@ -1608,7 +1608,7 @@ console.log('muska test',sum)
                               // paddingHorizontal: (mobileW * 5) / 100,
                               paddingVertical: (mobileW * 1.5) / 100,
                               color: Colors.white_color,
-                              fontFamily:Font.fontmedium,
+                              fontFamily:Font.Medium,
                               fontSize: mobileW*3/100,
                               textTransform: 'uppercase',
                               textAlign: 'center',
@@ -1622,7 +1622,7 @@ console.log('muska test',sum)
                              
                             
                               paddingVertical: (mobileW * 2) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               textAlign:'center',
                               fontSize: Font.sregulartext_size,
                             }}>
@@ -1657,7 +1657,7 @@ console.log('muska test',sum)
               }}>
               <Text
                 style={{
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.name,
                   width: '65%',
                   textAlign:config.textRotate,
@@ -1684,7 +1684,7 @@ console.log('muska test',sum)
               <Text
                 style={{
                   color: Colors.theme_color,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.name,alignSelf:'center',
                   marginLeft:mobileW*1/100,
                   // width:'75%',
@@ -1713,7 +1713,7 @@ console.log('muska test',sum)
                 }}>
                 <Text
                   style={{
-                    fontFamily: Font.fontregular,
+                    fontFamily: Font.Regular,
                     fontSize: Font.subtext,
                     textAlign:config.textRotate,
                     color:'#000'
@@ -1808,7 +1808,7 @@ console.log('muska test',sum)
                 }}>
                 <Text
                   style={{
-                    fontFamily: Font.fontregular,
+                    fontFamily: Font.Regular,
                     fontSize: Font.subtext,
                     color:'#000',
                     textAlign:config.textRotate,
@@ -1877,7 +1877,7 @@ console.log('muska test',sum)
                       }></FlatList>
                       </View>
                       </View>:
-                    <Text style={{fontFamily:Font.fontMediumItalic,fontSize:mobileW*4/100,alignSelf:'center',paddingVertical:mobileW*3/100,textAlign:'center',marginLeft:mobileW*32/100}}>{Lang_chg.no_data_Found[config.language]}</Text>}
+                    <Text style={{fontFamily:Font.MediumItalic,fontSize:mobileW*4/100,alignSelf:'center',paddingVertical:mobileW*3/100,textAlign:'center',marginLeft:mobileW*32/100}}>{Lang_chg.no_data_Found[config.language]}</Text>}
                     </View>:
                      
                      <View style={{width:'100%',alignItems:'center'}}>
@@ -1938,7 +1938,7 @@ console.log('muska test',sum)
                       }></FlatList>
                       </View>
                       </View>:
-                    <Text style={{fontFamily:Font.fontMediumItalic,fontSize:mobileW*4/100,alignSelf:'center',paddingVertical:mobileW*3/100,textAlign:'center',marginLeft:mobileW*32/100}}>{Lang_chg.no_data_Found[config.language]}</Text>}
+                    <Text style={{fontFamily:Font.MediumItalic,fontSize:mobileW*4/100,alignSelf:'center',paddingVertical:mobileW*3/100,textAlign:'center',marginLeft:mobileW*32/100}}>{Lang_chg.no_data_Found[config.language]}</Text>}
                     </View>
                       
                   }
@@ -1976,7 +1976,7 @@ console.log('muska test',sum)
                   <View>
                     <Text
                       style={{
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: Font.headingfont,
                         color: Colors.theme_color,
                         textAlign:config.textRotate,
@@ -2109,7 +2109,7 @@ console.log('muska test',sum)
                     }}>
                     <Text
                       style={{
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize:mobileW*3.7/100,
                         color: Colors.theme_color,
                       }}>{Lang_chg.Total[config.language]}
@@ -2117,7 +2117,7 @@ console.log('muska test',sum)
                     </Text>
                     <Text
                       style={{
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize:mobileW*3.7/100,
                         color: Colors.theme_color,
                       }}>
@@ -2153,7 +2153,7 @@ console.log('muska test',sum)
                   <View>
                     <Text
                       style={{
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: Font.headingfont,
                         color: Colors.theme_color,
                         textAlign:config.textRotate,
@@ -2283,7 +2283,7 @@ console.log('muska test',sum)
                     }}>
                     <Text
                       style={{
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize:mobileW*3.7/100,
                         color: Colors.theme_color,
                       }}>{Lang_chg.Total[config.language]}
@@ -2291,7 +2291,7 @@ console.log('muska test',sum)
                     </Text>
                     <Text
                       style={{
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize:mobileW*3.7/100,
                         color: Colors.theme_color,
                       }}>{this.state.hour_total_price} {this.state.currency_symbol}
@@ -2327,11 +2327,11 @@ console.log('muska test',sum)
 
                                     <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100,flexDirection:'row',alignItems:'center' }}>
                                        <Image style={{width:mobileW*6/100,height:mobileW*6/100}}  source={require('./icons/logo.png')}></Image>
-                                        <Text style={{ fontFamily:Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100,paddingLeft:mobileW*4/100,width:'90%',textAlign:config.textRotate }} numberOfLines={2}>{Lang_chg.DeleteMember[config.language]} {this.state.first_name} {this.state.last_name}</Text>
+                                        <Text style={{ fontFamily:Font.Medium, color: '#000', fontSize: mobileW * 5 / 100,paddingLeft:mobileW*4/100,width:'90%',textAlign:config.textRotate }} numberOfLines={2}>{Lang_chg.DeleteMember[config.language]} {this.state.first_name} {this.state.last_name}</Text>
                                     </View>
 
                                     <View style={{  paddingLeft: mobileW * 4 / 100,width:'95%',alignSelf:'center' }}>
-                                        <Text style={{ fontFamily: Font.fontregular, color:'#000', fontSize: mobileW * 4.4 / 100,textAlign:config.textRotate }}>{Lang_chg.delete_msg[config.language]}</Text>
+                                        <Text style={{ fontFamily: Font.Regular, color:'#000', fontSize: mobileW * 4.4 / 100,textAlign:config.textRotate }}>{Lang_chg.delete_msg[config.language]}</Text>
                                     </View>
 
                                     <View style={{
@@ -2342,7 +2342,7 @@ console.log('muska test',sum)
                     
                                          
                                             style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                                            <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color:Colors.theme_color, alignSelf: 'center',textAlign:config.textalign }}>{Lang_chg.no_txt[config.language]}</Text>
+                                            <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color:Colors.theme_color, alignSelf: 'center',textAlign:config.textalign }}>{Lang_chg.no_txt[config.language]}</Text>
                                         </TouchableOpacity>
                                        
                                        
@@ -2351,7 +2351,7 @@ console.log('muska test',sum)
                                         setTimeout(() => {this.setState({ modalVisible3: false }), this.delete_click()}, 200)
                                          }}
                                             style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                                            <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color:Colors.theme_color, alignSelf: 'center',textAlign:config.textalign }}>{Lang_chg.Delete[config.language]}</Text>
+                                            <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color:Colors.theme_color, alignSelf: 'center',textAlign:config.textalign }}>{Lang_chg.Delete[config.language]}</Text>
                                         </TouchableOpacity>
                                         
                                        
@@ -2436,19 +2436,19 @@ console.log('muska test',sum)
 
                                  
                                        <Image style={{width:mobileW*15/100,height:mobileW*15/100,alignSelf:'center'}}  source={require('./icons/logo.png')}></Image>
-                                       <Text style={{ fontFamily: Font.fontmedium, fontSize: mobileW * 5 / 100, color:Colors.theme_color, alignSelf: 'center',marginTop:mobileW*6/100 }}>{Lang_chg.we_wii_back[config.language]}</Text>
+                                       <Text style={{ fontFamily: Font.Medium, fontSize: mobileW * 5 / 100, color:Colors.theme_color, alignSelf: 'center',marginTop:mobileW*6/100 }}>{Lang_chg.we_wii_back[config.language]}</Text>
                                     {config.language==0 &&
-                                       <Text style={{ fontFamily: Font.fontmedium, fontSize: mobileW * 5 / 100, color:Colors.theme_color, alignSelf: 'center', }}>{Lang_chg.promise[config.language]}</Text>
+                                       <Text style={{ fontFamily: Font.Medium, fontSize: mobileW * 5 / 100, color:Colors.theme_color, alignSelf: 'center', }}>{Lang_chg.promise[config.language]}</Text>
                                     }
                                    
-                                        <Text style={{ fontFamily: Font.fontlight, color:'#000', fontSize: mobileW *3.8 / 100,textAlign:'center',marginTop:mobileW*3/100,width:'90%',alignSelf:'center',}}>{Lang_chg.our_sincere[config.language]}</Text>
-                                        <Text style={{ fontFamily:Font.fontregular, color:'#000', fontSize: mobileW * 5 / 100,textAlign:'center',marginTop:mobileW*5/100  }}>{Lang_chg.Bad_gateway[config.language]}</Text>
+                                        <Text style={{ fontFamily: Font.Light, color:'#000', fontSize: mobileW *3.8 / 100,textAlign:'center',marginTop:mobileW*3/100,width:'90%',alignSelf:'center',}}>{Lang_chg.our_sincere[config.language]}</Text>
+                                        <Text style={{ fontFamily:Font.Regular, color:'#000', fontSize: mobileW * 5 / 100,textAlign:'center',marginTop:mobileW*5/100  }}>{Lang_chg.Bad_gateway[config.language]}</Text>
 
                                     
                                         <TouchableOpacity style={{paddingHorizontal:mobileW*2/100,paddingVertical:mobileW*2/100,alignSelf:'center',borderWidth:1,borderColor:'#000',borderRadius:4,marginTop:mobileW*6/100}} onPress={() => { this.setState({Error_popup: false })
                                         setTimeout(() => {this.props.navigation.goBack()}, 200)
                                          }}>
-                                            <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, alignSelf: 'center',color:'#000' }}>{Lang_chg.Go_back[config.language]}</Text>
+                                            <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, alignSelf: 'center',color:'#000' }}>{Lang_chg.Go_back[config.language]}</Text>
                                         </TouchableOpacity>
                                         
                                        

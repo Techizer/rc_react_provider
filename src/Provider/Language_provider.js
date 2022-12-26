@@ -84,12 +84,10 @@ class Language_provider {
   swipe_text = ['Swipe right to left', ' اسحب من اليمين إلى اليسار  ']
 
   //---------------------splash------------------
-  Splashtext1 = ['The Best Company for Medicial Services & Home Healthcare', ' أفضل شركة للخدمات   \n الطبية  و الرعاية  الصحية   \n المنزلية  '];
+  Splashtext1 = [
+    "The best care, in the best place. We Take Pride In Being The Best.", "أفضل رعاية في أفضل مكان. نحن نفتخر بكوننا الأفضل."];
+  Splashtext2 = ["It's our duty to care for your health. We Treat our Clients like Family.", "من واجبنا الاهتمام بصحتك. نتعامل مع عملائنا كعائلة."];
 
-  Splashtext2 = ['One of The Best Licensed Home Healthcare Company in  The Saudi Arabia', 'واحدة من أفضل شركات الطب عن بعد والرعاية الصحية المنزلية المرخصة'];
-  // Splashtext3 = ['Healthcare Company in  The', 'شركة رعاية صحية في'];
-  support_text = ['The Best Company for Medicial Services & Home Healthcare', 'فضل شركةللخدمات الطبية  & الرعاية الصحية المنزلية  '];
-  // Splashtext4 = ['Saudi Arabia', 'المملكة العربية السعودية'];
   //-------------------------------------------------------------------------signup------------------------------------------
   Signup = ['Sign up', ' التسجيل  '];
   Signuptext1 = ['Register to open your Account', 'قم بالتسجيل لفتح حسابك   '];
@@ -292,7 +290,7 @@ class Language_provider {
   TermsandConditions = ['Terms and Conditions', 'الشروط والأحكام  ']
   AboutRootscare = ['About Rootscare', 'حول روتس كير   ']
   logut_msg = ['Are you sure you want to logout?', 'هل أنت متأكد أنك تريد تسجيل الخروج؟  ']
-  Logout = ['LOGOUT', 'تسجيل الخروج  ']
+  Logout = ['Logout', 'تسجيل الخروج  ']
   Lang_change = ['Language Change', 'تغير اللغة']
   Lang_change_msg = ['To change language you need to restart the app?', 'لتغيير اللغة تحتاج إلى إعادة تشغيل التطبيق؟  ']
   Restart = ['RESTART', ' اعادة تشغيل  ']
@@ -324,12 +322,7 @@ class Language_provider {
   the_best_company = ['The Best Company', ' أفضل شركة']
   for_mediical = ['for Medical Services', 'للخدمات الطبية']
   home_helth = ['& Home Healthcare', '& الرعاية الصحية المنزلية']
-  Splashtext_one = ['The Best Company for', 'أفضل شركة لـ']
-  Splashtext_two = ['Medical Services & Home', 'الخدمات الطبية والمنزل']
-  Splashtext_three = ['Healthcare', 'الرعاىة الصحية']
-  Splashtext_four = ['One Of The Best Licensed Home', 'أحد أفضل المنازل المرخصة']
-  Splashtext_five = ['Healthcare Company in The', 'شركة رعاية صحية في']
-  Splashtext_six = ['Saudi Arabia', 'المملكة العربية السعودية']
+ 
   BOOKTASKBASEDAPPOINTMENT = ['BOOK TASK BASED APPOINTMENT', 'حجز موعد بنظام المهمة  ']
   BOOKHOURLYAPPOINTMENT = ['BOOK HOURLY APPOINTMENT', 'حجز موعد بنظام الساعة  ']
   AvailableNurse = ["Available Nurse's", " ممرضة متاح "]

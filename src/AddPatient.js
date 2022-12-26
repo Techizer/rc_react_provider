@@ -354,7 +354,7 @@ export default class AddPatient extends Component {
                       fontSize: Font.placeholdersize,
                       textAlign: config.textalign,
                       height: Font.placeholder_height,
-                      fontFamily: Font.fontlight,
+                      fontFamily: Font.Light,
                       padding: mobileW * 0.5 / 100
                     }}
                     maxLength={50}
@@ -414,7 +414,7 @@ export default class AddPatient extends Component {
                       fontSize: Font.placeholdersize,
                       textAlign: config.textalign,
                       height: Font.placeholder_height,
-                      fontFamily: Font.fontlight,
+                      fontFamily: Font.Light,
                       padding: mobileW * 0.5 / 100
                     }}
                     maxLength={50}
@@ -474,7 +474,7 @@ export default class AddPatient extends Component {
                       fontSize: Font.placeholdersize,
                       textAlign: config.textalign,
                       height: Font.placeholder_height,
-                      fontFamily: Font.fontlight,
+                      fontFamily: Font.Light,
                       padding: mobileW * 0.5 / 100
                     }}
                     maxLength={100}
@@ -536,7 +536,7 @@ export default class AddPatient extends Component {
                       textAlign: config.textalign,
 
                       height: Font.placeholder_height,
-                      fontFamily: Font.fontlight,
+                      fontFamily: Font.Light,
                       padding: mobileW * 0.5 / 100
                     }}
                     maxLength={3}

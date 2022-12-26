@@ -202,15 +202,15 @@ export default class Footer extends Component{
                     backgroundColor:'#f9f9f9'}}>
                         
                        <View style={{alignItems:'center',backgroundColor:'#f9f9f9',paddingVertical:mobileW*6.5/100,width:screenWidth*80/100,alignSelf:'center',borderBottomWidth:2,borderBottomColor:'#9393ff'}}>
-                        <Text style={{textAlign:'center',color:Colors.black_color,fontFamily:Font.fontbold,fontSize:mobileW*4.5/100}}>Buy Subscription Plan</Text>                       
+                        <Text style={{textAlign:'center',color:Colors.black_color,fontFamily:Font.Bold,fontSize:mobileW*4.5/100}}>Buy Subscription Plan</Text>                       
                         </View>
 
                         <View style={{alignItems:'center',backgroundColor:'#f9f9f9',paddingVertical:mobileW*5.5/100,width:'100%',alignSelf:'center'}}>
-                        <Text style={{textAlign:'center',color:Colors.black_color,fontFamily:Font.fontregular,fontSize:mobileW*12/100}}>$20</Text>
-                        <Text style={{textAlign:'center',color:'blue',fontFamily:Font.fontbold,fontSize:mobileW*5/100,marginTop:mobileW*2/100}}>{Lang_chg.for_month[config.language]}</Text>
+                        <Text style={{textAlign:'center',color:Colors.black_color,fontFamily:Font.Regular,fontSize:mobileW*12/100}}>$20</Text>
+                        <Text style={{textAlign:'center',color:'blue',fontFamily:Font.Bold,fontSize:mobileW*5/100,marginTop:mobileW*2/100}}>{Lang_chg.for_month[config.language]}</Text>
                         </View>
                         <View style={{width:'100%',alignSelf:'center',marginBottom:mobileW*5/100,backgroundColor:'#f9f9f9',}}>
-                 <Text style={{textAlign:'justify',fontSize:mobileW*4/100,color:Colors.black_color,width:'90%',alignSelf:'center',lineHeight:25,fontFamily:Font.fontregular}}>
+                 <Text style={{textAlign:'justify',fontSize:mobileW*4/100,color:Colors.black_color,width:'90%',alignSelf:'center',lineHeight:25,fontFamily:Font.Regular}}>
                  There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,which not look even slightly believable
                  </Text>
                 
@@ -220,7 +220,7 @@ export default class Footer extends Component{
                       alignSelf:'center',
                       marginTop:mobileW*4/100,
                       borderRadius:mobileW*6/100,}} >
-                     <Text style={{fontSize:mobileW*3/100,color:Colors.allmsg,textAlign:'center',fontFamily:Font.fontregular}}>{Lang_chg.cancel[config.language]}</Text>
+                     <Text style={{fontSize:mobileW*3/100,color:Colors.allmsg,textAlign:'center',fontFamily:Font.Regular}}>{Lang_chg.cancel[config.language]}</Text>
                      </TouchableOpacity>
 
                      <LinearGradient
@@ -231,7 +231,7 @@ export default class Footer extends Component{
                      <TouchableOpacity onPress={()=>{
                          this.setState({planModal:false})
                          this.props.navigation.navigate('Payment')}}>
-                     <Text style={{fontSize:mobileW*3/100,color:Colors.white_color,textAlign:'center',fontFamily:Font.fontregular}}>{Lang_chg.Pay_now[config.language]}</Text>
+                     <Text style={{fontSize:mobileW*3/100,color:Colors.white_color,textAlign:'center',fontFamily:Font.Regular}}>{Lang_chg.Pay_now[config.language]}</Text>
                      </TouchableOpacity>
                    </LinearGradient>  
 

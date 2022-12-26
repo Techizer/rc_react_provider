@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, StatusBar } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, StatusBar, Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
+import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import { DrawerSubMenu } from './components'
 import Styles from './Styles';
 import { DrawerActions } from '@react-navigation/native';
+import { s, vs } from 'react-native-size-matters';
+import { Appointment, MyAppointment, dummyUser, leftArrow, rightArrow } from './icons/SvgIcons/Index';
+import { SvgXml } from 'react-native-svg';
+import DrawerItemContainer from './components/DrawerItem';
+import { DrawerIcons } from './icons/drawer';
 global.add_location = 'NA';
+const windowWidth = Dimensions.get('window').width
 export default class Drawerscreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible3: false,
+      modalVisible: false,
       address_new: 'NA',
-      address_old: ''
+      name: '',
+      profile_img: null,
+      //address_old: ''
     }
-
-    //    add_location='NA'
   }
   componentDidMount() {
-
     this.props.navigation.addListener('focus', () => {
-
-      consolepro.consolelog(' add_location = data2', add_location)
       if (add_location != 'NA') {
         this.setState({
           address_new: add_location.address,
@@ -29,7 +32,6 @@ export default class Drawerscreen extends Component {
           longitude: add_location.longitude
         })
       }
-      console.log('address_new', add_location.address)
       this.getProfile()
     });
 
@@ -39,8 +41,6 @@ export default class Drawerscreen extends Component {
   getProfile = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
     let address_arr = await localStorage.getItemObject('address_arr')
-    console.log('user_details user_details', user_details)
-    console.log('address_arr', address_arr)
     let user_type = user_details['user_type']
     this.setState({
       address_new: address_arr,
@@ -51,7 +51,7 @@ export default class Drawerscreen extends Component {
       name: user_details['first_name'],
       email: user_details['email'],
       mobile: user_details['phone_number'],
-      address_old: user_details['current_address'],
+      //address_old: user_details['current_address'],
     })
     if (user_details.image != null) {
       this.setState({
@@ -66,773 +66,1060 @@ export default class Drawerscreen extends Component {
   logout = async () => {
     await localStorage.removeItem('user_arr');
     await localStorage.removeItem('user_login');
-    // await localStorage.removeItem('password');
-    // await localStorage.clear();
     this.setState({ show: false })
     this.props.navigation.navigate('Login')
 
   }
   logoutApi = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
-
     let url = config.baseURL + "api-logout";
-    console.log("url", url)
     var data = new FormData();
     data.append('user_id', user_id)
 
-    consolepro.consolelog('data', data)
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
       if (obj.status == true) {
-
         setTimeout(() => {
           this.logout()
         }, 500);
       } else {
         setTimeout(() => {
-          // msgProvider.alert('', obj.message, false);
           msgProvider.showError(obj.message)
         }, 700);
         return false;
       }
     }).catch((error) => {
-      console.log("-------- error ------- " + error);
     })
 
   }
+  // render() {
+  //   return (
+  //     <ScrollView
+  //         showsVerticalScrollIndicator={false}
+  //         style={{ flex: 1, backgroundColor: '#0888D1' }}>
+  //         <View
+  //           style={{
+  //             flex: 1,
+  //             width: '90%',
+  //             alignSelf: 'center',
+  //             paddingBottom: (mobileW * 15) / 100,
+  //           }}>
+  //           <View style={{ alignItems: 'center', }}>
+  //             <View style={{
+  //               borderWidth: 3,
+  //               borderColor: '#C5EAFF',
+  //               width: (mobileW * 26) / 100,
+  //               height: (mobileW * 26) / 100,
+  //               justifyContent: 'center',
+  //               marginTop: mobileW * 4 / 100,
+  //               marginVertical: (mobileW * 1) / 100,
+  //               borderRadius: (mobileW * 26) / 200
+  //             }}>
+  //               <ImageBackground
+  //                 imageStyle={{ borderRadius: (mobileW * 12.5) / 100, }}
+  //                 style={{
+
+  //                   width: (mobileW * 25) / 100,
+  //                   height: (mobileW * 25) / 100,
+  //                   alignSelf: 'center'
+
+  //                 }}
+  //                 source={this.state.profile_img == 'NA' || this.state.profile_img == null ? localimag.p1 : { uri: this.state.profile_img }}
+  //               >
+  //                 <View
+  //                   style={{
+  //                     marginTop: (mobileW * 18) / 100,
+  //                     marginLeft: (mobileW * 20) / 100,
+  //                     alignSelf: 'center',
+  //                     justifyContent: 'center',
+  //                   }}>
+  //                   <View
+  //                     style={{
+  //                       width: (mobileW * 6) / 100,
+  //                       height: (mobileW * 6) / 100,
+  //                       borderRadius: (mobileW * 4) / 100,
+  //                       borderWidth: 2,
+  //                       borderColor: Colors.bordercolorblue,
+  //                       justifyContent: 'center',
+  //                       backgroundColor: 'white',
+  //                     }}>
+  //                     <TouchableOpacity activeOpacity={0.9} onPress={() => {
+  //                       this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                         this.props.navigation.navigate('MyProfile')
+  //                     }}>
+  //                       <Image
+  //                         style={{
+  //                           alignSelf: 'center',
+  //                           height: (mobileW * 3) / 100,
+  //                           width: (mobileW * 3) / 100,
+  //                           alignSelf: 'center',
+  //                         }}
+  //                         source={localimag.camera}></Image>
+  //                     </TouchableOpacity>
+  //                   </View>
+  //                 </View>
+  //               </ImageBackground>
+  //             </View>
+  //             <Text
+  //               style={{
+  //                 color: Colors.white_color,
+  //                 fontFamily: Font.SemiBold,
+  //                 fontSize: Font.regulartext_size,
+  //                 textAlign: 'center',
+  //                 marginTop: (mobileW * 1.5) / 100,
+  //               }}>{this.state.name}
+  //             </Text>
+  //             <Text
+  //               style={{
+  //                 color: Colors.drawertextblue,
+  //                 fontFamily: Font.placeholderfontfamily,
+  //                 fontSize: mobileW * 3.5 / 100,
+  //                 textAlign: 'center',
+  //                 marginTop: (mobileW * 1) / 100,
+  //               }}>{this.state.email}
+  //             </Text>
+
+  //           </View>
+
+  //           {/* Appoints and bookings section */}
+  //           <View
+  //             style={{
+  //               marginTop: (mobileW * 8) / 100,
+  //               marginBottom: (mobileW * 4) / 100,
+  //             }}>
+  //             <Text
+  //               style={{
+  //                 color: Colors.white_color,
+  //                 fontFamily: Font.Medium,
+  //                 fontSize: Font.headingfont,
+  //                 textAlign: config.textRotate,
+
+  //               }}>{Lang_chg.heading[config.language]}
+  //             </Text>
+
+  //             {/* --------------------------------------------------------------------upcoming */}
+
+  //             <View
+  //               style={{
+  //                 borderWidth: 1,
+  //                 borderColor: Colors.drawerblue,
+  //                 borderRadius: (mobileW * 3) / 100,
+  //                 marginTop: mobileW * 2 / 100,
+
+  //               }}>
+  //               <View style={{ width: '96%', alignSelf: 'center' }}>
+  //                 <DrawerSubMenu
+  //                   iconImage={localimag.user2}
+  //                   onPress={() => {
+  //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                       this.props.navigation.navigate('Appointmenttab')
+  //                     // , { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
+  //                   }}
+  //                   menuTitle={Lang_chg.MyAppointments[config.language]}
+  //                   menuSubtitle={Lang_chg.MyAppointmentsSub[config.language]}
+  //                   isBorderBottom={true}
+  //                 />
+  //                 {/* <TouchableOpacity
+  //                   onPress={() => {
+  //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                       this.props.navigation.navigate('Show_other_appoinment', { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
+  //                   }}
+  //                   style={{
+  //                     flexDirection: 'row',
+
+  //                     paddingTop: (mobileW * 4) / 100,
+
+
+  //                   }}>
+  //                   <View style={{ width: '15%' }}>
+  //                     <Image
+  //                       style={Styles.drawercardicon}
+  //                       source={localimag.user2}></Image>
+  //                   </View>
+
+  //                   <View
+  //                     style={{
+  //                       width: '85%',
+  //                       marginLeft: mobileW * 1 / 100,
+  //                       flexDirection: 'row',
+  //                       borderBottomWidth: 1,
+  //                       justifyContent: 'space-between',
+  //                       borderColor: Colors.drawerblue,
+
+  //                     }}>
+  //                     <View style={{ width: '83%', }} >
+  //                       <Text
+  //                         style={{
+  //                           color: Colors.white_color,
+  //                           fontFamily: Font.SemiBold,
+  //                           fontSize: Font.regulartext_size,
+  //                           textAlign: config.textRotate,
+  //                         }}>
+  //                         {Lang_chg.upcoming_heading[config.language]}
+  //                       </Text>
+  //                       <Text
+  //                         style={{
+  //                           color: Colors.gainsboro,
+
+  //                           fontFamily: Font.Regular,
+  //                           fontSize: Font.sregulartext_size,
+  //                           textAlign: config.textRotate,
+  //                           marginVertical: (mobileW * 1) / 100,
+  //                           marginBottom: (mobileW * 4) / 100,
+  //                         }}>
+  //                         {Lang_chg.upcoming_text[config.language]}
+  //                       </Text>
+  //                     </View>
+  //                     <View style={{ width: '12%', alignSelf: 'center' }}>
+  //                       <Image
+  //                         style={{
+  //                           tintColor: Colors.arrowcolor,
+  //                           alignSelf: 'center',
+  //                           resizeMode: 'contain',
+  //                           width: (mobileW * 3.5) / 100,
+  //                           height: (mobileW * 3.5) / 100,
+  //                           marginBottom: (mobileW * 2) / 100,
+  //                         }}
+  //                         source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+
+  //                     </View>
+  //                   </View>
+  //                 </TouchableOpacity> */}
+
+  //                 <DrawerSubMenu
+  //                   iconImage={localimag.pricelistmenu}
+  //                   onPress={() => {
+  //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                       this.props.navigation.navigate('PriceListtab')
+  //                     // , { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
+  //                   }}
+  //                   menuTitle={(this.state.user_type == 'lab') ? Lang_chg.packagelist_heading[config.language] : Lang_chg.pricelist_heading[config.language]}
+  //                   menuSubtitle={(this.state.user_type == 'lab') ? Lang_chg.packagelist_subheading[config.language] : Lang_chg.MyAppointmentsSub[config.language]}
+  //                   isBorderBottom={true}
+  //                 />
+
+  //                 <DrawerSubMenu
+  //                   iconImage={localimag.calender2}
+  //                   onPress={() => {
+  //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                       this.props.navigation.navigate('AvailabilityScheduletab')
+  //                     // { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
+  //                   }}
+  //                   menuTitle={Lang_chg.scheduleavailability_heading[config.language]}
+  //                   menuSubtitle={Lang_chg.scheduleavailabilitysub_heading[config.language]}
+  //                   isBorderBottom={false}
+  //                 />
+  //                 {/* <TouchableOpacity
+  //                   onPress={() => {
+  //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                       this.props.navigation.navigate('Show_other_appoinment', { title: Lang_chg.ongoing_heading[config.language], api_status: 1 });
+  //                   }}
+  //                   style={{
+  //                     flexDirection: 'row',
+  //                     paddingTop: (mobileW * 4) / 100,
+
+  //                   }}>
+  //                   <View style={{ width: '15%' }}>
+  //                     <Image
+  //                       style={Styles.drawercardicon}
+  //                       source={localimag.calender}></Image>
+  //                   </View>
+  //                   <View
+  //                     style={{
+  //                       width: '85%',
+  //                       flexDirection: 'row',
+  //                       borderBottomWidth: 1,
+  //                       borderColor: Colors.drawerblue,
+  //                       marginLeft: mobileW * 1 / 100,
+  //                       justifyContent: 'space-between'
+  //                     }}>
+  //                     <View style={{ width: '83%', }} >
+  //                       <Text
+  //                         style={{
+  //                           color: Colors.white_color,
+  //                           fontFamily: Font.SemiBold,
+  //                           fontSize: Font.regulartext_size,
+  //                           textAlign: config.textRotate,
+  //                         }}>
+  //                         {Lang_chg.ongoing_heading[config.language]}
+  //                       </Text>
+  //                       <Text
+  //                         style={{
+  //                           color: Colors.gainsboro,
+  //                           fontFamily: Font.Regular,
+  //                           fontSize: Font.sregulartext_size,
+  //                           textAlign: config.textRotate,
+  //                           marginVertical: (mobileW * 1) / 100,
+  //                           marginBottom: (mobileW * 4) / 100,
+  //                         }}>
+  //                         {Lang_chg.ongoing_text[config.language]}
+  //                       </Text>
+  //                     </View>
+  //                     <View style={{ width: '12%', alignSelf: 'center' }}>
+  //                       <Image
+  //                         style={{
+  //                           tintColor: Colors.arrowcolor,
+  //                           alignSelf: 'center',
+  //                           resizeMode: 'contain',
+  //                           width: (mobileW * 3.5) / 100,
+  //                           height: (mobileW * 3.5) / 100,
+  //                           marginBottom: (mobileW * 2) / 100,
+  //                         }}
+  //                         source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                     </View>
+  //                   </View>
+  //                 </TouchableOpacity>
+
+  //                 <TouchableOpacity
+  //                   onPress={() => {
+  //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                       this.props.navigation.navigate('Show_other_appoinment', { title: Lang_chg.past_heading[config.language], api_status: 2 });
+  //                   }}
+  //                   style={{
+  //                     flexDirection: 'row',
+  //                     paddingTop: (mobileW * 4) / 100,
+  //                   }}>
+  //                   <View style={{ width: '15%' }}>
+  //                     <Image
+  //                       style={Styles.drawercardicon}
+  //                       source={localimag.calender2}></Image>
+  //                   </View>
+  //                   <View
+  //                     style={{
+  //                       width: '85%',
+  //                       flexDirection: 'row',
+  //                       marginLeft: mobileW * 1 / 100,
+  //                       justifyContent: 'space-between',
+  //                       // borderBottomWidth: (mobileW * 0.4) / 100,
+  //                       borderColor: Colors.drawerblue,
+  //                     }}>
+  //                     <View >
+  //                       <Text
+  //                         style={{
+  //                           color: Colors.white_color,
+  //                           fontFamily: Font.SemiBold,
+  //                           fontSize: Font.regulartext_size,
+  //                           textAlign: config.textRotate,
+  //                         }}>
+  //                         {Lang_chg.past_heading[config.language]}
+  //                       </Text>
+  //                       <Text
+  //                         style={{
+  //                           color: Colors.gainsboro,
+  //                           fontFamily: Font.Regular,
+  //                           fontSize: Font.sregulartext_size,
+  //                           textAlign: config.textRotate,
+  //                           marginVertical: (mobileW * 1) / 100,
+  //                           marginBottom: (mobileW * 4) / 100,
+  //                         }}>
+  //                         {Lang_chg.past_text[config.language]}
+  //                       </Text>
+  //                     </View>
+  //                     <View style={{ width: '12%', alignSelf: 'center' }}>
+  //                       <Image
+  //                         style={{
+  //                           tintColor: Colors.arrowcolor,
+  //                           alignSelf: 'center',
+  //                           resizeMode: 'contain',
+  //                           width: (mobileW * 3.5) / 100,
+  //                           height: (mobileW * 3.5) / 100,
+  //                           marginBottom: (mobileW * 2) / 100,
+  //                         }}
+  //                         source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                     </View>
+  //                   </View>
+  //                 </TouchableOpacity> */}
+  //               </View>
+  //             </View>
+  //           </View>
+
+  //           <Text
+  //             style={{
+  //               marginVertical: (mobileW * 1) / 100,
+  //               marginBottom: (mobileW * 2) / 100,
+  //               color: Colors.white_color,
+  //               fontFamily: Font.Medium,
+  //               fontSize: Font.headingfont,
+  //               textAlign: config.textRotate,
+  //             }}>
+  //             {Lang_chg.acccount$more_heading[config.language]}
+  //           </Text>
+
+  //           {/* --------------------------------------------------------account */}
+
+  //           <View
+  //             style={{
+  //               borderWidth: 1,
+  //               borderColor: Colors.drawerblue,
+  //               borderRadius: (mobileW * 3) / 100,
+  //             }}>
+  //             <View
+  //               style={{
+  //                 width: '95%',
+  //                 alignSelf: 'center',
+  //                 alignItems: 'center',
+  //               }}>
+  //               {/* <TouchableOpacity
+  //                 onPress={() => {
+  //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                     this.props.navigation.navigate('Editprofile');
+  //                 }}
+  //                 style={{
+  //                   // backgroundColor:'red',
+  //                   flexDirection: 'row',
+  //                   paddingTop: (mobileW * 1) / 100,
+  //                   alignItems: 'center',
+  //                 }}>
+  //                 <View style={{ width: '15%' }}>
+  //                   <Image
+  //                     style={Styles.drawercardicon}
+  //                     source={localimag.setting}></Image>
+  //                 </View>
+  //                 <View
+  //                   style={{
+  //                     alignItems: 'center',
+  //                     width: '85%',
+  //                     flexDirection: 'row',
+  //                     marginLeft: mobileW * 1 / 100,
+  //                     borderBottomWidth: 1,
+  //                     borderColor: Colors.drawerblue,
+  //                     paddingVertical: (mobileW * 4) / 100,
+  //                     justifyContent: 'space-between',
+  //                   }}>
+  //                   <View style={{ width: '83%', }} >
+  //                     <Text
+  //                       style={{
+  //                         color: Colors.white_color,
+  //                         fontFamily: Font.Medium,
+  //                         fontSize: Font.headingfont_booking,
+  //                         textAlign: config.textRotate,
+  //                       }}>
+  //                       {Lang_chg.acccountsetting_heading[config.language]}
+  //                     </Text>
+  //                   </View>
+  //                   <View style={{ width: '12%', alignSelf: 'center' }}>
+  //                     <Image
+  //                       style={{
+  //                         tintColor: Colors.arrowcolor,
+  //                         alignSelf: 'center',
+  //                         resizeMode: 'contain',
+  //                         width: (mobileW * 3.5) / 100,
+  //                         height: (mobileW * 3.5) / 100,
+  //                       }}
+  //                       source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                   </View>
+  //                 </View>
+  //               </TouchableOpacity> */}
+
+  //               <DrawerSubMenu
+  //                 iconImage={localimag.setting}
+  //                 onPress={() => {
+  //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                     this.props.navigation.navigate('MyProfile');
+  //                 }}
+  //                 menuTitle={Lang_chg.profilesetting_heading[config.language]}
+  //                 //menuSubtitle={Lang_chg.past_text[config.language]}
+  //                 isBorderBottom={true}
+  //               />
+
+  //               <DrawerSubMenu
+  //                 iconImage={localimag.transactionhistory}
+  //                 onPress={() => {
+  //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                     this.props.navigation.navigate('Transactiontab');
+  //                 }}
+  //                 menuTitle={Lang_chg.transactionhistory_heading[config.language]}
+  //                 //menuSubtitle={Lang_chg.past_text[config.language]}
+  //                 isBorderBottom={true}
+  //               />
+
+  //               <DrawerSubMenu
+  //                 iconImage={localimag.reviewrating}
+  //                 onPress={() => {
+  //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                     this.props.navigation.navigate('ReviewRating');
+  //                 }}
+  //                 menuTitle={Lang_chg.reviewrating_heading[config.language]}
+  //                 //menuSubtitle={Lang_chg.past_text[config.language]}
+  //                 isBorderBottom={true}
+  //               />
+
+  //               <DrawerSubMenu
+  //                 iconImage={localimag.support}
+  //                 onPress={() => {
+  //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                     this.props.navigation.navigate('More');
+  //                 }}
+  //                 menuTitle={Lang_chg.acccountsupport_heading[config.language]}
+  //                 //menuSubtitle={Lang_chg.past_text[config.language]}
+  //                 isBorderBottom={false}
+  //               />
+
+  //               {/* <TouchableOpacity activeOpacity={0.9} onPress={() => {
+  //                 this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                   this.props.navigation.navigate('More');
+  //               }}
+  //                 style={{
+
+  //                   flexDirection: 'row',
+  //                   paddingTop: (mobileW * 1) / 100,
+  //                   alignItems: 'center',
+  //                 }}>
+  //                 <View style={{ width: '15%' }}>
+  //                   <Image
+  //                     style={Styles.drawercardicon}
+  //                     source={localimag.support}></Image>
+  //                 </View>
+  //                 <View
+  //                   style={{
+  //                     alignItems: 'center',
+  //                     width: '85%',
+  //                     flexDirection: 'row',
+  //                     marginLeft: mobileW * 1 / 100,
+  //                     paddingVertical: (mobileW * 4) / 100,
+  //                     justifyContent: 'space-between',
+  //                   }}>
+  //                   <View style={{ width: '83%', }} >
+  //                     <Text
+
+  //                       style={{
+  //                         color: Colors.white_color,
+  //                         fontFamily: Font.SemiBold,
+  //                         fontSize: Font.regulartext_size,
+  //                         textAlign: config.textRotate
+  //                       }}>
+  //                       {Lang_chg.acccountsupport_heading[config.language]}
+  //                     </Text>
+  //                   </View>
+  //                   <View style={{ width: '12%', alignSelf: 'center' }}>
+  //                     <Image
+  //                       style={{
+  //                         tintColor: Colors.arrowcolor,
+  //                         alignSelf: 'center',
+  //                         resizeMode: 'contain',
+  //                         width: (mobileW * 3.5) / 100,
+  //                         height: (mobileW * 3.5) / 100,
+  //                       }}
+  //                       source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                   </View>
+  //                 </View>
+  //               </TouchableOpacity> */}
+  //             </View>
+  //           </View>
+
+  //           {/* Logout */}
+  //           <TouchableOpacity
+  //             onPress={() => {
+  //               this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+  //                 this.setState({ modalVisible3: true })
+  //             }}
+  //             style={{
+  //               borderWidth: 1,
+  //               borderColor: Colors.drawerblue,
+  //               borderRadius: (mobileW * 2) / 100,
+  //               marginTop: (mobileW * 4) / 100,
+  //             }}>
+  //             <View style={{ width: '95%', alignSelf: 'center' }}>
+  //               <View
+  //                 style={{
+  //                   flexDirection: 'row',
+  //                   paddingVertical: (mobileW * 2) / 100,
+  //                   justifyContent: 'center',
+  //                   alignItems: 'center',
+  //                 }}>
+  //                 <View style={{ width: '15%' }}>
+  //                   {config.language == 1 ?
+  //                     <Image
+  //                       style={Styles.drawercardicon}
+  //                       source={localimag.logout_opp}></Image> :
+  //                     <Image
+  //                       style={Styles.drawercardicon}
+  //                       source={localimag.logout}></Image>
+  //                   }
+  //                 </View>
+  //                 <View
+  //                   style={{
+  //                     width: '85%',
+  //                     flexDirection: 'row',
+  //                     marginLeft: mobileW * 1 / 100,
+  //                     borderColor: Colors.drawerblue,
+  //                     paddingVertical: (mobileW * 3) / 100,
+  //                   }}>
+
+  //                   <Text
+  //                     style={{
+  //                       color: Colors.drawertextblue,
+  //                       fontFamily: Font.Medium,
+  //                       fontSize: Font.headingfont_booking,
+  //                       textAlign: config.textRotate,
+  //                     }}>
+  //                     {Lang_chg.logout_text[config.language]}
+  //                   </Text>
+
+  //                 </View>
+  //               </View>
+  //             </View>
+  //           </TouchableOpacity>
+
+  //           {/* version */}
+  //           {/* <Text
+  //             style={{
+  //               textAlign: 'center',
+  //               color: Colors.drawertextblue,
+  //               marginTop: (mobileW * 7) / 100,
+  //             }}>
+  //             {Lang_chg.drawerversion[config.language]}
+  //           </Text> */}
+  //           <Modal
+  //             animationType="fade"
+  //             transparent={true}
+  //             visible={this.state.modalVisible3}
+
+  //             onRequestClose={() => { this.setState({ modalVisible3: false }) }}>
+  //             <TouchableOpacity activeOpacity={0.9} onPress={() => {
+  //               this.setState({
+  //                 // modalVisible3: false 
+  //               })
+  //             }} style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
+  //               <StatusBar backgroundColor={'#fff'} barStyle='default' hidden={false} translucent={false}
+  //                 networkActivityIndicatorVisible={true} />
+  //               <View style={{ borderRadius: 20, width: mobileW * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
+
+  //                 <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
+
+  //                   <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
+  //                     <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
+  //                     <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.Logout[config.language]}</Text>
+  //                   </View>
+  //                   <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
+
+  //                     <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 4 / 100, }}>{Lang_chg.logut_msg[config.language]}</Text>
+  //                   </View>
+
+
+
+  //                   <View style={{
+  //                     flexDirection: 'row', justifyContent: 'space-around', width: '40%', paddingBottom: mobileW * 5 / 100, marginTop: mobileW * 9 / 100,
+  //                     alignSelf: 'flex-end', right: 10,
+  //                   }}>
+  //                     <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }) }}
+  //                       style={{ height: mobileW * 10 / 100, width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
+  //                       <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.no_txt[config.language]}</Text>
+  //                     </TouchableOpacity>
+
+  //                     <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }), this.confirm_click() }}
+  //                       activeOpacity={0.8}
+  //                       style={{
+  //                         // backgroundColor: 'red',
+  //                         width: mobileW * 40 / 100,
+  //                         height: mobileW * 10 / 100,
+  //                         justifyContent: 'center'
+  //                       }}>
+  //                       <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.Logout[config.language]}</Text>
+  //                     </TouchableOpacity>
+  //                   </View>
+
+  //                 </View>
+
+  //               </View>
+  //             </TouchableOpacity>
+  //           </Modal>
+  //         </View>
+  //       </ScrollView>
+  //   );
+  // }
+
   render() {
     return (
-      <ScrollView
+      <SafeAreaView style={{ flex: 1, }}>
+        <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{ flex: 1, backgroundColor: '#0888D1' }}>
+          style={{ flex: 1, backgroundColor: Colors.White, paddingBottom: Platform.OS === 'ios' ? vs(150) : vs(65), }}
+        >
           <View
             style={{
               flex: 1,
-              width: '90%',
-              alignSelf: 'center',
-              paddingBottom: (mobileW * 15) / 100,
-            }}>
+              width: "100%",
+              // paddingHorizontal: s(15),
+              paddingBottom: Platform.OS === 'ios' ? vs(16) : vs(16),
+            }}
+          >
             {/* user Profile */}
-            <View style={{ alignItems: 'center', }}>
-              <View style={{
-                borderWidth: 3,
-                borderColor: '#C5EAFF',
-                width: (mobileW * 26) / 100,
-                height: (mobileW * 26) / 100,
-                justifyContent: 'center',
-                marginTop: mobileW * 4 / 100,
-                marginVertical: (mobileW * 1) / 100,
-                borderRadius: (mobileW * 26) / 200
-              }}>
-                <ImageBackground
-                  imageStyle={{ borderRadius: (mobileW * 12.5) / 100, }}
-                  style={{
-
-                    width: (mobileW * 25) / 100,
-                    height: (mobileW * 25) / 100,
-                    alignSelf: 'center'
-
-                  }}
-                  source={this.state.profile_img == 'NA' || this.state.profile_img == null ? localimag.p1 : { uri: this.state.profile_img }}
-                >
-                  <View
-                    style={{
-                      marginTop: (mobileW * 18) / 100,
-                      marginLeft: (mobileW * 20) / 100,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <View
-                      style={{
-                        width: (mobileW * 6) / 100,
-                        height: (mobileW * 6) / 100,
-                        borderRadius: (mobileW * 4) / 100,
-                        borderWidth: 2,
-                        borderColor: Colors.bordercolorblue,
-                        justifyContent: 'center',
-                        backgroundColor: 'white',
-                      }}>
-                      <TouchableOpacity activeOpacity={0.9} onPress={() => {
-                        this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                          this.props.navigation.navigate('MyProfile')
-                      }}>
-                        <Image
-                          style={{
-                            alignSelf: 'center',
-                            height: (mobileW * 3) / 100,
-                            width: (mobileW * 3) / 100,
-                            alignSelf: 'center',
-                          }}
-                          source={localimag.camera}></Image>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </ImageBackground>
-              </View>
-              <Text
-                style={{
-                  color: Colors.white_color,
-                  fontFamily: Font.fontsemibold,
-                  fontSize: Font.regulartext_size,
-                  textAlign: 'center',
-                  marginTop: (mobileW * 1.5) / 100,
-                }}>{this.state.name}
-              </Text>
-              <Text
-                style={{
-                  color: Colors.drawertextblue,
-                  fontFamily: Font.placeholderfontfamily,
-                  fontSize: mobileW * 3.5 / 100,
-                  textAlign: 'center',
-                  marginTop: (mobileW * 1) / 100,
-                }}>{this.state.email}
-              </Text>
-              {/* {this.state.address==null || this.state.address=="" ? */}
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-               
-                  marginTop: (mobileW * 2) / 100,
-                }}>
-                { config.language==0 &&
-                <Image
-                  source={localimag.location}
-                  style={{
-                    width: (mobileW * 3) / 100,
-                    height: (mobileW * 3) / 100,
-                    resizeMode: 'contain',
-                    tintColor: Colors.white_color,
-                    alignSelf: 'center',
-                  }}></Image>
-                }
-                {this.state.address_old!=null && this.state.address_old!='' ?
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    color: Colors.white_color,
-                    fontFamily: Font.fontthin,
-                    fontSize: Font.sregulartext_size,
-                    textAlign: config.textalign,
-                    marginLeft: (mobileW * 3) / 100,
-                    marginRight: (mobileW * 2) / 100,
-                    alignSelf: 'center',
-                  }}>{this.state.address_new}
-                 
-                </Text>:
-                 <Text
-                 numberOfLines={1}
-                 style={{
-                   color: Colors.white_color,
-                   fontFamily: Font.fontthin,
-                   fontSize: Font.sregulartext_size,
-                   textAlign: config.textalign,
-                   marginLeft: (mobileW * 2) / 100,
-                   marginRight: (mobileW * 2) / 100,
-                   alignSelf: 'center',
-                 }}>NA
-                
-               </Text>}
-                { config.language==1 &&
-                <Image
-                  source={localimag.location}
-                  style={{
-                    width: (mobileW * 3) / 100,
-                    height: (mobileW * 3) / 100,
-                    resizeMode: 'contain',
-                    tintColor: Colors.white_color,
-                    alignSelf: 'center',
-                  }}></Image>
-                }
-               
-              </View> */}
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-               
-                  marginTop: (mobileW * 2) / 100,
-                }}>
-                <Image
-                  source={localimag.location}
-                  style={{
-                    width: (mobileW * 3) / 100,
-                    height: (mobileW * 3) / 100,
-                    resizeMode: 'contain',
-                    tintColor: Colors.white_color,
-                    alignSelf: 'center',
-                  }}></Image>
-                  <Text
-                  numberOfLines={1}
-                  style={{
-                    color: Colors.white_color,
-                    fontFamily: Font.fontthin,
-                    fontSize: Font.sregulartext_size,
-                    textAlign: config.textalign,
-                    marginLeft: (mobileW * 3) / 100,
-                    marginRight: (mobileW * 2) / 100,
-                    alignSelf: 'center',
-                  }}>{this.state.address} 
-                 
-                </Text>
-                <Image
-                  source={require('./icons/Group11713x.png')}
-                  style={{
-                    width: (mobileW * 3) / 100,
-                    height: (mobileW * 3) / 100,
-                    resizeMode: 'contain',
-                    tintColor: Colors.white_color,
-                    alignSelf: 'center',
-                  }}></Image>
-              </View>
-              } */}
-            </View>
-
-            {/* Appoints and bookings section */}
-            <View
-              style={{
-                marginTop: (mobileW * 8) / 100,
-                marginBottom: (mobileW * 4) / 100,
-              }}>
-              <Text
-                style={{
-                  color: Colors.white_color,
-                  fontFamily: Font.fontmedium,
-                  fontSize: Font.headingfont,
-                  textAlign: config.textRotate,
-
-                }}>{Lang_chg.heading[config.language]}
-              </Text>
-
-              {/* --------------------------------------------------------------------upcoming */}
-
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: Colors.drawerblue,
-                  borderRadius: (mobileW * 3) / 100,
-                  marginTop: mobileW * 2 / 100,
-
-                }}>
-                <View style={{ width: '96%', alignSelf: 'center' }}>
-                  <DrawerSubMenu
-                    iconImage={localimag.user2}
-                    onPress={() => {
-                      this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                        this.props.navigation.navigate('Appointmenttab')
-                      // , { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
-                    }}
-                    menuTitle={Lang_chg.MyAppointments[config.language]}
-                    menuSubtitle={Lang_chg.MyAppointmentsSub[config.language]}
-                    isBorderBottom={true}
-                  />
-                  {/* <TouchableOpacity
-                    onPress={() => {
-                      this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                        this.props.navigation.navigate('Show_other_appoinment', { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
-                    }}
-                    style={{
-                      flexDirection: 'row',
-
-                      paddingTop: (mobileW * 4) / 100,
-
-
-                    }}>
-                    <View style={{ width: '15%' }}>
-                      <Image
-                        style={Styles.drawercardicon}
-                        source={localimag.user2}></Image>
-                    </View>
-
-                    <View
-                      style={{
-                        width: '85%',
-                        marginLeft: mobileW * 1 / 100,
-                        flexDirection: 'row',
-                        borderBottomWidth: 1,
-                        justifyContent: 'space-between',
-                        borderColor: Colors.drawerblue,
-
-                      }}>
-                      <View style={{ width: '83%', }} >
-                        <Text
-                          style={{
-                            color: Colors.white_color,
-                            fontFamily: Font.fontsemibold,
-                            fontSize: Font.regulartext_size,
-                            textAlign: config.textRotate,
-                          }}>
-                          {Lang_chg.upcoming_heading[config.language]}
-                        </Text>
-                        <Text
-                          style={{
-                            color: Colors.gainsboro,
-
-                            fontFamily: Font.fontregular,
-                            fontSize: Font.sregulartext_size,
-                            textAlign: config.textRotate,
-                            marginVertical: (mobileW * 1) / 100,
-                            marginBottom: (mobileW * 4) / 100,
-                          }}>
-                          {Lang_chg.upcoming_text[config.language]}
-                        </Text>
-                      </View>
-                      <View style={{ width: '12%', alignSelf: 'center' }}>
-                        <Image
-                          style={{
-                            tintColor: Colors.arrowcolor,
-                            alignSelf: 'center',
-                            resizeMode: 'contain',
-                            width: (mobileW * 3.5) / 100,
-                            height: (mobileW * 3.5) / 100,
-                            marginBottom: (mobileW * 2) / 100,
-                          }}
-                          source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
-
-                      </View>
-                    </View>
-                  </TouchableOpacity> */}
-
-                  <DrawerSubMenu
-                    iconImage={localimag.pricelistmenu}
-                    onPress={() => {
-                      this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                        this.props.navigation.navigate('PriceListtab')
-                      // , { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
-                    }}
-                    menuTitle={(this.state.user_type == 'lab') ? Lang_chg.packagelist_heading[config.language] : Lang_chg.pricelist_heading[config.language]}
-                    menuSubtitle={(this.state.user_type == 'lab') ? Lang_chg.packagelist_subheading[config.language] : Lang_chg.MyAppointmentsSub[config.language]}
-                    isBorderBottom={true}
-                  />
-
-                  <DrawerSubMenu
-                    iconImage={localimag.calender2}
-                    onPress={() => {
-                      this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                        this.props.navigation.navigate('AvailabilityScheduletab')
-                      // { title: Lang_chg.upcoming_heading[config.language], api_status: 0 });
-                    }}
-                    menuTitle={Lang_chg.scheduleavailability_heading[config.language]}
-                    menuSubtitle={Lang_chg.scheduleavailabilitysub_heading[config.language]}
-                    isBorderBottom={false}
-                  />
-                  {/* <TouchableOpacity
-                    onPress={() => {
-                      this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                        this.props.navigation.navigate('Show_other_appoinment', { title: Lang_chg.ongoing_heading[config.language], api_status: 1 });
-                    }}
-                    style={{
-                      flexDirection: 'row',
-                      paddingTop: (mobileW * 4) / 100,
-
-                    }}>
-                    <View style={{ width: '15%' }}>
-                      <Image
-                        style={Styles.drawercardicon}
-                        source={localimag.calender}></Image>
-                    </View>
-                    <View
-                      style={{
-                        width: '85%',
-                        flexDirection: 'row',
-                        borderBottomWidth: 1,
-                        borderColor: Colors.drawerblue,
-                        marginLeft: mobileW * 1 / 100,
-                        justifyContent: 'space-between'
-                      }}>
-                      <View style={{ width: '83%', }} >
-                        <Text
-                          style={{
-                            color: Colors.white_color,
-                            fontFamily: Font.fontsemibold,
-                            fontSize: Font.regulartext_size,
-                            textAlign: config.textRotate,
-                          }}>
-                          {Lang_chg.ongoing_heading[config.language]}
-                        </Text>
-                        <Text
-                          style={{
-                            color: Colors.gainsboro,
-                            fontFamily: Font.fontregular,
-                            fontSize: Font.sregulartext_size,
-                            textAlign: config.textRotate,
-                            marginVertical: (mobileW * 1) / 100,
-                            marginBottom: (mobileW * 4) / 100,
-                          }}>
-                          {Lang_chg.ongoing_text[config.language]}
-                        </Text>
-                      </View>
-                      <View style={{ width: '12%', alignSelf: 'center' }}>
-                        <Image
-                          style={{
-                            tintColor: Colors.arrowcolor,
-                            alignSelf: 'center',
-                            resizeMode: 'contain',
-                            width: (mobileW * 3.5) / 100,
-                            height: (mobileW * 3.5) / 100,
-                            marginBottom: (mobileW * 2) / 100,
-                          }}
-                          source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                        this.props.navigation.navigate('Show_other_appoinment', { title: Lang_chg.past_heading[config.language], api_status: 2 });
-                    }}
-                    style={{
-                      flexDirection: 'row',
-                      paddingTop: (mobileW * 4) / 100,
-                    }}>
-                    <View style={{ width: '15%' }}>
-                      <Image
-                        style={Styles.drawercardicon}
-                        source={localimag.calender2}></Image>
-                    </View>
-                    <View
-                      style={{
-                        width: '85%',
-                        flexDirection: 'row',
-                        marginLeft: mobileW * 1 / 100,
-                        justifyContent: 'space-between',
-                        // borderBottomWidth: (mobileW * 0.4) / 100,
-                        borderColor: Colors.drawerblue,
-                      }}>
-                      <View >
-                        <Text
-                          style={{
-                            color: Colors.white_color,
-                            fontFamily: Font.fontsemibold,
-                            fontSize: Font.regulartext_size,
-                            textAlign: config.textRotate,
-                          }}>
-                          {Lang_chg.past_heading[config.language]}
-                        </Text>
-                        <Text
-                          style={{
-                            color: Colors.gainsboro,
-                            fontFamily: Font.fontregular,
-                            fontSize: Font.sregulartext_size,
-                            textAlign: config.textRotate,
-                            marginVertical: (mobileW * 1) / 100,
-                            marginBottom: (mobileW * 4) / 100,
-                          }}>
-                          {Lang_chg.past_text[config.language]}
-                        </Text>
-                      </View>
-                      <View style={{ width: '12%', alignSelf: 'center' }}>
-                        <Image
-                          style={{
-                            tintColor: Colors.arrowcolor,
-                            alignSelf: 'center',
-                            resizeMode: 'contain',
-                            width: (mobileW * 3.5) / 100,
-                            height: (mobileW * 3.5) / 100,
-                            marginBottom: (mobileW * 2) / 100,
-                          }}
-                          source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
-                      </View>
-                    </View>
-                  </TouchableOpacity> */}
-                </View>
-              </View>
-            </View>
-
-            <Text
-              style={{
-                marginVertical: (mobileW * 1) / 100,
-                marginBottom: (mobileW * 2) / 100,
-                color: Colors.white_color,
-                fontFamily: Font.fontmedium,
-                fontSize: Font.headingfont,
-                textAlign: config.textRotate,
-              }}>
-              {Lang_chg.acccount$more_heading[config.language]}
-            </Text>
-
-            {/* --------------------------------------------------------account */}
-
-            <View
-              style={{
-                borderWidth: 1,
-                borderColor: Colors.drawerblue,
-                borderRadius: (mobileW * 3) / 100,
-              }}>
-              <View
-                style={{
-                  width: '95%',
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                }}>
-                {/* <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                      this.props.navigation.navigate('Editprofile');
-                  }}
-                  style={{
-                    // backgroundColor:'red',
-                    flexDirection: 'row',
-                    paddingTop: (mobileW * 1) / 100,
-                    alignItems: 'center',
-                  }}>
-                  <View style={{ width: '15%' }}>
-                    <Image
-                      style={Styles.drawercardicon}
-                      source={localimag.setting}></Image>
-                  </View>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      width: '85%',
-                      flexDirection: 'row',
-                      marginLeft: mobileW * 1 / 100,
-                      borderBottomWidth: 1,
-                      borderColor: Colors.drawerblue,
-                      paddingVertical: (mobileW * 4) / 100,
-                      justifyContent: 'space-between',
-                    }}>
-                    <View style={{ width: '83%', }} >
-                      <Text
-                        style={{
-                          color: Colors.white_color,
-                          fontFamily: Font.fontmedium,
-                          fontSize: Font.headingfont_booking,
-                          textAlign: config.textRotate,
-                        }}>
-                        {Lang_chg.acccountsetting_heading[config.language]}
-                      </Text>
-                    </View>
-                    <View style={{ width: '12%', alignSelf: 'center' }}>
-                      <Image
-                        style={{
-                          tintColor: Colors.arrowcolor,
-                          alignSelf: 'center',
-                          resizeMode: 'contain',
-                          width: (mobileW * 3.5) / 100,
-                          height: (mobileW * 3.5) / 100,
-                        }}
-                        source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
-                    </View>
-                  </View>
-                </TouchableOpacity> */}
-
-                <DrawerSubMenu
-                  iconImage={localimag.setting}
-                  onPress={() => {
-                    this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                      this.props.navigation.navigate('MyProfile');
-                  }}
-                  menuTitle={Lang_chg.profilesetting_heading[config.language]}
-                  //menuSubtitle={Lang_chg.past_text[config.language]}
-                  isBorderBottom={true}
-                />
-
-                <DrawerSubMenu
-                  iconImage={localimag.transactionhistory}
-                  onPress={() => {
-                    this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                      this.props.navigation.navigate('Transactiontab');
-                  }}
-                  menuTitle={Lang_chg.transactionhistory_heading[config.language]}
-                  //menuSubtitle={Lang_chg.past_text[config.language]}
-                  isBorderBottom={true}
-                />
-
-                <DrawerSubMenu
-                  iconImage={localimag.reviewrating}
-                  onPress={() => {
-                    this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                      this.props.navigation.navigate('ReviewRating');
-                  }}
-                  menuTitle={Lang_chg.reviewrating_heading[config.language]}
-                  //menuSubtitle={Lang_chg.past_text[config.language]}
-                  isBorderBottom={true}
-                />
-
-                <DrawerSubMenu
-                  iconImage={localimag.support}
-                  onPress={() => {
-                    this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                      this.props.navigation.navigate('More');
-                  }}
-                  menuTitle={Lang_chg.acccountsupport_heading[config.language]}
-                  //menuSubtitle={Lang_chg.past_text[config.language]}
-                  isBorderBottom={false}
-                />
-
-                {/* <TouchableOpacity activeOpacity={0.9} onPress={() => {
-                  this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                    this.props.navigation.navigate('More');
-                }}
-                  style={{
-
-                    flexDirection: 'row',
-                    paddingTop: (mobileW * 1) / 100,
-                    alignItems: 'center',
-                  }}>
-                  <View style={{ width: '15%' }}>
-                    <Image
-                      style={Styles.drawercardicon}
-                      source={localimag.support}></Image>
-                  </View>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      width: '85%',
-                      flexDirection: 'row',
-                      marginLeft: mobileW * 1 / 100,
-                      paddingVertical: (mobileW * 4) / 100,
-                      justifyContent: 'space-between',
-                    }}>
-                    <View style={{ width: '83%', }} >
-                      <Text
-
-                        style={{
-                          color: Colors.white_color,
-                          fontFamily: Font.fontsemibold,
-                          fontSize: Font.regulartext_size,
-                          textAlign: config.textRotate
-                        }}>
-                        {Lang_chg.acccountsupport_heading[config.language]}
-                      </Text>
-                    </View>
-                    <View style={{ width: '12%', alignSelf: 'center' }}>
-                      <Image
-                        style={{
-                          tintColor: Colors.arrowcolor,
-                          alignSelf: 'center',
-                          resizeMode: 'contain',
-                          width: (mobileW * 3.5) / 100,
-                          height: (mobileW * 3.5) / 100,
-                        }}
-                        source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
-                    </View>
-                  </View>
-                </TouchableOpacity> */}
-              </View>
-            </View>
-
-            {/* Logout */}
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                  this.setState({ modalVisible3: true })
+                setTimeout(() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('Editprofile');
+                }, 350);
               }}
-              style={{
-                borderWidth: 1,
-                borderColor: Colors.drawerblue,
-                borderRadius: (mobileW * 2) / 100,
-                marginTop: (mobileW * 4) / 100,
-              }}>
-              <View style={{ width: '95%', alignSelf: 'center' }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingVertical: (mobileW * 2) / 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <View style={{ width: '15%' }}>
-                    {config.language == 1 ?
-                      <Image
-                        style={Styles.drawercardicon}
-                        source={localimag.logout_opp}></Image> :
-                      <Image
-                        style={Styles.drawercardicon}
-                        source={localimag.logout}></Image>
-                    }
-                  </View>
-                  <View
-                    style={{
-                      width: '85%',
-                      flexDirection: 'row',
-                      marginLeft: mobileW * 1 / 100,
-                      borderColor: Colors.drawerblue,
-                      paddingVertical: (mobileW * 3) / 100,
-                    }}>
+              activeOpacity={0.7}
+              style={{ width: '100%', alignItems: "center", flexDirection: 'row', paddingTop: vs(8), height: vs(100), backgroundColor: Colors.White }}>
 
+              <View style={{ width: '31%', height: '100%' }} >
+                {
+                  (this.state.profile_img == "NA" || this.state.profile_img == "" || this.state.profile_img == null) ?
+                    <SvgXml xml={dummyUser} style={{
+                      alignSelf: "center",
+                      marginTop: vs(5)
+                    }} />
+                    :
+                    // <SvgUri uri={this.state.profile_img} />
+                    <Image
+                      source={{ uri: this.state.profile_img }}
+                      style={{ height: s(60), width: s(60), borderRadius: s(60), backgroundColor: Colors.backgroundcolor, marginTop: vs(5), alignSelf: 'center' }}
+                    />
+
+                }
+              </View>
+
+              <View style={{ width: '69%', height: '100%', }} >
+
+                <View style={{ width: '100%', flexDirection: 'row' }} >
+                  <View style={{ width: '80%', height: '100%', justifyContent: 'center' }}>
                     <Text
                       style={{
-                        color: Colors.drawertextblue,
-                        fontFamily: Font.fontmedium,
-                        fontSize: Font.headingfont_booking,
+                        color: 'black',
+                        fontFamily: Font.Medium,
+                        fontSize: Font.xxxlarge,
                         textAlign: config.textRotate,
-                      }}>
-                      {Lang_chg.logout_text[config.language]}
-                    </Text>
 
+                      }}
+                    >
+                      {this.state.name}
+                    </Text>
+                  </View>
+                  <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+                    <SvgXml xml={
+                      config.textalign == "right"
+                        ? leftArrow : rightArrow
+                    } height={vs(11.98)} width={s(6.42)} />
                   </View>
                 </View>
+
+                <View style={{ width: '100%', }}>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      // this.props.navigation.dispatch(DrawerActions.toggleDrawer())
+                      setTimeout(() => {
+                        this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                        this.props.navigation.navigate('Editprofile');
+                      }, 350);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: '#38ABEC',
+                        fontFamily: Font.Medium,
+                        fontSize: 14,
+                        textAlign: config.textRotate,
+
+                      }}
+                    >
+                      {config.language == 0 ? 'View & edit profile' : 'عرض وتحرير الملف الشخصي'}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* <Text
+                    style={{
+                      color: Colors.DarkGrey,
+                      fontFamily: Font.Regular,
+                      fontSize: Font.small,
+                      textAlign: config.textRotate,
+                      marginTop: vs(4)
+                    }}
+                  >
+                    {config.language == 0 ? '25% Completed' : '25٪ اكتمل'}
+                  </Text> */}
+                </View>
+
               </View>
             </TouchableOpacity>
 
-            {/* version */}
-            {/* <Text
-              style={{
-                textAlign: 'center',
-                color: Colors.drawertextblue,
-                marginTop: (mobileW * 7) / 100,
-              }}>
-              {Lang_chg.drawerversion[config.language]}
-            </Text> */}
+            {/* Appoints and bookings section */}
+            <View style={{ width: '92%', height: 1.5, backgroundColor: 'lightgrey', marginVertical: vs(16), alignSelf: 'flex-end', opacity: 0.5 }}></View>
+
+
+            <View style={{ width: '100%', backgroundColor: Colors.White }}>
+
+              <View style={{ paddingHorizontal: vs(19) }}>
+                <Text
+                  style={{
+                    color: Colors.Black,
+                    fontFamily: Font.Medium,
+                    fontSize: 14,
+                    textAlign: config.textRotate,
+                  }}>
+                  {'Appointment'}
+                </Text>
+              </View>
+
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.MyAppointment}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer()),
+                    this.props.navigation.navigate('Appointmenttab')
+                }}
+
+                title={Lang_chg.MyAppointments[config.language]}
+                subtitle={Lang_chg.MyAppointmentsSub[config.language]}
+
+              />
+
+
+
+              <View style={{ width: '92%', height: 1.5, backgroundColor: 'lightgrey', marginVertical: vs(16), alignSelf: 'flex-end', opacity: 0.5 }}></View>
+
+
+              <View style={{ paddingHorizontal: vs(19) }}>
+                <Text
+                  style={{
+                    color: Colors.Black,
+                    fontFamily: Font.Medium,
+                    fontSize: 14,
+                    textAlign: config.textRotate,
+                  }}>
+                  {'Booking Preferences'}
+                </Text>
+              </View>
+
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.ScheduleAvailability}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('AvailabilityScheduletab')
+                }}
+
+                title={Lang_chg.scheduleavailability_heading[config.language]}
+                subtitle={Lang_chg.scheduleavailabilitysub_heading[config.language]}
+
+              />
+
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.PriceList}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('PriceListtab')
+                }}
+
+                title={Lang_chg.pricelist_heading[config.language]}
+                subtitle={Lang_chg.pricelistsub_heading[config.language]}
+
+              />
+
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.ScheduleAvailability}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('AvailabilityScheduletab')
+                }}
+
+                title={'Service Address'}
+                subtitle={'Setup your pickup address'}
+                disable
+
+              />
+
+              <View style={{ width: '92%', height: 1.5, backgroundColor: 'lightgrey', marginVertical: vs(16), alignSelf: 'flex-end', opacity: 0.5 }}></View>
+
+              <View style={{ paddingHorizontal: vs(19) }}>
+                <Text
+                  style={{
+                    color: Colors.Black,
+                    fontFamily: Font.Medium,
+                    fontSize: 14,
+                    textAlign: config.textRotate,
+                  }}>
+                  {'Account & More'}
+                </Text>
+              </View>
+
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.ProfileSettings}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('MyProfile');
+                }}
+
+                title={'Profile Settings'}
+
+              />
+
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.TransactionsAndMore}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('Transactiontab');
+                }}
+
+                title={'Transaction & More'}
+
+              />
+
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.ReviewAndRating}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('ReviewRating');
+                }}
+
+                title={'Review & Rating'}
+
+              />
+              <DrawerItemContainer
+                rightIcon={
+                  config.textalign == "right"
+                    ? leftArrow : rightArrow
+                }
+                leftIcon={DrawerIcons.SupportAndMore}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.props.navigation.navigate('More');
+                }}
+
+                title={'Support & More'}
+
+              />
+
+              <View style={{ width: '92%', height: 1.5, backgroundColor: 'lightgrey', marginVertical: vs(16), alignSelf: 'flex-end', opacity: 0.5 }}></View>
+
+              <DrawerItemContainer
+                leftIcon={DrawerIcons.Logout}
+
+                onPress={() => {
+                  this.props.navigation.dispatch(DrawerActions.closeDrawer())
+                  this.setState({ modalVisible: false })
+                  this.confirm_click()
+                }}
+
+                title={Lang_chg.Logout[config.language]}
+                titleStyle={{
+                  color: 'grey'
+                }}
+              />
+
+              <View style={{ width: '92%', height: 0, backgroundColor: 'lightgrey', marginVertical: vs(16), alignSelf: 'flex-end', opacity: 0.5 }}></View>
+
+
+            </View>
+
+
+
             <Modal
               animationType="fade"
               transparent={true}
-              visible={this.state.modalVisible3}
+              visible={this.state.modalVisible}
+              onRequestClose={() => {
+                this.setState({ modalVisible: false });
+              }}
+            >
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => {
+                  // this.setState({ modalVisible3: false })
+                }}
+                style={{
+                  backgroundColor: "#00000080",
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingHorizontal: 20,
+                  marginTop: -50,
+                }}
+              >
 
-              onRequestClose={() => { this.setState({ modalVisible3: false }) }}>
-              <TouchableOpacity activeOpacity={0.9} onPress={() => {
-                this.setState({
-                  // modalVisible3: false 
-                })
-              }} style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
-                <StatusBar backgroundColor={'#fff'} barStyle='default' hidden={false} translucent={false}
-                  networkActivityIndicatorVisible={true} />
-                <View style={{ borderRadius: 20, width: mobileW * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
-
-                  <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
-
-                    <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
-                      <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
-                      <Text style={{ fontFamily: Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.Logout[config.language]}</Text>
-                    </View>
-                    <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
-
-                      <Text style={{ fontFamily: Font.fontregular, color: '#000', fontSize: mobileW * 4 / 100, }}>{Lang_chg.logut_msg[config.language]}</Text>
-                    </View>
-
-
-
-                    <View style={{
-                      flexDirection: 'row', justifyContent: 'space-around', width: '40%', paddingBottom: mobileW * 5 / 100, marginTop: mobileW * 9 / 100,
-                      alignSelf: 'flex-end', right: 10,
-                    }}>
-                      <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }) }}
-                        style={{ height: mobileW * 10 / 100, width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                        <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.no_txt[config.language]}</Text>
-                      </TouchableOpacity>
-
-                      <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }), this.confirm_click() }}
+                <View
+                  style={{
+                    borderRadius: 20,
+                    width: (windowWidth * 90) / 100,
+                    position: "absolute",
+                    alignSelf: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "#fff",
+                      borderRadius: 2,
+                      width: "100%",
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        width: "40%",
+                        paddingBottom: (windowWidth * 5) / 100,
+                        marginTop: (windowWidth * 9) / 100,
+                        alignSelf: "flex-end",
+                        right: 10,
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.setState({ modalVisible: false }),
+                            this.confirm_click();
+                        }}
                         activeOpacity={0.8}
                         style={{
-                          // backgroundColor: 'red',
-                          width: mobileW * 40 / 100,
-                          height: mobileW * 10 / 100,
-                          justifyContent: 'center'
-                        }}>
-                        <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.Logout[config.language]}</Text>
+                          height: (windowWidth * 10) / 100,
+                          width: (windowWidth * 40) / 100,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: Font.Regular,
+                            fontSize: (windowWidth * 4) / 100,
+                            color: Colors.Blue,
+                            alignSelf: "center",
+                          }}
+                        >
+                          {Lang_chg.Logout[config.language]}
+                        </Text>
                       </TouchableOpacity>
                     </View>
-
                   </View>
-
                 </View>
               </TouchableOpacity>
             </Modal>
           </View>
         </ScrollView>
+      </SafeAreaView>
     );
   }
 }

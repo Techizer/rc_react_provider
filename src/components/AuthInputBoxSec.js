@@ -52,7 +52,7 @@ const AuthInputBoxSec = ({
         {/* {lableText ? (
           <Text
             style={{
-              fontFamily: Font.fontregular,
+              fontFamily: Font.Regular,
               fontSize: 14,
               marginBottom: 5,
               marginTop: 15,
@@ -80,7 +80,7 @@ const AuthInputBoxSec = ({
                 marginTop: 10,
                 marginRight: 10,
                 color: "black", //"#7C7C7C",
-                fontFamily: Font.fontregular,
+                fontFamily: Font.Regular,
                 fontSize: 14,
               }}
             >

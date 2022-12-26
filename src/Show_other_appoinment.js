@@ -676,8 +676,8 @@ if(this.state.check_booking=='TASK_BOOKING')
                             }
                       }>
                         {config.language==0?
-                        <Text style={[{fontSize: (mobileW * 3.8) / 100, textAlign: 'center', fontFamily: Font.fontsemibold,  },item.name == this.state.manageTab  ?{color: '#fff'}:{color: Colors.drawertextblue}]}>{item.name}</Text>:
-                        <Text style={[{fontSize: (mobileW * 3.8) / 100, textAlign: 'center', fontFamily: Font.fontsemibold,  },item.name == this.state.manageTab  ?{color: '#fff'}:{color: Colors.drawertextblue}]}>{item.arbic_name}</Text>
+                        <Text style={[{fontSize: (mobileW * 3.8) / 100, textAlign: 'center', fontFamily: Font.SemiBold,  },item.name == this.state.manageTab  ?{color: '#fff'}:{color: Colors.drawertextblue}]}>{item.name}</Text>:
+                        <Text style={[{fontSize: (mobileW * 3.8) / 100, textAlign: 'center', fontFamily: Font.SemiBold,  },item.name == this.state.manageTab  ?{color: '#fff'}:{color: Colors.drawertextblue}]}>{item.arbic_name}</Text>
                         }
                   
                     </TouchableOpacity>
@@ -689,7 +689,7 @@ if(this.state.check_booking=='TASK_BOOKING')
           
             </View>
            { this.state.appoinment_detetails=='' || this.state.appoinment_detetails==null &&
-           <Text style={{textAlign:'center',color:Colors.theme_color,fontFamily:Font.fontmedium,fontSize:mobileW*3.5/100,marginTop:mobileW*60/100}}>{this.state.message}</Text>
+           <Text style={{textAlign:'center',color:Colors.theme_color,fontFamily:Font.Medium,fontSize:mobileW*3.5/100,marginTop:mobileW*60/100}}>{this.state.message}</Text>
   }
            
            <FlatList
@@ -724,7 +724,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                         <View style={{width:'42%'}}>
                           <Text
                             style={{
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: Font.sregulartext_size,
                               color: Colors.theme_color,
                               textAlign:config.textRotate,
@@ -735,7 +735,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           <Text
                             style={{
                               paddingTop: (mobileW * 2) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: Font.sregulartext_size,
                               color: Colors.darkgraytextheading,
                               textAlign:config.textRotate
@@ -745,7 +745,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           <Text
                             style={{
                               paddingTop: (mobileW * 1) / 100,
-                              fontFamily: Font.fontregular,
+                              fontFamily: Font.Regular,
                               fontSize: Font.sregulartext_size,
                               color: Colors.darkgraytextheading,
                               textAlign:config.textRotate
@@ -760,7 +760,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             }}>
                             <Text
                               style={{
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 fontSize: Font.sregulartext_size,
                                 color: Colors.theme_color,
                                 textAlign:config.textRotate
@@ -778,7 +778,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           </View>
                           <Text
                             style={{
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: Font.sregulartext_size,
                               marginTop: (mobileW * 1) / 100,
                               color: Colors.darkgraytextheading,
@@ -793,7 +793,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             }}>
                             <Text
                               style={{
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: Font.sregulartext_size,
                                 color: Colors.darkgraytextheading,
                                 textAlign:config.textRotate
@@ -802,7 +802,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             </Text>
                             <Text
                               style={{
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 fontSize: Font.sregulartext_size,
                                 color: Colors.darkgraytextheading,
                                 textAlign:config.textRotate,
@@ -821,7 +821,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           }}>
                           <Text
                             style={{
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: Font.regulartext_size,
                               color: Colors.theme_color,
                               textAlign:config.textRotate
@@ -831,7 +831,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           <Text
                             style={{
                               paddingTop: (mobileW * 1) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize:Font.sregulartext_size,
                               color: Colors.darkgraytextheading,
                               textAlign:config.textRotate
@@ -841,7 +841,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           <Text
                             style={{
                               paddingTop: (mobileW * 1) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               color: Colors.theme_color,
                               fontSize: Font.sregulartext_size,
                               textAlign:config.textRotate
@@ -851,7 +851,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           <Text
                             style={{
                               paddingTop: (mobileW * 1) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: Font.sregulartext_size,
                               color: Colors.darkgraytextheading,
                               textAlign:config.textRotate,
@@ -873,7 +873,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             }}>
                             <Text
                               style={{
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 fontSize: Font.sregulartext_size,
                                 color: Colors.theme_color,
                               }}>
@@ -897,7 +897,7 @@ if(this.state.check_booking=='TASK_BOOKING')
 
                          
                           <Text style={{
-                              color: '#FCFFFE',fontFamily: Font.fontmedium,
+                              color: '#FCFFFE',fontFamily: Font.Medium,
                               fontSize:mobileW*2.7/100,textAlign: 'center',textTransform:'uppercase'
                              
                             }}>
@@ -907,7 +907,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           <Text
                             style={{
                               marginTop: (mobileW * 6.5) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               color: Colors.theme_color,
                               fontSize: Font.sregulartext_size,
                               textAlign:config.textRotate
@@ -917,7 +917,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           <Text
                             style={{
                               paddingTop: (mobileW * 1) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: Font.sregulartext_size,
                               color: Colors.darkgraytextheading,
                               textAlign:config.textRotate
@@ -955,7 +955,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             <Text
                               style={{
                                 color: Colors.theme_color,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: (mobileW * 3) / 100,
                                 marginLeft:mobileW*1/100,
                                 textAlign:config.textRotate
@@ -1009,7 +1009,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             style={{
                               color: Colors.theme_color,
                               fontSize: (mobileW * 3.7) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               alignSelf:'center',
                               marginLeft:mobileW*1/100,
                               marginTop:0.5
@@ -1045,7 +1045,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                                 textAlign: 'center',
                                 color: Colors.white_color,
                                  textTransform:'uppercase',
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 fontSize:mobileW*3/100,
                               }}>{Lang_chg.Reschedule[config.language]}
                         
@@ -1070,7 +1070,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                               textAlign: 'center',
                               color: Colors.white_color,
                             //  paddingHorizontal: (mobileW * 2) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize:mobileW*3/100,
                             }}>{Lang_chg.VIEWDETAILS[config.language]}
                            
@@ -1182,7 +1182,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                 }}>
                 <Text
                   style={{
-                    fontFamily:Font.fontmedium,
+                    fontFamily:Font.Medium,
                     fontSize:mobileW*4/100,
                   }}>{Lang_chg.Reschedule[config.language]}
                   
@@ -1191,7 +1191,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                   <Text
                     style={{
                       color: Colors.theme_color,
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize: Font.name,
                       paddingRight: (mobileW * 4) / 100,
                     }}>{rescdule.order_id}
@@ -1231,7 +1231,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                 <View style={{paddingBottom:mobileW*1.5/100}}>
                   <Text
                     style={{
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize:mobileW*3.5/100,
                       textAlign:config.textRotate,
                       color: Colors.theme_color,
@@ -1274,7 +1274,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           textAlign:config.textRotate,
                           alignSelf: 'center',
                           fontSize:mobileW*3.6/100,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                         
                           color:'#000',
                       
@@ -1288,7 +1288,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           width: '30%',
                        
                           fontSize:mobileW*3.6/100,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           color:'#000',
                
                          textAlign: 'right',
@@ -1334,7 +1334,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                               // paddingHorizontal: (mobileW * 5) / 100,
                               paddingVertical: (mobileW * 1.5) / 100,
                               color: Colors.white_color,
-                              fontFamily:Font.fontmedium,
+                              fontFamily:Font.Medium,
                               fontSize: mobileW*3/100,
                               textAlign: 'center',
                               textTransform:'uppercase'
@@ -1347,7 +1347,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                              
                             
                               paddingVertical: (mobileW * 2) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               textAlign:'center',
                               fontSize: Font.sregulartext_size,
                             }}>
@@ -1379,7 +1379,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                   }}>
                   <Text
                     style={{
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize: Font.name,
                       textAlign:config.textRotate,
                     }}>{Lang_chg.Appoinmentschedule[config.language]}
@@ -1400,7 +1400,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                   <Text
                     style={{
                       color: Colors.theme_color,
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize: Font.name,
                       marginLeft:mobileW*1/100,
                     }}>{this.state.set_date}
@@ -1426,7 +1426,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                 }}>
                 <Text
                   style={{
-                    fontFamily: Font.fontregular,
+                    fontFamily: Font.Regular,
                     fontSize: Font.subtext,
                     color:'#000',
                     textAlign:config.textRotate,
@@ -1484,7 +1484,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                   }}>
                   <Text
                     style={{
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: Font.subtext,
                       textAlign:config.textRotate,
                     }}>{Lang_chg.Select_start_time[config.language]}
@@ -1551,7 +1551,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                     </View>
                     </View>
                     :
-                    <Text style={{fontFamily:Font.fontMediumItalic,fontSize:mobileW*4/100,alignSelf:'center',marginTop:mobileW*3/100,textAlign:'center',marginLeft:mobileW*32/100}}>{Lang_chg.no_data_Found[config.language]}</Text>}
+                    <Text style={{fontFamily:Font.MediumItalic,fontSize:mobileW*4/100,alignSelf:'center',marginTop:mobileW*3/100,textAlign:'center',marginLeft:mobileW*32/100}}>{Lang_chg.no_data_Found[config.language]}</Text>}
                   </View>
                   </ScrollView>
                 </View>
@@ -1569,7 +1569,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                   <Text
                     style={{
                       color: Colors.textwhite,
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize: Font.subtext,
                       alignSelf: 'flex-end',
                       textAlign: config.textalign,

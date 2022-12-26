@@ -45,34 +45,34 @@ export default Styles = StyleSheet.create({
   headertext: {
     // color: Colors.whiteColor,
     textAlign: 'center',
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: (mobileW * 4) / 100,
   },
   headingtext: {
     // color: Colors.whiteColor,
     textAlign: config.textalign,
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: mobileW * 3.7 / 100
   },
   textheading: {
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: mobileW * 3.85 / 100,
     color: Colors.placeholder_text_color
   },
   textcontent: {
-    fontFamily: Font.fontregular,
+    fontFamily: Font.Regular,
     fontSize: mobileW * 3.75 / 100,
     color: Colors.splashtextcolor
   },
   cardtitle: {
     textAlign: config.textalign,
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: (mobileW * 3.3) / 100,
   },
   details: {
     textAlign: config.textalign,
     fontSize: (mobileW * 2.7) / 100,
-    fontFamily: Font.fontregular,
+    fontFamily: Font.Regular,
     color: Colors.placeholder_text,
     lineHeight: (mobileW * 3.9) / 100,
     paddingTop: (mobileW * 1) / 100,

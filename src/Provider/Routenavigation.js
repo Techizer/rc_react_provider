@@ -49,7 +49,7 @@ function Mydrawer() {
   return (
     <Drawer.Navigator
       screenOptions={{
-        drawerStyle: { width: '85%' },
+        drawerStyle: { width: '100%' },
         drawerType: 'front',
       }}
 

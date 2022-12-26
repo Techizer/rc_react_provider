@@ -52,7 +52,7 @@ const DashBoardBox = ({
                 paddingLeft: (mobileW * 6) / 100,
               }}>
                 <Text style={{
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   fontSize: (mobileW * 2.8) / 100,
                   color: Colors.splashtextcolor,
                   lineHeight: 11
@@ -77,7 +77,7 @@ const DashBoardBox = ({
               paddingLeft: (mobileW * 5) / 100,
             }}>
               <Text style={{
-                fontFamily: Font.fontmedium,
+                fontFamily: Font.Medium,
                 fontSize: (mobileW * 3.8) / 100,
                 color: Colors.placeholder_text_color
               }}>{textTitle}</Text>
@@ -92,7 +92,7 @@ const DashBoardBox = ({
               {
                 (rightText) ?
                   <Text style={{
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: 14,
                     color: Colors.textblue
                   }}>{rightText}</Text> :
@@ -140,14 +140,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.textwhite,
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
     textAlign: config.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
     textAlign: config.textalign,
     alignSelf: 'center',

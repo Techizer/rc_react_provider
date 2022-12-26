@@ -371,7 +371,7 @@ export default class PriceList extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.placeholder_text,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: mobileW * 3.6 / 100,
                           }}>
                           Booking Duration
@@ -414,7 +414,7 @@ export default class PriceList extends Component {
                                 textAlign: config.textRotate,
                                 marginLeft: mobileW * 1.5 / 100,
                                 color: Colors.placeholder_text,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 3.6 / 100,
                                 // alignSelf: 'center',
                               }}>
@@ -439,7 +439,7 @@ export default class PriceList extends Component {
                                   textAlign: config.textRotate,
                                   marginLeft: mobileW * 1.5 / 100,
                                   color: Colors.placeholder_text,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 3.6 / 100,
                                   // alignSelf: 'center',
                                 }}>
@@ -464,7 +464,7 @@ export default class PriceList extends Component {
                                     textAlign: config.textRotate,
                                     marginLeft: mobileW * 1.5 / 100,
                                     color: Colors.placeholder_text,
-                                    fontFamily: Font.fontregular,
+                                    fontFamily: Font.Regular,
                                     fontSize: mobileW * 3.6 / 100,
                                     // alignSelf: 'center',
                                   }}>
@@ -489,7 +489,7 @@ export default class PriceList extends Component {
                                       textAlign: config.textRotate,
                                       marginLeft: mobileW * 1.5 / 100,
                                       color: Colors.placeholder_text,
-                                      fontFamily: Font.fontregular,
+                                      fontFamily: Font.Regular,
                                       fontSize: mobileW * 3.6 / 100,
                                       // alignSelf: 'center',
                                     }}>
@@ -497,7 +497,7 @@ export default class PriceList extends Component {
                                   </Text>
                                 </TouchableOpacity> :
                                 <Text style={{
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: 14,
                                   color: Colors.textblue,
                                   textAlign: 'right'
@@ -550,7 +550,7 @@ export default class PriceList extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.placeholder_text_color,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: mobileW * 3.6 / 100,
                           }}>
                           {((this.props.page == "onlineconsultation") ?
@@ -578,7 +578,7 @@ export default class PriceList extends Component {
                           style={{
                             textAlign: config.textRotate,
                             color: Colors.placeholder_text_color,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: mobileW * 3.6 / 100,
                           }}>
                           Rate {(this.state.currency_symbol) ? '(' + this.state.currency_symbol + ')' : ''}
@@ -649,7 +649,7 @@ export default class PriceList extends Component {
                                   value={item?.isChecked}
                                 />
                                 <Text style={{
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 3.6 / 100,
                                   color: (item?.isChecked) ? Colors.textblue : Colors.placeholder_textcolorlight,
                                   marginLeft: 10

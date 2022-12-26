@@ -127,7 +127,7 @@ export default class Cart2 extends Component {
                     <View style={{flexDirection: 'row',width:"83%",alignItems:'center'}}>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:mobileW*3.9/100,
                           color:Colors.gray4
                         }}>Aisha A.
@@ -135,7 +135,7 @@ export default class Cart2 extends Component {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:Font.cart2subtext,
                           color: Colors.theme_color,
                           marginLeft:mobileW*4/100
@@ -179,7 +179,7 @@ export default class Cart2 extends Component {
                     <View>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize: Font.cart2heading,
                           color: Colors.theme_color,
                           paddingBottom: (mobileW * 3.5) / 100,
@@ -208,7 +208,7 @@ export default class Cart2 extends Component {
                                   }}>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       color: Colors.theme_color,
                                       fontSize:mobileW*3.5/100,
                                     }}>
@@ -216,7 +216,7 @@ export default class Cart2 extends Component {
                                   </Text>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       fontSize: Font.cart2subtext,
                                       color: Colors.darkgraytextheading,
                                       paddingTop: (mobileW * 1) / 100,
@@ -237,7 +237,7 @@ export default class Cart2 extends Component {
                                     }}>
                                     <Text
                                       style={{
-                                        fontFamily: Font.fontmedium,
+                                        fontFamily: Font.Medium,
                                         fontSize:mobileW*3/100,
                                         color: Colors.theme_color,
                                         textAlign:'center'
@@ -253,7 +253,7 @@ export default class Cart2 extends Component {
                                   }}>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       color: Colors.theme_color,
                                       fontSize:mobileW*3.5/100,
                                     }}>
@@ -261,7 +261,7 @@ export default class Cart2 extends Component {
                                   </Text>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       fontSize: Font.cart2subtext,
                                       color: Colors.darkgraytextheading,
                                       paddingTop: (mobileW * 1) / 100,
@@ -289,7 +289,7 @@ export default class Cart2 extends Component {
                                     <Text
                                       style={{
                                         color: Colors.theme_color,
-                                        fontFamily: Font.fontregular,
+                                        fontFamily: Font.Regular,
                                         fontSize: (mobileW * 3.3) / 100,
                                         marginLeft:mobileW*1.5/100,
                                       }}>30 mins
@@ -315,7 +315,7 @@ export default class Cart2 extends Component {
                     <View>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize: Font.cart2heading,
                           color: Colors.theme_color,
                           paddingTop:mobileW*1/100
@@ -334,7 +334,7 @@ export default class Cart2 extends Component {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>
@@ -342,7 +342,7 @@ export default class Cart2 extends Component {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>
@@ -359,7 +359,7 @@ export default class Cart2 extends Component {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>
@@ -367,7 +367,7 @@ export default class Cart2 extends Component {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>
@@ -384,7 +384,7 @@ export default class Cart2 extends Component {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>
@@ -392,7 +392,7 @@ export default class Cart2 extends Component {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>
@@ -419,7 +419,7 @@ export default class Cart2 extends Component {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:mobileW*3.5/100,
                           color: Colors.theme_color,
                         }}>
@@ -427,7 +427,7 @@ export default class Cart2 extends Component {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:mobileW*3.5/100,
                           color: Colors.theme_color,
                         }}>
@@ -456,7 +456,7 @@ export default class Cart2 extends Component {
                 <Text
                   style={{
                     color: Colors.textwhite,
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: Font.buttontextsize,
                     alignSelf: 'flex-end',
                     textAlign: config.textalign,
@@ -506,7 +506,7 @@ export default class Cart2 extends Component {
                 style={{
                   fontSize: (mobileW * 8) / 100,
                   marginTop: (mobileW * 5) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   textAlign: config.textalign,
                 }}>
                 {Lang_chg.thank[config.language]}
@@ -515,7 +515,7 @@ export default class Cart2 extends Component {
                 style={{
                   fontSize: (mobileW * 3) / 100,
                   marginTop: (mobileW * 5) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   textAlign: config.textalign,
                 }}>
                 {Lang_chg.success[config.language]}
@@ -525,7 +525,7 @@ export default class Cart2 extends Component {
                 style={{
                   fontSize: (mobileW * 3) / 100,
                   marginTop: (mobileW * 1) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   textAlign: config.textalign,
                   color: Colors.textgray,
                 }}>
@@ -551,7 +551,7 @@ export default class Cart2 extends Component {
                   style={{
                     fontSize: (mobileW * 3) / 100,
                     alignSelf: 'center',
-                    fontFamily: Font.fontsemibold,
+                    fontFamily: Font.SemiBold,
                     textAlign: config.textalign,
                     alignSelf: 'center',
                     color: Colors.terms_text_color_blue,

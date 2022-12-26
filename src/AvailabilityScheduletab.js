@@ -92,7 +92,7 @@ const renderTabBar = props => (
       textTransform: 'capitalize',
       fontSize: (mobileW * 3.5) / 100,
       textAlign: 'center',
-      fontFamily: Font.fontsemibold,
+      fontFamily: Font.SemiBold,
       // color: Colors.textblue,
     }}
     renderLabel={({ focused, route }) => {
@@ -106,7 +106,7 @@ const renderTabBar = props => (
             textTransform: 'capitalize',
             fontSize: (mobileW * 3.5) / 100,
             textAlign: 'center',
-            fontFamily: Font.fontsemibold,
+            fontFamily: Font.SemiBold,
           }}
         >
           {route.title}
@@ -245,66 +245,7 @@ export default function Appointmenttab({ navigation }) {
           flex: 1,
           // marginBottom: (mobileW * 2) / 100 
         }}>
-          {/* <Text>Home</Text> */}
-
-          {/* header */}
-          {/* <View style={{ backgroundColor: 'white' }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '98%',
-                alignSelf: 'center',
-                paddingVertical: (mobileW * 3) / 100,
-                backgroundColor: Colors.white_color,
-                alignItems: 'center'
-                // backgroundColor: 'red',
-              }}>
-              <View
-                style={{
-                  width: '10%',
-                  // backgroundColor: 'pink',
-                  alignSelf: 'center',
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // navigation.navigate('Home');
-                    navigation.goBack();
-                  }}>
-                  {config.language == 0 ?
-                    <Image
-                      source={localimag.leftarrow}
-                      style={{
-                        resizeMode: 'contain',
-                        width: (mobileW * 9) / 100,
-                        alignSelf: 'center',
-                        height: (mobileW * 9) / 100,
-                      }}></Image> :
-                    <Image
-                      source={localimag.arabic_back}
-                      style={{
-                        resizeMode: 'contain',
-                        width: (mobileW * 9) / 100,
-                        alignSelf: 'center',
-                        height: (mobileW * 9) / 100,
-                      }}></Image>}
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  // backgroundColor: 'yellow',
-                  width: '80%',
-                }}>
-
-                <Text style={Styles.headertext}>{Lang_chg.scheduleavailability_heading[config.language]}
-
-                </Text>
-              </View>
-
-            </View>
-          </View> */}
-
-
-
+          
           {/* tabheadings */}
           {
             (routes.length > 0) &&

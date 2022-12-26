@@ -61,14 +61,14 @@ Button.defaultProps = { customStyles: {} };
 //   },
 //   buttonText: {
 //     color: Colors.textwhite,
-//     fontFamily: Font.fontmedium,
+//     fontFamily: Font.Medium,
 //     fontSize: Font.buttontextsize,
 //     textAlign: config.textalign,
 //     alignSelf: 'center',
 //   },
 //   buttonText1: {
 //     color: Colors.textblue,
-//     fontFamily: Font.fontmedium,
+//     fontFamily: Font.Medium,
 //     fontSize: Font.buttontextsize,
 //     textAlign: config.textalign,
 //     alignSelf: 'center',
@@ -104,14 +104,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: Font.buttontext_size,
     textAlign: config.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: Font.buttontext_size,
     textAlign: config.textalign,
     alignSelf: 'center',

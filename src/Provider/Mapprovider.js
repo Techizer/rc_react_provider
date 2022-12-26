@@ -232,11 +232,11 @@ export default class Mapprovider extends Component {
               </View>
             </TouchableOpacity>
             <View style={{ paddingVertical: 15, width: '60%' }}>
-              <Text style={{ color: 'white', fontFamily: Font.FontSemiBold, fontSize: mobileW * 5 / 100, textAlign: 'center' }}>{this.props.title}</Text>
+              <Text style={{ color: 'white', fontFamily: Font.SemiBold, fontSize: mobileW * 5 / 100, textAlign: 'center' }}>{this.props.title}</Text>
             </View>
             <TouchableOpacity style={{ paddingVertical: 15, width: '20%', alignSelf: 'center' }} onPress={() => { this.state.profile == 'location' ? this.locationupdatebtn() : this.props.navigation.goBack() }}>
               <View style={{ width: '100%', alignSelf: 'center' }} >
-                <Text style={{ color: Colors.theme_color, fontFamily: Font.FontSemiBold, fontSize: 13, textAlign: 'center' }}></Text>
+                <Text style={{ color: Colors.theme_color, fontFamily: Font.SemiBold, fontSize: 13, textAlign: 'center' }}></Text>
               </View>
             </TouchableOpacity>
 
@@ -425,12 +425,12 @@ export default class Mapprovider extends Component {
         <View style={{ position: 'absolute', bottom: 15, width: mobileW, paddingHorizontal: 30 }}>
           <View style={{ borderRadius: 10, height: 50, marginBottom: 10, backgroundColor: Colors.statusbarcolor }} >
             {/* {this.state.signuplocation=='changelocation' && <TouchableOpacity onPress={()=>{this.changeaddress()}} style={{justifyContent:'center',alignItems:'center',borderRadius: 10,height: 50, }}>
-                       <Text style={{ color:Colorss.whiteColor, fontSize: 15,fontFamily:Fonts.fontbold
+                       <Text style={{ color:Colorss.whiteColor, fontSize: 15,fontFamily:Fonts.Bold
                        }}>{Lang_chg.Updatelocation[config.language]}</Text>
                    </TouchableOpacity>} */}
             <TouchableOpacity onPress={() => { this.props.setmap() }} style={{ justifyContent: 'center', alignItems: 'center', borderRadius: 10, height: 50, }}>
               <Text style={{
-                fontSize: 15, fontFamily: Font.fontbold, color: Colors.whiteColor
+                fontSize: 15, fontFamily: Font.Bold, color: Colors.whiteColor
               }}>Continue</Text>
             </TouchableOpacity>
           </View>

@@ -72,7 +72,7 @@ class Arrowandbackwithedit extends Component {
               }}></Image>
             <Text
               style={{
-                fontFamily: Font.fontbold,
+                fontFamily: Font.Bold,
                 fontSize: (mobileW * 4) / 100,
               }}>
               Back
@@ -103,7 +103,7 @@ class Arrowandbackwithedit extends Component {
                 }}></Image>
               <Text
                 style={{
-                  fontFamily: Font.fontbold,
+                  fontFamily: Font.Bold,
                   fontSize: (mobileW * 4) / 100,
                   alignSelf: 'center',
                   margin: (mobileW * 3.5) / 100,
@@ -154,7 +154,7 @@ class Arrowandbackwitheditprofile extends Component {
               }}></Image>
             <Text
               style={{
-                fontFamily: Font.fontbold,
+                fontFamily: Font.Bold,
                 fontSize: (mobileW * 4) / 100,
               }}>
               Back
@@ -185,7 +185,7 @@ class Arrowandbackwitheditprofile extends Component {
                 }}></Image>
               <Text
                 style={{
-                  fontFamily: Font.fontbold,
+                  fontFamily: Font.Bold,
                   fontSize: (mobileW * 4) / 100,
                   alignSelf: 'center',
                   margin: (mobileW * 3.5) / 100,
@@ -238,7 +238,7 @@ class Arrowandback extends Component {
           }}></Image>
         <Text
           style={{
-            fontFamily: Font.fontbold,
+            fontFamily: Font.Bold,
             fontSize: (mobileW * 4) / 100,
           }}>
           {' '}
@@ -285,7 +285,7 @@ class Profilepic extends Component {
         <Text
           style={{
             color: Colors.whiteColor,
-            fontFamily: Font.fontextrabold,
+            fontFamily: Font.ExtraBold,
             fontSize: (mobileW * 8) / 100,
             width: '80%',
             textAlign: 'center',
@@ -397,7 +397,7 @@ export function Selectionboxandarrow(props) {
         }}>
         <Text
           style={{
-            fontFamily: Font.fontextrabold,
+            fontFamily: Font.ExtraBold,
             fontSize: Font.headingfont,
           }}>
           {props.title}
@@ -460,7 +460,7 @@ export function Appheading({title, mb, mt}) {
   return (
     <Text
       style={{
-        fontFamily: Font.fontextrabold,
+        fontFamily: Font.ExtraBold,
         fontSize: (mobileW * 5) / 100,
         // marginTop: (mobileW * mt) / 100,
         // marginBottom: (mobileW * mb) / 100,
@@ -494,7 +494,7 @@ export function Appaddnoteheading(props) {
       }}>
       <Text
         style={{
-          fontFamily: Font.fontextrabold,
+          fontFamily: Font.ExtraBold,
           fontSize: (mobileW * 4.3) / 100,
           paddingTop: (mobileW * 1) / 100,
         }}>
@@ -503,7 +503,7 @@ export function Appaddnoteheading(props) {
       <TouchableOpacity style={{}}>
         <Text
           style={{
-            fontFamily: Font.fontextrabold,
+            fontFamily: Font.ExtraBold,
             textDecorationLine: 'underline',
             color: Colors.blue_digi,
           }}>
@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
     borderRadius: (mobileW * 2) / 100,
   },
   noteboxtxt: {
-    fontFamily: Font.fontregular,
+    fontFamily: Font.Regular,
     lineHeight: (mobileW * 5) / 100,
   },
   notecard: {
@@ -603,9 +603,9 @@ const styles = StyleSheet.create({
   checkboxtext: {
     color: '#666666',
     fontSize: Font.smalltextsize,
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     // fontSize: Font.smalltextsize,
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     flex: 0.88,
   },
   buttonstyle: {
@@ -621,7 +621,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4C94DB',
     textAlign: 'center',
     color: Colors.whiteColor,
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: (mobileW * 4.2) / 100,
   },
 
@@ -658,7 +658,7 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-end',
     alignSelf: 'center',
     fontSize: Font.smalltextsize,
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     // backgroundColor: 'red',
     color: Colors.gray3,
     // color: 'red',
@@ -679,7 +679,7 @@ const styles = StyleSheet.create({
     borderRadius: (mobileW * 2) / 100,
   },
   noteboxtxt: {
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     fontSize: (mobileW * 3.8) / 100,
     lineHeight: (mobileW * 5) / 100,
   },
@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
   },
   insideviewtext: {
     alignSelf: 'flex-end',
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: Font.bigheadingfont,
     color: '#4B4B4B',
     marginRight: (mobileW * 0.2) / 100,
@@ -731,7 +731,7 @@ const styles = StyleSheet.create({
   },
   insideviewname: {
     alignSelf: 'center',
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: Font.mini,
     color: '#4B4B4B',
   },

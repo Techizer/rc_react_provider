@@ -154,7 +154,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
             width: '80%',
           }}>
           <Text style={{ textAlign: 'center',
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: (mobileW * 4) / 100,}}>{this.state.pass_status=='nurse'?
                 Lang_chg.Nurse[config.language]:
                 this.state.pass_status=='physiotherapy'?
@@ -230,7 +230,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
              
               width:'88%',
               marginLeft:mobileW*1/100,
-                fontFamily:Font.fontregular,
+                fontFamily:Font.Regular,
              paddingVertical:mobileW*2/100,
             
               textAlign: config.textalign,
@@ -258,7 +258,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
     {this.state.nurse_data=='' || this.state.nurse_data==null &&
              <View style={{marginTop:mobileW*50/100,}}>
 
-             <Text style={{fontFamily: Font.fontregular,fontSize: Font.name,textAlign:'center',color:Colors.theme_color}}>{this.state.message}</Text>
+             <Text style={{fontFamily: Font.Regular,fontSize: Font.name,textAlign:'center',color:Colors.theme_color}}>{this.state.message}</Text>
              </View>
              
              }
@@ -297,7 +297,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                        
                            <Text onPress={()=>{this.props.navigation.navigate('Nursedetails',{pass_status:this.state.pass_status,nurse_id:item.user_id})}}
                             style={{
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                                fontSize: Font.name,
                                textAlign:config.textRotate
                              }}>
@@ -306,7 +306,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                          {item.speciality!='' && item.speciality!=null &&
                            <Text
                              style={{
-                              fontFamily: Font.fontregular,
+                              fontFamily: Font.Regular,
                                color: Colors.theme_color,
                                fontSize: Font.subtext,
                                textAlign:config.textRotate,
@@ -318,7 +318,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                            <Text
                              style={{
                                paddingVertical: (mobileW * 0.5) / 100,
-                               fontFamily: Font.fontregular,
+                               fontFamily: Font.Regular,
                                fontSize: Font.ssubtext,
                                textAlign:config.textRotate,
                                color: Colors.cardlighgray,
@@ -351,7 +351,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                              <Text
                                style={{
                                 marginLeft: (mobileW * 1) / 100,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                  fontSize: Font.ssubtext,
                                  textAlign:config.textRotate,
                                  color: Colors.regulartextcolor,
@@ -360,7 +360,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                               <Text
                              style={{
                                   color: Colors.theme_color,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 textAlign:config.textRotate,
                                 fontSize: Font.ssubtext,
                               }}> {item.distance}
@@ -394,7 +394,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                              <Text
                               style={{
                                 
-                                 fontFamily: Font.fontregular,
+                                 fontFamily: Font.Regular,
                                 fontSize:mobileW*2.5/100,
                                  color: Colors.regulartextcolor,
                                  marginLeft:mobileW*1.5/100,
@@ -410,7 +410,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                               <Text
                             style={{
                               color: Colors.theme_color,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize:mobileW*2.5/100,
                               marginLeft:mobileW*1/100,
                             }}>
@@ -454,7 +454,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                             }}></Image>
                           <Text
                             style={{
-                              fontFamily: Font.fontregular,
+                              fontFamily: Font.Regular,
                               fontSize: (mobileW * 3) / 100,
                               color: Colors.white_color,
                               marginLeft: (mobileW * 1) / 100,
@@ -466,7 +466,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                      
                           <Text
                             style={{
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: (mobileW * 3) / 100,
                               marginLeft: (mobileW * 1.5) / 100,
                             }}>
@@ -492,7 +492,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                             style={{
                               color: Colors.buttoncolorhgreen,
                               fontSize: (mobileW * 3) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               textAlign:config.textRotate
                             }}>{item.bavi_text}
                             
@@ -515,7 +515,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                             style={{
                               color: Colors.white_color,
                               fontSize: (mobileW * 2.5) / 100,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               textAlign:'center',
                               
                             }}>{Lang_chg.BOOKAPPOINTMENT [config.language]}

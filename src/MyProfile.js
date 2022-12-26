@@ -1,4 +1,4 @@
-import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform } from 'react-native';
+import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform, Dimensions } from 'react-native';
 import React, { Component } from 'react';
 import Footer from './Footer';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +13,7 @@ import DatePicker from 'react-native-date-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AuthInputBoxSec, DropDownboxSec, DashBoardBox } from './components'
 import { Col } from 'ionic-angular';
+import ScreenHeader from './components/ScreenHeader';
 const bloodModal_arr = [
   {
     id: 1,
@@ -950,6 +951,13 @@ export default class MyProfile extends Component {
   }
 
   render() {
+
+    const windowHeight = Math.round(Dimensions.get("window").height);
+    const windowWidth = Math.round(Dimensions.get("window").width);
+    const deviceHeight = Dimensions.get('screen').height;
+    const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+    let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+    headerHeight += (Platform.OS === 'ios') ? 28 : -60
     return (
       //
       <View style={{ flex: 1, }}>
@@ -1021,7 +1029,7 @@ export default class MyProfile extends Component {
                   <Text
                     style={{
                       textAlign: config.textRotate,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: (mobileW * 4) / 100,
                       alignSelf: 'center',
                       color: Colors.textwhite,
@@ -1139,7 +1147,7 @@ export default class MyProfile extends Component {
                     <Text
                       style={{
                         textAlign: config.textRotate,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: (mobileW * 4) / 100,
                         alignSelf: 'center',
                         color: Colors.textwhite,
@@ -1224,7 +1232,7 @@ export default class MyProfile extends Component {
                   <Text
                     style={{
                       textAlign: config.textRotate,
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: (mobileW * 4) / 100,
 
                       color: Colors.textwhite,
@@ -1288,7 +1296,7 @@ export default class MyProfile extends Component {
             <View style={{ width: '70%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
               <View style={{ width: '100%', backgroundColor: Colors.backgroundcolorblue, paddingVertical: mobileW * 2 / 100 }}>
 
-                <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{Lang_chg.blood[config.language]}</Text>
+                <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{Lang_chg.blood[config.language]}</Text>
 
               </View>
 
@@ -1327,79 +1335,17 @@ export default class MyProfile extends Component {
         {/* ------------------------------------------------------------------------------------------------------------ */}
 
         <View style={{ flex: 1, }}>
-          <View
-            style={{
-              backgroundColor: '#fff',
-              width: '100%',
-              paddingVertical: (mobileW * 3) / 100,
-              borderBottomColor: Colors.LIGHT_CLIENT_BORDER,
-              borderBottomWidth: 1,
-              // shadowColor:'#000',
-              // shadowOffset:{width:1,height:1},
-              // elevation:3,
+          <ScreenHeader
+            onBackPress={() => {
+              this.props.navigation.goBack();
+            }}
+            leftIcon
+            rightIcon={true}
+            navigation={this.props.navigation}
+            notiCount={this.state.notification_count > 0 ? this.state.notification_count : false}
+            title={'My Profile'}
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-              // shadowOpacity:0.6,
-              // shadowRadius:4,
-
-
-            }}>
-            <View
-              style={{
-                width: '95%',
-                alignSelf: 'center',
-                backgroundColor: 'white',
-                //  height: (mobileW * 12) / 100,
-                flexDirection: 'row',
-
-
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('Home');
-                }}
-                style={{ width: '10%', alignSelf: 'center' }}>
-                <Image
-                  source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}
-                  style={{
-                    height: (mobileW * 8) / 100,
-                    width: (mobileW * 8) / 100,
-                  }}>
-                  {/* {localimag.backarrow} */}
-                </Image>
-              </TouchableOpacity>
-
-              <View style={{ width: '80%', alignSelf: 'center' }}>
-                <Text
-                  style={{
-                    color: Colors.textblack,
-                    fontFamily: Font.blackheadingfontfamily,
-                    fontSize: Font.headingblack_txt_size_edit,
-                    alignSelf: 'flex-end',
-
-                    alignSelf: 'center',
-                  }}>
-                  My Profile
-                </Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate('Notifications');
-                }}>
-                <View style={{ width: '10%', alignSelf: 'center' }}>
-                  <Image
-                    source={this.state.notification_count > 0 ? localimag.notifications : localimag.notifications_sec}
-                    style={{
-                      height: (mobileW * 6) / 100,
-                      width: (mobileW * 6) / 100,
-                      resizeMode: 'contain',
-                    }}>
-                    {/* {localimag.backarrow} */}
-                  </Image>
-                </View>
-              </TouchableOpacity>
-
-            </View>
-          </View>
           <ScrollView
             style={{
               // backgroundColor: 'white', 
@@ -1463,7 +1409,7 @@ export default class MyProfile extends Component {
                           color: Colors.placeholder_text_color,
                           // fontFamily: Font.blackheadingfontfamily, 
                           // fontSize: Font.tabtextsize, 
-                          fontFamily: Font.fontmedium, fontSize: 18,
+                          fontFamily: Font.Medium, fontSize: 18,
                           textAlign: config.textRotate,
                         }}>{this.state.name}</Text>
                         <TouchableOpacity
@@ -1493,7 +1439,7 @@ export default class MyProfile extends Component {
                           ></Image>
                           <Text style={{
                             color: Colors.textblue,
-                            fontFamily: Font.fontregular, fontSize: 12,
+                            fontFamily: Font.Regular, fontSize: 12,
                           }}>Edit</Text>
                         </TouchableOpacity>
                       </View>
@@ -1502,7 +1448,7 @@ export default class MyProfile extends Component {
                         <Text
                           style={{
                             color: Colors.textblue,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14, //(mobileW * 3) / 100,
                             textAlign: config.textRotate,
                           }}>{this.state.speciality}</Text>
@@ -1514,7 +1460,7 @@ export default class MyProfile extends Component {
                       }}>
                         <View style={{
                           flexDirection: 'row',
-                          alignItems:'center'
+                          alignItems: 'center'
                         }}>
                           <MaterialCommunityIcons
                             style={{
@@ -1527,7 +1473,7 @@ export default class MyProfile extends Component {
                           <Text
                             style={{
                               color: Colors.placeholder_textcolorlight,
-                              fontFamily: Font.fontregular,
+                              fontFamily: Font.Regular,
                               fontSize: 12, //(mobileW * 3) / 100,
                               textAlign: config.textRotate,
                               paddingHorizontal: 8
@@ -1536,7 +1482,7 @@ export default class MyProfile extends Component {
                         </View>
                         <View style={{
                           flexDirection: 'row',
-                          alignItems:'center',
+                          alignItems: 'center',
                           marginTop: 8
                         }}>
                           <Feather
@@ -1548,9 +1494,9 @@ export default class MyProfile extends Component {
                           <Text
                             style={{
                               color: Colors.placeholder_textcolorlight,
-                              fontFamily: Font.fontregular,
+                              fontFamily: Font.Regular,
                               fontSize: 12, //(mobileW * 3) / 100,
-                              textAlign: config.textRotate, 
+                              textAlign: config.textRotate,
                               paddingHorizontal: 8
                             }}>{this.state.phone_number}</Text>
                         </View>
@@ -1582,7 +1528,7 @@ export default class MyProfile extends Component {
                         <Text
                           style={{
                             color: Colors.placeholder_textcolorlight,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 12, //(mobileW * 3) / 100,
                             textAlign: config.textRotate,
                           }}>{(this.state.user_type == "lab") ? 'Established' : 'Experience'}
@@ -1591,7 +1537,7 @@ export default class MyProfile extends Component {
                           style={{
                             marginTop: (mobileW * 2) / 100,
                             color: Colors.lightgraytext,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: 16, //(mobileW * 3) / 100,
                             textAlign: config.textRotate,
                           }}>{this.state.experience} {(this.state.user_type == "lab") ? '' : 'YR'}
@@ -1608,7 +1554,7 @@ export default class MyProfile extends Component {
                         <Text
                           style={{
                             color: Colors.placeholder_textcolorlight,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 12, //(mobileW * 3) / 100,
                             textAlign: config.textRotate,
                           }}>{(this.state.user_type == "lab") ? 'Lab Test' : 'Bookings'}
@@ -1617,7 +1563,7 @@ export default class MyProfile extends Component {
                           style={{
                             marginTop: (mobileW * 2) / 100,
                             color: Colors.lightgraytext,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: 16, //(mobileW * 3) / 100,
                             textAlign: config.textRotate,
                           }}>{(this.state.user_type == "lab") ? this.state.lab_test_count : this.state.booking_count}
@@ -1632,7 +1578,7 @@ export default class MyProfile extends Component {
                         <Text
                           style={{
                             color: Colors.placeholder_textcolorlight,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 12, //(mobileW * 3) / 100,
                             textAlign: config.textRotate,
                           }}>Rating
@@ -1653,7 +1599,7 @@ export default class MyProfile extends Component {
                           <Text
                             style={{
                               color: Colors.lightgraytext,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: 16, //(mobileW * 3) / 100,
                               textAlign: config.textRotate,
                             }}>{this.state.avg_rating}.0
@@ -1705,7 +1651,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'red'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.tabtextcolor
                           }}>Health Registration ID</Text>
@@ -1714,7 +1660,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'blue'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.textblue
                           }}>{this.state.hosp_moh_lic_no}</Text>
@@ -1729,7 +1675,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'red'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.tabtextcolor
                           }}>Registration Number</Text>
@@ -1738,7 +1684,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'blue'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.textblue
                           }}>{this.state.hosp_reg_no}</Text>
@@ -1755,7 +1701,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'red'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.tabtextcolor
                           }}>Speciality</Text>
@@ -1764,7 +1710,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'blue'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.textblue
                           }}>{this.state.speciality}</Text>
@@ -1779,7 +1725,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'red'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.tabtextcolor
                           }}>Identity Number</Text>
@@ -1788,7 +1734,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'blue'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.textblue
                           }}>{this.state.id_number}</Text>
@@ -1803,7 +1749,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'red'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.tabtextcolor
                           }}>Qualification</Text>
@@ -1812,7 +1758,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'blue'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.textblue
                           }}>{this.state.qualification}</Text>
@@ -1827,7 +1773,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'red'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.tabtextcolor
                           }}>SCFHS Registration ID</Text>
@@ -1836,7 +1782,7 @@ export default class MyProfile extends Component {
                           // backgroundColor: 'blue'
                         }}>
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: 14,
                             color: Colors.textblue
                           }}>{this.state.scfhs_number}</Text>

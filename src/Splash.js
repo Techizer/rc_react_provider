@@ -120,47 +120,47 @@ export default class Splash extends Component {
   checkAuthUserLogin = async (result, logindetail) => {
     let result1 = await localStorage.getItemObject('user_signup');
 
-      let email = logindetail.email_phone
-      let password = logindetail.password
-      let user_type = result.user_type
-      var device_lang
-      if (config.language == 0) {
-        device_lang = 'ENG'
+    let email = logindetail.email_phone
+    let password = logindetail.password
+    let user_type = result.user_type
+    var device_lang
+    if (config.language == 0) {
+      device_lang = 'ENG'
+    }
+    else {
+      device_lang = 'AR'
+    }
+    let url = config.baseURL + "api-service-provider-login";
+    var data = new FormData();
+
+    data.append('email', email)
+    data.append('password', password)
+    data.append('device_type', config.device_type)
+    data.append('device_lang', device_lang)
+    data.append('fcm_token', fcmtoken)
+    data.append('user_type', user_type)
+
+    console.log('data', data)
+    apifuntion.postApi(url, data).then((obj) => {
+      console.log('obj', obj)
+      if (obj.status == true) {
+        var user_details = obj.result;
+        localStorage.setItemObject('user_arr', user_details);
+
+        this.props.navigation.navigate('Home')
+
       }
       else {
-        device_lang = 'AR'
+        this.props.navigation.navigate('Login')
       }
-      let url = config.baseURL + "api-service-provider-login";
-      var data = new FormData();
+    }).catch((error) => {
+      console.log("-------- error ------- " + error);
 
-      data.append('email', email)
-      data.append('password', password)
-      data.append('device_type', config.device_type)
-      data.append('device_lang', device_lang)
-      data.append('fcm_token', fcmtoken)
-      data.append('user_type', user_type)
-
-      console.log('data', data)
-      apifuntion.postApi(url, data).then((obj) => {
-        console.log('obj', obj)
-        if (obj.status == true) {
-          var user_details = obj.result;
-          localStorage.setItemObject('user_arr', user_details);
-
-          this.props.navigation.navigate('Home')
-
-        }
-        else {
-          this.props.navigation.navigate('Login')
-        }
-      }).catch((error) => {
-        console.log("-------- error ------- " + error);
-
-      });
+    });
   }
 
   checkLogout = async (result, logindetail) => {
-    
+
     let user_id = result.user_id;
     let url = config.baseURL + "api-check-login";
     var data = new FormData();
@@ -175,7 +175,7 @@ export default class Splash extends Component {
         console.log("obj checkLogout: ", obj);
         if (obj.result == true) {
           this.checkAuthUserLogin(result, logindetail);
-          
+
         } else {
           this.logout()
         }
@@ -210,14 +210,11 @@ export default class Splash extends Component {
       //  {
       //&& result.profile_complete==0
 
-      
+
     }
     else {
       this.props.navigation.navigate('Login')
     }
-
-
-
 
   }
 
@@ -252,18 +249,14 @@ export default class Splash extends Component {
           source={localimag.splashlogo}>
 
         </Image>
-
-
+        
         <View style={{ width: '50%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 6 / 100 }}>
 
 
         </View>
 
         <View style={{ width: '50%', alignSelf: 'center', marginTop: mobileW * 3 / 100 }}>
-          <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.fontregular, alignSelf: 'center', textAlign: 'center' }}>{Lang_chg.Splashtext1[this.state.loanguage]} </Text>
-          {/* <Text style={{marginTop:mobileW*0.5/100,fontSize:mobileW*4/100,color:Colors.splashtextcolor,fontFamily:Font.fontregular,alignSelf:'center',textAlign:'center',marginTop:mobileW*4/100}}>{Lang_chg.Splashtext_two[this.state.loanguage]} </Text> 
-              <Text style={{marginTop:mobileW*0.5/100,fontSize:mobileW*4/100,color:Colors.splashtextcolor,fontFamily:Font.fontregular,alignSelf:'center',textAlign:'center'}}>{Lang_chg.Splashtext_three[this.state.loanguage]} </Text>  */}
-
+          <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{Lang_chg.Splashtext1[this.state.loanguage]} </Text>
         </View>
 
         <View style={{ width: '50%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 6 / 100 }}>
@@ -272,15 +265,10 @@ export default class Splash extends Component {
         </View>
 
         <View style={{ width: '63%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
-          <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.fontregular, alignSelf: 'center', textAlign: 'center' }}>{Lang_chg.Splashtext2[this.state.loanguage]} </Text>
+          <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{Lang_chg.Splashtext2[this.state.loanguage]} </Text>
 
         </View>
-        {/* <View style={{alignSelf:'center',borderColor:Colors.bordercolor,borderWidth:0.5,paddingVertical:mobileW*8/100,marginTop:mobileW*2/100,marginBottom:mobileW*2/100}}>
-
-
-            </View>
-             <Text style={{textAlign:config.textalign,fontSize:mobileW*4/100,marginTop:mobileW*4/100,color:Colors.splashtextcolor,fontFamily:Font.fontmedium,alignSelf:'center',textAlign:'center'}}>V1.0</Text>  */}
-<Modal
+        <Modal
           animationType="fade"
           transparent={true}
           visible={this.state.modalVisible3}
@@ -289,7 +277,7 @@ export default class Splash extends Component {
           <TouchableOpacity activeOpacity={0.9}
             disabled={true}
             onPress={() => {
-              // this.setState({ modalVisible3: false }) 
+              
             }}
             style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
             <StatusBar backgroundColor={'#fff'} barStyle='default' hidden={false} translucent={false}
@@ -305,22 +293,15 @@ export default class Splash extends Component {
                   paddingVertical: mobileW * 3 / 100,
                   marginTop: mobileW * 2 / 100,
                   paddingLeft: mobileW * 4 / 100, flexDirection: 'row',
-                  //  backgroundColor: 'red'
                 }}>
-                  {/* <Image style={{ 
-                    width: mobileW * 6 / 100, 
-                    height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image> */}
-                  {/* <Text style={{ fontFamily: Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{this.state.updTitle}</Text> */}
                   <HTMLView
                     value={this.state.updTitle}
                     stylesheet={{
                       h3: {
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         color: Colors.textblack, //'#000',
                         fontSize: mobileW * 4.8 / 100,
                         opacity: 0.9
-                        // color: '#FF3366', // make links coloured pink
-
                       },
 
                       paddingLeft: mobileW * 4 / 100
@@ -336,17 +317,15 @@ export default class Splash extends Component {
                   // backgroundColor: 'red'
                 }}>
 
-                  {/* <Text style={{ fontFamily: Font.fontregular, color: '#000', fontSize: mobileW * 4 / 100, }}>{Lang_chg.logut_msg[config.language]}</Text> */}
                   <HTMLView
                     value={this.state.updText}
                     stylesheet={{
                       p: {
-                        fontFamily: Font.fontregular,
-                        color: Colors.textblack, //'#515C6F', //Colors.placeholder_text, 
+                        fontFamily: Font.Regular,
+                        color: Colors.textblack, 
                         fontSize: mobileW * 4 / 100,
                         textAlign: 'left',
                         opacity: 0.9
-                        // color: '#FF3366', // make links coloured pink
                       },
                     }}
                   />
@@ -373,12 +352,11 @@ export default class Splash extends Component {
                       style={{
                         width: mobileW * 35 / 100,
                         flexDirection: 'row', alignSelf: 'center', justifyContent: 'flex-end',
-                        //backgroundColor: 'blue',
 
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize: mobileW * 3.8 / 100,
                           color: Colors.terms_text_color_blue, //Colors.bordercolorblue,
                           alignSelf: 'center'
@@ -388,7 +366,6 @@ export default class Splash extends Component {
 
 
                   <TouchableOpacity onPress={() => {
-                    // this.setState({ modalVisible3: false }),
                     this.openAppstoreUrl(this.state.rdrUrl)
                   }}
                     activeOpacity={0.8}
@@ -400,7 +377,7 @@ export default class Splash extends Component {
                       alignSelf: 'flex-end',
                     }}>
                     <Text style={{
-                      fontFamily: Font.fontregular,
+                      fontFamily: Font.Regular,
                       fontSize: mobileW * 3.8 / 100,
                       color: Colors.white_color, alignSelf: 'center'
                     }}>{Lang_chg.Update[config.language]}</Text>
@@ -413,35 +390,25 @@ export default class Splash extends Component {
                       borderTopWidth: 1,
                       borderTopColor: Colors.gray5,
                       height: mobileW * 15 / 100,
-                      // backgroundColor: 'red',
-                      // justifyContent: 'flex-start',
-                      // alignContent: 'center',
                       flexDirection: 'row',
                       alignItems: 'center',
-                      // alignContent:'center',
-                      // flex:1,
                       marginLeft: mobileW * 4 / 100,
                       marginRight: mobileW * 4 / 100,
 
                     }}
                   >
                     <Text style={{
-                      fontFamily: Font.fontsemibold,
+                      fontFamily: Font.SemiBold,
                       fontSize: mobileW * 3.5 / 100,
                       color: Colors.placeholder_border,
-                      // alignSelf: 'flex-start',
-                      // justifyContent: 'flex-start',
                     }}>
                       {Lang_chg.Help[config.language]}
                     </Text>
                     <Text style={{
-                      fontFamily: Font.fontsemibold,
+                      fontFamily: Font.SemiBold,
                       fontSize: mobileW * 3.5 / 100,
                       color: Colors.terms_text_color_blue,
                       marginLeft: 6,
-                      // alignSelf: 'flex-start',
-                      // justifyContent: 'flex-start',
-                      // textalign: 'left'
                     }} onPress={() => {
                       this.openAppstoreUrl(this.state.helpUrl)
                     }}>{this.state.helpUrl}</Text>
@@ -452,6 +419,7 @@ export default class Splash extends Component {
             </View>
           </TouchableOpacity>
         </Modal>
+
       </View>
     )
   }

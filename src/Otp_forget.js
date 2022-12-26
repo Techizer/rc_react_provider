@@ -189,7 +189,7 @@ export default class Otp_forget extends Component {
               <Text
                 style={{
                   fontSize: Font.headingblack,
-                  fontFamily: Font.fontsemibold,
+                  fontFamily: Font.SemiBold,
                   textAlign: config.textRotate
                 }}>
                 {Lang_chg.opt[config.language]}
@@ -230,7 +230,7 @@ export default class Otp_forget extends Component {
                   width: (mobileW * 20) / 100,
                   color: '#000',
                   alignSelf: 'center',
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   fontSize: (mobileW * 5) / 100,
                   borderWidth: 2,
                   borderColor: '#DFDFDF',
@@ -411,7 +411,7 @@ export default class Otp_forget extends Component {
               <Text
                 style={{
                   color: Colors.textwhite,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.buttontextsize,
                   alignSelf: 'flex-end',
                   textAlign: config.textalign,
@@ -445,7 +445,7 @@ export default class Otp_forget extends Component {
 
                   textAlign: config.textalign,
                   fontSize: mobileW * 4 / 100,
-                  fontFamily: Font.fontsemibold,
+                  fontFamily: Font.SemiBold,
                   color: Colors.theme_color,
 
                 }}>

@@ -177,11 +177,11 @@ export default class MapproviderSearch extends Component {
               </View>
             </TouchableOpacity>
             <View style={{ paddingVertical: 15, width: '60%' }}>
-              <Text style={{ color: 'white', fontFamily:Font.FontSemiBold, fontSize: mobileW * 5 / 100, textAlign: 'center' }}>{Lang_chg.titlesearchlocation[config.language]}</Text>
+              <Text style={{ color: 'white', fontFamily:Font.SemiBold, fontSize: mobileW * 5 / 100, textAlign: 'center' }}>{Lang_chg.titlesearchlocation[config.language]}</Text>
             </View>
             <TouchableOpacity style={{ paddingVertical: 15, width: '20%', alignSelf: 'center' }} onPress={() => { this.state.profile == 'location' ? this.locationupdatebtn() : this.props.navigation.goBack() }}>
               <View style={{ width: '100%', alignSelf: 'center' }} >
-                <Text style={{ color: Colors.theme_color, fontFamily: Font.FontSemiBold, fontSize: 13, textAlign: 'center' }}></Text>
+                <Text style={{ color: Colors.theme_color, fontFamily: Font.SemiBold, fontSize: 13, textAlign: 'center' }}></Text>
               </View>
             </TouchableOpacity>
 
@@ -296,15 +296,15 @@ export default class MapproviderSearch extends Component {
 
                             }
                           </Text></View>
-                        <View style={{}}><Text style={{ color: Colors.textcolor, fontFamily: Font.FontBold, fontSize: windowHeight * 2 / 100 }} numberOfLines={1}>Name-{item.provider_name}</Text>
-                          <Text style={{ color: Colors.textcolor, fontFamily: Font.FontBold, fontSize: windowHeight * 2 / 100 }}>{item.provider_dist} miles</Text>
+                        <View style={{}}><Text style={{ color: Colors.textcolor, fontFamily: Font.Bold, fontSize: windowHeight * 2 / 100 }} numberOfLines={1}>Name-{item.provider_name}</Text>
+                          <Text style={{ color: Colors.textcolor, fontFamily: Font.Bold, fontSize: windowHeight * 2 / 100 }}>{item.provider_dist} miles</Text>
                           {/* <View style={{ flexDirection: 'row', width: '65%', justifyContent: 'space-evenly' }}>
                             <Text><Image style={{ marginTop: 2, width: windowWidth * 2 / 100, height: windowHeight * 1.5 / 100 }} source={localimag.star}></Image></Text>
                             <Text><Image style={{ marginTop: 2, width: windowWidth * 2 / 100, height: windowHeight * 1.5 / 100 }} source={localimag.star}></Image></Text>
                             <Text><Image style={{ marginTop: 2, width: windowWidth * 2 / 100, height: windowHeight * 1.5 / 100 }} source={localimag.star}></Image></Text>
                             <Text><Image style={{ marginTop: 2, width: windowWidth * 2 / 100, height: windowHeight * 1.5 / 100 }} source={localimag.star}></Image></Text>
                             <Text><Image style={{ marginTop: 2, width: windowWidth * 2 / 100, height: windowHeight * 1.5 / 100 }} source={localimag.star}></Image></Text>
-                            <Text style={{ marginStart: 5, fontFamily: Font.FontMedium, fontSize: mobileW * 2.5 / 100, }}>(5.0)</Text>
+                            <Text style={{ marginStart: 5, fontFamily: Font.Medium, fontSize: mobileW * 2.5 / 100, }}>(5.0)</Text>
                           </View>*/}
 
                         </View>
@@ -382,7 +382,7 @@ export default class MapproviderSearch extends Component {
                       marginLeft: 7,
                       marginRight: 10,
                       textAlign: 'left',
-                      fontFamily: Font.FontSemiBold,
+                      fontFamily: Font.SemiBold,
                       height: 45,
                       //borderRadius:10,
                       color: Colors.text_color,
@@ -392,7 +392,7 @@ export default class MapproviderSearch extends Component {
                       color: Colors.statusbarcolor,
                     },
                     description: {
-                      fontFamily: Font.FontSemiBold,
+                      fontFamily: Font.SemiBold,
                     },
                     container: {
                       //  borderRadius:10
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
   Tabtextstyle:
   {
     fontSize: mobileW * 0.045,
-    fontFamily: Font.FontRegular,
+    fontFamily: Font.Regular,
     marginLeft: mobileW * 0.02
 
   },

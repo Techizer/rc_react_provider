@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar } from 'react-native';
+import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar, Dimensions, Platform } from 'react-native';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
 import { Appbtn3, AppHeader2, AppHeader4 } from './Allcomponents';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import ScreenHeader from './components/ScreenHeader';
 
 
 export default class ReviewRating extends Component {
@@ -94,6 +95,12 @@ export default class ReviewRating extends Component {
   }
 
   render() {
+    const windowHeight = Math.round(Dimensions.get("window").height);
+    const windowWidth = Math.round(Dimensions.get("window").width);
+    const deviceHeight = Dimensions.get('screen').height;
+    const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+    let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+    headerHeight += (Platform.OS === 'ios') ? 28 : -60
     return (
       <View
         style={{
@@ -103,12 +110,15 @@ export default class ReviewRating extends Component {
         }}>
         <SafeAreaView style={{ flex: 0 }}></SafeAreaView>
 
-        <AppHeader4
-          handlarrowpress={() => {
-            this.props.navigation.goBack();
-          }}
-          title={'Rating & Review'}
-        />
+        <ScreenHeader
+            onBackPress={() => {
+              this.props.navigation.goBack();
+            }}
+            leftIcon
+            rightIcon={false}
+            navigation={this.props.navigation}
+            title={'Rating & Review'}
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
         <Modal
           animationType="slide"
@@ -125,11 +135,11 @@ export default class ReviewRating extends Component {
 
                 <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingBottom: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
                   <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
-                  <Text style={{ fontFamily: Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.Notification[config.language]}</Text>
+                  <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.Notification[config.language]}</Text>
                 </View>
                 <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
 
-                  <Text style={{ fontFamily: Font.fontregular, color: '#000', fontSize: mobileW * 4 / 100, width: '90%' }}>{this.state.body_name}</Text>
+                  <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 4 / 100, width: '90%' }}>{this.state.body_name}</Text>
                 </View>
 
 
@@ -140,7 +150,7 @@ export default class ReviewRating extends Component {
                 <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }) }}
                   activeOpacity={0.8}
                   style={{ width: mobileW * 20 / 100, justifyContent: 'flex-end', alignSelf: 'flex-end', marginTop: mobileW * 3 / 100 }}>
-                  <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.OK[config.language]}</Text>
+                  <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.OK[config.language]}</Text>
                 </TouchableOpacity>
 
 
@@ -152,7 +162,7 @@ export default class ReviewRating extends Component {
         {this.state.reviewratingdata == '' || this.state.reviewratingdata == null &&
 
           <View>
-            <Text style={{ textAlign: 'center', color: Colors.theme_color, fontFamily: Font.fontmedium, fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 60 / 100 }}>{this.state.message}</Text>
+            <Text style={{ textAlign: 'center', color: Colors.theme_color, fontFamily: Font.Medium, fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 60 / 100 }}>{this.state.message}</Text>
           </View>
         }
 
@@ -268,7 +278,7 @@ export default class ReviewRating extends Component {
                       }}>
                         <Text
                           style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: Font.sregulartext_size,
                             lineHeight: (mobileW * 4.2) / 100,
                             textAlign: config.textRotate,
@@ -303,7 +313,7 @@ export default class ReviewRating extends Component {
                           }}>
                             <Text
                               style={{
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: Font.sregulartext_size,
                                 color: Colors.lightgraytext,
                               }}>
@@ -329,7 +339,7 @@ export default class ReviewRating extends Component {
                         }}>
                           <Text
                             style={{
-                              fontFamily: Font.fontregular,
+                              fontFamily: Font.Regular,
                               fontSize: Font.sregulartext_size,
                               color: Colors.textblue,
                               textAlign: 'right'

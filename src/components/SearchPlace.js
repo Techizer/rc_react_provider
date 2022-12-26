@@ -360,7 +360,7 @@ class SearchPlaceScreen extends Component {
 
                                 placeholderTextColor: '#7C7C7C',
                                 backgroundColor: '#F2F3F2',
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: 14,
                                 color: Colors.textblack,
                             }}
@@ -436,7 +436,7 @@ class SearchPlaceScreen extends Component {
 
                             <View style={{ width: '88%' }}>
                                 <Text style={{ textAlign: lRot, fontSize: 16, fontFamily: Font.bold_font_family, color: '#17181A' }}>{Lang_chg.Currentlocation[lLan]}</Text>
-                                <Text style={{ textAlign: lRot, fontSize: 14, fontFamily: Font.fontregular, color: '#6D737E', marginTop: vs(4) }}>{Lang_chg.Using_gpsofyoudevice[lLan]}</Text>
+                                <Text style={{ textAlign: lRot, fontSize: 14, fontFamily: Font.Regular, color: '#6D737E', marginTop: vs(4) }}>{Lang_chg.Using_gpsofyoudevice[lLan]}</Text>
                             </View>
 
                             {
@@ -467,7 +467,7 @@ class SearchPlaceScreen extends Component {
                                 </View>
                             }
                             <View style={{ width: '88%' }}>
-                                <Text style={{ textAlign: lRot, fontSize: s(11), fontFamily: Font.fontregular, color: '#6D737E', lineHeight: 16 }}>
+                                <Text style={{ textAlign: lRot, fontSize: s(11), fontFamily: Font.Regular, color: '#6D737E', lineHeight: 16 }}>
                                     {Lang_chg.SearchScreenNote[lLan]}
                                 </Text>
                             </View>

@@ -1,6 +1,7 @@
-import { Text, Modal, Alert, View, Image, StatusBar, TouchableOpacity } from 'react-native'
+import { Text, Modal, Alert, View, Image, StatusBar, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import React, { Component } from 'react'
 import { Colors, localimag, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import ScreenHeader from './components/ScreenHeader';
 
 
 export default class More extends Component {
@@ -125,6 +126,13 @@ export default class More extends Component {
     });
   }
   render() {
+
+    const windowHeight = Math.round(Dimensions.get("window").height);
+    const windowWidth = Math.round(Dimensions.get("window").width);
+    const deviceHeight = Dimensions.get('screen').height;
+    const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+    let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+    headerHeight += (Platform.OS === 'ios') ? 28 : -60
     return (
       <View style={{
         width: '100%', alignSelf: 'center', flex: 1,
@@ -139,21 +147,18 @@ export default class More extends Component {
         />
 
 
-        <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100, flexDirection: 'row' }}>
-          <View style={{ width: '5%' }}>
-            <TouchableOpacity onPress={() => {
-              this.props.navigation.goBack();
-            }}
-              style={{ width: '100%', }}>
-              <Image style={{ width: mobileW * 8 / 100, height: mobileW * 8 / 100, alignSelf: 'center' }}
-                source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}></Image>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '95%', alignSelf: 'center' }}>
-            <Text style={{ textAlign: config.textalign, fontSize: mobileW * 4.5 / 100, color: Colors.textblack, fontFamily: Font.fontmedium, alignSelf: 'center' }}>{Lang_chg.supporttext[config.language]} </Text>
-          </View>
 
-        </View>
+        <ScreenHeader
+          onBackPress={() => {
+            this.props.navigation.goBack();
+          }}
+          leftIcon
+          rightIcon={false}
+          navigation={this.props.navigation}
+          title={Lang_chg.supporttext[config.language]}
+          style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+
+
         <View style={{ width: '55%', alignSelf: 'center', marginRight: mobileW * 2 / 100, marginTop: mobileW * 10 / 100 }}>
           <Image style={{ height: mobileW * 30 / 100, width: mobileW * 45 / 100, resizeMode: 'contain', alignSelf: 'center', alignItems: 'center', }}
             source={localimag.Forgotlogo}>
@@ -169,9 +174,9 @@ export default class More extends Component {
 
         <View style={{ width: '45%', alignSelf: 'center', marginTop: mobileW * 3 / 100 }}>
           <View style={{ width: '100%' }}>
-            <Text style={{ fontSize: mobileW * 4.2 / 100, color: Colors.splashtextcolor, fontFamily: Font.fontregular, alignSelf: 'center', textAlign: 'center', marginTop: mobileW * 0.5 / 100 }}>{Lang_chg.the_best_company[config.language]} </Text>
-            <Text style={{ fontSize: mobileW * 4.2 / 100, color: Colors.splashtextcolor, fontFamily: Font.fontregular, alignSelf: 'center', textAlign: 'center', marginTop: mobileW * 0.5 / 100 }}>{Lang_chg.for_mediical[config.language]} </Text>
-            <Text style={{ fontSize: mobileW * 4.2 / 100, color: Colors.splashtextcolor, fontFamily: Font.fontregular, alignSelf: 'center', textAlign: 'center', marginTop: mobileW * 0.5 / 100 }}>{Lang_chg.home_helth[config.language]} </Text>
+            <Text style={{ fontSize: mobileW * 4.2 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center', marginTop: mobileW * 0.5 / 100 }}>{Lang_chg.the_best_company[config.language]} </Text>
+            <Text style={{ fontSize: mobileW * 4.2 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center', marginTop: mobileW * 0.5 / 100 }}>{Lang_chg.for_mediical[config.language]} </Text>
+            <Text style={{ fontSize: mobileW * 4.2 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center', marginTop: mobileW * 0.5 / 100 }}>{Lang_chg.home_helth[config.language]} </Text>
           </View>
 
         </View>
@@ -179,59 +184,8 @@ export default class More extends Component {
         <View style={{ width: '45%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 5 / 100 }}>
         </View>
 
-
-        {/* <View style={{width:'40%',alignSelf:'center',marginTop:mobileW*3/100}}>
-                        <Text style={{textAlign:config.textalign,fontSize:mobileW*4/100,color:Colors.veriontextcolor,fontFamily:Font.fontregular,alignSelf:'center'}}>{Lang_chg.drawerversion[config.language]}</Text> 
-                    </View> */}
-
-        {/* <View style={{width:'90%',alignSelf:'center',marginTop:mobileW*7/100,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-                      
-                       <Text style={{textAlign:config.textalign,fontSize:mobileW*3.8/100,color:Colors.textblack_new,fontFamily:Font.ques_fontfamily}}>{Lang_chg.languagetxt[config.language]} </Text> 
-                      
-  
-
-
-                        <View style={{width:'40%',alignSelf:'flex-end',flexDirection:'row',}}>
-                        
-                           <TouchableOpacity activeOpacity={0.5} onPress={()=>{if(this.state.langaugeme == 1){
-                                      this.setState({engbtn:true,modalVisible3:true,device_lang:'ENG'})}
-                                 else{
-                                   null
-                                 }
-                                 }}
-                           style={{width:'50%',alignSelf:'center',backgroundColor:this.state.langaugeme== 0? Colors.buttonbackgoungcolorlightblue : '#fff',borderColor: 'black',borderBottomWidth:1,borderTopWidth:1,borderLeftWidth:1,paddingVertical:mobileW*1.5/100
-                           ,borderBottomLeftRadius:mobileW*1/100,borderTopLeftRadius:mobileW*1/100}}>
-                     
-                                   
-                               <Text style={{textAlign:config.textalign,fontSize:mobileW*3.5/100,color:Colors.textblack_new,fontFamily:Font.ques_fontfamily,alignSelf:'center'}}>ENG</Text> 
-                         
-                           </TouchableOpacity> 
-  
-                           
-
-
-
-                           <TouchableOpacity activeOpacity={0.5}  onPress={()=>{if(this.state.langaugeme == 0){
-                                       this.setState({engbtn:false,modalVisible3:true,device_lang:'AR'})}
-                                 else{
-                                   null
-                                 }
-                                 }} style={{width:'50%',alignSelf:'center',backgroundColor:this.state.langaugeme == 0 ? '#fff' : Colors.buttonbackgoungcolorlightblue,borderColor:'#fff',borderColor:'black',borderWidth:1,paddingVertical:mobileW*1.5/100,borderTopRightRadius:mobileW*1/100,borderBottomRightRadius:mobileW*1/100}}>
-                              
-                               
-                              
-                               <Text style={{textAlign:config.textalign,fontSize:mobileW*3.5/100,color:Colors.textblack_new,fontFamily:Font.ques_fontfamily,alignSelf:'center'}}>AR</Text> 
-                           </TouchableOpacity>
- 
-                        </View>
-                    </View> */}
-
-
-
         <View style={{
           width: '95%', alignSelf: 'flex-end',
-          // borderColor:Colors.bordercolor,
-          // borderBottomWidth:mobileW*0.3/100,
           marginTop: mobileW * 5 / 100
         }}>
         </View>
@@ -344,7 +298,7 @@ export default class More extends Component {
             </View>
 
 
-            <Text style={{ textAlign: config.textalign, fontSize: mobileW * 4 / 100, color: Colors.textblack, fontFamily: Font.fontsemibold, }}>{Lang_chg.needsupport[config.language]} </Text>
+            <Text style={{ textAlign: config.textalign, fontSize: mobileW * 4 / 100, color: Colors.textblack, fontFamily: Font.SemiBold, }}>{Lang_chg.needsupport[config.language]} </Text>
 
           </View>
           <View style={{ width: '12%', alignSelf: 'center' }}>
@@ -379,12 +333,12 @@ export default class More extends Component {
 
                 <View style={{ alignSelf: 'flex-start', width: mobileW * 60 / 100, paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
                   <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
-                  <Text style={{ fontFamily: Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 3 / 100 }}>{Lang_chg.Lang_change[config.language]}</Text>
+                  <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 3 / 100 }}>{Lang_chg.Lang_change[config.language]}</Text>
                 </View>
 
                 <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
 
-                  <Text style={{ paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, fontFamily: Font.fontregular, color: '#000', fontSize: mobileW * 4 / 100, width: '90%' }}>{Lang_chg.Lang_change_msg[config.language]}</Text>
+                  <Text style={{ paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 4 / 100, width: '90%' }}>{Lang_chg.Lang_change_msg[config.language]}</Text>
                 </View>
 
 
@@ -397,7 +351,7 @@ export default class More extends Component {
                 }}>
                   <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }) }}
                     style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                    <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.no_txt[config.language]}</Text>
+                    <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.no_txt[config.language]}</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity onPress={() => {
@@ -411,7 +365,7 @@ export default class More extends Component {
                   }}
                     activeOpacity={0.8}
                     style={{ width: mobileW * 20 / 100, justifyContent: 'center' }}>
-                    <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.Restart[config.language]}</Text>
+                    <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.Restart[config.language]}</Text>
                   </TouchableOpacity>
                 </View>
 

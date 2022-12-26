@@ -219,7 +219,7 @@ export default class Optpage extends Component {
                   width: (mobileW * 14) / 100,
                   color:'#000',
                   alignSelf: 'center',
-                  fontFamily:Font.fontregular,
+                  fontFamily:Font.Regular,
                   fontSize: (mobileW * 5) / 100,
                   borderWidth:2,
                   borderColor: '#DFDFDF',
@@ -257,7 +257,7 @@ export default class Optpage extends Component {
               <Text
                 style={{
                   color: Colors.textwhite,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.buttontextsize,
                 
                   textAlign: config.textalign,
@@ -291,7 +291,7 @@ export default class Optpage extends Component {
                  
                   textAlign: config.textalign,
                   fontSize: mobileW*4/100,
-                  fontFamily: Font.fontsemibold,
+                  fontFamily: Font.SemiBold,
                   color: Colors.theme_color,
                   
                 }}>
@@ -317,11 +317,11 @@ export default class Optpage extends Component {
 
                                     <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100,flexDirection:'row',alignItems:'center' }}>
                                        <Image style={{width:mobileW*6/100,height:mobileW*6/100}}  source={require('./icons/logo.png')}></Image>
-                                        <Text style={{ fontFamily:Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100,paddingLeft:mobileW*4/100 }}>{Lang_chg.registration[config.language]}</Text>
+                                        <Text style={{ fontFamily:Font.Medium, color: '#000', fontSize: mobileW * 5 / 100,paddingLeft:mobileW*4/100 }}>{Lang_chg.registration[config.language]}</Text>
                                     </View>
 
                                     <View style={{  paddingLeft: mobileW * 4 / 100,width:'95%',alignSelf:'center' }}>
-                                        <Text style={{ fontFamily: Font.fontlight, color:'#000', fontSize: mobileW * 4 / 100, }}>{this.state.error_msg}</Text>
+                                        <Text style={{ fontFamily: Font.Light, color:'#000', fontSize: mobileW * 4 / 100, }}>{this.state.error_msg}</Text>
                                     </View>
 
                                     <View style={{
@@ -332,7 +332,7 @@ export default class Optpage extends Component {
                                         setTimeout(() => {this.setState({ modalVisible3: false }), this.props.navigation.navigate('Login')}, 200)
                                          }}
                                             style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                                            <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color:Colors.theme_color, alignSelf: 'center',textAlign:config.textalign }}>{Lang_chg.OK[config.language]}</Text>
+                                            <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color:Colors.theme_color, alignSelf: 'center',textAlign:config.textalign }}>{Lang_chg.OK[config.language]}</Text>
                                         </TouchableOpacity>
                                         
                                        

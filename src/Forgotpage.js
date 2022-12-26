@@ -120,12 +120,12 @@ export default class Forgotpage extends Component {
 
 
               <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 10 / 100 }}>
-                <Text style={{ fontSize: 20, fontFamily: Font.fontbold, color: Colors.textblack, textAlign: config.textRotate }}>{Lang_chg.Forgot[config.language]} </Text>
+                <Text style={{ fontSize: 20, fontFamily: Font.Bold, color: Colors.textblack, textAlign: config.textRotate }}>{Lang_chg.Forgot[config.language]} </Text>
               </View>
 
 
               <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 1 / 100 }}>
-                <Text style={{ fontSize: 14, fontFamily: Font.fontregular, color: Colors.regulartextcolor, textAlign: config.textRotate, }}>{Lang_chg.Forgottext[config.language]}</Text>
+                <Text style={{ fontSize: 14, fontFamily: Font.Regular, color: Colors.regulartextcolor, textAlign: config.textRotate, }}>{Lang_chg.Forgottext[config.language]}</Text>
               </View>
 
 

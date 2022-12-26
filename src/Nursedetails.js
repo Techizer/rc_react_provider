@@ -235,7 +235,7 @@ export default class Nursedetails extends Component {
                             }}>
                             <Text
                               style={{
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 fontSize: Font.name,
                                 textAlign:config.textRotate
                               }}>
@@ -245,7 +245,7 @@ export default class Nursedetails extends Component {
                             <Text
                               style={{
                                 paddingVertical: (mobileW * 1.5) / 100,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: Font.subtext,
                                 color: Colors.cardlighgray,
                                 textAlign:config.textRotate
@@ -254,7 +254,7 @@ export default class Nursedetails extends Component {
                             </Text>
                             <Text
                               style={{
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 color: Colors.theme_color,
                                 fontSize: Font.subtext,
                                 textAlign:config.textRotate
@@ -279,7 +279,7 @@ export default class Nursedetails extends Component {
                             <Text
                               style={{
                                 color: Colors.cardlighgray,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: Font.subtext,
                                 textAlign:config.textRotate
                               }}>{Lang_chg.Experience[config.language]}
@@ -287,7 +287,7 @@ export default class Nursedetails extends Component {
                             </Text>
                             <Text
                               style={{
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 fontSize: Font.regulartext_size,
                                 paddingTop: (mobileW * 2) / 100,
                                 textAlign:config.textRotate
@@ -299,7 +299,7 @@ export default class Nursedetails extends Component {
                             <Text
                               style={{
                                 color: Colors.cardlighgray,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: Font.subtext,
                                 textAlign:config.textRotate
                               }}>{Lang_chg.Bookings_new[config.language]}
@@ -307,7 +307,7 @@ export default class Nursedetails extends Component {
                             </Text>
                             <Text
                               style={{
-                                fontFamily: Font.fontmedium,
+                                fontFamily: Font.Medium,
                                 fontSize: Font.regulartext_size,
                                 paddingTop: (mobileW * 2) / 100,
                                 textAlign:config.textRotate
@@ -319,7 +319,7 @@ export default class Nursedetails extends Component {
                             <Text
                               style={{
                                 color: Colors.cardlighgray,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: Font.subtext,
                                 textAlign:config.textRotate
                               }}>{Lang_chg.Rating[config.language]}
@@ -342,7 +342,7 @@ export default class Nursedetails extends Component {
                                 }}></Image>
                               <Text
                                 style={{
-                                  fontFamily: Font.fontmedium,
+                                  fontFamily: Font.Medium,
                                   fontSize: Font.regulartext_size,
                                   marginLeft: (mobileW * 2) / 100,
                                   textAlign:config.textRotate
@@ -365,7 +365,7 @@ export default class Nursedetails extends Component {
                           }}>
                           <Text
                             style={{
-                              fontFamily: Font.fontregular,
+                              fontFamily: Font.Regular,
                               fontSize: Font.subtext,
                               color:'#000',
                              
@@ -412,7 +412,7 @@ export default class Nursedetails extends Component {
                             <Text
                               style={{
                                 marginLeft: (mobileW * 1.5) / 100,
-                                fontFamily: Font.fontregular,
+                                fontFamily: Font.Regular,
                                 fontSize: Font.subtext,
                                 color: Colors.regulartextcolor,
                               }}>{item.bavi_text}
@@ -424,7 +424,7 @@ export default class Nursedetails extends Component {
                           <Text
                             style={{
                               color: Colors.theme_color,
-                              fontFamily: Font.fontmedium,
+                              fontFamily: Font.Medium,
                               fontSize: Font.subtext,
                             }}>{this.state.availability_task}
                              
@@ -496,23 +496,23 @@ export default class Nursedetails extends Component {
                     {config.language==0 ?
                     <View style={{width:'79%',alignSelf:'center',}}>
                     {this.state.pass_status=='nurse'?
-                      <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Nurse[config.language]}  {Lang_chg.Booking_detail[config.language]}   </Text>:
+                      <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Nurse[config.language]}  {Lang_chg.Booking_detail[config.language]}   </Text>:
                         this.state.pass_status=='physiotherapy'?
-                        <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Physiotherapist[config.language]} {Lang_chg.Booking_detail[config.language]}</Text>:
+                        <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Physiotherapist[config.language]} {Lang_chg.Booking_detail[config.language]}</Text>:
                         this.state.pass_status=='caregiver'?
-                        <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Nurse_assistant[config.language]} {Lang_chg.Booking_detail[config.language]}   </Text>:
-                        <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Babysitter[config.language]}   {Lang_chg.Booking_detail[config.language]}   </Text>
+                        <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Nurse_assistant[config.language]} {Lang_chg.Booking_detail[config.language]}   </Text>:
+                        <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Babysitter[config.language]}   {Lang_chg.Booking_detail[config.language]}   </Text>
                         
                         }
                     </View>:
                      <View style={{width:'79%',alignSelf:'center'}}>
                      {this.state.pass_status=='nurse'?
-                       <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]}   {Lang_chg.Nurse[config.language]}</Text>:
+                       <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]}   {Lang_chg.Nurse[config.language]}</Text>:
                          this.state.pass_status=='physiotherapy'?
-                         <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]}  {Lang_chg.Physiotherapist[config.language]}</Text>:
+                         <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]}  {Lang_chg.Physiotherapist[config.language]}</Text>:
                          this.state.pass_status=='caregiver'?
-                         <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]} {Lang_chg.Nurse_assistant[config.language]} </Text>:
-                         <Text style={{  color: Colors.white_color,fontFamily: Font.fontmedium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]}  {Lang_chg.Babysitter[config.language]} </Text>
+                         <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]} {Lang_chg.Nurse_assistant[config.language]} </Text>:
+                         <Text style={{  color: Colors.white_color,fontFamily: Font.Medium,fontSize:mobileW*3/100, textTransform: 'capitalize',textAlign:config.textRotate  }}>{Lang_chg.Booking_detail[config.language]}  {Lang_chg.Babysitter[config.language]} </Text>
                          
                          }
                      </View>
@@ -523,7 +523,7 @@ export default class Nursedetails extends Component {
               <Text
                         style={{
                           color: Colors.white_color,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize: Font.subtext,
                            marginLeft:mobileW*3/100,
                           textAlign:'center',
@@ -535,7 +535,7 @@ export default class Nursedetails extends Component {
                         onPress={() => this.setModalVisible(true)}
                         style={{
                           color: Colors.white_color,
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                            fontSize: Font.subtext,
                         }}>{item.how_work_text}
                       
@@ -572,12 +572,12 @@ export default class Nursedetails extends Component {
                     }}>
                    
                    {this.state.pass_status=='nurse'?
-                   <Text style={{textAlign: config.textalign, fontFamily: Font.fontmedium,fontSize:mobileW*3.7/100}}>{Lang_chg.AvailableNurse[config.language]}</Text>:
+                   <Text style={{textAlign: config.textalign, fontFamily: Font.Medium,fontSize:mobileW*3.7/100}}>{Lang_chg.AvailableNurse[config.language]}</Text>:
                         this.state.pass_status=='physiotherapy'?
-                        <Text style={{textAlign: config.textalign, fontFamily: Font.fontmedium,fontSize:mobileW*3.7/100}}>{Lang_chg.Availablephysotharpst[config.language]}</Text>:
+                        <Text style={{textAlign: config.textalign, fontFamily: Font.Medium,fontSize:mobileW*3.7/100}}>{Lang_chg.Availablephysotharpst[config.language]}</Text>:
                         this.state.pass_status=='caregiver'?
-                        <Text style={{textAlign: config.textalign, fontFamily: Font.fontmedium,fontSize:mobileW*3.7/100}}>{Lang_chg.Availableassistent[config.language]}</Text>:
-                        <Text style={{textAlign: config.textalign, fontFamily: Font.fontmedium,fontSize:mobileW*3.7/100}}>{Lang_chg.Availablebabysitter[config.language]}</Text>
+                        <Text style={{textAlign: config.textalign, fontFamily: Font.Medium,fontSize:mobileW*3.7/100}}>{Lang_chg.Availableassistent[config.language]}</Text>:
+                        <Text style={{textAlign: config.textalign, fontFamily: Font.Medium,fontSize:mobileW*3.7/100}}>{Lang_chg.Availablebabysitter[config.language]}</Text>
                         
                         }
                    
@@ -587,7 +587,7 @@ export default class Nursedetails extends Component {
                     <Text onPress={()=>{this.props.navigation.goBack()}}
                       style={{
                      
-                        fontFamily: Font.fontsemibold,
+                        fontFamily: Font.SemiBold,
                         fontSize: Font.regulartext_size,
                         color: Colors.theme_color,
                       }}>{Lang_chg.See_all[config.language]}
@@ -660,7 +660,7 @@ export default class Nursedetails extends Component {
                                  }}></Image>
                                <Text
                                  style={{
-                                   fontFamily: Font.fontregular,
+                                   fontFamily: Font.Regular,
                                   fontSize:mobileW*2.5/100,
                                    color: Colors.white_color,
                                    marginLeft:mobileW*1.2/100
@@ -676,9 +676,9 @@ export default class Nursedetails extends Component {
                              //  backgroundColor:'red',
                               alignSelf:'center'
                              }}>
-                             <Text style={{color:'#000',fontSize:mobileW*3/100,marginTop:mobileW*1/100,fontFamily:Font.fontmedium,textAlign:config.textRotate}}numberOfLines={1}>{item.provider_name}</Text>
-                             <Text style={{color:'#8F98A7',fontSize:mobileW*3/100,marginTop:mobileW*1/100,fontFamily:Font.fontregular,textAlign:config.textRotate}} numberOfLines={1}>{item.qualification}</Text>
-                             <Text style={{color:'#0888D1',fontSize:mobileW*3/100,marginTop:mobileW*1/100,fontFamily:Font.fontregular,textAlign:config.textRotate}}numberOfLines={1}>{item.speciality}</Text>
+                             <Text style={{color:'#000',fontSize:mobileW*3/100,marginTop:mobileW*1/100,fontFamily:Font.Medium,textAlign:config.textRotate}}numberOfLines={1}>{item.provider_name}</Text>
+                             <Text style={{color:'#8F98A7',fontSize:mobileW*3/100,marginTop:mobileW*1/100,fontFamily:Font.Regular,textAlign:config.textRotate}} numberOfLines={1}>{item.qualification}</Text>
+                             <Text style={{color:'#0888D1',fontSize:mobileW*3/100,marginTop:mobileW*1/100,fontFamily:Font.Regular,textAlign:config.textRotate}}numberOfLines={1}>{item.speciality}</Text>
                            </View>
                     </TouchableOpacity>
                     </View>
@@ -687,7 +687,7 @@ export default class Nursedetails extends Component {
                     }}></FlatList>
                     </View>
                     :
-                    <Text style={{fontFamily:Font.fontregular,fontSize:mobileW*3.5/100,color:Colors.theme_color,textAlign:'center',marginTop:mobileW*5/100}}>{Lang_chg.Not_available_for_booking[config.language]}</Text>}
+                    <Text style={{fontFamily:Font.Regular,fontSize:mobileW*3.5/100,color:Colors.theme_color,textAlign:'center',marginTop:mobileW*5/100}}>{Lang_chg.Not_available_for_booking[config.language]}</Text>}
                 </View>
               </View>
             </View>
@@ -758,7 +758,7 @@ export default class Nursedetails extends Component {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           color:'#0888D1',
                         }}
                         onPress={() => this.setModalVisible(false)}>
@@ -846,7 +846,7 @@ const HTMLstyles= StyleSheet.create({
   h5: {
     color: '#0888D1', // make links coloured pink
     fontSize:mobileW*4.3/100,
-    fontFamily:Font.fontmedium,
+    fontFamily:Font.Medium,
   // paddingBottom:20,
 
    

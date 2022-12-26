@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from 'react';
-import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList } from 'react-native';
+import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, Dimensions, Platform } from 'react-native';
 import {
   Colors,
   Font,
@@ -21,6 +21,7 @@ import {
 import Styles from './Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Appointment from './Appointment';
+import ScreenHeader from './components/ScreenHeader';
 const tabheadings = [
   {
     id: 1,
@@ -78,7 +79,12 @@ const tabheadings = [
 // });
 
 
-
+const windowHeight = Math.round(Dimensions.get("window").height);
+const windowWidth = Math.round(Dimensions.get("window").width);
+const deviceHeight = Dimensions.get('screen').height;
+const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+headerHeight += (Platform.OS === 'ios') ? 28 : -60
 export default function Appointmenttab({ navigation }) {
   const layout = useWindowDimensions();
   const [tabname, setTabname] = React.useState("");
@@ -166,7 +172,7 @@ export default function Appointmenttab({ navigation }) {
         textTransform: 'capitalize',
         fontSize: (mobileW * 3) / 100,
         textAlign: 'center',
-        fontFamily: Font.fontsemibold,
+        fontFamily: Font.SemiBold,
       }}
       onTabPress={({ route, preventDefault }) => {
         console.log('onTabPress', route.key);
@@ -217,83 +223,16 @@ export default function Appointmenttab({ navigation }) {
           {/* <Text>Home</Text> */}
 
           {/* header */}
-          <View style={{ backgroundColor: 'white' }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '98%',
-                alignSelf: 'center',
-                paddingVertical: (mobileW * 3) / 100,
-                backgroundColor: Colors.white_color,
-                alignItems: 'center'
-                // backgroundColor: 'red',
-              }}>
-              <View
-                style={{
-                  width: '10%',
-                  // backgroundColor: 'pink',
-                  alignSelf: 'center',
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Home');
-                  }}>
-                  {config.language == 0 ?
-                    <Image
-                      source={localimag.leftarrow}
-                      style={{
-                        resizeMode: 'contain',
-                        width: (mobileW * 9) / 100,
-                        alignSelf: 'center',
-                        height: (mobileW * 9) / 100,
-                      }}></Image> :
-                    <Image
-                      source={localimag.arabic_back}
-                      style={{
-                        resizeMode: 'contain',
-                        width: (mobileW * 9) / 100,
-                        alignSelf: 'center',
-                        height: (mobileW * 9) / 100,
-                      }}></Image>}
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  // backgroundColor: 'yellow',
-                  width: '80%',
-                }}>
-                <Text style={Styles.headertext}>{Lang_chg.MyAppointments[config.language]}
-                  {/* {this.state.title == 'undefined'
-                    ? Lang_chg.MyAppointments[config.language]
-                    : this.state.title} */}
-
-                  {/* {Lang_chg.MyAppointments[config.language]} */}
-                </Text>
-              </View>
-              <View
-                style={{
-                  width: '10%',
-                  alignSelf: 'center',
-
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Notifications');
-                  }}>
-                  <Image
-                    // tintColor="#fff"
-                    // source={this.state.notification_count > 0 ? localimag.notifications : localimag.notifications_sec}
-                    source={noticount > 0 ? localimag.notifications : localimag.notifications_sec}
-                    style={{
-                      alignSelf: 'center',
-                      resizeMode: 'contain',
-                      width: (mobileW * 6) / 100,
-                      height: (mobileW * 6) / 100,
-                    }}></Image>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
+          <ScreenHeader
+            onBackPress={() => {
+              navigation.goBack();
+            }}
+            leftIcon
+            rightIcon={true}
+            notiCount={noticount}
+            navigation={navigation}
+            title={Lang_chg.MyAppointments[config.language]}
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
           {/* tabheadings */}
 

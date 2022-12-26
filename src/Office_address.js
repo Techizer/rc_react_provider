@@ -450,7 +450,7 @@ update_adress=async()=>{
                     textInputProps={{
                         placeholderTextColor:'#515C6F',
                         backgroundColor:'#F1F2F4',
-                        fontFamily:Font.fontregular,
+                        fontFamily:Font.Regular,
                         fontSize:mobileW*4.5/100,
                         color:'#000'
                        
@@ -601,7 +601,7 @@ paddingLeft:mobileW*3/100,
 alignSelf: 'center',
 fontSize:mobileW*4/100,
 borderRadius:mobileW*2/100,
-fontFamily:Font.fontregular,
+fontFamily:Font.Regular,
 paddingVertical:mobileW*2/100},
 
 ImageView:{

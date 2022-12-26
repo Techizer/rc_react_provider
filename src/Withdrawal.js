@@ -308,7 +308,7 @@ export default class Withdrawal extends Component {
                         // marginLeft: mobileW * 1.5 / 100,
                         textAlign: config.textRotate,
                         color: Colors.buttoncolorhgreen,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       Available Balance
@@ -324,7 +324,7 @@ export default class Withdrawal extends Component {
                       style={{
                         textAlign: 'right',
                         color: Colors.buttoncolorhgreen,
-                        fontFamily: Font.fontmedium,
+                        fontFamily: Font.Medium,
                         fontSize: mobileW * 5 / 100,
                       }}>
                       {this.state.abal}
@@ -379,7 +379,7 @@ export default class Withdrawal extends Component {
                                     // marginLeft: mobileW * 1.5 / 100,
                                     textAlign: config.textRotate,
                                     color: Colors.placeholdertextcolor,
-                                    fontFamily: Font.fontregular,
+                                    fontFamily: Font.Regular,
                                     fontSize: mobileW * 3.3 / 100,
                                   }}>
                                   {item?.text}
@@ -389,7 +389,7 @@ export default class Withdrawal extends Component {
                                     // marginLeft: mobileW * 1.5 / 100,
                                     textAlign: config.textRotate,
                                     color: Colors.splashtextcolor,
-                                    fontFamily: Font.fontregular,
+                                    fontFamily: Font.Regular,
                                     fontSize: mobileW * 2.5 / 100,
                                   }}>
                                   {item?.date}
@@ -407,7 +407,7 @@ export default class Withdrawal extends Component {
                                   style={{
                                     textAlign: 'right',
                                     color: Colors.placeholdertextcolor,
-                                    fontFamily: Font.fontregular,
+                                    fontFamily: Font.Regular,
                                     fontSize: mobileW * 3.3 / 100,
 
                                   }}>
@@ -430,7 +430,7 @@ export default class Withdrawal extends Component {
                   height: '90%'
                 }}>
                   <Text style={{
-                    fontFamily: Font.fontregular,
+                    fontFamily: Font.Regular,
                     fontSize: 16,
                     textTransform: 'capitalize'
                   }}>Withdrawal List Not Found.</Text>
@@ -481,7 +481,7 @@ export default class Withdrawal extends Component {
                                   // marginLeft: mobileW * 1.5 / 100,
                                   textAlign: config.textRotate,
                                   color: Colors.placeholdertextcolor,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 3.3 / 100,
                                 }}>
                                 Bank Withdrawal
@@ -491,7 +491,7 @@ export default class Withdrawal extends Component {
                                   // marginLeft: mobileW * 1.5 / 100,
                                   textAlign: config.textRotate,
                                   color: Colors.splashtextcolor,
-                                  fontFamily: Font.fontregular,
+                                  fontFamily: Font.Regular,
                                   fontSize: mobileW * 2.5 / 100,
                                 }}>
                                 05-Jan-22
@@ -509,7 +509,7 @@ export default class Withdrawal extends Component {
                                   style={{
                                     textAlign: 'right',
                                     color: Colors.placeholdertextcolor,
-                                    fontFamily: Font.fontregular,
+                                    fontFamily: Font.Regular,
                                     fontSize: mobileW * 3.3 / 100,
 
                                   }}>
@@ -568,7 +568,7 @@ export default class Withdrawal extends Component {
                         // marginLeft: mobileW * 1.5 / 100,
                         textAlign: config.textRotate,
                         color: Colors.textblue,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       {this.state.content?.heading}
@@ -605,7 +605,7 @@ export default class Withdrawal extends Component {
                         // marginLeft: mobileW * 1.5 / 100,
                         textAlign: config.textRotate,
                         color: Colors.placeholder_border,
-                        fontFamily: Font.fontregular,
+                        fontFamily: Font.Regular,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       {this.state.content?.content}
@@ -654,7 +654,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.textblue,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: mobileW * 3.6 / 100,
                           }}>
                           Connected Bank Account
@@ -726,7 +726,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.textblue,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: mobileW * 2.5 / 100,
                           }}>Bank:</Text>
                         <Text
@@ -734,7 +734,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.placeholdertextcolor,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: mobileW * 3.3 / 100,
                           }}>
                           {this.state.bankdetails?.bank_name}
@@ -751,7 +751,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.textblue,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: mobileW * 2.5 / 100,
                           }}>A/C Name:</Text>
                         <Text
@@ -759,7 +759,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.placeholdertextcolor,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: mobileW * 3.3 / 100,
                           }}>
                           {this.state.bankdetails?.acname}
@@ -776,7 +776,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.textblue,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: mobileW * 2.5 / 100,
                           }}>A/C No:</Text>
                         <Text
@@ -784,7 +784,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.placeholdertextcolor,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: mobileW * 3.3 / 100,
                           }}>
                           {this.state.bankdetails?.account_no}
@@ -828,7 +828,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.textblue,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: mobileW * 2.5 / 100,
                           }}>Address:</Text>
                         <Text
@@ -836,7 +836,7 @@ export default class Withdrawal extends Component {
                             // marginLeft: mobileW * 1.5 / 100,
                             textAlign: config.textRotate,
                             color: Colors.placeholder_border,
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: mobileW * 3.6 / 100,
                           }}>
                           {this.state.bankdetails?.address}
@@ -885,7 +885,7 @@ export default class Withdrawal extends Component {
                           // marginLeft: mobileW * 1.5 / 100,
                           textAlign: config.textRotate,
                           // color: Colors.buttoncolorhgreen,
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize: mobileW * 3.6 / 100,
                         }}>
                         Bank Account
@@ -907,7 +907,7 @@ export default class Withdrawal extends Component {
                           style={{
                             textAlign: 'right',
                             color: Colors.textblue,
-                            fontFamily: Font.fontmedium,
+                            fontFamily: Font.Medium,
                             fontSize: mobileW * 3.6 / 100,
                           }}>
                           Add bank

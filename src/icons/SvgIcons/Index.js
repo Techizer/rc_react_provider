@@ -113,6 +113,18 @@ export const Appointment = `<svg xmlns="http://www.w3.org/2000/svg" width="22.99
 </g>
 </svg>`
 
+export const MyAppointment = `<svg xmlns="http://www.w3.org/2000/svg" width="26.105" height="25.157" viewBox="0 0 26.105 25.157">
+<g id="Group_1050" data-name="Group 1050" transform="translate(-23.999 -278.8)">
+  <g id="Profile" transform="translate(30 278.8)">
+    <path id="Union_1" data-name="Union 1" d="M5,0A5,5,0,1,1,0,5,5,5,0,0,1,5,0Z" fill="#fff"/>
+  </g>
+  <g id="Time" transform="translate(37.264 291.117)">
+    <path id="Path_13" data-name="Path 13" d="M1.926,1.926A5.828,5.828,0,0,1,6.42,0a5.828,5.828,0,0,1,4.494,1.926A5.828,5.828,0,0,1,12.84,6.42a5.828,5.828,0,0,1-1.926,4.494A5.828,5.828,0,0,1,6.42,12.84a5.828,5.828,0,0,1-4.494-1.926A6.407,6.407,0,0,1,0,6.42,5.828,5.828,0,0,1,1.926,1.926ZM9.309,9.309l.749-.749L7.383,5.885,6.42,1.605H5.35V6.42a.971.971,0,0,0,.321.749.374.374,0,0,0,.214.107Z" transform="translate(0 0)" fill="#fff"/>
+  </g>
+  <path id="Subtraction_1" data-name="Subtraction 1" d="M12.09,7.705H0V5.138C0,2.3,4.608,0,10.272,0a19.66,19.66,0,0,1,3.477.3,6.424,6.424,0,0,0-1.661,7.4Z" transform="translate(23.999 291.822)" fill="#fff"/>
+</g>
+</svg>`
+
 export const Consultations = `<svg xmlns="http://www.w3.org/2000/svg" width="27.021" height="23.291" viewBox="0 0 27.021 23.291">
 <g id="Consultation" transform="translate(-49.799 -78.752)">
   <path id="Union_117" data-name="Union 117" d="M4.037,12.809H1.2a1.2,1.2,0,0,1-1.2-1.2V1.2A1.2,1.2,0,0,1,1.2,0H16.267a1.2,1.2,0,0,1,1.2,1.2v9.281H11.644v2.327H7.16L4.037,17.041Z" transform="translate(52.366 80.501)" fill="rgba(0,144,226,0.21)"/>

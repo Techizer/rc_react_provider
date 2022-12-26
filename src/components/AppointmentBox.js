@@ -85,7 +85,7 @@ const AppointmentBox = ({
             <View style={{ width: '42%' }}>
               <Text
                 style={{
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.sregulartext_size,
                   color: Colors.theme_color,
                   textAlign: config.textRotate,
@@ -96,7 +96,7 @@ const AppointmentBox = ({
               <Text
                 style={{
                   paddingTop: (mobileW * 2) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.sregulartext_size,
                   color: Colors.darkgraytextheading,
                   textAlign: config.textRotate
@@ -106,7 +106,7 @@ const AppointmentBox = ({
               <Text
                 style={{
                   paddingTop: (mobileW * 1) / 100,
-                  fontFamily: Font.fontregular,
+                  fontFamily: Font.Regular,
                   fontSize: Font.sregulartext_size,
                   color: Colors.darkgraytextheading,
                   textAlign: config.textRotate
@@ -121,7 +121,7 @@ const AppointmentBox = ({
                 }}>
                 <Text
                   style={{
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: Font.sregulartext_size,
                     color: Colors.theme_color,
                     textAlign: config.textRotate
@@ -140,7 +140,7 @@ const AppointmentBox = ({
               <Text
                 style={{
 
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.sregulartext_size,
                   marginTop: (mobileW * 1) / 100,
                   color: Colors.darkgraytextheading,
@@ -156,7 +156,7 @@ const AppointmentBox = ({
                 }}>
                 <Text
                   style={{
-                    fontFamily: Font.fontregular,
+                    fontFamily: Font.Regular,
                     fontSize: Font.sregulartext_size,
                     color: Colors.darkgraytextheading,
                     textAlign: config.textRotate
@@ -165,7 +165,7 @@ const AppointmentBox = ({
                 </Text>
                 <Text
                   style={{
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: Font.sregulartext_size,
                     color: Colors.darkgraytextheading,
                     textAlign: config.textRotate,
@@ -184,7 +184,7 @@ const AppointmentBox = ({
               }}>
               <Text
                 style={{
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: (mobileW * 3.4) / 100,
                   color: Colors.theme_color,
                   textAlign: config.textRotate
@@ -194,7 +194,7 @@ const AppointmentBox = ({
               <Text
                 style={{
                   paddingTop: (mobileW * 1) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.sregulartext_size,
                   color: Colors.darkgraytextheading,
                   textAlign: config.textRotate
@@ -204,7 +204,7 @@ const AppointmentBox = ({
               <Text
                 style={{
                   paddingTop: (mobileW * 1) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   color: Colors.theme_color,
                   fontSize: Font.sregulartext_size,
                   textAlign: config.textRotate
@@ -214,7 +214,7 @@ const AppointmentBox = ({
               <Text
                 style={{
                   paddingTop: (mobileW * 1) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.sregulartext_size,
                   color: Colors.darkgraytextheading,
                   textAlign: config.textRotate,
@@ -236,7 +236,7 @@ const AppointmentBox = ({
                 }}>
                 <Text
                   style={{
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: Font.sregulartext_size,
                     color: Colors.theme_color,
                   }}>
@@ -262,7 +262,7 @@ const AppointmentBox = ({
 
 
                 <Text style={{
-                  color: '#FCFFFE', fontFamily: Font.fontmedium,
+                  color: '#FCFFFE', fontFamily: Font.Medium,
                   fontSize: mobileW * 2.7 / 100, textAlign: 'center', textTransform: 'uppercase'
 
                 }}>
@@ -272,7 +272,7 @@ const AppointmentBox = ({
               <Text
                 style={{
                   marginTop: (mobileW * 6.5) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   color: Colors.theme_color,
                   fontSize: Font.sregulartext_size,
                   textAlign: config.textRotate
@@ -282,7 +282,7 @@ const AppointmentBox = ({
               <Text
                 style={{
                   paddingTop: (mobileW * 1) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   fontSize: Font.sregulartext_size,
                   color: Colors.darkgraytextheading,
                   textAlign: config.textRotate
@@ -320,7 +320,7 @@ const AppointmentBox = ({
                 <Text
                   style={{
                     color: Colors.theme_color,
-                    fontFamily: Font.fontregular,
+                    fontFamily: Font.Regular,
                     fontSize: (mobileW * 3) / 100,
                     marginLeft: mobileW * 1 / 100,
                     textAlign: config.textRotate
@@ -370,7 +370,7 @@ const AppointmentBox = ({
                 style={{
                   color: Colors.theme_color,
                   fontSize: (mobileW * 3.7) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   alignSelf: 'center',
                   marginLeft: mobileW * 1 / 100,
                   marginTop: 0.5
@@ -407,7 +407,7 @@ const AppointmentBox = ({
                       textAlign: 'center',
                       color: Colors.white_color,
                       textTransform: 'uppercase',
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize: mobileW * 3 / 100,
                     }}>VIDEO CALL</Text>
                 </TouchableOpacity>
@@ -431,7 +431,7 @@ const AppointmentBox = ({
                       textAlign: 'center',
                       color: Colors.white_color,
                       textTransform: 'uppercase',
-                      fontFamily: Font.fontmedium,
+                      fontFamily: Font.Medium,
                       fontSize: mobileW * 3 / 100,
                     }}>Accept</Text>
                 </TouchableOpacity> :
@@ -460,7 +460,7 @@ const AppointmentBox = ({
                     textAlign: 'center',
                     color: Colors.white_color,
                     //  paddingHorizontal: (mobileW * 2) / 100,
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: mobileW * 3 / 100,
                   }}>{Lang_chg.VIEWDETAILS[config.language]}
 
@@ -520,14 +520,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.textwhite,
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
     textAlign: config.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
     textAlign: config.textalign,
     alignSelf: 'center',

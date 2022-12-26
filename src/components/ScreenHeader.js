@@ -20,6 +20,7 @@ import {
     consolepro,
     Lang_chg,
     apifuntion,
+    localimag,
 } from "../Provider/utilslib/Utils";
 
 import { leftArrow, rightArrow, Notification, dummyUser } from "../icons/SvgIcons/Index";
@@ -51,6 +52,7 @@ const ScreenHeader = ({
     notiCount,
     style = {}
 }) => {
+    const iconSize = notiCount > 0 ? s(20) : s(18)
     return (
         title != 'Home' ?
             (
@@ -106,7 +108,7 @@ const ScreenHeader = ({
                             <Text
                                 style={{
                                     textAlign: "center",
-                                    fontFamily: Font.fontmedium,
+                                    fontFamily: Font.Medium,
                                     fontSize: (windowWidth * 4) / 100,
                                     color:Colors.darkText
                                 }}>{title}</Text>
@@ -125,7 +127,10 @@ const ScreenHeader = ({
                                         alignItems: 'center',
 
                                     }}>
-                                    <SvgXml xml={Notification} height={vs(20.26)} width={s(16.21)} />
+                                    <Image source={notiCount > 0 ? localimag.notifications : localimag.notifications_sec} style={{
+                                        width: iconSize,
+                                        height: iconSize
+                                    }} resizeMethod='resize' resizeMode="contain" />
                                 </TouchableHighlight>
                                 :
                                 <View style={{ width: '14%' }}></View>

@@ -626,7 +626,7 @@ export default class AvailabilitySchedule extends Component {
                                   marginLeft: mobileW * 1.5 / 100,
                                   textAlign: config.textRotate,
                                   color: (this.state.accept == false) ? Colors.placeholder_text : 'black',
-                                  fontFamily: (this.state.accept == false) ? Font.fontregular : Font.fontregular,
+                                  fontFamily: (this.state.accept == false) ? Font.Regular : Font.Regular,
                                   fontSize: Font.placeholdersize + 1,
                                 }}>
                                 Accept Booking
@@ -681,7 +681,7 @@ export default class AvailabilitySchedule extends Component {
                                 marginLeft: mobileW * 1.5 / 100,
                                 textAlign: config.textRotate,
                                 color: (this.state.hide == false) ? Colors.placeholder_text : 'black',
-                                fontFamily: (this.state.hide == false) ? Font.fontregular : Font.fontregular,
+                                fontFamily: (this.state.hide == false) ? Font.Regular : Font.Regular,
                                 fontSize: Font.placeholdersize + 1,
                               }}>
                               Hide Booking
@@ -766,7 +766,7 @@ export default class AvailabilitySchedule extends Component {
                                               style={{
                                                 marginLeft: mobileW * 1.5 / 100,
                                                 textAlign: config.textRotate,
-                                                fontFamily: Font.fontregular,
+                                                fontFamily: Font.Regular,
                                                 color: (this.state.mabtn == false) ? Colors.placeholder_text : 'black',
                                                 fontSize: Font.placeholdersize + 1,
                                               }}>
@@ -835,7 +835,7 @@ export default class AvailabilitySchedule extends Component {
                                               style={{
                                                 marginLeft: mobileW * 1.5 / 100,
                                                 textAlign: config.textRotate,
-                                                fontFamily: Font.fontregular,
+                                                fontFamily: Font.Regular,
                                                 color: (this.state.mabtn == false) ? Colors.placeholder_text : 'black',
                                                 fontSize: Font.placeholdersize + 1,
                                               }}>
@@ -903,7 +903,7 @@ export default class AvailabilitySchedule extends Component {
                                           style={{
                                             marginLeft: mobileW * 1.5 / 100,
                                             textAlign: config.textRotate,
-                                            fontFamily: Font.fontregular,
+                                            fontFamily: Font.Regular,
                                             color: (this.state.mabtn == false) ? Colors.placeholder_text : 'black',
                                             fontSize: Font.placeholdersize + 1,
                                           }}>
@@ -991,7 +991,7 @@ export default class AvailabilitySchedule extends Component {
                                         value={(item?.slot_day_enable == "1") ? true : false}
                                       />
                                       <Text style={{
-                                        fontFamily: Font.fontmedium,
+                                        fontFamily: Font.Medium,
                                         fontSize: mobileW * 4 / 100,
                                         color: (item?.slot_day_enable == "1") ? Colors.textblue : Colors.placeholder_textcolorlight,
                                         marginLeft: 10
@@ -1025,7 +1025,7 @@ export default class AvailabilitySchedule extends Component {
                                       }} >
                                       <Text style={{
                                         color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
-                                        fontFamily: Font.fontregular,
+                                        fontFamily: Font.Regular,
                                         fontSize: (mobileW * 3.5) / 100
                                       }} allowFontScaling={false}>
                                         {item?.slot_start_time}
@@ -1079,7 +1079,7 @@ export default class AvailabilitySchedule extends Component {
                                       }} >
                                       <Text style={{
                                         color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
-                                        fontFamily: Font.fontregular,
+                                        fontFamily: Font.Regular,
                                         fontSize: (mobileW * 3.5) / 100
                                       }} allowFontScaling={false}>
                                         {item?.slot_end_time}
@@ -1151,7 +1151,7 @@ export default class AvailabilitySchedule extends Component {
                           }}
                         >
                           <Text style={{
-                            fontFamily: Font.fontregular,
+                            fontFamily: Font.Regular,
                             fontSize: mobileW * 3.6 / 100,
                             color: Colors.textblue
                           }}>Manage Location</Text>

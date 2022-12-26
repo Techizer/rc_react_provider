@@ -598,7 +598,7 @@ ActivityIndicatorElement = () => {
             width: '80%',
           }}>
           <Text style={{ textAlign: 'center',
-    fontFamily: Font.fontmedium,
+    fontFamily: Font.Medium,
     fontSize: (mobileW * 4) / 100,}}>{Lang_chg.CartItem[config.language]}</Text>
         </View>
         <View
@@ -655,7 +655,7 @@ ActivityIndicatorElement = () => {
                     <View style={{flexDirection: 'row',width:"83%",alignItems:'center'}}>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:mobileW*3.9/100,
                           color:Colors.gray4
                         }}>{this.state.provider_name}
@@ -663,7 +663,7 @@ ActivityIndicatorElement = () => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:Font.cart2subtext,
                           color: Colors.theme_color,
                           marginLeft:mobileW*4/100
@@ -709,7 +709,7 @@ ActivityIndicatorElement = () => {
                     <View>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize: Font.cart2heading,
                           color: Colors.theme_color,
                           paddingBottom: (mobileW * 3.5) / 100,
@@ -739,7 +739,7 @@ ActivityIndicatorElement = () => {
                                   }}>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       color: Colors.theme_color,
                                       fontSize:mobileW*3.5/100,
                                       textAlign:config.textRotate
@@ -748,7 +748,7 @@ ActivityIndicatorElement = () => {
                                   </Text>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       fontSize: Font.cart2subtext,
                                       textTransform:'uppercase',
                                       color: Colors.darkgraytextheading,
@@ -772,7 +772,7 @@ ActivityIndicatorElement = () => {
                                     }}>
                                     <Text
                                       style={{
-                                        fontFamily: Font.fontmedium,
+                                        fontFamily: Font.Medium,
                                         fontSize:mobileW*3/100,
                                         color: Colors.theme_color,
                                         textAlign:'center'
@@ -788,7 +788,7 @@ ActivityIndicatorElement = () => {
                                   }}>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       color: Colors.theme_color,
                                       fontSize:mobileW*3.5/100,
                                       textAlign:config.textRotate
@@ -797,7 +797,7 @@ ActivityIndicatorElement = () => {
                                   </Text>
                                   <Text
                                     style={{
-                                      fontFamily: Font.fontmedium,
+                                      fontFamily: Font.Medium,
                                       fontSize: Font.cart2subtext,
                                       color: Colors.darkgraytextheading,
                                       textAlign:config.textRotate,
@@ -834,7 +834,7 @@ ActivityIndicatorElement = () => {
                                     <Text
                                       style={{
                                         color: Colors.theme_color,
-                                        fontFamily: Font.fontregular,
+                                        fontFamily: Font.Regular,
                                         fontSize: (mobileW * 3.3) / 100,
                                         marginLeft:mobileW*1.5/100,
                                         textAlign:config.textRotate
@@ -861,7 +861,7 @@ ActivityIndicatorElement = () => {
                     <View>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize: Font.cart2heading,
                           color: Colors.theme_color,
                           textAlign:config.textRotate,
@@ -887,7 +887,7 @@ ActivityIndicatorElement = () => {
                          }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           textAlign:config.textRotate,
                           color:'#000',
@@ -897,7 +897,7 @@ ActivityIndicatorElement = () => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           width:'30%',
                           textAlign:'right',
@@ -917,7 +917,7 @@ ActivityIndicatorElement = () => {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>{show_data.distance_fare_text}
@@ -925,7 +925,7 @@ ActivityIndicatorElement = () => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>{show_data.distance_fare} 
@@ -942,7 +942,7 @@ ActivityIndicatorElement = () => {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>{show_data.vat_text}
@@ -950,7 +950,7 @@ ActivityIndicatorElement = () => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontregular,
+                          fontFamily: Font.Regular,
                           fontSize:mobileW*3.3/100,
                           color:'#000',
                         }}>{show_data.vat_price} 
@@ -977,7 +977,7 @@ ActivityIndicatorElement = () => {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:mobileW*3.5/100,
                           color: Colors.theme_color,
                           textAlign:config.textRotate
@@ -986,7 +986,7 @@ ActivityIndicatorElement = () => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.fontmedium,
+                          fontFamily: Font.Medium,
                           fontSize:mobileW*3.5/100,
                           color: Colors.theme_color,
                         }}>{show_data.total_price} {this.state.currency_symbol}
@@ -1022,7 +1022,7 @@ ActivityIndicatorElement = () => {
                 <Text
                   style={{
                     color: Colors.textwhite,
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: Font.buttontextsize,
                     alignSelf: 'flex-end',
                     textAlign: config.textalign,
@@ -1039,7 +1039,7 @@ ActivityIndicatorElement = () => {
                 <Image style={{width:mobileW*35/100,height:mobileW*50/100,alignSelf:'center',resizeMode:'contain'}} source={localimag.Emptycart}> 
                 </Image>
 
-                <Text style={{color:Colors.theme_color,fontFamily:Font.fontregular,fontSize:mobileW*4/100,textAlign:'center'}}>Cart Details not found.</Text>
+                <Text style={{color:Colors.theme_color,fontFamily:Font.Regular,fontSize:mobileW*4/100,textAlign:'center'}}>Cart Details not found.</Text>
                 <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.goBack();
@@ -1056,7 +1056,7 @@ ActivityIndicatorElement = () => {
                 <Text
                   style={{
                     color: Colors.textwhite,
-                    fontFamily: Font.fontmedium,
+                    fontFamily: Font.Medium,
                     fontSize: Font.buttontextsize,
                     alignSelf: 'flex-end',
                     textAlign: config.textalign,
@@ -1085,11 +1085,11 @@ ActivityIndicatorElement = () => {
 
                                     <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100,flexDirection:'row' }}>
                                     <Image style={{width:mobileW*6/100,height:mobileW*6/100}}  source={require('./icons/logo.png')}></Image>
-                                        <Text style={{ fontFamily:Font.fontmedium, color: '#000', fontSize: mobileW * 5 / 100,paddingLeft:mobileW*4/100 }}>{Lang_chg.confimation[config.language]}</Text>
+                                        <Text style={{ fontFamily:Font.Medium, color: '#000', fontSize: mobileW * 5 / 100,paddingLeft:mobileW*4/100 }}>{Lang_chg.confimation[config.language]}</Text>
                                     </View>
                                     <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100,flexDirection:'row',alignItems:'center' }}>
                                     
-                                       <Text style={{ fontFamily: Font.fontregular, color:'#000', fontSize: mobileW * 4 / 100, }}>{Lang_chg.remove_msg[config.language]}</Text>
+                                       <Text style={{ fontFamily: Font.Regular, color:'#000', fontSize: mobileW * 4 / 100, }}>{Lang_chg.remove_msg[config.language]}</Text>
                                     </View>
 
                                    
@@ -1100,13 +1100,13 @@ ActivityIndicatorElement = () => {
                                     }}>
                                         <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }) }}
                                             style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                                            <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100, color:Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.no_txt[config.language]}</Text>
+                                            <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color:Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.no_txt[config.language]}</Text>
                                         </TouchableOpacity>
                                         
                                         <TouchableOpacity onPress={() => { this.setState({ modalVisible3: false }),this.remove_cart() }}
                                             activeOpacity={0.8}
                                             style={{ width: mobileW * 40 / 100, justifyContent: 'center' }}>
-                                            <Text style={{ fontFamily: Font.fontregular, fontSize: mobileW * 4 / 100,color:Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.Delete[config.language]}</Text>
+                                            <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100,color:Colors.bordercolorblue, alignSelf: 'center' }}>{Lang_chg.Delete[config.language]}</Text>
                                         </TouchableOpacity>
                                     </View>
 
@@ -1176,7 +1176,7 @@ ActivityIndicatorElement = () => {
                 style={{
                   fontSize: (mobileW * 8) / 100,
                   marginTop: (mobileW * 5) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   textAlign: config.textalign,
                 }}>
                 {Lang_chg.thank[config.language]}
@@ -1185,7 +1185,7 @@ ActivityIndicatorElement = () => {
                 style={{
                   fontSize: (mobileW * 3) / 100,
                   marginTop: (mobileW * 5) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   textAlign: config.textalign,
                 }}>
                 {Lang_chg.success[config.language]}
@@ -1195,7 +1195,7 @@ ActivityIndicatorElement = () => {
                 style={{
                   fontSize: (mobileW * 3) / 100,
                   marginTop: (mobileW * 1) / 100,
-                  fontFamily: Font.fontmedium,
+                  fontFamily: Font.Medium,
                   textAlign: config.textalign,
                   color: Colors.textgray,
                 }}>{Lang_chg.appoinment_aucess[config.language]}
@@ -1221,7 +1221,7 @@ ActivityIndicatorElement = () => {
                   style={{
                     fontSize: (mobileW * 3) / 100,
                     alignSelf: 'center',
-                    fontFamily: Font.fontsemibold,
+                    fontFamily: Font.SemiBold,
                     textAlign: config.textalign,
                     alignSelf: 'center',
                     color: Colors.terms_text_color_blue,

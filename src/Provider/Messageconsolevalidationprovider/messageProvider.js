@@ -14,11 +14,11 @@ class messageFunctionsProviders {
 			backgroundColor: 'red',
 			duration: 4000,
 			titleStyle: {
-				fontFamily: Font.fontregular,
+				fontFamily: Font.Regular,
 				fontSize: Font.cart2heading 
 			},
 			textStyle: {
-				fontFamily: Font.fontregular,
+				fontFamily: Font.Regular,
 				fontSize: Font.allergies_txt_size_edit
 			}
 		});
@@ -33,7 +33,7 @@ class messageFunctionsProviders {
 			backgroundColor: '#71AC2B', //'#006400', //'#228B22',
 			duration: duration,
 			titleStyle: {
-				fontFamily: Font.fontregular,
+				fontFamily: Font.Regular,
 				fontSize: Font.buttontext_size
 			}
 		});

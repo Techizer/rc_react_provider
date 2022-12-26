@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, Image, FlatList, StyleSheet, ScrollView, TouchableOpacity, Dimensions, StatusBar, SafeAreaView } from 'react-native'
+import { Text, View, Image, FlatList, StyleSheet, ScrollView, TouchableOpacity, Dimensions, StatusBar, SafeAreaView, Platform } from 'react-native'
 import { color } from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
 import { Colors, localimag, Font, mobileH, mobileW, config, Lang_chg } from './Provider/utilslib/Utils'
+import ScreenHeader from './components/ScreenHeader';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -34,24 +35,27 @@ export default class Tremsandcondition extends Component {
 
 
   render() {
+    const windowHeight = Math.round(Dimensions.get("window").height);
+    const windowWidth = Math.round(Dimensions.get("window").width);
+    const deviceHeight = Dimensions.get('screen').height;
+    const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+    let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+    headerHeight += (Platform.OS === 'ios') ? 28 : -60
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={styles.header_view}>
-          <View style={styles.backarrow}>
-            <TouchableOpacity onPress={() => { this.props.navigation.goBack() }}>
-              <Image style={{ width: 30, height: 30, resizeMode: 'contain' }}
-                source={config.textalign == 'right' ? localimag.backarrow : localimag.backarrow}></Image>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.headerText}>
-            {this.state.pagename == 0 && <Text style={{ width: '100%', fontSize: mobileW * 5 / 100, fontFamily: Font.fontmedium, textAlign: 'center', color: Colors.textblack }}>{Lang_chg.AboutRootscare[config.language]}</Text>}
-            {this.state.pagename == 2 && <Text style={{ width: '100%', fontSize: mobileW * 5 / 100, fontFamily: Font.fontmedium, textAlign: 'center', color: Colors.textblack }}>{Lang_chg.TermsandConditions[config.language]}</Text>}
-            {this.state.pagename == 1 && <Text style={{ width: '100%', fontSize: mobileW * 5 / 100, fontFamily: Font.fontmedium, textAlign: 'center', color: Colors.textblack }}>{Lang_chg.PrivacyPolicy[config.language]}</Text>}
-          </View>
-        </View>
-
-
-
+        <ScreenHeader
+          onBackPress={() => {
+            this.props.navigation.goBack();
+          }}
+          leftIcon
+          rightIcon={false}
+          navigation={this.props.navigation}
+          title={(() => {
+            if (this.state.pagename == 0) return Lang_chg.AboutRootscare[config.language]
+            if (this.state.pagename == 2) return Lang_chg.TermsandConditions[config.language]
+            if (this.state.pagename == 1) return Lang_chg.PrivacyPolicy[config.language]
+          })()}
+          style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
         {config.language == 1 ?
           <WebView

@@ -360,7 +360,7 @@ export function Appbtn(props) {
       <Text
         style={{
           color: Colors.textwhite,
-          fontFamily: Font.fontmedium,
+          fontFamily: Font.Medium,
           fontSize: Font.buttontextsize,
           alignSelf: 'flex-end',
           textAlign: config.textalign,
@@ -387,7 +387,7 @@ export function Appbtn2(props) {
       <Text
         style={{
           color: Colors.textwhite,
-          fontFamily: Font.fontmedium,
+          fontFamily: Font.Medium,
           fontSize: Font.subtext,
           alignSelf: 'flex-end',
           textAlign: config.textalign,
@@ -420,7 +420,7 @@ export function Appbtn3(props) {
       <Text
         style={{
           color: Colors.textwhite,
-          fontFamily: Font.fontmedium,
+          fontFamily: Font.Medium,
           fontSize: Font.buttontextsize,
              alignSelf: 'center',
         }}>
@@ -549,7 +549,7 @@ export function Appcheckedbox(props) {
           // alignSelf: 'flex-end',
           alignSelf: 'center',
           fontSize: Font.ssregulartext_size,
-          fontFamily: Font.fontlight,
+          fontFamily: Font.Light,
           // backgroundColor: 'red',
           // color: Colors.gray3,
           // color: 'red',
@@ -563,7 +563,7 @@ export function Appcheckedbox(props) {
           alignSelf: 'flex-end',
           alignSelf: 'center',
           fontSize: Font.ssregulartext_size,
-          fontFamily: Font.fontlight,
+          fontFamily: Font.Light,
           // backgroundColor: 'red',
           // color: Colors.gray3,
           // color: 'red',
@@ -600,7 +600,7 @@ export function Appuncheckedbox(props) {
           // alignSelf: 'flex-end',
           alignSelf: 'center',
           fontSize: Font.ssregulartext_size,
-          fontFamily: Font.fontlight,
+          fontFamily: Font.Light,
           // backgroundColor: 'red',
           // color: Colors.gray3,
           // color: 'red',
@@ -614,7 +614,7 @@ export function Appuncheckedbox(props) {
           alignSelf: 'flex-end',
           alignSelf: 'center',
           fontSize: Font.ssregulartext_size,
-          fontFamily: Font.fontlight,
+          fontFamily: Font.Light,
           // backgroundColor: 'red',
           // color: Colors.gray3,
           // color: 'red',
@@ -646,7 +646,7 @@ export function Taskbooking(props) {
         style={{
           color: Colors.white_color,
           fontSize: Font.textsize,
-          fontFamily: Font.fontlight,
+          fontFamily: Font.Light,
          // paddingHorizontal: (mobileW * 2) / 100,
         }}>
         {props.title}
@@ -698,7 +698,7 @@ const styles = StyleSheet.create({
     borderRadius: (mobileW * 2) / 100,
   },
   noteboxtxt: {
-    fontFamily: Font.fontregular,
+    fontFamily: Font.Regular,
     lineHeight: (mobileW * 5) / 100,
   },
   notecard: {
@@ -744,9 +744,9 @@ const styles = StyleSheet.create({
   checkboxtext: {
     color: '#666666',
     fontSize: Font.smalltextsize,
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     // fontSize: Font.smalltextsize,
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     flex: 0.88,
   },
   buttonstyle: {
@@ -762,7 +762,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4C94DB',
     textAlign: 'center',
     color: Colors.whiteColor,
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: (mobileW * 4.2) / 100,
   },
 
@@ -799,7 +799,7 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-end',
     alignSelf: 'center',
     fontSize: Font.ssregulartext_size,
-    fontFamily: Font.fontlight,
+    fontFamily: Font.Light,
     // backgroundColor: 'red',
     // color: Colors.gray3,
     // color: 'red',
@@ -820,7 +820,7 @@ const styles = StyleSheet.create({
     borderRadius: (mobileW * 2) / 100,
   },
   noteboxtxt: {
-    fontFamily: Font.fontbold,
+    fontFamily: Font.Bold,
     fontSize: (mobileW * 3.8) / 100,
     lineHeight: (mobileW * 5) / 100,
   },
@@ -857,7 +857,7 @@ const styles = StyleSheet.create({
   },
   insideviewtext: {
     alignSelf: 'flex-end',
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: Font.bigheadingfont,
     color: '#4B4B4B',
     marginRight: (mobileW * 0.2) / 100,
@@ -872,7 +872,7 @@ const styles = StyleSheet.create({
   },
   insideviewname: {
     alignSelf: 'center',
-    fontFamily: Font.fontextrabold,
+    fontFamily: Font.ExtraBold,
     fontSize: Font.mini,
     color: '#4B4B4B',
   },
@@ -899,7 +899,7 @@ style={{
       fontSize: Font.placeholdersize,
       textAlign: config.textalign,
       paddingVertical: (mobileW * 4) / 100,
-      fontFamily: Font.fontlight,
+      fontFamily: Font.Light,
     }}
     maxLength={50}
     placeholder={
