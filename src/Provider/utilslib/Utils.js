@@ -1,5 +1,5 @@
 import {config} from '../configProvider';
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform, StatusBar} from 'react-native';
 import {localStorage} from '../localStorageProvider';
 import {Lang_chg} from '../Language_provider';
 import {consolepro} from '../Messageconsolevalidationprovider/Consoleprovider';
@@ -28,6 +28,12 @@ import Footer from '../Footer';
 const mobileH = Math.round(Dimensions.get('window').height);
 const mobileW = Math.round(Dimensions.get('window').width);
 
+const windowHeight = Math.round(Dimensions.get("window").height);
+const windowWidth = Math.round(Dimensions.get("window").width);
+const deviceHeight = Dimensions.get('screen').height;
+const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+
+
 export {
   config,
   Otpprovider,
@@ -49,4 +55,8 @@ export {
   msgTitle,
   msgText,
   Currentltlg,
+  windowHeight,
+  windowWidth,
+  deviceHeight,
+  StatusbarHeight
 };

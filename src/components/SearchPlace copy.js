@@ -54,19 +54,6 @@ class SearchPlaceScreen extends Component {
             place_key: '',
             countryKey: '',
             searchPlaceVisible: false,
-            service_lat: '',
-            service_long: '',
-            service_address: '',
-            addressData:{
-                latitude: '',
-                longitude: '',
-                latdelta: '',
-                longdelta: '',
-                address: '',
-                type: '',
-                addressBottomSheet: false,
-                country: ''
-            }
             // loginUserData: JSON.parse(global.loginUserData),
         };
     }
@@ -80,7 +67,7 @@ class SearchPlaceScreen extends Component {
     getSpecificCountryCode = async () => {
 
         let user_details = await localStorage.getItemObject('user_arr');
-        const { work_area } = user_details
+        const {work_area} = user_details
         if (work_area === 'UAE') {
             this.setState({
                 countryKey: 'AE'
@@ -92,27 +79,6 @@ class SearchPlaceScreen extends Component {
             })
         }
     }
-
-    selectGooglePlace = ({
-        data,
-        details,
-        latitude,
-        longitude,
-    }) => {
-        this.setState(
-            {
-                searchPlaceVisible: false,
-                service_lat: latitude,
-                service_long: longitude,
-                service_address: data?.description,
-            },
-            () => {
-
-            }
-        );
-    };
-
-
 
     getadddressfromlatlong = (event) => {
         // alert('hi')
@@ -153,7 +119,7 @@ class SearchPlaceScreen extends Component {
                         longitude: details.geometry.location.lng,
                     },
                     () => {
-                        this.selectGooglePlace({
+                        this.props.selectGooglePlace({
                             data: data2,
                             details,
                             latitude: details.geometry.location.lat,
@@ -302,12 +268,8 @@ class SearchPlaceScreen extends Component {
     }
 
     closeModalAction = () => {
-        // this.props.closeGooglePlace({
-        //     ivrListVisible: false,
-
-        // });
-        this.setState({
-            searchPlaceVisible: false,
+        this.props.closeGooglePlace({
+            ivrListVisible: false,
         });
     };
 
@@ -339,28 +301,9 @@ class SearchPlaceScreen extends Component {
                     flex: 1,
                     alignItems: "center",
                 }}>
-                    <AddEditAddress
-                        visible={addressData.addressBottomSheet}
-                        onRequestClose={(status) => {
-                            this.setState({
-                                ...this.state,
-                                addressData: {
-                                    ...this.state.addressData,
-                                    addressBottomSheet: false
-                                }
-                            })
-
-                            if (status) {
-                                this.props.navigation.pop()
-                            }
-                        }}
-                        addressDetails={this.state.addressData}
-                        type={this.state.addressData.type}
-                    />
                     <ScreenHeader navigation={this.props.navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
-                        this.props.navigation.goBack();
+                        this.closeModalAction(false);
                     }} />
-
                     <View
                         style={{
                             flex: 0.5,
@@ -433,7 +376,7 @@ class SearchPlaceScreen extends Component {
                                     },
                                     () => {
                                         console.log({ data });
-                                        this.selectGooglePlace({
+                                        this.props.selectGooglePlace({
                                             data,
                                             details,
                                             latitude: details.geometry.location.lat,

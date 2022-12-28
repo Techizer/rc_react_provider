@@ -42,6 +42,8 @@ import Office_address from '../Office_address';
 import Show_other_appoinment from '../Show_other_appoinment';
 import Show_currentlocation from '../Show_currentlocation';
 import App_payment from '../App_payment';
+import ServiceAddressF1 from '../components/ServiceAddressF1';
+import { SearchPlaceScreen } from '../components';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -110,6 +112,7 @@ const Stacknav = navigation => {
         component={Tremsandcondition}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+      
       <Stack.Screen
         name="Show_currentlocation"
         component={Show_currentlocation}
@@ -191,11 +194,22 @@ const Stacknav = navigation => {
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
+        name="ServiceAddressF1"
+        component={ServiceAddressF1}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+      name="SearchPlaceScreen"
+      component={SearchPlaceScreen}
+      options={{ headerShown: false, gestureEnabled: false }}
+    />
+      
+      <Stack.Screen
         name="LabPackageListing"
         component={LabPackageListing}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-<Stack.Screen
+      <Stack.Screen
         name="LabPackageDetails"
         component={LabPackageDetails}
         options={{ headerShown: false, gestureEnabled: false }}

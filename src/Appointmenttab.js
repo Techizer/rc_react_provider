@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from 'react';
-import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, Dimensions, Platform } from 'react-native';
+import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, Dimensions, Platform, StatusBar } from 'react-native';
 import {
   Colors,
   Font,

@@ -931,7 +931,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('AvailabilityScheduletab')
+                  this.props.navigation.navigate('ServiceAddressF1')
                 }}
 
                 title={'Service Address'}

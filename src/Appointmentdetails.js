@@ -3,7 +3,7 @@ import HTMLView from 'react-native-htmlview';
 import {
   Alert, Text, TextInput, View, ScrollView, Linking,
   StyleSheet, SafeAreaView, Image, TouchableOpacity,
-  Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions
+  Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar
 } from 'react-native';
 import { Cameragallery, mediaprovider, Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
 import { Appheading, Searchbarandicon, CarAppHeader2 } from './Allcomponents';
