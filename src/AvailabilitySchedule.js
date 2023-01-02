@@ -295,15 +295,17 @@ export default class AvailabilitySchedule extends Component {
       if (isError) {
         msgProvider.showError("End time should be greater than Start time")
       } else {
-        if (this.state.service_address == "") {
-          msgProvider.showError("Please select service location to continue")
-        }
-        // else if (this.state.service_radius == "" || this.state.service_radius == undefined) {
-        //   msgProvider.showError("Please select booking eligibility radius to continue")
-        // } 
-        else {
-          this.insertUpdatePriceList()
-        }
+        // if (this.state.service_address == "") {
+        //   msgProvider.showError("Please select service location to continue")
+        // }
+        // // else if (this.state.service_radius == "" || this.state.service_radius == undefined) {
+        // //   msgProvider.showError("Please select booking eligibility radius to continue")
+        // // } 
+        // else {
+        //   this.insertUpdatePriceList()
+        // }
+
+        this.insertUpdatePriceList()
 
       }
     }
@@ -538,10 +540,11 @@ export default class AvailabilitySchedule extends Component {
             }
           }} />
         {this.state.searchPlaceVisible ? (
-          <SearchPlaceScreen
-            closeGooglePlace={this.closeGooglePlace.bind(this)}
-            selectGooglePlace={this.selectGooglePlace.bind(this)}
-          />
+          // <SearchPlaceScreen
+          //   closeGooglePlace={this.closeGooglePlace.bind(this)}
+          //   selectGooglePlace={this.selectGooglePlace.bind(this)}
+          // />
+          <></>
         ) :
           <View
             style={{
@@ -1115,7 +1118,7 @@ export default class AvailabilitySchedule extends Component {
 
                     </View>
 
-                    <View style={{
+                    {/* <View style={{
                       marginTop: 28,
                       paddingLeft: 15,
                       paddingRight: 15,
@@ -1158,7 +1161,7 @@ export default class AvailabilitySchedule extends Component {
                         </TouchableOpacity>
                       </View>
 
-                    </View>
+                    </View> */}
 
 
                   </>

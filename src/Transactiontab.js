@@ -83,18 +83,19 @@ const renderTabBar = props => (
   <TabBar
     {...props}
     indicatorStyle={{
-      backgroundColor: Colors.textblue,
-      height: (mobileW * 1) / 100,
-      borderTopRightRadius: 10,
-      borderTopLeftRadius: 10,
+      backgroundColor: Colors.Theme,
+      height: (mobileW * 0.75) / 100,
+      // borderTopRightRadius: 10,
+      // borderTopLeftRadius: 10
     }}
-    style={{ backgroundColor: '#EDEEF1' }}
+    activeColor={Colors.Theme}
+    inactiveColor={'#354052'}
+    style={{ backgroundColor: '#F1F2F4' }}
     labelStyle={{
       textTransform: 'capitalize',
-      fontSize: (mobileW * 3.5) / 100,
+      fontSize: (mobileW * 3.25) / 100,
       textAlign: 'center',
-      fontFamily: Font.SemiBold,
-      // color: Colors.textblue,
+      fontFamily: Font.Medium,
     }}
     renderLabel={({ focused, route }) => {
       return (

@@ -26,14 +26,14 @@ const AppointmentBox = ({
   var CurrentDate = moment().unix(); //Wed, 19 Oct 2022
   var MyDate = moment(appointmentDate + " " + item.app_time, 'YYYY-MM-DD hh:mm A').unix();
   var MyEndDate = moment(appointmentDate + " 11:59 PM", 'YYYY-MM-DD hh:mm A').unix();
-  console.log('CurrentDate:: ', CurrentDate,
-    'MyDate:: ', MyDate,
-    '-- ', CurrentDate - MyDate
-  );
+  // console.log('CurrentDate:: ', CurrentDate,
+  //   'MyDate:: ', MyDate,
+  //   '-- ', CurrentDate - MyDate
+  // );
 
   if (CurrentDate < MyDate) {
     let diff = (MyDate - CurrentDate) / 60 //mins
-    console.log('CurrentDate < MyDate:: ', diff);
+    //console.log('CurrentDate < MyDate:: ', diff);
     if (diff <= 10) {
       VideoCallBtn = true
     }
@@ -392,7 +392,8 @@ const AppointmentBox = ({
 
               {(item.acceptance_status == 'Accepted' &&
                 item.service_type == "Doctor" &&
-                item.appointment_type == "Online" && VideoCallBtn == true) &&
+                item.appointment_type === "Online" && VideoCallBtn == true) &&
+                item.booking_type === 'online_task' &&
                 <TouchableOpacity onPress={onPressVideoCall}
                   style={{
                     backgroundColor: Colors.buttoncolorhgreen,

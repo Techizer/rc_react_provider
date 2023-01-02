@@ -19,6 +19,7 @@ export const localimag = {
   appointmentIcon: require('../icons/appointment-art.png'),
   rightDIcon: require('../icons/rightArrow.png'),
   rightarrow: require('../icons/back-33x.png'),
+  serviceaddress: require('../icons/service_address.png'),
   p1: require('../icons/download33x.png'),
   user_img: require('../icons/photo-43x.png'),
   notifications: require('../icons/notifications3x.png'),

@@ -11,6 +11,7 @@ import {
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { firebapushnotification } from './firbase_pushnotification';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -85,7 +86,7 @@ export default class Login extends Component {
       this.setState({ langaugeme: textalign })
     }
     let address_arr = await localStorage.getItemObject('address_arr')
-    console.log('jdkfgvy', address_arr)
+    // console.log('jdkfgvy', address_arr)
     this.setState({ address_new: address_arr })
     if (address_arr == '' || address_arr == 'NA' || address_arr == null) {
       this.getlatlong();
@@ -147,7 +148,7 @@ export default class Login extends Component {
     let url = 'NA'
 
     url = fcmtoken
-    console.log('url', url)
+    // console.log('url', url)
 
     Shareratepro.sharefunction(url);
   }
@@ -170,7 +171,7 @@ export default class Login extends Component {
               'message': 'This App needs to Access your location'
             }
             )
-            console.log('granted', PermissionsAndroid.RESULTS.GRANTED)
+            // console.log('granted', PermissionsAndroid.RESULTS.GRANTED)
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
               that.callLocation(that);
             } else {
@@ -192,7 +193,7 @@ export default class Login extends Component {
   callLocation = async (that) => {
     this.setState({ loading: true })
     localStorage.getItemObject('position').then((position) => {
-      console.log('position', position)
+      // console.log('position', position)
       if (position != null) {
         var pointcheck1 = 0
         this.getalldata(position)
@@ -213,7 +214,7 @@ export default class Login extends Component {
         );
         that.watchID = Geolocation.watchPosition((position) => {
           //Will give you the location on location change
-          console.log('data', position);
+          // console.log('data', position);
 
           if (pointcheck1 != 1) {
             localStorage.setItemObject('position', position)
@@ -224,7 +225,7 @@ export default class Login extends Component {
 
       }
       else {
-        console.log('helo gkjodi')
+        // console.log('helo gkjodi')
         var pointcheck = 0
         Geolocation.getCurrentPosition(
           //Will give you the current location
@@ -245,7 +246,7 @@ export default class Login extends Component {
         );
         that.watchID = Geolocation.watchPosition((position) => {
           //Will give you the location on location change
-          console.log('data', position);
+          // console.log('data', position);
 
           if (pointcheck != 1) {
 
@@ -262,8 +263,8 @@ export default class Login extends Component {
 
     let longitude = position.coords.longitude
     let latitude = position.coords.latitude
-    console.log('positionlatitude', position.coords)
-    console.log('positionlongitude', longitude)
+    // console.log('positionlatitude', position.coords)
+    // console.log('positionlongitude', longitude)
     this.setState({ latitude: latitude, longitude: longitude, loading: false })
     myLatitude = latitude,
       myLongitude = longitude
@@ -309,7 +310,7 @@ export default class Login extends Component {
 
         localStorage.setItemObject('address_arr', add_location.address);
 
-        console.log('dfhhdfgb', data2)
+        // console.log('dfhhdfgb', data2)
         //   return  this.props.locationget(data2);
 
       })
@@ -336,7 +337,7 @@ export default class Login extends Component {
     return true;
   };
   launguage_setbtn = (language) => {
-    console.log('Welcome')
+    // console.log('Welcome')
     Lang_chg.language_set(language)
     this.setState({
       engbtn: !this.state.engbtn,
@@ -349,7 +350,7 @@ export default class Login extends Component {
   get_rem_data = async () => {
     let remeberdata_arr = await localStorage.getItemObject('remeberdata');
 
-    console.log('config.language', remeberdata_arr)
+    // console.log('config.language', remeberdata_arr)
 
 
 
@@ -358,7 +359,6 @@ export default class Login extends Component {
       this.setState({ email: remeberdata_arr.email })
       this.setState({ password: remeberdata_arr.password })
       this.setState({ remember_me: true })
-      console.log('rembn', this.state.remember_me)
 
     }
 
@@ -423,21 +423,17 @@ export default class Login extends Component {
     }
 
     let url = config.baseURL + "api-service-provider-login";
-    console.log('url', url)
     var data = new FormData();
-
-
     data.append('email', this.state.email)
     data.append('password', this.state.password)
     data.append('device_type', config.device_type)
     data.append('device_lang', device_lang)
-    data.append('fcm_token', fcmtoken)
+    data.append('fcm_token', await firebapushnotification.getFcmToken())
     data.append('user_type', this.state.userType[this.state.selectuserType].value)
 
-    console.log('data', data)
+    console.log('loginData', data)
 
     apifuntion.postApi(url, data).then((obj) => {
-      // alert('muskan')
       consolepro.consolelog("obj", obj)
       consolepro.consolelog("obj", obj.status)
       if (obj.status == true) {
@@ -446,7 +442,6 @@ export default class Login extends Component {
         // this.passwordInput.clear();
         var user_details = obj.result;
 
-        console.log('hello')
         this.setState({ emailfocus: false, passwordfocus: false })
         consolepro.consolelog('user_details', user_details);
         const uservalue = {
@@ -487,12 +482,12 @@ export default class Login extends Component {
   }
 
   onSwipeRight(gestureState) {
-    console.log("gestureState:: ", gestureState);
+    // console.log("gestureState:: ", gestureState);
     //this.setState({myText: 'You swiped right!'});
   }
 
   onSwipeLeft(gestureState) {
-    console.log("gestureState:: ", gestureState);
+    // console.log("gestureState:: ", gestureState);
     this.props.navigation.navigate('Signup')
     // this.setState({myText: 'You swiped left!'});
   }

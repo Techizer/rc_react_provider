@@ -19,7 +19,8 @@ const AddressContainer = ({
     selected,
     editable = () => { },
     isLoading,
-    defaultAdd
+    defaultAdd,
+    item
 }) => {
 
     useEffect(() => {
@@ -63,8 +64,6 @@ const AddressContainer = ({
             :
             <View
                 style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingTop: (index === 0 && defaultAdd == addressDetails?.id) ? 18 : (index === 0) ? 0 : vs(18), backgroundColor: defaultAdd == addressDetails?.id ? Colors.appointmentdetaillightblue : 'transparent' }}>
-
-
                 <View style={{ width: '9%', }}>
                     <SvgXml xml={Address} />
                 </View>

@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { s } from 'react-native-size-matters';
 const windowWidth = Dimensions.get('window').width;
 const themecolor = '#0168B3';
 const statusbar = '#fff';
@@ -14,6 +15,7 @@ export const Colors = {
   cancletextcolor: 'black',
   splashtextcolor: '#8F98A7',
   headingtextboldcolor: 'black',
+
 
   placeholdertextcolor: '#515C6F',
   textwhite: 'white',
@@ -74,6 +76,7 @@ export const Colors = {
   gainsboro: '#e5e5e5',
   backgroundcolor: '#f1f2f4',
   orange: '#FFA800',
+  Theme:'#38ABEC',
 
   //01-03 radhekrishan
   drawerblue: '#57A7DB',
@@ -145,6 +148,14 @@ export const Font = {
   ExtraBold: 'Rubik-ExtraBold',
   SemiBold: 'Rubik-SemiBold',
   SemiBoldItalic: 'Rubik-SemiBoldItalic',
+
+  xsmall:  (windowWidth*2.67)/100,  //----10
+  small: (windowWidth*3.2)/100,  //----12
+  medium: (windowWidth*3.7)/100,  //----14
+  large: s(14),  //----15
+  xlarge: (windowWidth*4.2)/100,  //----16
+  xxlarge: (windowWidth*4.7)/100,  //----18
+  xxxlarge: (windowWidth*5)/100,  //----20
 
   headerfont: (windowWidth * 5) / 100,
   headingfont: (windowWidth * 4.5) / 100,

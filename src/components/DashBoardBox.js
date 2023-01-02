@@ -15,6 +15,9 @@ const DashBoardBox = ({
   onLoading,
   isMargin,
   isBorder,
+  actionColor,
+  actionTextColor,
+  actionMessage
 }) => {
   return (
     <>
@@ -45,17 +48,18 @@ const DashBoardBox = ({
                 />
               </View>
               <View style={{
-                // backgroundColor: 'blue',
+                //backgroundColor: 'blue',
                 width: '55%',
                 justifyContent: 'center',
-                alignItems: 'flex-start',
                 paddingLeft: (mobileW * 6) / 100,
               }}>
                 <Text style={{
                   fontFamily: Font.Regular,
-                  fontSize: (mobileW * 2.8) / 100,
-                  color: Colors.splashtextcolor,
-                  lineHeight: 11
+                  fontSize: (mobileW * 3.4) / 100,
+                  color: '#8F98A7',
+                  lineHeight: 12,
+                  //backgroundColor:'pink',
+                  paddingVertical: (mobileW * 3.5) / 100,
                 }}>{textInfo}</Text>
               </View>
             </View>
@@ -71,7 +75,7 @@ const DashBoardBox = ({
 
             <View style={{
               // backgroundColor: 'yellow',
-              width: '80%',
+              width: '50%',
               justifyContent: 'center',
               alignItems: 'flex-start',
               paddingLeft: (mobileW * 5) / 100,
@@ -82,9 +86,36 @@ const DashBoardBox = ({
                 color: Colors.placeholder_text_color
               }}>{textTitle}</Text>
             </View>
+
+            <View style={{
+              // backgroundColor: 'yellow',
+              width: '40%',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              paddingHorizontal: (mobileW * 3) / 100,
+              height: '70%',
+              alignSelf:'center',
+            }}>
+              <View style={{
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              paddingHorizontal: (mobileW * 3) / 100,
+              backgroundColor: actionColor, 
+              borderRadius: 12,
+              paddingVertical: 6
+            }}>
+              
+              <Text style={{
+                fontFamily: Font.Regular,
+                fontSize: Font.small,
+                color: actionTextColor,
+              }}>{actionMessage}</Text>
+            </View>
+            </View>
+
             <View style={{
               // backgroundColor: 'blue',
-              width: '20%',
+              width: '10%',
               justifyContent: 'center',
               alignItems: 'flex-end',
               paddingRight: (mobileW * 5) / 100,
@@ -160,8 +191,9 @@ const styles = StyleSheet.create({
     // marginRight: 10,
   },
   imgR: {
-    width: (mobileW * 6.3) / 100,
-    height: (mobileW * 6.3) / 100,
+    width: (mobileW * 4) / 100,
+    height: (mobileW * 4) / 100,
+    tintColor: '#17181A'
     // marginRight: 10,
   },
 });

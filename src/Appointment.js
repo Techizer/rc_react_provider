@@ -164,18 +164,18 @@ export default class Appointment extends Component {
       this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         this.setState({ appoinment_detetails: obj.result, message: obj.message })
-        console.log('obj.result', obj.result)
+        // console.log('obj.result', obj.result)
 
 
 
       } else {
 
         this.setState({ appoinment_detetails: obj.result, message: obj.message })
-        console.log('obj.result', obj.result)
+        // console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      //consolepro.consolelog("-------- error ------- " + error);
 
     });
 
@@ -281,7 +281,7 @@ export default class Appointment extends Component {
     let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
 
     let url = config.baseURL + apishow;
-    console.log("url", url)
+    //console.log("url", url)
 
     var data = new FormData();
     // data.append('lgoin_user_id', user_id)
@@ -291,26 +291,23 @@ export default class Appointment extends Component {
     // data.append('service_type', "nurse")
     data.append('service_type', user_type)
 
-
-
-    consolepro.consolelog('data', data)
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      // console.log({GetAppointments: obj.result});
       this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         this.setState({ appoinment_detetails: obj.result, message: obj.message })
-        console.log('obj.result', obj.result)
+        // console.log('obj.result', obj.result)
 
 
 
       } else {
 
         this.setState({ appoinment_detetails: obj.result, message: obj.message })
-        console.log('obj.result', obj.result)
+        //console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      //consolepro.consolelog("-------- error ------- " + error);
 
     });
 
@@ -397,9 +394,9 @@ export default class Appointment extends Component {
 
     consolepro.consolelog('data', data)
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      //consolepro.consolelog("obj", obj)
       if (obj.status == true) {
-        console.log('obj.result', obj.result)
+        // console.log('obj.result', obj.result)
         // let appoinment_detetails = [...this.state.appoinment_detetails];
         // appoinment_detetails[this.state.index] = { ...appoinment_detetails[this.state.index], key: obj.result[0] };
         // this.setState({ appoinment_detetails });
@@ -416,26 +413,26 @@ export default class Appointment extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      // consolepro.consolelog("-------- error ------- " + error);
     });
 
   }
   get_all_notification = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
+    // console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
     let url = config.baseURL + "api-notification-count";
-    console.log("url", url)
+    // console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', user_id)
 
-    consolepro.consolelog('data', data)
+    // consolepro.consolelog('data', data)
     apifuntion.postApi(url, data, 1).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      // consolepro.consolelog("obj", obj)
       if (obj.status == true) {
         this.setState({ notification_count: obj.result })
-        console.log('obj nationaltity', obj)
+        // console.log('obj nationaltity', obj)
 
 
 
@@ -446,7 +443,7 @@ export default class Appointment extends Component {
       }
     }).catch((error) => {
 
-      console.log("-------- error ------- " + error);
+      // console.log("-------- error ------- " + error);
     })
 
   }
@@ -455,7 +452,7 @@ export default class Appointment extends Component {
     let user_id = user_details['user_id']
 
     let url = config.baseURL + "api-patient-next-date-time";
-    console.log("url", url)
+    // console.log("url", url)
 
     var data = new FormData();
     data.append('provider_id', this.state.send_id)
@@ -469,7 +466,7 @@ export default class Appointment extends Component {
         var cureent = new Date();
         var timcurrent = cureent.getHours() + ":" + cureent.getMinutes();
         this.setState({ timcurrent_for_check: timcurrent })
-        consolepro.consolelog("obj.result", obj.result)
+        // consolepro.consolelog("obj.result", obj.result)
         if (this.state.check_booking == 'TASK_BOOKING') {
           if (obj.result.task_time != '') {
             var names = obj.result.task_time;

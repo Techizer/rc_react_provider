@@ -20,6 +20,7 @@ export default class Drawerscreen extends Component {
       address_new: 'NA',
       name: '',
       profile_img: null,
+      totalCompletionPercentage: 0
       //address_old: ''
     }
   }
@@ -33,9 +34,34 @@ export default class Drawerscreen extends Component {
         })
       }
       this.getProfile()
+      this.getPercentage()
     });
+  }
 
+  getPercentage = async () => {
+    var user_details = await localStorage.getItemObject("user_arr");
+    let { user_id, user_type } = user_details;
+    let url = config.baseURL + "api-provider-profile-complete";
 
+    var data = new FormData();
+    console.log({ user_id, user_type });
+    data.append("login_user_id", user_id);
+    data.append("user_type", user_type);
+    apifuntion
+      .postApi(url, data, 1)
+      .then((completionData) => {
+        this.setState({
+          totalCompletionPercentage: completionData?.result?.total_complete
+        })
+      })
+      .catch((error) => {
+        console.log({ errorz: error });
+        // setIsLoading(false)
+        // setIsDelete(false)
+        // msgProvider.showError(obj.message)
+        // onRequestClose()
+        // console.log("-------- error ------- " + error);
+      });
   }
 
   getProfile = async () => {
@@ -753,42 +779,42 @@ export default class Drawerscreen extends Component {
                 }, 350);
               }}
               activeOpacity={0.7}
-              style={{ width: '100%', alignItems: "center", flexDirection: 'row', paddingTop: vs(8), height: vs(100), backgroundColor: Colors.White }}>
+              style={{ width: '100%', alignItems: "center", flexDirection: 'row', paddingTop: vs(20), height: vs(140), backgroundColor: Colors.White }}>
 
-              <View style={{ width: '31%', height: '100%' }} >
+              <View style={{ width: '31%' }} >
                 {
                   (this.state.profile_img == "NA" || this.state.profile_img == "" || this.state.profile_img == null) ?
                     <SvgXml xml={dummyUser} style={{
                       alignSelf: "center",
-                      marginTop: vs(5)
                     }} />
                     :
                     // <SvgUri uri={this.state.profile_img} />
                     <Image
                       source={{ uri: this.state.profile_img }}
-                      style={{ height: s(60), width: s(60), borderRadius: s(60), backgroundColor: Colors.backgroundcolor, marginTop: vs(5), alignSelf: 'center' }}
+                      style={{ height: s(85), width: s(85), borderRadius: s(85), backgroundColor: Colors.backgroundcolor, alignSelf: 'center' }}
                     />
 
                 }
               </View>
 
-              <View style={{ width: '69%', height: '100%', }} >
+              <View style={{ width: '69%' }} >
 
-                <View style={{ width: '100%', flexDirection: 'row' }} >
-                  <View style={{ width: '80%', height: '100%', justifyContent: 'center' }}>
+                <View style={{ width: '100%', flexDirection: 'row', }} >
+
+                  <View style={{ width: '80%', justifyContent: 'center' }}>
                     <Text
                       style={{
-                        color: 'black',
+                        color: Colors.Black,
                         fontFamily: Font.Medium,
                         fontSize: Font.xxxlarge,
                         textAlign: config.textRotate,
 
-                      }}
-                    >
+                      }}>
                       {this.state.name}
                     </Text>
                   </View>
-                  <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+
+                  <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
                     <SvgXml xml={
                       config.textalign == "right"
                         ? leftArrow : rightArrow
@@ -805,34 +831,35 @@ export default class Drawerscreen extends Component {
                         this.props.navigation.dispatch(DrawerActions.closeDrawer())
                         this.props.navigation.navigate('Editprofile');
                       }, 350);
-                    }}
-                  >
+                    }}>
                     <Text
                       style={{
-                        color: '#38ABEC',
+                        color: Colors.Theme,
                         fontFamily: Font.Medium,
-                        fontSize: 14,
+                        fontSize: Font.medium,
                         textAlign: config.textRotate,
+                        marginTop: vs(5)
 
-                      }}
-                    >
+                      }}>
                       {config.language == 0 ? 'View & edit profile' : 'عرض وتحرير الملف الشخصي'}
                     </Text>
                   </TouchableOpacity>
 
-                  {/* <Text
-                    style={{
-                      color: Colors.DarkGrey,
-                      fontFamily: Font.Regular,
-                      fontSize: Font.small,
-                      textAlign: config.textRotate,
-                      marginTop: vs(4)
-                    }}
-                  >
-                    {config.language == 0 ? '25% Completed' : '25٪ اكتمل'}
-                  </Text> */}
-                </View>
+                  {
+                    this.state.totalCompletionPercentage > 0 &&
+                    <Text
+                      style={{
+                        color: Colors.DarkGrey,
+                        fontFamily: Font.Regular,
+                        fontSize: Font.small,
+                        textAlign: config.textRotate,
+                        marginTop: vs(4)
+                      }}>
+                      {config.language == 0 ? `${this.state.totalCompletionPercentage}% Completed` : `${this.state.totalCompletionPercentage}٪ اكتمل`}
+                    </Text>
+                  }
 
+                </View>
               </View>
             </TouchableOpacity>
 
@@ -927,7 +954,7 @@ export default class Drawerscreen extends Component {
                   config.textalign == "right"
                     ? leftArrow : rightArrow
                 }
-                leftIcon={DrawerIcons.ScheduleAvailability}
+                leftIcon={DrawerIcons.ServiceAddress}
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())

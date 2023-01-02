@@ -7,6 +7,7 @@ import {
   Dimensions,
   Text,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import {
   TextInput,
@@ -16,7 +17,6 @@ import {
   MD3Colors,
   List,
 } from 'react-native-paper';
-// import OutlineInput from 'react-native-outline-input';
 import Icon from "react-native-vector-icons/MaterialIcons";
 // import { hp, wp } from "../utils/responsive";
 // import { RF } from "../utils/responsive";
@@ -25,26 +25,31 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 // const { height, width } = Dimensions.get("window");
 import { Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
 
-const AuthInputBoxSec = ({
-  lableText,
-  lblTxtInfo,
-  icon,
-  iconName,
-  iconPressAction,
-  name,
-  disableImg,
-  address,
-  mainContainer,
-  inputLayout,
-  imgView,
-  imgStyle,
-  inputFieldStyle,
-  refs,
-  inputRef,
-  showCode,
-  iconColor,
-  ...props
-}) => {
+const AuthInputBoxSec = (props) => {
+  const {
+    lableText,
+    lblTxtInfo,
+    icon,
+    iconName,
+    editable,
+    iconPressAction,
+    name,
+    disableImg,
+    address,
+    mainContainer,
+    inputLayout,
+    imgView,
+    imgStyle,
+    inputFieldStyle,
+    refs,
+    inputRef,
+    showCode,
+    iconColor,
+    onChangeText,
+    value,
+    secureTextEntry
+    
+  } = props
   //console.log(props.onSubmitEditing)
   return (
     <>
@@ -92,18 +97,21 @@ const AuthInputBoxSec = ({
            }}>
             <TextInput //OutlineInput
               style={[styles.inputFieldStyle, inputFieldStyle, {
-                backgroundColor: (props.editable == false) ? Colors.tab_background_color : 'white',
+                backgroundColor: (editable == false) ? Colors.tab_background_color : 'white',
                 alignSelf: 'flex-start',
                 justifyContent: 'flex-start',
                 textAlignVertical: 'top'
               }]}
+              onChangeText={onChangeText}
               ref={(r) => {
                 inputRef && inputRef(r);
               }}
               label={lableText}
+              editable={editable}
               mode='outlined'
               outlineColor={Colors.field_border_color}
               activeOutlineColor={Colors.placholderactive}
+              secureTextEntry={secureTextEntry}
               // activeValueColor={Colors.textblack}
               // activeBorderColor={Colors.placholderactive}
               // activeLabelColor={Colors.placholderactive}
@@ -114,7 +122,7 @@ const AuthInputBoxSec = ({
               // width={'100%'}
               autoCapitalize="none"
               {...props}
-              value={props.value}
+              value={value}
               right={
                 (disableImg) &&
                 <TextInput.Icon
@@ -125,7 +133,9 @@ const AuthInputBoxSec = ({
                   style={{
                     marginTop: 12
                   }}
+                  
                 />
+                
               }
             />
           </View>
@@ -178,7 +188,6 @@ AuthInputBoxSec.defaultProps = { mainContainer: {} };
 const styles = StyleSheet.create({
   textStyle: {
     backgroundColor: "gray",
-    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -208,12 +217,12 @@ const styles = StyleSheet.create({
   inputFieldStyle: {
     width: '100%',
     height: 48,
-    color: Colors.textblack,
-    fontSize: Font.placeholdersize,
+    color: Colors.Black,
+    fontSize: Font.medium,
     textAlign: config.textalign,
     //height: (mobileW * 12) / 100,
-    fontFamily: Font.placeholderfontfamily,
-    borderRadius: (mobileW * 1) / 100,
+    fontFamily: Font.Regular,
+    // borderRadius: (mobileW * 1) / 100,
     padding: 0,
     margin: 0,
     includeFontPadding: false,
@@ -225,7 +234,7 @@ const styles = StyleSheet.create({
   errorLayout: {
     backgroundColor: "red",
     marginVertical: 6,
-    borderRadius: 5,
+    borderRadius: 8,
     padding: 5,
   },
   errorTxt: {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -44,6 +44,7 @@ import Show_currentlocation from '../Show_currentlocation';
 import App_payment from '../App_payment';
 import ServiceAddressF1 from '../components/ServiceAddressF1';
 import { SearchPlaceScreen } from '../components';
+import { apifuntion } from './Apicallingprovider/apiProvider';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -69,6 +70,9 @@ function Mydrawer() {
   );
 }
 const Stacknav = navigation => {
+  useEffect(()=>{
+    
+  }, [])
   return (
     <Stack.Navigator initialRouteName={'Splash'}>
       {/* 3 march radhekrishan */}

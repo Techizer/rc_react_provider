@@ -158,41 +158,47 @@ export default function Appointmenttab({ navigation }) {
 
   }
 
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{
-        backgroundColor: 'white',
-        height: (mobileW * 1) / 100,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10
-      }}
-      style={{ backgroundColor: Colors.theme_color }}
-      labelStyle={{
-        textTransform: 'capitalize',
-        fontSize: (mobileW * 3) / 100,
-        textAlign: 'center',
-        fontFamily: Font.SemiBold,
-      }}
-      onTabPress={({ route, preventDefault }) => {
-        console.log('onTabPress', route.key);
-        setTabname(route.key)
+  const renderTabBar = (props) => {
+    console.log({props});
+    console.log({navstate: props.navigationState});
+    return (
+      <TabBar
+        {...props}
+        indicatorStyle={{
+          backgroundColor: Colors.Theme,
+          height: (mobileW * 0.75) / 100,
+          // borderTopRightRadius: 10,
+          // borderTopLeftRadius: 10
+        }}
+        activeColor={Colors.Theme}
+        inactiveColor={'#354052'}
+        style={{ backgroundColor: '#F1F2F4' }}
+        labelStyle={{
+          textTransform: 'capitalize',
+          fontSize: (mobileW * 3.25) / 100,
+          textAlign: 'center',
+          fontFamily: Font.Medium,
+        }}
+        onTabPress={({ route, preventDefault }) => {
+          console.log('onTabPress', route.key);
+          setTabname(route.key)
 
-        if (route.key === 'ongoing') {
-          this.child.tapOnTabNavigator(route.key)
-          // preventDefault();
+          if (route.key === 'ongoing') {
+            this.child.tapOnTabNavigator(route.key)
+            // preventDefault();
 
-          // Do something else
-        } else if (route.key === 'pending') {
-          this.child1.tapOnTabNavigator(route.key)
-        } else if (route.key === 'upcoming') {
-          this.child2.tapOnTabNavigator(route.key)
-        } else if (route.key === 'past') {
-          this.child3.tapOnTabNavigator(route.key)
-        }
-      }}
-    />
-  );
+            // Do something else
+          } else if (route.key === 'pending') {
+            this.child1.tapOnTabNavigator(route.key)
+          } else if (route.key === 'upcoming') {
+            this.child2.tapOnTabNavigator(route.key)
+          } else if (route.key === 'past') {
+            this.child3.tapOnTabNavigator(route.key)
+          }
+        }}
+      />
+    );
+  }
 
   const renderScene = ({ route, jumpTo }) => {
     switch (route.key) {

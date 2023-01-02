@@ -2639,7 +2639,7 @@ export default class Editprofile extends Component {
 
                       <View style={{
                         width: '100%',
-                        height: 40,
+                        height: 48,
                         flexDirection: 'row',
                         // alignSelf: 'center',
                         // justifyContent: 'center',
@@ -2648,7 +2648,7 @@ export default class Editprofile extends Component {
                         <View style={{
                           width: '20%',
                           // backgroundColor: 'red',
-                          height: 40,
+                          height: 48,
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRightWidth: 1,
@@ -2664,7 +2664,7 @@ export default class Editprofile extends Component {
                         <View style={{
                           width: '60%',
                           // backgroundColor: 'yellow',
-                          height: 40,
+                          height: 48,
                           // alignItems: 'center',
                           justifyContent: 'center',
                           paddingLeft: 10
@@ -2678,7 +2678,7 @@ export default class Editprofile extends Component {
                         <View style={{
                           width: '20%',
                           // backgroundColor: 'blue',
-                          height: 40,
+                          height: 48,
                           alignItems: 'flex-end',
                           justifyContent: 'center'
                         }}>

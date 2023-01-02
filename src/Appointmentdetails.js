@@ -3452,6 +3452,7 @@ export default class Appointmentdetails extends Component {
                         {(item.acceptance_status == 'Accepted' &&
                           item.service_type == "Doctor" &&
                           item.appointment_type == "Online" && VideoCallBtn == true) &&
+                          item.booking_type === 'online_task' &&
                           <>
                             <TouchableOpacity onPress={() => {
                               // this.setState({

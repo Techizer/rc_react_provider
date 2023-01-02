@@ -11,14 +11,11 @@ class localStorageProvider {
     }
 
     getItemString(key) {
-        console.log('getItemObject key',key);
         var item = AsyncStorage.getItem(key);
         return item;
     }
 
     async setItemObject(key, item) {
-        console.log('setItemObject key',key);
-        console.log('setItemObject item',item);
         try {
             await AsyncStorage.setItem(key, JSON.stringify(item));
         } catch (error) {
@@ -27,7 +24,6 @@ class localStorageProvider {
     }
 
     async getItemObject(key) {
-        console.log('getItemObject key',key);
         var item = await AsyncStorage.getItem(key);
         return JSON.parse(item);
     }

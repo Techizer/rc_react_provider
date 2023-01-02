@@ -15,17 +15,23 @@ import AuthInputBoxSec from "./AuthInputBoxSec";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Button from "./Button";
 
-
-
-
 const AddEditAddress = ({
     visible,
     onRequestClose,
     type,
-    addressDetails,
-    deletedAddress = () => { },
     editedAddress = () => { },
-    length
+    navigation,
+
+    addressIDParam = -1,
+    addressTitleParam = '',
+    googleAddressParam = '',
+    nearestLandmarkParam = '',
+    buildingNameParam = '',
+    isDefaultParam = '',
+    longitudeParam = '',
+    latitudeParam = '',
+    shouldShowEditParam = true,
+    navToBackThen=false
 }) => {
 
     const [title, setTitle] = useState('')
@@ -42,111 +48,35 @@ const AddEditAddress = ({
     const landmarkRef = useRef()
     const buildingRef = useRef()
 
-    const getNewAddress = async () => {
-        let newAddress = await localStorage.getItemObject('address_arr');
-        console.log({ newAddress });
-    }
-
     useEffect(() => {
+        setGoogleAddress(googleAddress)
 
-        console.log('addressDetails............', addressDetails);
-        if (addressDetails != '' && addressDetails != null && addressDetails != undefined) {
-            setGoogleAddress(addressDetails.address != '' ? addressDetails.address : '')
-
-            if (type == 'editAddress') {
-                setTitle(addressDetails?.title != '' ? addressDetails?.title : '')
-                setNearest(addressDetails?.landmark != '' ? addressDetails?.landmark : '')
-                setBuilding(addressDetails?.building_name != '' ? addressDetails?.building_name : '')
-                setDefaultAddress((addressDetails?.defult != '' && addressDetails?.defult != '0') ? false : true)
-
-
-            }
+        if (type == 'editAddress') {
+            setTitle(addressTitleParam)
+            setGoogleAddress(googleAddressParam)
+            setNearest(nearestLandmarkParam)
+            setBuilding(buildingNameParam)
+            setDefaultAddress((isDefaultParam != '' && isDefaultParam != '0') ? false : true)
         }
 
-    }, [addressDetails])
+    }, [addressIDParam, addressTitleParam, googleAddressParam, nearestLandmarkParam, buildingNameParam, isDefaultParam, longitudeParam, latitudeParam, shouldShowEditParam])
 
     const resetState = () => {
         setTitle('')
         setGoogleAddress('')
         setNearest('')
         setBuilding('')
-        setDefaultAddress(false)
+        setDefaultAddress('1')
     }
 
-    const _scrollToInput = (reactNode: any) => {
+    const _scrollToInput = (reactNode) => {
         scrollRef.props.scrollToFocusedInput(reactNode)
     }
-    const confirmDelete = () => {
-        Alert.alert(
-            'Delete Address',
-            'Are you sure you want to delete this address?',
-            [
-                {
-                    text: 'No'
-                },
-                {
-                    text: 'Yes',
-                    onPress: () => deleteAddress(),
-                },
-            ],
-            { cancelable: false }
-        );
-    }
-
-    const addAddress = async () => {
-        var user_details = await localStorage.getItemObject("user_arr");
-        let user_id = user_details["user_id"];
-        let url = config.baseURL + "api-patient-address-update";
-
-        if (title == '') {
-            msgProvider.showError("Please add address title");
-            return false;
-        }
-        var data = new FormData();
-        data.append("user_id", user_id);
-        data.append("current_address", addressDetails?.address);
-        data.append("lat", addressDetails?.latitude);
-        data.append("lng", addressDetails?.longitude);
-        data.append("landmark", nearest);
-        data.append("building_name", building);
-        data.append("title", title);
-        data.append("default", defaultAddress ? '0' : '1');
-
-
-        let newAddress = {
-            lat: addressDetails?.latitude,
-            lng: addressDetails?.longitude,
-            address: addressDetails?.address,
-        }
-        localStorage.setItemObject("addressDetails", newAddress);
-
-        setIsLoading(true)
-        apifuntion
-            .postApi(url, data, 1)
-            .then((obj) => {
-                consolepro.consolelog("addAddress-res----", obj);
-                setIsLoading(false)
-                if (obj.status == true) {
-                    msgProvider.showSuccess(obj.message)
-                    onRequestClose(obj.status)
-                    // user_details['current_address'] = obj.result.current_address
-                    // localStorage.setItemObject("user_arr", user_details);
-                } else {
-                    return false;
-                }
-            })
-            .catch((error) => {
-                setIsLoading(false)
-                msgProvider.showError(error.message)
-                onRequestClose()
-                console.log("-------- error ------- " + error);
-            });
-    };
 
     const editAddress = async () => {
         var user_details = await localStorage.getItemObject("user_arr");
         let user_id = user_details["user_id"];
-        let url = config.baseURL + "api-update-patient-address";
+        let url = config.baseURL + "api-provider-update-address";
 
         if (title == '') {
             msgProvider.showError("Please add address title");
@@ -154,15 +84,18 @@ const AddEditAddress = ({
         }
         var data = new FormData();
         data.append("login_user_id", user_id);
-        data.append("id", addressDetails?.id);
-        data.append("current_address", addressDetails?.address);
-        data.append("lat", addressDetails?.latitude);
-        data.append("lng", addressDetails?.longitude);
+        data.append("id", addressIDParam);
+        data.append("title", title);
+        data.append("address", googleAddress);
+        data.append("lat", latitudeParam);
+        data.append("lng", longitudeParam);
         data.append("landmark", nearest);
         data.append("building_name", building);
-        data.append("title", title);
         data.append("default", defaultAddress ? '0' : '1');
+        data.append("service_address", googleAddress);
+        data.append("google_address", googleAddress);
 
+        console.log({ data });
 
         setIsLoading(true)
         apifuntion
@@ -185,43 +118,13 @@ const AddEditAddress = ({
                 msgProvider.showError(error.message)
                 onRequestClose()
                 console.log("-------- error ------- " + error);
-            });
-    };
-
-    const deleteAddress = async () => {
-        setIsDelete(true)
-        var user_details = await localStorage.getItemObject("user_arr");
-        let user_id = user_details["user_id"];
-        let url = config.baseURL + "api-delete-patient-address";
-
-        var data = new FormData();
-        data.append("login_user_id", user_id);
-        data.append("id", addressDetails?.id);
-
-        apifuntion
-            .postApi(url, data, 1)
-            .then((obj) => {
-                setIsDelete(false)
-                consolepro.consolelog("deleteAddress-res----", obj);
-                setIsLoading(false)
-                if (obj.status == true) {
-                    msgProvider.showSuccess(obj.message)
-                    onRequestClose()
-                    deletedAddress(addressDetails?.id)
-                    // user_details['current_address'] = obj.result.current_address
-                    // localStorage.setItemObject("user_arr", user_details);
-                } else {
-                    return false;
+            }).finally(()=>{
+                if (navToBackThen) {
+                    navigation.replace('ServiceAddressF1')
                 }
             })
-            .catch((error) => {
-                setIsLoading(false)
-                setIsDelete(false)
-                msgProvider.showError(obj.message)
-                onRequestClose()
-                console.log("-------- error ------- " + error);
-            });
     };
+
     return (
         <Modal
             isVisible={visible}
@@ -275,7 +178,7 @@ const AddEditAddress = ({
                         textAlign: config.textRotate,
                         color: Colors.darkText
 
-                    }}>{type === 'editAddress' ? 'Edit Address' : type === 'addAddress' ? 'Add Address' : ''}</Text>
+                    }}>{'Edit Address'}</Text>
 
                 <KeyboardAwareScrollView
                     // keyboardOpeningTime={200}
@@ -297,7 +200,7 @@ const AddEditAddress = ({
                                 <AuthInputBoxSec
                                     mainContainer={{ width: '100%' }}
                                     inputFieldStyle={{ height: vs(35) }}
-                                    lableText={'Address'}
+                                    lableText={'Address Title'}
                                     //inputRef={titleRef}
                                     onChangeText={(val) => setTitle(val)}
                                     value={title}
@@ -317,7 +220,7 @@ const AddEditAddress = ({
                                 <AuthInputBoxSec
                                     mainContainer={{ marginTop: vs(5), width: '100%' }}
                                     inputFieldStyle={{ height: vs(35) }}
-                                    lableText={'Google'}
+                                    lableText={'Google Map Address'}
                                     //inputRef={addressRef}
                                     onChangeText={(val) => setGoogleAddress(val)}
                                     value={googleAddress}
@@ -327,12 +230,22 @@ const AddEditAddress = ({
                                     editable={false}
                                     numberOfLines={1}
                                     multiline
+                                    disableImg={shouldShowEditParam}
+                                    iconName={'pencil'}
+                                    iconPressAction={shouldShowEditParam ? () => {
+                                        onRequestClose()
+                                        setTimeout(() => {
+                                            navigation.replace('SearchPlaceScreen', {
+                                                address_id: addressIDParam
+                                            })
+                                        }, 500)
+                                    } : () => { }}
                                 />
 
                                 <AuthInputBoxSec
                                     mainContainer={{ marginTop: vs(5), width: '100%' }}
                                     inputFieldStyle={{ height: vs(35) }}
-                                    lableText={'Nearest'}
+                                    lableText={'Nearest Landmark'}
                                     //inputRef={landmarkRef}
                                     onChangeText={(val) => setNearest(val)}
                                     value={nearest}
@@ -349,7 +262,7 @@ const AddEditAddress = ({
                                 <AuthInputBoxSec
                                     mainContainer={{ marginTop: vs(5), width: '100%' }}
                                     inputFieldStyle={{ height: vs(35) }}
-                                    lableText={'Building'}
+                                    lableText={'Building Name'}
                                     //inputRef={buildingRef}
                                     onChangeText={(val) => setBuilding(val)}
                                     value={building}
@@ -363,10 +276,6 @@ const AddEditAddress = ({
                                     editable
                                 />
 
-                                {/* <TextInput placeholder="email"  style={{marginTop:50}} ref={titleRef} onSubmitEditing={()=>landmarkRef.current.focus()} returnKeyType={'next'} /> */}
-                                {/* <TextInput placeholder="pass"  style={{marginTop:100}} ref={landmarkRef} onSubmitEditing={()=>buildingRef.current.focus()} returnKeyType={'next'} /> */}
-
-
                                 <View
                                     style={{
                                         width: "100%",
@@ -377,7 +286,7 @@ const AddEditAddress = ({
                                     }} >
 
                                     <TouchableOpacity
-                                        disabled={(addressDetails?.defult != '' && addressDetails?.defult != '0') ? false : true}
+                                        disabled
                                         activeOpacity={0.8}
                                         style={{
                                             width: "37%",
@@ -391,10 +300,9 @@ const AddEditAddress = ({
 
 
                                         <TouchableOpacity
-                                            disabled={(addressDetails?.defult != '' && addressDetails?.defult != '0') ? false : true}
+                                            disabled
                                             onPress={() => {
                                                 setDefaultAddress(!defaultAddress)
-
                                             }}
                                             style={{
                                                 height: 20,
@@ -415,7 +323,7 @@ const AddEditAddress = ({
                                                             tintColor: Colors.White
                                                         }}
                                                         resizeMode="contain"
-                                                        source={Icons.Tick}
+                                                        source={require('../icons/tick.png')}
                                                     />
                                                     :
                                                     null
@@ -437,72 +345,28 @@ const AddEditAddress = ({
 
                         }
 
-                        {
-                            (type == 'editAddress' && defaultAddress) &&
-                            <Text style={{
-                                fontSize: Font.small,
-                                fontFamily: Font.Regular,
-                                color: Colors.lightGrey,
-                                marginTop: (windowWidth * 4) / 100,
-                            }}>{"Can't Delete"}</Text>
-                        }
-
-
                         <View style={{ marginTop: vs(25) }}>
 
                             <Button
                                 text={"Save Address"}
                                 onPress={() => {
-                                    if (type == 'editAddress') {
-                                        editAddress()
-                                    } else {
-                                        addAddress()
-                                    }
+                                    editAddress()
                                 }}
                                 btnStyle={{ marginTop: vs(10) }}
                                 onLoading={isLoading}
                             />
                         </View>
-
-                        {
-                            (type == 'editAddress' && !defaultAddress) &&
-
-
-                            <TouchableOpacity
-                                activeOpacity={0.8}
-                                onPress={() => {
-                                    confirmDelete()
-                                }}>
-                                <Text style={{
-                                    fontSize: Font.small,
-                                    fontFamily: Font.Medium,
-                                    color: Colors.Theme,
-                                    marginTop: (windowWidth * 5) / 100,
-                                    alignSelf: 'center'
-                                }}>{'Delete'}</Text>
-                            </TouchableOpacity>
-
-
-                        }
-
                     </View>
-
-
                 </KeyboardAwareScrollView>
-
             </View>
-
         </Modal >
-
-
-
     )
 }
 const styles = StyleSheet.create({
 
     modalContainer: {
         width: windowWidth,
-        height: (windowHeight - 200),
+        height: (windowHeight / 1.5),
         backgroundColor: Colors.White,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,

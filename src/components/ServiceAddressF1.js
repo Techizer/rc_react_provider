@@ -18,7 +18,7 @@ let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
 headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
 const ServiceAddressF1 = ({
-    navigation
+    navigation, route
 }) => {
 
 
@@ -29,12 +29,17 @@ const ServiceAddressF1 = ({
     const [type, setType] = useState('addAddress')
     const [isLoading, setIsLoading] = useState(true)
     const [isEditable, setIsEditable] = useState(false)
+    const [isMTrueState, setIsMTrueState] = useState(false)
     const isFocused = useIsFocused()
     const sheetRef = React.useRef(null);
 
+    const { isMTrue, lat, lng, id, googleAddress } = route?.params || { isMTrue: false, lat: 0, lng: 0, id: 0, googleAddress: '' }
+
     useEffect(() => {
+        console.log({ isMTrue, lat, lng, id, googleAddress });
+        setIsMTrueState(isMTrue)
         getAddresses()
-    }, [isFocused])
+    }, [isFocused, addressSheet])
 
     const getAddresses = async () => {
         let user_details = await localStorage.getItemObject('user_arr')
@@ -85,6 +90,9 @@ const ServiceAddressF1 = ({
                     paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0,
                     height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight
                 }}
+                onBackPress={() => {
+                    navigation.goBack()
+                }}
                 navigation={navigation} />
 
             <View style={{ backgroundColor: Colors.White, marginTop: vs(7), paddingHorizontal: s(13), paddingVertical: vs(15) }}>
@@ -107,28 +115,29 @@ const ServiceAddressF1 = ({
                                             color: Colors.textblack,
                                         }}>{'Service Address'}</Text>
 
-                                    <View style={{
-                                        alignItems: 'flex-end'
-                                    }}>
-                                        <TouchableOpacity
-                                            style={{ flexDirection: 'row', alignItems: 'center', }}
-                                            onPress={() => {
-                                                // setIsBottomSheet(true)
-                                                // setType('addAddress')
-                                                navigation.navigate('SearchPlaceScreen')
-                                            }}>
-                                            <SvgXml xml={Add} />
-                                            <Text
-                                                style={{
-                                                    textAlign: config.textRotate,
-                                                    fontSize: Font.sregulartext_size,
-                                                    fontFamily: Font.Medium,
-                                                    color: '#0888D1',
-                                                    marginLeft: s(5)
-                                                }}>{'Add new address'.toUpperCase()}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-
+                                    {(addressList.length === 0) &&
+                                        <View style={{
+                                            alignItems: 'flex-end'
+                                        }}>
+                                            <TouchableOpacity
+                                                style={{ flexDirection: 'row', alignItems: 'center', }}
+                                                onPress={() => {
+                                                    // setIsBottomSheet(true)
+                                                    // setType('addAddress')
+                                                    navigation.navigate('SearchPlaceScreen')
+                                                }}>
+                                                <SvgXml xml={Add} />
+                                                <Text
+                                                    style={{
+                                                        textAlign: config.textRotate,
+                                                        fontSize: Font.sregulartext_size,
+                                                        fontFamily: Font.Medium,
+                                                        color: '#0888D1',
+                                                        marginLeft: s(5)
+                                                    }}>{'Add new address'.toUpperCase()}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    }
 
                                 </View>
                             </View>
@@ -147,7 +156,7 @@ const ServiceAddressF1 = ({
                                 navigation={navigation}
                                 selected={selectedAddress}
                                 selectedAddress={(val) => {
-                                    // console.log('..............', val);
+                                    console.log('..............', addressList[val]);
                                     setSelectedAddress(val)
                                 }}
                                 editable={(val) => {
@@ -166,19 +175,26 @@ const ServiceAddressF1 = ({
             </View>
 
 
+            
             <AddEditAddress
-                visible={addressSheet}
+                navigation={navigation}
+                visible={addressSheet || isMTrueState}
                 onRequestClose={() => {
                     setAddressSheet(false)
+                    setIsMTrueState(false)
                 }}
-                addressDetails={addressList[selectedAddress]}
+                navToBackThen={false}
+                shouldShowEditParam
+                addressIDParam={(addressList[selectedAddress]?.aid) ? addressList[selectedAddress]?.aid : -1}
+                addressTitleParam={(addressList[selectedAddress]?.title != 'null') ? addressList[selectedAddress]?.title : ''}
+                buildingNameParam={(addressList[selectedAddress]?.building_name != 'null') ? addressList[selectedAddress]?.building_name : ''}
+                latitudeParam={(addressList[selectedAddress]?.service_lat !== 0) ? addressList[selectedAddress]?.service_lat : 0}
+                longitudeParam={(addressList[selectedAddress]?.service_long !== 0) ? addressList[selectedAddress]?.service_long : 0}
+                googleAddressParam={(addressList[selectedAddress]?.service_address != 'null') ? addressList[selectedAddress]?.service_address : ''}
+                nearestLandmarkParam={(addressList[selectedAddress]?.landmark != 'null') ? addressList[selectedAddress]?.landmark : ''}
+                isDefaultParam={addressList[selectedAddress]?.default}
+                // landmark
                 type={'editAddress'}
-                deletedAddress={(val) => {
-                    setAddressList(addressList.filter(item => {
-                        return item?.id != val
-                    }))
-                }}
-                length={addressList.length}
                 editedAddress={(val) => {
                     getAddresses()
                     let newAddress = {

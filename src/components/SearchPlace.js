@@ -40,6 +40,7 @@ import { s, vs } from 'react-native-size-matters';
 import ScreenHeader from './ScreenHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SimpleToast from 'react-native-simple-toast';
+import AddEditAddress from './Add_Edit_Address';
 
 let ScreenHeight = Dimensions.get('window').height;
 
@@ -50,14 +51,14 @@ class SearchPlaceScreen extends Component {
         this.state = {
             contacts: [],
             listData: [],
-            isVisible: true,
+            isVisible: false,
             place_key: '',
             countryKey: '',
             searchPlaceVisible: false,
             service_lat: '',
             service_long: '',
             service_address: '',
-            addressData:{
+            addressData: {
                 latitude: '',
                 longitude: '',
                 latdelta: '',
@@ -72,9 +73,11 @@ class SearchPlaceScreen extends Component {
     }
 
     componentDidMount() {
+        console.log({ 'AddressID:': this.props.route.params.address_id });
         // this.locationRef.focus()
         this.getSpecificCountryCode()
         this.getPlaceKey()
+
     }
 
     getSpecificCountryCode = async () => {
@@ -99,15 +102,23 @@ class SearchPlaceScreen extends Component {
         latitude,
         longitude,
     }) => {
+        console.log({ data, details });
         this.setState(
             {
                 searchPlaceVisible: false,
                 service_lat: latitude,
                 service_long: longitude,
                 service_address: data?.description,
+                isVisible: true
             },
             () => {
-
+                // this.props.navigation.replace('ServiceAddressF1', {
+                //     isMTrue: true,
+                //     lat: this.state.service_lat,
+                //     lng: this.state.service_long,
+                //     id: this.props.route.params.address_id,
+                //     googleAddress: this.state.service_address
+                // })
             }
         );
     };
@@ -159,6 +170,7 @@ class SearchPlaceScreen extends Component {
                             latitude: details.geometry.location.lat,
                             longitude: details.geometry.location.lng,
                         });
+
                     },
                 );
                 localStorage.setItemObject('address_arr', post_location.address);
@@ -339,27 +351,40 @@ class SearchPlaceScreen extends Component {
                     flex: 1,
                     alignItems: "center",
                 }}>
-                    <AddEditAddress
-                        visible={addressData.addressBottomSheet}
-                        onRequestClose={(status) => {
-                            this.setState({
-                                ...this.state,
-                                addressData: {
-                                    ...this.state.addressData,
-                                    addressBottomSheet: false
-                                }
-                            })
 
-                            if (status) {
-                                this.props.navigation.pop()
-                            }
-                        }}
-                        addressDetails={this.state.addressData}
-                        type={this.state.addressData.type}
-                    />
                     <ScreenHeader navigation={this.props.navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
-                        this.props.navigation.goBack();
+                        this.props.navigation.replace('ServiceAddressF1')
                     }} />
+                    <AddEditAddress
+                        navigation={this.props.navigation}
+                        visible={this.state.isVisible}
+                        onRequestClose={() => {
+                            this.setState({
+                                isVisible: false
+                            })
+                        }}
+                        shouldShowEditParam={false}
+                        addressIDParam={this?.props?.route?.params?.address_id}
+                        addressTitleParam={''}
+                        buildingNameParam={''}
+                        nearestLandmarkParam={''}
+                        latitudeParam={this.state.service_lat}
+                        longitudeParam={this.state.service_long}
+                        googleAddressParam={this.state.service_address}
+                        navToBackThen={true}
+                        
+                        //addressList[selectedAddress]
+                        type={'editAddress'}
+                        editedAddress={(val) => {
+                            // getAddresses()
+                            // let newAddress = {
+                            //     lat: addressList[selectedAddress]?.lat,
+                            //     lng: addressList[selectedAddress]?.lng,
+                            //     address: addressList[selectedAddress]?.address,
+                            // }
+                            // localStorage.setItemObject("addressDetails", newAddress);
+                        }}
+                    />
 
                     <View
                         style={{
