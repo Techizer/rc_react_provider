@@ -5,10 +5,10 @@ import { TextInput } from "react-native-paper";
 import { Colors, Font } from "../Provider/Colorsfont";
 import {
     windowWidth, deviceHeight, Lang_chg, config,
-    localStorage, Icons, consolepro, apifuntion, msgProvider, windowHeight,
+    localStorage, consolepro, apifuntion, msgProvider, windowHeight,
 } from "../Provider/utilslib/Utils";
 
-import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../../src/icons/SvgIcons/Index";
+import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import AuthInputBoxSec from "./AuthInputBoxSec";

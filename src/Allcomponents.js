@@ -32,6 +32,7 @@ import {
 } from 'react-native';
 import {LocaleConfig} from 'react-native-calendars';
 import Styles from './Styles';
+import { Icons } from './icons/IReferences';
 
 export function AppHeader(props) {
 
@@ -58,7 +59,7 @@ export function AppHeader(props) {
           }}>
           <TouchableOpacity onPress={props.onPressEditProfile}>
             <Image
-              source={localimag.p1}
+              source={Icons.p1}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -78,7 +79,7 @@ export function AppHeader(props) {
           <TouchableOpacity onPress={props.onPresshandler2}>
             <Image
               // tintColor="#fff"
-              source={localimag.notifications}
+              source={Icons.notifications}
               style={{
                 alignSelf: 'flex-end',
                 resizeMode: 'contain',
@@ -117,7 +118,7 @@ export function AppHeader2(props) {
             }}>
             <Image
             
-            source={config.textalign=='right'?localimag.arabic_back:localimag.backarrow}
+            source={config.textalign=='right'?Icons.arabic_back:Icons.backarrow}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -145,7 +146,7 @@ export function AppHeader2(props) {
             }}>
             <Image
               // tintColor="#fff"
-              source={localimag.notifications_sec}
+              source={Icons.notifications_sec}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -181,7 +182,7 @@ export function CarAppHeader2(props) {
             onPress={() => {
               props.navigation.goBack();
             }}>
-            <Image source={config.textalign=='right'?localimag.arabic_back:localimag.backarrow}
+            <Image source={config.textalign=='right'?Icons.arabic_back:Icons.backarrow}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -230,7 +231,7 @@ export function AppHeader3(props) {
           }}>
           <TouchableOpacity onPress={props.handlarrowpress}>
            
-            <Image source={config.textalign=='right'?localimag.arabic_back:localimag.backarrow}
+            <Image source={config.textalign=='right'?Icons.arabic_back:Icons.backarrow}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -258,7 +259,7 @@ export function AppHeader3(props) {
             }}>
             <Image
               // tintColor="#fff"
-              source={localimag.notifications}
+              source={Icons.notifications}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -297,7 +298,7 @@ export function AppHeader4(props) {
           <TouchableOpacity onPress={props.handlarrowpress}>
             <Image
 
-                                 source={config.textalign=='right'?localimag.arabic_back:localimag.backarrow}
+                                 source={config.textalign=='right'?Icons.arabic_back:Icons.backarrow}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -464,7 +465,7 @@ export function Searchbarandicon(props) {
         <View style={{alignSelf: 'center'}}>
        
           <Image
-            source={localimag.searchiocn2}
+            source={Icons.searchiocn2}
             style={{
               width: (mobileW * 8) / 100,
               height: (mobileW * 8) / 100,
@@ -505,7 +506,7 @@ export function Inactivecard(props) {
       }}>
       <Image
         resizeMode="contain"
-        source={localimag.p3}
+        source={Icons.p3}
         style={{
           alignSelf: 'center',
           width: (mobileW * 12) / 100,
@@ -541,7 +542,7 @@ export function Appcheckedbox(props) {
             alignSelf: 'flex-start',
             flex: 0.1,
           }}
-          source={localimag.remembertick}></Image>
+          source={Icons.remembertick}></Image>
       </View>
       <Text
         style={{
@@ -592,7 +593,7 @@ export function Appuncheckedbox(props) {
             alignSelf: 'flex-start',
             flex: 0.1,
           }}
-          source={localimag.rememberdeactivate}></Image>
+          source={Icons.rememberdeactivate}></Image>
       </View>
       <Text
         style={{
@@ -652,7 +653,7 @@ export function Taskbooking(props) {
         {props.title}
       </Text>
       <Image
-        source={localimag.cross2}
+        source={Icons.cross2}
         style={{
           alignSelf: 'center',
           width: (mobileW * 2) / 100,

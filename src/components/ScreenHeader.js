@@ -16,12 +16,12 @@ import {
     mobileH,
     mobileW,
     localStorage,
-    Icons,
     consolepro,
     Lang_chg,
     apifuntion,
-    localimag,
 } from "../Provider/utilslib/Utils";
+
+import {Icons} from '../icons/IReferences'
 
 import { leftArrow, rightArrow, Notification, dummyUser } from "../icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
@@ -127,7 +127,7 @@ const ScreenHeader = ({
                                         alignItems: 'center',
 
                                     }}>
-                                    <Image source={notiCount > 0 ? localimag.notifications : localimag.notifications_sec} style={{
+                                    <Image source={notiCount > 0 ? Icons.notifications : Icons.notifications_sec} style={{
                                         width: iconSize,
                                         height: iconSize
                                     }} resizeMethod='resize' resizeMode="contain" />

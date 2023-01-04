@@ -23,7 +23,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 // import Fonts, { fonts, fontSizes } from "../utils/Fonts";
 // import { Color } from "../utils";
 // const { height, width } = Dimensions.get("window");
-import { Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Icons } from "../icons/IReferences";
 
 const DropDownboxSec = ({
   lableText,
@@ -73,7 +74,7 @@ const DropDownboxSec = ({
                     top: (dHeight) ? 4 : 15,
                     right: 5,
                   }}
-                  source={localimag.downarrow} />
+                  source={Icons.downarrow} />
             }
             <Text style={styles.textBoxStyle}>{lableText}</Text>
           </View>

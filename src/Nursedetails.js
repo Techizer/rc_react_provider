@@ -44,6 +44,7 @@ import Footer from './Footer';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import HTMLView from 'react-native-htmlview';
 import { WebView } from 'react-native-webview';
+import { Icons } from './icons/IReferences';
 
 
 
@@ -218,7 +219,7 @@ export default class Nursedetails extends Component {
 
                           <View style={{width: '28%'}}>
                             <Image
-                             source={item.image == 'NA' || item.image == null || item.image == ''? localimag.p1:{uri:config.img_url3+item.image}}
+                             source={item.image == 'NA' || item.image == null || item.image == ''? Icons.p1:{uri:config.img_url3+item.image}}
                               style={{
                                 width: (mobileW * 20) / 100,
                                 height: (mobileW * 20) / 100,
@@ -333,7 +334,7 @@ export default class Nursedetails extends Component {
                                 paddingTop: (mobileW * 2) / 100,
                               }}>
                               <Image
-                                source={localimag.starrating}
+                                source={Icons.starrating}
                                 style={{
                                   // tintColor: '#fff',
                                   width: (mobileW * 3.3) / 100,
@@ -395,14 +396,14 @@ export default class Nursedetails extends Component {
                             }}>
                             {config.language==0?
                             <Image
-                              source={localimag.clock}
+                              source={Icons.clock}
                               style={{
                                 resizeMode: 'contain',
                                 width: (mobileW * 4) / 100,
                                 height: (mobileW * 4) / 100,
                               }}></Image>:
                                <Image
-                              source={localimag.clock_arabic_gray}
+                              source={Icons.clock_arabic_gray}
                               style={{
                                 resizeMode: 'contain',
                                 width: (mobileW * 4) / 100,
@@ -482,12 +483,12 @@ export default class Nursedetails extends Component {
                       <Image  style={{height:mobileW*6/100,width:mobileW*6/100,alignSelf:'center',borderRadius:mobileW*3/100}}
                 
                       source={this.state.pass_status=='nurse'?
-                        localimag.nurse:
+                        Icons.nurse:
                         this.state.pass_status=='physiotherapy'?
-                        localimag.Physiotherapist:
+                        Icons.Physiotherapist:
                         this.state.pass_status=='caregiver'?
-                        localimag.NurseAssistant:
-                        localimag.Babysitter
+                        Icons.NurseAssistant:
+                        Icons.Babysitter
                         
                         }
                       ></Image>
@@ -635,7 +636,7 @@ export default class Nursedetails extends Component {
                           height: (mobileW * 28) / 100,
                           alignSelf:'center'
                         }}
-                        source={item.image == 'NA' || item.image == null? localimag.p1:{uri:config.img_url3+item.image}}
+                        source={item.image == 'NA' || item.image == null? Icons.p1:{uri:config.img_url3+item.image}}
                         >
                 <View
                                style={{
@@ -651,7 +652,7 @@ export default class Nursedetails extends Component {
                                  backgroundColor: Colors.buttoncolorhgreen,
                                }}>
                                <Image
-                                 source={localimag.starrating}
+                                 source={Icons.starrating}
                                  style={{
                                    tintColor: '#fff',
                                    width:10,
@@ -792,29 +793,29 @@ export default class Nursedetails extends Component {
                 name: 'Home',
                 fname:Lang_chg.home_footer[config.language],
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 fname:Lang_chg.Appointment_footer[config.language],
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 fname:Lang_chg.Cart_footer[config.language],
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 fname:Lang_chg.More_footer[config.language],
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}

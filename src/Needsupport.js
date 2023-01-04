@@ -4,6 +4,7 @@ import { Colors, localimag, Font, mobileH, Mapprovider, msgProvider, msgText, co
 import { AppHeader, Appheading, Searchbarandicon } from './Allcomponents';
 // import { Nodata_foundimage } from './Provider/Nodata_foundimage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Icons } from './icons/IReferences';
 const Select_arr = [
   {
     id: 1,
@@ -307,7 +308,7 @@ export default class Needsupport extends Component {
               }}
                 style={{ width: '100%', }}>
                 <Image style={{ width: mobileW * 8 / 100, height: mobileW * 8 / 100, alignSelf: 'center' }}
-                  source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}></Image>
+                  source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}></Image>
               </TouchableOpacity>
             </View>
             <View style={{ width: '95%', alignSelf: 'center', }}>
@@ -327,7 +328,7 @@ export default class Needsupport extends Component {
             <View style={{ alignItems: 'center', width: '90%', alignSelf: 'center', flexDirection: 'row', marginTop: mobileW * 3 / 100 }}>
               <View style={{ width: '8%', alignSelf: 'center' }}>
                 <Image style={{ width: mobileW * 5 / 100, height: mobileW * 5 / 100, resizeMode: 'contain' }}
-                  source={localimag.needsupportimg}>
+                  source={Icons.needsupportimg}>
                 </Image>
               </View>
 
@@ -368,7 +369,7 @@ export default class Needsupport extends Component {
                   >{this.state.select.length <= 0 ? Lang_chg.select_issues_text[config.language] : this.state.select}</Text>
                   <View style={{ width: '10%', alignSelf: 'center' }}>
                     <Image
-                      source={localimag.downarrow}
+                      source={Icons.downarrow}
                       style={{ height: mobileW * 4 / 100, width: mobileW * 4 / 100, alignSelf: 'flex-end' }}>
                     </Image>
                   </View>

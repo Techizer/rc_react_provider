@@ -2,6 +2,7 @@ import {Text,View,Modal,StatusBar,BackHandler,Alert, SafeAreaView,KeyboardAwareS
 import React, {Component} from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
 import {Colors,localimag,Font,mobileH,config,mobileW,Lang_chg,apifuntion,localStorage,msgProvider,msgText,msgTitle,consolepro} from './Provider/utilslib/Utils';
+import { Icons } from './icons/IReferences';
 export default class Optpage extends Component {
    
   _didFocusSubscription; 
@@ -166,7 +167,7 @@ export default class Optpage extends Component {
                   resizeMode: 'contain',
                   alignItems: 'center',
                 }}
-                source={localimag.Forgotlogo}></Image>
+                source={Icons.Forgotlogo}></Image>
             </View>
             <View
               style={{

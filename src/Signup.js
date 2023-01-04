@@ -2,10 +2,11 @@ import { TouchableWithoutFeedback, Keyboard, FlatList, Modal, Text, View, Status
 import React, { Component } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Cameragallery, Colors, localimag, Font, mobileH, localStorage, config, mobileW, Lang_chg, apifuntion, consolepro, msgProvider, msgText, msgTitle, mediaprovider } from './Provider/utilslib/Utils';
-import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DocumentPicker from 'react-native-document-picker';
+import { Icons } from './icons/IReferences';
 
 export default class Signup extends Component {
   constructor(props) {
@@ -1640,7 +1641,7 @@ export default class Signup extends Component {
                     resizeMode: 'contain',
                     alignItems: 'center',
                   }}
-                  source={localimag.Forgotlogo}></Image>
+                  source={Icons.Forgotlogo}></Image>
               </View>
 
               <View
@@ -1661,7 +1662,7 @@ export default class Signup extends Component {
                       resizeMode: 'contain',
                       alignSelf: 'center',
                     }}
-                    source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}></Image>
+                    source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}></Image>
                 </TouchableOpacity>
               </View>
 
@@ -2080,7 +2081,7 @@ export default class Signup extends Component {
                           }}>{this.state.dob_date.length <= 0 ? Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                           <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
-                            <Image source={localimag.dobimg}
+                            <Image source={Icons.dobimg}
                               style={{ height: 25, width: 25 }}>
                             </Image>
                           </View>

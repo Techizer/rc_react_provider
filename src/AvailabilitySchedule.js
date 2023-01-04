@@ -18,9 +18,9 @@ import Styles from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import Footer from './Footer';
 // import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { SearchPlaceScreen, Button } from './components'
+import { SearchPlaceScreen, Button } from './Components'
 import { Dropdown } from 'react-native-material-dropdown-v2';
-import ListBottomSheet from './components/ListBottomSheet';
+import ListBottomSheet from './Components/ListBottomSheet';
 import { Arrow } from './icons/SvgIcons/Index';
 const radiusArr = [
   {
@@ -1141,7 +1141,7 @@ export default class AvailabilitySchedule extends Component {
                         marginTop: 8
                       }}>
                         <Image
-                          source={localimag.locationcurrent}
+                          source={Icons.locationcurrent}
                           style={{
                             height: (mobileW * 4) / 100,
                             width: (mobileW * 4) / 100,

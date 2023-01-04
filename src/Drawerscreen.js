@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, StatusBar, Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
-import { DrawerSubMenu } from './components'
+import { DrawerSubMenu } from './Components'
 import Styles from './Styles';
 import { DrawerActions } from '@react-navigation/native';
 import { s, vs } from 'react-native-size-matters';
 import { Appointment, MyAppointment, dummyUser, leftArrow, rightArrow } from './icons/SvgIcons/Index';
 import { SvgXml } from 'react-native-svg';
-import DrawerItemContainer from './components/DrawerItem';
+import DrawerItemContainer from './Components/DrawerItem';
 import { DrawerIcons } from './icons/drawer';
 global.add_location = 'NA';
 const windowWidth = Dimensions.get('window').width
@@ -150,7 +150,7 @@ export default class Drawerscreen extends Component {
   //                   alignSelf: 'center'
 
   //                 }}
-  //                 source={this.state.profile_img == 'NA' || this.state.profile_img == null ? localimag.p1 : { uri: this.state.profile_img }}
+  //                 source={this.state.profile_img == 'NA' || this.state.profile_img == null ? Icons.p1 : { uri: this.state.profile_img }}
   //               >
   //                 <View
   //                   style={{
@@ -180,7 +180,7 @@ export default class Drawerscreen extends Component {
   //                           width: (mobileW * 3) / 100,
   //                           alignSelf: 'center',
   //                         }}
-  //                         source={localimag.camera}></Image>
+  //                         source={Icons.camera}></Image>
   //                     </TouchableOpacity>
   //                   </View>
   //                 </View>
@@ -235,7 +235,7 @@ export default class Drawerscreen extends Component {
   //               }}>
   //               <View style={{ width: '96%', alignSelf: 'center' }}>
   //                 <DrawerSubMenu
-  //                   iconImage={localimag.user2}
+  //                   iconImage={Icons.user2}
   //                   onPress={() => {
   //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                       this.props.navigation.navigate('Appointmenttab')
@@ -260,7 +260,7 @@ export default class Drawerscreen extends Component {
   //                   <View style={{ width: '15%' }}>
   //                     <Image
   //                       style={Styles.drawercardicon}
-  //                       source={localimag.user2}></Image>
+  //                       source={Icons.user2}></Image>
   //                   </View>
 
   //                   <View
@@ -306,14 +306,14 @@ export default class Drawerscreen extends Component {
   //                           height: (mobileW * 3.5) / 100,
   //                           marginBottom: (mobileW * 2) / 100,
   //                         }}
-  //                         source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
 
   //                     </View>
   //                   </View>
   //                 </TouchableOpacity> */}
 
   //                 <DrawerSubMenu
-  //                   iconImage={localimag.pricelistmenu}
+  //                   iconImage={Icons.pricelistmenu}
   //                   onPress={() => {
   //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                       this.props.navigation.navigate('PriceListtab')
@@ -325,7 +325,7 @@ export default class Drawerscreen extends Component {
   //                 />
 
   //                 <DrawerSubMenu
-  //                   iconImage={localimag.calender2}
+  //                   iconImage={Icons.calender2}
   //                   onPress={() => {
   //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                       this.props.navigation.navigate('AvailabilityScheduletab')
@@ -348,7 +348,7 @@ export default class Drawerscreen extends Component {
   //                   <View style={{ width: '15%' }}>
   //                     <Image
   //                       style={Styles.drawercardicon}
-  //                       source={localimag.calender}></Image>
+  //                       source={Icons.calender}></Image>
   //                   </View>
   //                   <View
   //                     style={{
@@ -391,7 +391,7 @@ export default class Drawerscreen extends Component {
   //                           height: (mobileW * 3.5) / 100,
   //                           marginBottom: (mobileW * 2) / 100,
   //                         }}
-  //                         source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
   //                     </View>
   //                   </View>
   //                 </TouchableOpacity>
@@ -408,7 +408,7 @@ export default class Drawerscreen extends Component {
   //                   <View style={{ width: '15%' }}>
   //                     <Image
   //                       style={Styles.drawercardicon}
-  //                       source={localimag.calender2}></Image>
+  //                       source={Icons.calender2}></Image>
   //                   </View>
   //                   <View
   //                     style={{
@@ -451,7 +451,7 @@ export default class Drawerscreen extends Component {
   //                           height: (mobileW * 3.5) / 100,
   //                           marginBottom: (mobileW * 2) / 100,
   //                         }}
-  //                         source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
   //                     </View>
   //                   </View>
   //                 </TouchableOpacity> */}
@@ -499,7 +499,7 @@ export default class Drawerscreen extends Component {
   //                 <View style={{ width: '15%' }}>
   //                   <Image
   //                     style={Styles.drawercardicon}
-  //                     source={localimag.setting}></Image>
+  //                     source={Icons.setting}></Image>
   //                 </View>
   //                 <View
   //                   style={{
@@ -532,13 +532,13 @@ export default class Drawerscreen extends Component {
   //                         width: (mobileW * 3.5) / 100,
   //                         height: (mobileW * 3.5) / 100,
   //                       }}
-  //                       source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                       source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
   //                   </View>
   //                 </View>
   //               </TouchableOpacity> */}
 
   //               <DrawerSubMenu
-  //                 iconImage={localimag.setting}
+  //                 iconImage={Icons.setting}
   //                 onPress={() => {
   //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                     this.props.navigation.navigate('MyProfile');
@@ -549,7 +549,7 @@ export default class Drawerscreen extends Component {
   //               />
 
   //               <DrawerSubMenu
-  //                 iconImage={localimag.transactionhistory}
+  //                 iconImage={Icons.transactionhistory}
   //                 onPress={() => {
   //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                     this.props.navigation.navigate('Transactiontab');
@@ -560,7 +560,7 @@ export default class Drawerscreen extends Component {
   //               />
 
   //               <DrawerSubMenu
-  //                 iconImage={localimag.reviewrating}
+  //                 iconImage={Icons.reviewrating}
   //                 onPress={() => {
   //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                     this.props.navigation.navigate('ReviewRating');
@@ -571,7 +571,7 @@ export default class Drawerscreen extends Component {
   //               />
 
   //               <DrawerSubMenu
-  //                 iconImage={localimag.support}
+  //                 iconImage={Icons.support}
   //                 onPress={() => {
   //                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                     this.props.navigation.navigate('More');
@@ -594,7 +594,7 @@ export default class Drawerscreen extends Component {
   //                 <View style={{ width: '15%' }}>
   //                   <Image
   //                     style={Styles.drawercardicon}
-  //                     source={localimag.support}></Image>
+  //                     source={Icons.support}></Image>
   //                 </View>
   //                 <View
   //                   style={{
@@ -626,7 +626,7 @@ export default class Drawerscreen extends Component {
   //                         width: (mobileW * 3.5) / 100,
   //                         height: (mobileW * 3.5) / 100,
   //                       }}
-  //                       source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+  //                       source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
   //                   </View>
   //                 </View>
   //               </TouchableOpacity> */}
@@ -657,10 +657,10 @@ export default class Drawerscreen extends Component {
   //                   {config.language == 1 ?
   //                     <Image
   //                       style={Styles.drawercardicon}
-  //                       source={localimag.logout_opp}></Image> :
+  //                       source={Icons.logout_opp}></Image> :
   //                     <Image
   //                       style={Styles.drawercardicon}
-  //                       source={localimag.logout}></Image>
+  //                       source={Icons.logout}></Image>
   //                   }
   //                 </View>
   //                 <View

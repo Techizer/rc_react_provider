@@ -7,6 +7,7 @@ import Styles from './Styles';
 import {  AppHeader,  AppHeader2,  Appheading,  Searchbarandicon,} from './Allcomponents';
 import Footer from './Footer';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
+import { Icons } from './icons/IReferences';
 
 
 export default class HomeHealthcareServiceAppointmentsdetails extends Component {
@@ -139,7 +140,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
             }}>
             <Image
             
-            source={config.textalign=='right'?localimag.arabic_back:localimag.backarrow}
+            source={config.textalign=='right'?Icons.arabic_back:Icons.backarrow}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -176,7 +177,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
             }}>
             <Image
               // tintColor="#fff"
-              source={this.state.notification_count>0? localimag.notifications: localimag.notifications_sec}
+              source={this.state.notification_count>0? Icons.notifications: Icons.notifications_sec}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -242,7 +243,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
         <View style={{alignSelf: 'center'}}>
        
           <Image
-            source={localimag.searchiocn2}
+            source={Icons.searchiocn2}
             style={{
               width: (mobileW * 8) / 100,
               height: (mobileW * 8) / 100,
@@ -340,7 +341,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                                <View style={{paddingRight:mobileW*3/100, borderRadius: (mobileW * 1) / 100, paddingHorizontal: (mobileW * 1) / 100,
                               paddingVertical: (mobileW * 1.4) / 100, backgroundColor:Colors.gray6,flexDirection:'row'}}>
                              <Image
-                              source={localimag.location}
+                              source={Icons.location}
                               style={{
                                 resizeMode: 'contain',
                                 width: (mobileW * 4) / 100,
@@ -378,14 +379,14 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                                alignItems:'center',
                              }}>
                          {config.language==0?   <Image
-                              source={localimag.clock}
+                              source={Icons.clock}
                                style={{
                                  resizeMode: 'contain',
                                 width: (mobileW * 4) / 100,
                                  height: (mobileW * 4) / 100,
                                }}></Image>:
                                   <Image
-                              source={localimag.clock_arabic_gray}
+                              source={Icons.clock_arabic_gray}
                               style={{
                                 resizeMode: 'contain',
                                 width: (mobileW * 4) / 100,
@@ -444,7 +445,7 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                             alignItems:'center'
                           }}>
                           <Image
-                            source={localimag.starrating}
+                            source={Icons.starrating}
                             style={{
                               tintColor: '#fff',
                               width: (mobileW * 3) / 100,
@@ -548,29 +549,29 @@ export default class HomeHealthcareServiceAppointmentsdetails extends Component 
                 name: 'Home',
                 fname:Lang_chg.home_footer[config.language],
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 fname:Lang_chg.Appointment_footer[config.language],
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 fname:Lang_chg.Cart_footer[config.language],
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 fname:Lang_chg.More_footer[config.language],
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}

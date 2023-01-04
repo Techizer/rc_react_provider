@@ -11,9 +11,10 @@ import Styles from './Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from 'react-native-date-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { AuthInputBoxSec, DropDownboxSec, DashBoardBox } from './components'
+import { AuthInputBoxSec, DropDownboxSec, DashBoardBox } from './Components'
 import { Col } from 'ionic-angular';
-import ScreenHeader from './components/ScreenHeader';
+import ScreenHeader from './Components/ScreenHeader';
+import { Icons } from './icons/IReferences';
 const bloodModal_arr = [
   {
     id: 1,
@@ -1391,7 +1392,7 @@ export default class MyProfile extends Component {
                           }}
                           source={this.state.profile_img == 'NA' ||
                             this.state.profile_img == null ||
-                            this.state.profile_img == '' ? localimag.profileimg :
+                            this.state.profile_img == '' ? Icons.profileimg :
                             { uri: this.state.profile_img }}
                         ></Image>
                       </View>
@@ -1435,7 +1436,7 @@ export default class MyProfile extends Component {
                               // borderRadius: mobileW * 10 / 100,
                               // alignSelf: 'center',
                             }}
-                            source={localimag.editicon}
+                            source={Icons.editicon}
                           ></Image>
                           <Text style={{
                             color: Colors.textblue,
@@ -1827,7 +1828,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.moh_lic_image == 'NA' ||
                               this.state.moh_lic_image == null ||
-                              this.state.moh_lic_image == '' ? localimag.prescription :
+                              this.state.moh_lic_image == '' ? Icons.prescription :
                               { uri: config.img_url3 + this.state.moh_lic_image.filename }}
                           ></Image>
                           <Text>{this.state.hosp_moh_lic_no}</Text>
@@ -1853,7 +1854,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.hosp_reg_image == 'NA' ||
                               this.state.hosp_reg_image == null ||
-                              this.state.hosp_reg_image == '' ? localimag.prescription :
+                              this.state.hosp_reg_image == '' ? Icons.prescription :
                               { uri: config.img_url3 + this.state.hosp_reg_image.filename }}
                           ></Image>
                           <Text>{this.state.hosp_reg_no}</Text>
@@ -1879,7 +1880,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.id_image == 'NA' ||
                               this.state.id_image == null ||
-                              this.state.id_image == '' ? localimag.prescription :
+                              this.state.id_image == '' ? Icons.prescription :
                               { uri: config.img_url3 + this.state.id_image.filename }}
                           ></Image>
                           <Text>{this.state.id_number}</Text>
@@ -1905,7 +1906,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.certificate == 'NA' ||
                               this.state.certificate == null ||
-                              this.state.certificate == '' ? localimag.prescription :
+                              this.state.certificate == '' ? Icons.prescription :
                               { uri: config.img_url3 + this.state.certificate.filename }}
                           ></Image>
                           <Text>{this.state.qualification}</Text>
@@ -1931,7 +1932,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.scfhs_image == 'NA' ||
                               this.state.scfhs_image == null ||
-                              this.state.scfhs_image == '' ? localimag.prescription :
+                              this.state.scfhs_image == '' ? Icons.prescription :
                               { uri: config.img_url3 + this.state.scfhs_image.filename }}
                           ></Image>
                           <Text>{this.state.scfhs_number}</Text>
@@ -1947,7 +1948,7 @@ export default class MyProfile extends Component {
                 textTitle={'Schedule Availability'}
                 // textInfo={item?.details}
                 infoIcon={''}
-                // rightIcon={localimag.rightDIcon}
+                // rightIcon={Icons.rightDIcon}
                 rightText={"Edit"}
                 isBorder={false}
                 isMargin={true}
@@ -1959,7 +1960,7 @@ export default class MyProfile extends Component {
                 textTitle={(this.state.user_type == "lab") ? 'Tests & Packages' : 'Price List'}
                 // textInfo={item?.details}
                 infoIcon={''}
-                // rightIcon={localimag.rightDIcon}
+                // rightIcon={Icons.rightDIcon}
                 rightText={"Edit"}
                 isBorder={true}
                 isMargin={false}

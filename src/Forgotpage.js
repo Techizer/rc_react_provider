@@ -10,7 +10,8 @@ import {
   MD3Colors,
   List,
 } from 'react-native-paper';
-import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
+import { Icons } from './icons/IReferences';
 export default class Forgotpage extends Component {
   constructor(props) {
     super(props);
@@ -95,7 +96,7 @@ export default class Forgotpage extends Component {
                     style={{ width: '100%' }}>
                     <Image
                       style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                      source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}>
+                      source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}>
 
 
                     </Image>
@@ -110,7 +111,7 @@ export default class Forgotpage extends Component {
                       alignSelf: 'center',
                       resizeMode: 'contain',
                     }}
-                    source={localimag.Forgotlogo}>
+                    source={Icons.Forgotlogo}>
 
 
                   </Image>

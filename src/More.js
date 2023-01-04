@@ -1,8 +1,8 @@
 import { Text, Modal, Alert, View, Image, StatusBar, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import React, { Component } from 'react'
 import { Colors, localimag, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
-import ScreenHeader from './components/ScreenHeader';
-
+import ScreenHeader from './Components/ScreenHeader';
+import { Icons } from './icons/IReferences'
 
 export default class More extends Component {
   constructor(props) {
@@ -161,7 +161,7 @@ export default class More extends Component {
 
         <View style={{ width: '55%', alignSelf: 'center', marginRight: mobileW * 2 / 100, marginTop: mobileW * 10 / 100 }}>
           <Image style={{ height: mobileW * 30 / 100, width: mobileW * 45 / 100, resizeMode: 'contain', alignSelf: 'center', alignItems: 'center', }}
-            source={localimag.Forgotlogo}>
+            source={Icons.Forgotlogo}>
 
           </Image>
         </View>
@@ -205,7 +205,7 @@ export default class More extends Component {
           <View style={{ width: '5%', alignSelf: 'center', }}>
             <View style={{ width: '100%', alignSelf: 'center' }}>
               <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-                source={config.textalign == 'right' ? localimag.arabic_next : localimag.forwardarrow}></Image>
+                source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
 
             </View>
 
@@ -229,7 +229,7 @@ export default class More extends Component {
             <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
 
 
-              source={config.textalign == 'right' ? localimag.arabic_next : localimag.forwardarrow}></Image>
+              source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
 
           </View>
 
@@ -250,7 +250,7 @@ export default class More extends Component {
           <View style={{ width: '5%', alignSelf: 'center', }}>
             <View style={{ width: '100%', alignSelf: 'center' }}>
               <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-                source={config.textalign == 'right' ? localimag.arabic_next : localimag.forwardarrow}></Image>
+                source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
 
             </View>
 
@@ -270,7 +270,7 @@ export default class More extends Component {
           <View style={{ width: '5%', alignSelf: 'center', }}>
             <View style={{ width: '100%', alignSelf: 'center' }}>
               <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-                source={config.textalign == 'right' ? localimag.arabic_next : localimag.forwardarrow}></Image>
+                source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
 
             </View>
 
@@ -292,7 +292,7 @@ export default class More extends Component {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ width: '8%', alignSelf: 'center', marginRight: mobileW * 3 / 100 }}>
               <Image style={{ width: 20, height: 20, resizeMode: 'contain' }}
-                source={localimag.needsupportimg}>
+                source={Icons.needsupportimg}>
               </Image>
 
             </View>
@@ -304,7 +304,7 @@ export default class More extends Component {
           <View style={{ width: '12%', alignSelf: 'center' }}>
 
             <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'flex-end', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-              source={config.textalign == 'right' ? localimag.arabic_next : localimag.forwardarrow}></Image>
+              source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
           </View>
 
         </TouchableOpacity>

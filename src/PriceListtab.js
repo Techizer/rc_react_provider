@@ -22,7 +22,7 @@ import Styles from './Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import PriceList from './PriceList';
 import LabPackageListing from './LabPackageListing';
-import ScreenHeader from './components/ScreenHeader';
+import ScreenHeader from './Components/ScreenHeader';
 const tabheadings = [
   {
     id: 1,

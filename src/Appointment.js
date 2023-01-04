@@ -23,7 +23,8 @@ import Styles from './Styles';
 
 import Footer from './Footer';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { AppointmentBox } from './components'
+import { AppointmentBox } from './Components'
+import { Icons } from './icons/IReferences';
 const tabheadings = [
   {
     id: 1,
@@ -783,7 +784,7 @@ export default class Appointment extends Component {
 
                       <TouchableOpacity onPress={() => this.setState({ modalVisible: false })}>
                         <Image
-                          source={localimag.cross}
+                          source={Icons.cross}
                           style={{
                             resizeMode: 'contain',
                             // backgroundColor: Colors.white_color,
@@ -971,7 +972,7 @@ export default class Appointment extends Component {
                       </Text>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          source={localimag.calendarimg}
+                          source={Icons.calendarimg}
                           style={{
                             resizeMode: 'contain',
                             // backgroundColor: Colors.white_color,

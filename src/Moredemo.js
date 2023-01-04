@@ -1,6 +1,7 @@
 import { Text, View,Image,StatusBar ,TouchableOpacity} from 'react-native'
 import React, { Component } from 'react'
 import {Colors,localimag,Font,mobileH,Mapprovider,msgProvider,msgText,config,mobileW,localStorage, handleback, Lang_chg,apifuntion, msgTitle,consolepro} from './Provider/utilslib/Utils';
+import { Icons } from './icons/IReferences';
 
 
 export default class Supportandmore extends Component {
@@ -33,7 +34,7 @@ export default class Supportandmore extends Component {
                            this.props.navigation.goBack()
                          }} style={{width:'100%',}}>
                          <Image style={{width:mobileW*8/100,height:mobileW*8/100,alignSelf:'center'}}
-                         source={localimag.backarrow}>
+                         source={Icons.backarrow}>
                          </Image>
                          </TouchableOpacity>
                          </View>
@@ -43,7 +44,7 @@ export default class Supportandmore extends Component {
    
                      </View>
                    <Image   style={{height:mobileW*35/100,width:mobileW*45/100,resizeMode:'contain',alignSelf:'center'}}
-                     source={localimag.Forgotlogo}>
+                     source={Icons.Forgotlogo}>
 
                    </Image>
 
@@ -110,7 +111,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={localimag.forwardarrow}>
+                         source={Icons.forwardarrow}>
                          </Image>
 
                             </TouchableOpacity>
@@ -133,7 +134,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={localimag.forwardarrow}>
+                         source={Icons.forwardarrow}>
                          </Image>
 
                             </TouchableOpacity>
@@ -157,7 +158,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={localimag.forwardarrow}>
+                         source={Icons.forwardarrow}>
                          </Image>
 
                             </TouchableOpacity>
@@ -178,7 +179,7 @@ export default class Supportandmore extends Component {
                      <View style={{width:'10%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={localimag.needsupportimg}>
+                         source={Icons.needsupportimg}>
                          </Image>
 
                             </TouchableOpacity>
@@ -191,7 +192,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={localimag.forwardarrow}>
+                         source={Icons.forwardarrow}>
                          </Image>
 
                             </TouchableOpacity>

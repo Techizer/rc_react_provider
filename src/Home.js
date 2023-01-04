@@ -9,12 +9,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Styles from './Styles';
 import messaging from '@react-native-firebase/messaging';
 import { AppHeader, Appheading, Searchbarandicon } from './Allcomponents';
-import { DashBoardBox } from './components'
+import { DashBoardBox } from './Components'
 import Footer from './Footer';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import { Icons } from './icons/IReferences';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
@@ -24,7 +25,7 @@ global.cart_customer = [];
 const DoctorAppointment = [
   {
     id: 1,
-    img: localimag.InstantVideoConsultation,
+    img: Icons.InstantVideoConsultation,
     star: '5.0',
     title: 'Instant Video Consultation',
     arabic_title: 'استشارة فيديو فورية',
@@ -33,7 +34,7 @@ const DoctorAppointment = [
   },
   {
     id: 2,
-    img: localimag.HomeVisitConsultation,
+    img: Icons.HomeVisitConsultation,
     star: '5.0',
     title: 'Home Visit Consultation',
     arabic_title: 'استشارة زيارة منزلية  ',
@@ -45,7 +46,7 @@ const DoctorAppointment = [
 const HospitalAppointment = [
   {
     id: 1,
-    img: localimag.BookaLabTest,
+    img: Icons.BookaLabTest,
     star: '5.0',
     title: 'Book a Lab Test',
     arabic_title: 'حجز فحص مختبر  ',
@@ -57,7 +58,7 @@ const HospitalAppointment = [
   },
   {
     id: 2,
-    img: localimag.HoptlInstantVideoConsultation,
+    img: Icons.HoptlInstantVideoConsultation,
     star: '5.0',
     title: 'Instant Video Consultaion',
     arabic_title: ' استشارة فيديو فورية  ',
@@ -84,7 +85,7 @@ export default class Home extends Component {
       profileCompletionData: null,
       HomeHealthcareServiceAppointments: [
         {
-          img: localimag.appointmentIcon,
+          img: Icons.appointmentIcon,
           title: 'My Appointment',
           details: 'Pending Appointment \n\nUpcoming Appointment \n\nOngoing Appointment \n\nPast Appointment',
           goTo: 'Appointmenttab', //'Appointment', //'Show_other_appoinment'
@@ -93,7 +94,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: localimag.ScheduleartIcon,
+          img: Icons.ScheduleartIcon,
           title: 'My Availability Schedule',
           details: 'Schedule Availibility \n\nPlan Week, MON - SUN \n\nDay Wise Time Setting \n\nBooking OFF and ON',
           goTo: 'AvailabilityScheduletab',
@@ -102,7 +103,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: localimag.PricelistIcon,
+          img: Icons.PricelistIcon,
           title: 'Price List',
           details: 'Select Tasks \n\nPrice Each Tasks \n\nSelect Duration \n\nON and OFF Tasks',
           titleL: 'Manage Tests & Packages',
@@ -113,7 +114,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: localimag.serviceaddress,
+          img: Icons.serviceaddress,
           title: 'Service Address',
           details: 'Point Service Location \n\nManage Location Anytime \n\nGoogle Map Integrated \n\nPatient Address Assistance',
           goTo: 'ServiceAddressF1',
@@ -122,7 +123,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: localimag.transectionIcon,
+          img: Icons.transectionIcon,
           title: 'Transactions & More',
           details: 'Track Each Transaction \n\nFees & Charges \n\nWithdrawals \n\nSet & Transfer To Bank',
           goTo: 'Transactiontab',
@@ -131,7 +132,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: localimag.account2xIcon,
+          img: Icons.account2xIcon,
           title: 'Account & Settings',
           details: 'Upload Picture \n\nAdd Certifications \n\nAdd Experience \n\nPersonalise Anytime',
           goTo: 'MyProfile',
@@ -483,7 +484,7 @@ export default class Home extends Component {
                   this.props.navigation.toggleDrawer();
                 }}>
                   <Image
-                    source={this.state.profile_img == null || this.state.profile_img == '' ? localimag.p1 : { uri: this.state.profile_img }}
+                    source={this.state.profile_img == null || this.state.profile_img == '' ? Icons.p1 : { uri: this.state.profile_img }}
                     style={{
                       // resizeMode: 'contain',
                       width: (mobileW * 9) / 100,
@@ -556,7 +557,7 @@ export default class Home extends Component {
                   {/* <TouchableOpacity onPress={()=>{this.notificationfunctoion()}}> */}
                   <Image
                     // tintColor="#fff"
-                    source={this.state.notification_count > 0 ? localimag.notifications : localimag.notifications_sec}
+                    source={this.state.notification_count > 0 ? Icons.notifications : Icons.notifications_sec}
                     style={{
                       alignSelf: 'flex-end',
                       resizeMode: 'contain',
@@ -747,7 +748,7 @@ export default class Home extends Component {
                               justifyContent: 'center',
                               alignItems: 'center',
                             }}>
-                              <Image source={localimag.rightarrow} style={{
+                              <Image source={Icons.rightarrow} style={{
                                 width: 14,
                                 height: 14
                               }} resizeMethod='scale' resizeMode='contain' />
@@ -777,7 +778,7 @@ export default class Home extends Component {
                     actionColor={item.actionColor}
                     actionTextColor={item?.actionTextColor}
                     actionMessage={item?.actionMessage}
-                    rightIcon={localimag.rightarrow}
+                    rightIcon={Icons.rightarrow}
                     isBorder={(item?.title == "About Rootscare") ? false : true}
                     isMargin={(item?.title == "Help & Support") ? false : true}
                     onPress={() => {
@@ -814,29 +815,29 @@ export default class Home extends Component {
                 name: 'Home',
                 fname:Lang_chg.home_footer[config.language],
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 fname:Lang_chg.Appointment_footer[config.language],
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 fname:Lang_chg.Cart_footer[config.language],
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 fname:Lang_chg.More_footer[config.language],
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}

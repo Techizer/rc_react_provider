@@ -3,8 +3,9 @@ import React, { Component } from 'react'
 import { Colors, localimag, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
 import { AppHeader, Appheading, Searchbarandicon } from './Allcomponents';
 // import { Nodata_foundimage } from './Provider/Nodata_foundimage';
-import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Icons } from './icons/IReferences';
 const Select_arr = [
   {
     id: 1,
@@ -352,7 +353,7 @@ export default class AddBank extends Component {
               }}
                 style={{ width: '100%', }}>
                 <Image style={{ width: mobileW * 8 / 100, height: mobileW * 8 / 100, alignSelf: 'center' }}
-                  source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}></Image>
+                  source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}></Image>
               </TouchableOpacity>
             </View>
             <View style={{ width: '95%', alignSelf: 'center', }}>
@@ -634,7 +635,7 @@ export default class AddBank extends Component {
                         { height: 23, width: 23, resizeMode: 'contain', }
                         : { height: 23, width: 23, resizeMode: 'contain', tintColor: '#696464' }
                     }
-                      source={(this.state.isCheck) ? localimag.remembertick : require('./icons/blank-check-box.png')}></Image>
+                      source={(this.state.isCheck) ? Icons.RememberTick : require('./icons/blank-check-box.png')}></Image>
                   </View>
 
                   <Text

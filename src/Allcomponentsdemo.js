@@ -35,7 +35,7 @@ import {
   localimag,
 } from './Provider/utilslib/Utils';
 import PropTypes from 'prop-types';
-import {Item} from 'react-native-paper/lib/typescript/components/List/List';
+import { Icons } from './icons/IReferences';
 
 class Arrowandbackwithedit extends Component {
   render() {
@@ -63,7 +63,7 @@ class Arrowandbackwithedit extends Component {
               paddingTop: (mobileW * 2) / 100,
             }}>
             <Image
-              source={localimag.leftarrow}
+              source={Icons.leftarrow}
               style={{
                 resizeMode: 'center',
                 width: (mobileW * 4.3) / 100,
@@ -95,7 +95,7 @@ class Arrowandbackwithedit extends Component {
                 alignItems: 'center',
               }}>
               <Image
-                source={localimag.shareicon}
+                source={Icons.shareicon}
                 style={{
                   resizeMode: 'contain',
                   width: (mobileW * 7) / 100,
@@ -145,7 +145,7 @@ class Arrowandbackwitheditprofile extends Component {
               paddingTop: (mobileW * 2) / 100,
             }}>
             <Image
-              source={localimag.leftarrow}
+              source={Icons.leftarrow}
               style={{
                 resizeMode: 'center',
                 width: (mobileW * 4.3) / 100,
@@ -177,7 +177,7 @@ class Arrowandbackwitheditprofile extends Component {
                 alignItems: 'center',
               }}>
               <Image
-                source={localimag.shareicon}
+                source={Icons.shareicon}
                 style={{
                   resizeMode: 'contain',
                   width: (mobileW * 7) / 100,
@@ -229,7 +229,7 @@ class Arrowandback extends Component {
           paddingTop: (mobileW * 2) / 100,
         }}>
         <Image
-          source={localimag.leftarrow}
+          source={Icons.leftarrow}
           style={{
             resizeMode: 'contain',
             width: (mobileW * 4.3) / 100,
@@ -272,7 +272,7 @@ class Profilepic extends Component {
     return (
       <ImageBackground
         resizeMode="contain"
-        source={localimag.c}
+        source={Icons.c}
         style={{
           marginTop: (mobileW * 7.5) / 100,
           marginBottom: (mobileW * 5.5) / 100,
@@ -325,7 +325,7 @@ export function Searchbarandicon(props) {
               width: '10%',
             }}>
             <Image
-              source={localimag.search}
+              source={Icons.search}
               style={{
                 width: (mobileW * 4.5) / 100,
                 height: (mobileW * 4.5) / 100,
@@ -353,7 +353,7 @@ export function Searchbarandicon(props) {
             alignSelf: 'center',
           }}>
           <Image
-            source={localimag.p4}
+            source={Icons.p4}
             style={{
               width: (mobileW * 11) / 100,
               height: (mobileW * 11) / 100,
@@ -412,7 +412,7 @@ export function Selectionboxandarrow(props) {
               width: (mobileW * 8) / 100,
               height: (mobileW * 8) / 100,
             }}
-            source={localimag.rightarrow}></Image>
+            source={Icons.rightarrow}></Image>
         </TouchableOpacity>
       </View>
     </View>
@@ -423,7 +423,7 @@ export function Appcheckedbox(props) {
   return (
     <View style={styles.checkboxview}>
       <View style={{flex: 0.1, alignSelf: 'center'}}>
-        <Image style={styles.checkboximg} source={localimag.checkedbox}></Image>
+        <Image style={styles.checkboximg} source={Icons.checkedbox}></Image>
       </View>
       <Text style={styles.infosmalltext}>{props.title}</Text>
     </View>
@@ -436,7 +436,7 @@ export function Appuncheckedbox(props) {
       <View style={{flex: 0.1}}>
         <Image
           style={styles.uncheckboximg}
-          source={localimag.uncheckedbox}></Image>
+          source={Icons.uncheckedbox}></Image>
       </View>
       <Text style={styles.infosmalltext}>{props.title}</Text>
     </View>
@@ -449,7 +449,7 @@ export function Appcheckedboxselectall(props) {
       <View style={{flex: 0.1}}>
         <Image
           style={styles.uncheckboximg}
-          source={localimag.uncheckedbox}></Image>
+          source={Icons.uncheckedbox}></Image>
       </View>
       <Text style={[styles.checkboxtext, {}]}>Select All</Text>
     </View>
@@ -473,7 +473,7 @@ export function Appheading({title, mb, mt}) {
 export function Appaddoptionbox(props) {
   return (
     <View style={styles.profileinfowithimg}>
-      <Image source={localimag.plusicon} style={styles.infoimgicon}></Image>
+      <Image source={Icons.plusicon} style={styles.infoimgicon}></Image>
       <Text style={styles.infosmalltext}>{props.title}</Text>
     </View>
   );
@@ -523,7 +523,7 @@ export function Appmainbox(props) {
       <ImageBackground
         imageStyle={styles.imgboxstyle}
         style={styles.imgbox}
-        source={localimag.blueimagebackground}>
+        source={Icons.blueimagebackground}>
         <View style={styles.insideview}>
           <Text style={styles.insideviewtext}>{props.count}</Text>
         </View>

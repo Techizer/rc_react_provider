@@ -6,6 +6,7 @@ global.amount_total = 0;
 global.username = 'NA'
 import HTMLView from 'react-native-htmlview';
 import DeviceInfo from 'react-native-device-info';
+import { Icons } from './icons/IReferences';
 const appVersion = DeviceInfo.getVersion();
 export default class Splash extends Component {
   constructor(props) {
@@ -246,7 +247,7 @@ export default class Splash extends Component {
         />
 
         <Image style={{ height: mobileW * 80 / 100, width: mobileW * 95 / 100, resizeMode: 'contain', alignSelf: 'center', marginTop: mobileW * 15 / 100 }}
-          source={localimag.splashlogo}>
+          source={Icons.splashlogo}>
 
         </Image>
         

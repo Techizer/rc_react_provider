@@ -17,6 +17,7 @@ import { Colors, Font, mobileH, Mapprovider, Cameragallery, mediaprovider, msgPr
 import { Appbtn3, AppHeader2 } from './Allcomponents';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
+import { Icons } from './icons/IReferences';
 
 export default class AddPatient extends Component {
   constructor(props) {
@@ -219,12 +220,12 @@ export default class AddPatient extends Component {
                 }}
                 style={{ width: '10%', alignSelf: 'center' }}>
                 <Image
-                  source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}
+                  source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}
                   style={{
                     height: (mobileW * 8) / 100,
                     width: (mobileW * 8) / 100,
                   }}>
-                  {/* {localimag.backarrow} */}
+                  {/* {Icons.backarrow} */}
                 </Image>
               </TouchableOpacity>
 
@@ -247,13 +248,13 @@ export default class AddPatient extends Component {
                 }}>
                 <View style={{ width: '10%', alignSelf: 'center' }}>
                   <Image
-                    source={this.state.notification_count > 0 ? localimag.notifications : localimag.notifications_sec}
+                    source={this.state.notification_count > 0 ? Icons.notifications : Icons.notifications_sec}
                     style={{
                       height: (mobileW * 6) / 100,
                       width: (mobileW * 6) / 100,
                       resizeMode: 'contain',
                     }}>
-                    {/* {localimag.backarrow} */}
+                    {/* {Icons.backarrow} */}
                   </Image>
                 </View>
               </TouchableOpacity>
@@ -302,7 +303,7 @@ export default class AddPatient extends Component {
                       height: (mobileW * 21) / 100,
                       borderRadius: (mobileW * 10.5) / 100,
                     }}
-                    source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? localimag.profileimg : { uri: this.state.profile_img }}>
+                    source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? Icons.profileimg : { uri: this.state.profile_img }}>
                   </Image>
                 </View>
               </View>
@@ -331,7 +332,7 @@ export default class AddPatient extends Component {
                       alignSelf: 'center',
                       marginTop: (mobileW * 1.8) / 100,
                     }}
-                    source={localimag.camera}></Image>
+                    source={Icons.camera}></Image>
                 </TouchableOpacity>
               </View>
 
@@ -735,29 +736,29 @@ export default class AddPatient extends Component {
                 name: 'Home',
                 fname: Lang_chg.home_footer[config.language],
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 fname: Lang_chg.Appointment_footer[config.language],
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 fname: Lang_chg.Cart_footer[config.language],
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 fname: Lang_chg.More_footer[config.language],
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}

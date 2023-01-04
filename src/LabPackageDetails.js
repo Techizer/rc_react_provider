@@ -3,7 +3,7 @@ import { FlatList, TextInput, Image, Text, TouchableOpacity, ScrollView } from "
 import { View } from "react-native-animatable";
 import HTMLView from "react-native-htmlview";
 import { config } from "./Provider/configProvider";
-import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import {
   apifuntion,
   Colors,
@@ -16,6 +16,7 @@ import {
   msgProvider,
 } from "./Provider/utilslib/Utils";
 import Styles from "./Styles";
+import { Icons } from "./icons/IReferences";
 
 const LabPackageDetails = (props) => {
   const { navigation } = props;
@@ -165,8 +166,8 @@ const LabPackageDetails = (props) => {
                 <Image
                   source={
                     config.textalign == "right"
-                      ? localimag.arabic_back
-                      : localimag.backarrow
+                      ? Icons.arabic_back
+                      : Icons.backarrow
                   }
                   style={{
                     resizeMode: "contain",
@@ -475,8 +476,8 @@ const LabPackageDetails = (props) => {
                                     }}
                                     source={
                                       showTaskDetails
-                                        ? localimag.upArrow
-                                        : localimag.downarrow
+                                        ? Icons.upArrow
+                                        : Icons.downarrow
                                     }
                                   />
                                 </View>

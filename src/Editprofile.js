@@ -9,9 +9,10 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from 'react-native-date-picker'
 import MonthPicker from 'react-native-month-year-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { Col } from 'ionic-angular';
-import ScreenHeader from './components/ScreenHeader';
+import ScreenHeader from './Components/ScreenHeader';
+import { Icons } from './icons/IReferences';
 const bloodModal_arr = [
   {
     id: 1,
@@ -2613,7 +2614,7 @@ export default class Editprofile extends Component {
                             alignSelf: 'center',
 
                           }}
-                          source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? localimag.profileimg : { uri: this.state.profile_img }}
+                          source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? Icons.profileimg : { uri: this.state.profile_img }}
                         ></Image>
                       </View>
                     </View>
@@ -2667,7 +2668,7 @@ export default class Editprofile extends Component {
                             marginTop: (mobileW * 1.8) / 100,
 
                           }}
-                          source={localimag.camera}></Image>
+                          source={Icons.camera}></Image>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -3095,7 +3096,7 @@ export default class Editprofile extends Component {
                         }}>{this.state.dob_date.length <= 0 ? (this.state.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
-                          <Image source={localimag.dobimg}
+                          <Image source={Icons.dobimg}
                             style={{ height: 25, width: 25 }}>
                           </Image>
                         </View>
@@ -3126,7 +3127,7 @@ export default class Editprofile extends Component {
                         <Text style={{ width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text }}>{this.state.dob_date.length <= 0 ? Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
-                          <Image source={localimag.dobimg}
+                          <Image source={Icons.dobimg}
                             style={{ height: 25, width: 25 }}>
                           </Image>
                         </View>
@@ -3470,7 +3471,7 @@ export default class Editprofile extends Component {
                         </View>
                         <Text style={{ width: '77%', alignSelf: 'center', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: config.textRotate, fontFamily: Font.placeholderfontfamily }}>{this.state.nationality.length <= 0 ? Lang_chg.nationality[config.language] : this.state.nationality}</Text>
                         <View style={{ width: '20%', alignSelf: 'center', alignItems: 'flex-end' }}>
-                          <Image source={localimag.downarrow} style={{ height: 16, width: 16 }}>
+                          <Image source={Icons.downarrow} style={{ height: 16, width: 16 }}>
                           </Image>
                         </View>
                       </View>
@@ -4828,7 +4829,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={localimag.downarrow}></Image>
+                              source={Icons.downarrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -4894,7 +4895,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={localimag.downarrow}></Image>
+                              source={Icons.downarrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -4960,7 +4961,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={localimag.downarrow}></Image>
+                              source={Icons.downarrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -5025,7 +5026,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={localimag.downarrow}></Image>
+                              source={Icons.downarrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -5090,7 +5091,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={localimag.downarrow}></Image>
+                              source={Icons.downarrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -5155,7 +5156,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={localimag.downarrow}></Image>
+                              source={Icons.downarrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>

@@ -22,7 +22,7 @@ import Styles from './Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Transaction from './Transaction';
 import Withdrawal from './Withdrawal';
-import ScreenHeader from './components/ScreenHeader';
+import ScreenHeader from './Components/ScreenHeader';
 const tabheadings = [
   {
     id: 1,

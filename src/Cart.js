@@ -10,6 +10,7 @@ import Footer from './Footer';
 import RNGoSell from '@tap-payments/gosell-sdk-react-native';
 import sdkConfigurations from './sdkConfigurations';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
+import { Icons } from './icons/IReferences';
  
 const { Languages, PaymentTypes, AllowedCadTypes, TrxMode, SDKMode } = RNGoSell.goSellSDKModels;
  
@@ -583,7 +584,7 @@ ActivityIndicatorElement = () => {
             }}>
             <Image
             
-            source={config.textalign=='right'?localimag.arabic_back:localimag.backarrow}
+            source={config.textalign=='right'?Icons.arabic_back:Icons.backarrow}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -613,7 +614,7 @@ ActivityIndicatorElement = () => {
             }}>
             <Image
               // tintColor="#fff"
-              source={this.state.notification_count>0? localimag.notifications: localimag.notifications_sec}
+              source={this.state.notification_count>0? Icons.notifications: Icons.notifications_sec}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -682,7 +683,7 @@ ActivityIndicatorElement = () => {
                         }}>
                         <TouchableOpacity onPress={()=>{this.setState({modalVisible3:true})}}>
                         <Image
-                          source={localimag.cross}
+                          source={Icons.cross}
                           style={{
                             resizeMode: 'contain',
                             backgroundColor: Colors.white_color,
@@ -817,14 +818,14 @@ ActivityIndicatorElement = () => {
                                     }}>
                                     {config.language==0 ?
                                     <Image
-                                      source={localimag.clock}
+                                      source={Icons.clock}
                                       style={{tintColor:Colors.theme_color,
                                         resizeMode: 'contain',
                                         width: (mobileW * 4) / 100,
                                         height: (mobileW * 4) / 100,
                                       }}></Image>:
                                         <Image
-                                      source={localimag.clock_arabic}
+                                      source={Icons.clock_arabic}
                                       style={{tintColor:Colors.theme_color,
                                         resizeMode: 'contain',
                                         width: (mobileW * 4) / 100,
@@ -1036,7 +1037,7 @@ ActivityIndicatorElement = () => {
             }
             {this.state.cart_arr=='' || this.state.cart_arr==null &&
             <View style={{width:'90%',alignSelf:'center',marginTop:mobileW*5/100}}>
-                <Image style={{width:mobileW*35/100,height:mobileW*50/100,alignSelf:'center',resizeMode:'contain'}} source={localimag.Emptycart}> 
+                <Image style={{width:mobileW*35/100,height:mobileW*50/100,alignSelf:'center',resizeMode:'contain'}} source={Icons.Emptycart}> 
                 </Image>
 
                 <Text style={{color:Colors.theme_color,fontFamily:Font.Regular,fontSize:mobileW*4/100,textAlign:'center'}}>Cart Details not found.</Text>
@@ -1171,7 +1172,7 @@ ActivityIndicatorElement = () => {
                   alignSelf: 'center',
                   marginTop: (mobileW * -5) / 100,
                 }}
-                source={localimag.greentick}></Image>
+                source={Icons.greentick}></Image>
               <Text
                 style={{
                   fontSize: (mobileW * 8) / 100,
@@ -1241,29 +1242,29 @@ ActivityIndicatorElement = () => {
                 name: 'Home',
                 fname:Lang_chg.home_footer[config.language],
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 fname:Lang_chg.Appointment_footer[config.language],
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 fname:Lang_chg.Cart_footer[config.language],
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 fname:Lang_chg.More_footer[config.language],
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}

@@ -5,7 +5,8 @@ import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 // import { color } from "react-native-reanimated";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
-import { Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Icons } from "../icons/IReferences";
 const DrawerSubMenu = ({
   menuTitle,
   menuSubtitle,
@@ -66,7 +67,7 @@ const DrawerSubMenu = ({
                       width: (mobileW * 3.5) / 100,
                       height: (mobileW * 3.5) / 100,
                     }}
-                    source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+                    source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
                 </View>
               </View>
             </TouchableOpacity>
@@ -124,7 +125,7 @@ const DrawerSubMenu = ({
                       height: (mobileW * 3.5) / 100,
                       marginBottom: (mobileW * 2) / 100,
                     }}
-                    source={config.textalign == 'right' ? localimag.arabic_next : localimag.rightarrow}></Image>
+                    source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
                 </View>
               </View>
             </TouchableOpacity>

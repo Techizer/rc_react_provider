@@ -6,7 +6,8 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
 import moment from "moment-timezone";
-import { Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Icons } from "../icons/IReferences";
 const AppointmentBox = ({
   item, onPressViewDetails, onPressAccept, onPressReject, onPressVideoCall,
   customStyles,
@@ -129,7 +130,7 @@ const AppointmentBox = ({
 
                 </Text>
                 <Image
-                  source={localimag.dots}
+                  source={Icons.dots}
                   style={{
                     width: 25,
                     height: 13,
@@ -300,7 +301,7 @@ const AppointmentBox = ({
                 }}>
                 {config.language == 0 ?
                   <Image
-                    source={localimag.clock}
+                    source={Icons.clock}
                     style={{
                       tintColor: Colors.theme_color,
                       resizeMode: 'contain',
@@ -308,7 +309,7 @@ const AppointmentBox = ({
                       height: (mobileW * 3.5) / 100,
                     }}></Image> :
                   <Image
-                    source={localimag.clock_arabic}
+                    source={Icons.clock_arabic}
                     style={{
                       tintColor: Colors.theme_color,
                       resizeMode: 'contain',
@@ -351,7 +352,7 @@ const AppointmentBox = ({
               }}>
               {config.language == 0 ?
                 <Image
-                  source={localimag.purse}
+                  source={Icons.purse}
                   style={{
                     resizeMode: 'contain',
                     width: 15,
@@ -359,7 +360,7 @@ const AppointmentBox = ({
 
                   }}></Image> :
                 <Image
-                  source={localimag.purse_arbic}
+                  source={Icons.purse_arbic}
                   style={{
                     resizeMode: 'contain',
                     width: 15,
@@ -480,7 +481,7 @@ const AppointmentBox = ({
                     marginLeft: 10
                   }}>
                   <Image
-                    source={localimag.cross}
+                    source={Icons.cross}
                     style={{
                       width: mobileW * 6 / 100,
                       height: mobileW * 6 / 100,

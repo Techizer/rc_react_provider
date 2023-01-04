@@ -5,6 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import MapView, { Marker, PROVIDER_GOOGLE, } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Icons } from '../icons/IReferences';
 
 export default class MapproviderLocationShow extends Component {
   constructor(props) {
@@ -292,7 +293,7 @@ getValue = () => {
                   description={'Your are here location'}
 
                 >
-                  <Image source={localimag.location_green} style={{ height: 30, width: 30, resizeMode: 'contain', }} />
+                  <Image source={Icons.location_green} style={{ height: 30, width: 30, resizeMode: 'contain', }} />
                 </Marker.Animated>
               </MapView>
               <View style={{ position: 'absolute', width: '100%', top: 20 }}>

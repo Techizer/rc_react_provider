@@ -1,8 +1,9 @@
 import { Text, View, StatusBar, BackHandler, Alert, SafeAreaView, KeyboardAwareScrollView, ScrollView, styles, TouchableOpacity, Image, TextInput } from 'react-native';
 import React, { Component } from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
-import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, apifuntion, localStorage, msgProvider, msgText, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Icons } from './icons/IReferences';
 export default class Otp_forget extends Component {
 
   _didFocusSubscription;
@@ -164,7 +165,7 @@ export default class Otp_forget extends Component {
                   style={{ width: '100%' }}>
                   <Image
                     style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                    source={config.textalign == 'right' ? localimag.arabic_back : localimag.backarrow}>
+                    source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}>
 
 
                   </Image>
@@ -174,7 +175,7 @@ export default class Otp_forget extends Component {
               <View style={{ width: '80%', alignSelf: 'center' }}>
                 <Image
                   style={{ width: mobileW * 50 / 100, height: mobileW * 40 / 100, alignSelf: 'center', resizeMode: 'contain' }}
-                  source={localimag.Forgotlogo}>
+                  source={Icons.Forgotlogo}>
 
 
                 </Image>

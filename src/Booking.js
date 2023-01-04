@@ -8,6 +8,7 @@ import { AppHeader, AppHeader2, Appheading, Searchbarandicon, Inactivecard, Task
 import Footer from './Footer';
 
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
+import { Icons } from './icons/IReferences';
 
 
 
@@ -1048,7 +1049,7 @@ console.log('muska test',sum)
             }}>
             <Image
             
-            source={config.textalign=='right'?localimag.arabic_back:localimag.backarrow}
+            source={config.textalign=='right'?Icons.arabic_back:Icons.backarrow}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -1078,7 +1079,7 @@ console.log('muska test',sum)
             }}>
             <Image
               // tintColor="#fff"
-              source={this.state.notification_count>0? localimag.notifications: localimag.notifications_sec}
+              source={this.state.notification_count>0? Icons.notifications: Icons.notifications_sec}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -1107,7 +1108,7 @@ console.log('muska test',sum)
                 flexDirection: 'row',alignItems:'center'}}>           
                    <View style={{width: '25%',}}>
                 <Image
-                  source={item.image == 'NA' || item.image == null  || item.image == ''? localimag.p1:{uri:config.img_url3+item.image}}
+                  source={item.image == 'NA' || item.image == null  || item.image == ''? Icons.p1:{uri:config.img_url3+item.image}}
                   style={{
                     width: (mobileW * 20) / 100,
                     height: (mobileW * 20) / 100,
@@ -1170,7 +1171,7 @@ console.log('muska test',sum)
                 },this.state.active_status==true?{backgroundColor: '#d1e9f6'}:{backgroundColor: '#fff'}]}>
                 <Image
                  
-                  source={this.state.profile_img == 'NA' || this.state.profile_img == null? localimag.user_img:{uri:config.img_url3+this.state.profile_img}}
+                  source={this.state.profile_img == 'NA' || this.state.profile_img == null? Icons.user_img:{uri:config.img_url3+this.state.profile_img}}
                   style={{
                     alignSelf: 'center',
                     width: (mobileW * 16) / 100,
@@ -1214,7 +1215,7 @@ console.log('muska test',sum)
                 <ImageBackground
                 
                   imageStyle={{borderRadius:mobileW*2.5/100}}
-                  source={item.image == 'NA' || item.image == null? localimag.user_img:{uri:config.img_url3+item.image}}
+                  source={item.image == 'NA' || item.image == null? Icons.user_img:{uri:config.img_url3+item.image}}
                   style={{
                     alignSelf: 'center',
                     width: (mobileW * 13) / 100,
@@ -1226,7 +1227,7 @@ console.log('muska test',sum)
                    
                   }}>
                   <TouchableOpacity onPress={()=>{this.setState({modalVisible3:true}),this.setState({id:item.id,first_name:item.first_name, last_name:item. last_name})}}>
-                    <Image style={{width:20,height:20,alignSelf:'flex-end',top:0}} source={localimag.crossimg}></Image>
+                    <Image style={{width:20,height:20,alignSelf:'flex-end',top:0}} source={Icons.crossimg}></Image>
                     </TouchableOpacity>
                   </ImageBackground>
                   </View>
@@ -1259,7 +1260,7 @@ console.log('muska test',sum)
                 }}>
                 <Image
                   resizeMode="contain"
-                  source={localimag.addicon}
+                  source={Icons.addicon}
                   style={{
                    
                     width: (mobileW * 10) / 100,
@@ -1431,7 +1432,7 @@ console.log('muska test',sum)
       </Text>
       <TouchableOpacity onPress={()=>{this.check_all_false(item,index)}} >
       <Image
-        source={localimag.cross2}
+        source={Icons.cross2}
         style={{
           alignSelf: 'center',
           width: (mobileW * 2) / 100,
@@ -1478,7 +1479,7 @@ console.log('muska test',sum)
                       // backgroundColor:'red',
                       alignSelf:'center'
                     }}
-                    source={localimag.search2}></Image>
+                    source={Icons.search2}></Image>
                     </View>
                     </View>
                 </View>
@@ -1520,7 +1521,7 @@ console.log('muska test',sum)
                             alignSelf: 'flex-start',
                          
                           }}
-                          source={localimag.remembertick}></Image>:
+                          source={Icons.remembertick}></Image>:
                           <Image
                           style={{
                             width: (mobileW * 5) / 100,
@@ -1675,7 +1676,7 @@ console.log('muska test',sum)
                      // resizeMode:'contain',
                       alignSelf:'center'
                     }}
-                    source={localimag.calendarimg}></Image>
+                    source={Icons.calendarimg}></Image>
                         </View>
 
 
@@ -2376,29 +2377,29 @@ console.log('muska test',sum)
                 name: 'Home',
                 fname:Lang_chg.home_footer[config.language],
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 fname:Lang_chg.Appointment_footer[config.language],
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 fname:Lang_chg.Cart_footer[config.language],
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 fname:Lang_chg.More_footer[config.language],
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}

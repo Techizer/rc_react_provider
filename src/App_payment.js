@@ -19,7 +19,6 @@
      SafeAreaView,
      TouchableOpacity
  } from 'react-native';
- // import Header from './components/Header';
  import RNGoSell from '@tap-payments/gosell-sdk-react-native';
  import sdkConfigurations from './sdkConfigurations';
 

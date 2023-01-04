@@ -3,7 +3,7 @@ import { Text, View, Image, FlatList, StyleSheet, ScrollView, TouchableOpacity, 
 import { color } from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
 import { Colors, localimag, Font, mobileH, mobileW, config, Lang_chg } from './Provider/utilslib/Utils'
-import ScreenHeader from './components/ScreenHeader';
+import ScreenHeader from './Components/ScreenHeader';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;

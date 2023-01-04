@@ -23,6 +23,7 @@ import Styles from './Styles';
 
 import Footer from './Footer';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
+import { Icons } from './icons/IReferences';
 
  const tabheadings= [
   {
@@ -590,7 +591,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                     }}>
                       {config.language==0?
                     <Image
-                      source={localimag.leftarrow}
+                      source={Icons.leftarrow}
                       style={{
                         resizeMode: 'contain',
                         width: (mobileW * 9) / 100,
@@ -598,7 +599,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                         height: (mobileW * 9) / 100,
                       }}></Image>:
                       <Image
-                      source={localimag.arabic_back}
+                      source={Icons.arabic_back}
                       style={{
                         resizeMode: 'contain',
                         width: (mobileW * 9) / 100,
@@ -632,7 +633,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                     }}>
                     <Image
                       // tintColor="#fff"
-                      source={this.state.notification_count>0? localimag.notifications: localimag.notifications_sec}
+                      source={this.state.notification_count>0? Icons.notifications: Icons.notifications_sec}
                       style={{
                         alignSelf: 'center',
                         resizeMode: 'contain',
@@ -768,7 +769,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                               
                             </Text>
                             <Image
-                              source={localimag.dots}
+                              source={Icons.dots}
                               style={{
                                 width:25 ,
                                 height:13 ,
@@ -935,7 +936,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             }}>
                               {config.language==0?
                             <Image
-                              source={localimag.clock}
+                              source={Icons.clock}
                               style={{
                                 tintColor: Colors.theme_color,
                                 resizeMode: 'contain',
@@ -943,7 +944,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                                 height: (mobileW * 3.5) / 100,
                               }}></Image>:
                               <Image
-                              source={localimag.clock_arabic}
+                              source={Icons.clock_arabic}
                               style={{
                                 tintColor: Colors.theme_color,
                                 resizeMode: 'contain',
@@ -990,7 +991,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                           }}>
                             {config.language==0?
                           <Image
-                            source={localimag.purse}
+                            source={Icons.purse}
                             style={{
                               resizeMode:'contain',
                               width:15,
@@ -998,7 +999,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                             
                             }}></Image>:
                              <Image
-                              source={localimag.purse_arbic}
+                              source={Icons.purse_arbic}
                               style={{
                                 resizeMode:'contain',
                                 width:15,
@@ -1096,29 +1097,29 @@ if(this.state.check_booking=='TASK_BOOKING')
                 name: 'Home',
                 fname:Lang_chg.home_footer[config.language],
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 fname:Lang_chg.Appointment_footer[config.language],
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 fname:Lang_chg.Cart_footer[config.language],
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 fname:Lang_chg.More_footer[config.language],
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}
@@ -1200,7 +1201,7 @@ if(this.state.check_booking=='TASK_BOOKING')
 
                   <TouchableOpacity onPress={() => this.setState({modalVisible:false})}>
                     <Image
-                      source={localimag.cross}
+                      source={Icons.cross}
                       style={{
                        resizeMode:'contain',
                         // backgroundColor: Colors.white_color,
@@ -1387,7 +1388,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                   </Text>
                   <View style={{flexDirection:'row',alignItems:'center'}}>
                   <Image
-                      source={localimag.calendarimg}
+                      source={Icons.calendarimg}
                       style={{
                        resizeMode:'contain',
                         // backgroundColor: Colors.white_color,

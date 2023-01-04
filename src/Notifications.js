@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar, Dimensions, Platform } from 'react-native';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
 import { Appbtn3, AppHeader2, AppHeader4 } from './Allcomponents';
-import ScreenHeader from './components/ScreenHeader';
+import ScreenHeader from './Components/ScreenHeader';
+import { Icons } from './icons/IReferences';
 
 
 
@@ -195,7 +196,7 @@ export default class Notifications extends Component {
                       paddingRight: (mobileW * 2) / 100,
                     }}>
                     <Image
-                      source={item.read == '0' ? localimag.rocketicon : localimag.rocket_gray}
+                      source={item.read == '0' ? Icons.rocketicon : Icons.rocket_gray}
                       style={{
                         alignSelf: 'center',
                         width: (mobileW * 8) / 100,

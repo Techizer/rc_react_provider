@@ -4,6 +4,7 @@ import {Colors,Font,mobileH,Mapprovider,msgProvider,msgText,config,mobileW,local
 // import Footer from './src/Provider/Footer';
 import Geolocation from '@react-native-community/geolocation';
 import Styles from './Styles';
+import { Icons } from './icons/IReferences';
 
 
 global.post_location='NA'
@@ -340,7 +341,7 @@ error) => {let position={'coords':{'latitude':config.latitude,'longitude':config
         <View style={{alignSelf: 'center'}}>
        
           <Image
-            source={localimag.searchiocn2}
+            source={Icons.searchiocn2}
             style={{
               width: (mobileW *9.5) / 100,
               height: (mobileW * 9.5) / 100,

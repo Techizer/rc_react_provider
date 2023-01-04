@@ -10,8 +10,9 @@ import {
 } from './Provider/utilslib/Utils';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { AuthInputBoxSec, DropDownboxSec, Button } from './components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { firebapushnotification } from './firbase_pushnotification';
+import { Icons } from './icons/IReferences'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -567,7 +568,7 @@ export default class Login extends Component {
                       alignSelf: 'center',
                       resizeMode: 'contain',
                     }}
-                    source={localimag.Forgotlogo}></Image>
+                    source={Icons.Forgotlogo}></Image>
                 </View>
                 <View
                   style={[Dimensions.get('window').height >= 700 ? {
@@ -999,7 +1000,7 @@ export default class Login extends Component {
 
                       <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ width: '20%' }}>
-                          <Image style={{ height: 23, width: 23, resizeMode: 'contain' }} source={localimag.remembertick}></Image>
+                          <Image style={{ height: 23, width: 23, resizeMode: 'contain' }} source={Icons.remembertick}></Image>
                         </View>
                         <Text
                           style={{

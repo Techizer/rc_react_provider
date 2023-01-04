@@ -3,7 +3,7 @@ import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Moda
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
 import { Appbtn3, AppHeader2, AppHeader4 } from './Allcomponents';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import ScreenHeader from './components/ScreenHeader';
+import ScreenHeader from './Components/ScreenHeader';
 
 
 export default class ReviewRating extends Component {
@@ -221,7 +221,7 @@ export default class ReviewRating extends Component {
                         paddingRight: (mobileW * 2) / 100,
                       }}>
                       <Image
-                        source={item.read == '0' ? localimag.rocketicon : localimag.rocket_gray}
+                        source={item.read == '0' ? Icons.rocketicon : Icons.rocket_gray}
                         style={{
                           alignSelf: 'center',
                           width: (mobileW * 8) / 100,
@@ -249,7 +249,7 @@ export default class ReviewRating extends Component {
                         source={item.image == 'NA'
                           || item.image == null
                           || item.image == '' ?
-                          localimag.p1 :
+                          Icons.p1 :
                           {
                             uri: config.img_url3 + item.image
                           }}

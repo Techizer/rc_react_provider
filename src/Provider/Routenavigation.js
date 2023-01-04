@@ -34,16 +34,16 @@ import Forgotpage from '../Forgotpage';
 import Drawerscreen from '../Drawerscreen';
 import AddPatient from '../AddPatient';
 import Notifications from '../Notifications';
-import Cart2 from '../Cart2';
-import Appointmentdetails from '../Appointmentdetails';
+//import Cart2 from '../Screens/Cart2';
+import Appointmentdetails from '../Screens/Appointmentdetails';
 import Needsupport from '../Needsupport';
 import Otp_forget from '../Otp_forget';
 import Office_address from '../Office_address';
 import Show_other_appoinment from '../Show_other_appoinment';
 import Show_currentlocation from '../Show_currentlocation';
 import App_payment from '../App_payment';
-import ServiceAddressF1 from '../components/ServiceAddressF1';
-import { SearchPlaceScreen } from '../components';
+import ServiceAddressF1 from '../Components/ServiceAddressF1';
+import { SearchPlaceScreen } from '../Components';
 import { apifuntion } from './Apicallingprovider/apiProvider';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -83,11 +83,11 @@ const Stacknav = navigation => {
         options={{ headerShown: false, gestureEnabled: false }}
       />
       {/* //2march radhekrishan */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Cart2"
         component={Cart2}
         options={{ headerShown: false, gestureEnabled: false }}
-      />
+      /> */}
       <Stack.Screen
         name="Needsupport"
         component={Needsupport}

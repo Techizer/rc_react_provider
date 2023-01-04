@@ -38,11 +38,12 @@ import {
 } from './Allcomponents';
 import Footer from './Footer';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
+import { Icons } from './icons/IReferences';
 
 const neworders = [
   {
     id: 1,
-    img: localimag.Nurse1,
+    img: Icons.Nurse1,
     rating: '4.5',
     personname: 'Sunidhi Sharma',
     description:
@@ -122,7 +123,7 @@ export default class More extends Component {
                           alignSelf: 'flex-start',
                         }}>
                         <Image
-                          source={localimag.cross}
+                          source={Icons.cross}
                           style={{
                             tintColor: '#fff',
                             width: (mobileW * 3.3) / 100,
@@ -389,26 +390,26 @@ export default class More extends Component {
               {
                 name: 'Home',
                 countshow: false,
-                image: localimag.Home,
-                activeimage: localimag.Home,
+                image: Icons.Home,
+                activeimage: Icons.Home,
               },
               {
                 name: 'Appointment',
                 countshow: false,
-                image: localimag.Appointment,
-                activeimage: localimag.Appointment,
+                image: Icons.Appointment,
+                activeimage: Icons.Appointment,
               },
               {
                 name: 'Cart',
                 countshow: false,
-                image: localimag.Cart,
-                activeimage: localimag.Cart,
+                image: Icons.Cart,
+                activeimage: Icons.Cart,
               },
               {
                 name: 'More',
                 countshow: false,
-                image: localimag.More,
-                activeimage: localimag.More,
+                image: Icons.More,
+                activeimage: Icons.More,
               },
             ]}
             navigation={this.props.navigation}

@@ -5,6 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import MapView, { Marker, PROVIDER_GOOGLE, } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Icons } from '../icons/IReferences';
 
 export default class Mapprovider extends Component {
   constructor(props) {
@@ -228,7 +229,7 @@ export default class Mapprovider extends Component {
           <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', paddingTop: 10, backgroundColor: Colors.theme_color }}>
             <TouchableOpacity style={{ paddingVertical: 15, width: '20%', alignSelf: 'center', backgroundColor: Colors.theme_color }} onPress={() => { this.setState({ makermove: 0 }); this.props.canclemap() }}>
               <View style={{ width: '100%', alignSelf: 'center' }}>
-                <Image source={localimag.back} style={{ alignSelf: 'center', width: 25, height: 25 }} />
+                <Image source={Icons.back} style={{ alignSelf: 'center', width: 25, height: 25 }} />
               </View>
             </TouchableOpacity>
             <View style={{ paddingVertical: 15, width: '60%' }}>
@@ -292,7 +293,7 @@ export default class Mapprovider extends Component {
                   description={'Your are here location'}
 
                 >
-                  <Image source={localimag.maplocation} style={{ height: 30, width: 30, resizeMode: 'contain', }} />
+                  <Image source={Icons.maplocation} style={{ height: 30, width: 30, resizeMode: 'contain', }} />
                 </Marker.Animated>
               </MapView>
               <View style={{ position: 'absolute', width: '100%', top: 20 }}>
