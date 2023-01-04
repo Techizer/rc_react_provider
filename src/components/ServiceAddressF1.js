@@ -124,7 +124,10 @@ const ServiceAddressF1 = ({
                                                 onPress={() => {
                                                     // setIsBottomSheet(true)
                                                     // setType('addAddress')
-                                                    navigation.navigate('SearchPlaceScreen')
+                                                    navigation.navigate('SearchPlaceScreen', {
+                                                        isNew: true,
+                                                        address_id: '',
+                                                    })
                                                 }}>
                                                 <SvgXml xml={Add} />
                                                 <Text

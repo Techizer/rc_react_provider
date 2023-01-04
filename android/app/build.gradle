@@ -138,7 +138,7 @@ android {
         applicationId "com.rootscare.serviceprovider"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 25
+        versionCode 26
         versionName "3.3.2"
         multiDexEnabled true
     }

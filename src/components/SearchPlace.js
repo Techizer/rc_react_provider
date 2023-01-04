@@ -46,8 +46,12 @@ let ScreenHeight = Dimensions.get('window').height;
 
 class SearchPlaceScreen extends Component {
 
+    address_id = this?.props?.route?.params?.address_id;
+    isNew = this?.props?.route?.params?.isNew;
+
     constructor(props) {
         super(props);
+        
         this.state = {
             contacts: [],
             listData: [],
@@ -73,7 +77,6 @@ class SearchPlaceScreen extends Component {
     }
 
     componentDidMount() {
-        console.log({ 'AddressID:': this.props.route.params.address_id });
         // this.locationRef.focus()
         this.getSpecificCountryCode()
         this.getPlaceKey()
@@ -364,7 +367,7 @@ class SearchPlaceScreen extends Component {
                             })
                         }}
                         shouldShowEditParam={false}
-                        addressIDParam={this?.props?.route?.params?.address_id}
+                        addressIDParam={this.address_id}
                         addressTitleParam={''}
                         buildingNameParam={''}
                         nearestLandmarkParam={''}
@@ -374,7 +377,7 @@ class SearchPlaceScreen extends Component {
                         navToBackThen={true}
                         
                         //addressList[selectedAddress]
-                        type={'editAddress'}
+                        type={this.isNew ? 'addAddress' : 'editAddress'}
                         editedAddress={(val) => {
                             // getAddresses()
                             // let newAddress = {

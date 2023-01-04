@@ -251,6 +251,7 @@ export default class Editprofile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      speciality: '',
       pbtn: true,
       mbtn: false,
       lbtn: false,
@@ -920,7 +921,7 @@ export default class Editprofile extends Component {
     data.append('phone_number', phone_number_send)
     data.append('work_area', this.state.work_area)
     if (this.state.user_type != "lab") {
-      
+
       data.append('gender', this.state.gender)
       data.append('id_number', this.state.id_number)
       data.append('scfhs_number', this.state.scfhs_number)
@@ -1143,7 +1144,7 @@ export default class Editprofile extends Component {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          <TouchableOpacity activeOpacity={0.9}
+          {/* <TouchableOpacity activeOpacity={0.9}
             style={{
               width: '45%', flexDirection: 'row',
               paddingLeft: mobileW * 1 / 100
@@ -1172,9 +1173,11 @@ export default class Editprofile extends Component {
                 Upload Photocopy of ID
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
+          <View style={{ width: '45%', alignSelf: 'center', }}>
 
+          </View>
 
 
           <View style={{ width: '55%', alignSelf: 'center', }}>
@@ -1223,7 +1226,39 @@ export default class Editprofile extends Component {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
           }}>
-          <DropDownboxSec
+
+          <AuthInputBoxSec
+            mainContainer={{
+              width: '90%',
+              alignSelf: 'center'
+            }}
+            // icon={layer9_icon}
+            lableText={'Speciality'}
+            // inputRef={(ref) => {
+            //   this.qualificationInput = ref;
+            // }}
+            onChangeText={(text) =>
+              this.setState({ speciality: text })
+            }
+            value={this.state.speciality}
+            keyboardType="default"
+            autoCapitalize="none"
+            returnKeyLabel="next"
+            returnKeyType="next"
+            editable={false}
+            // secureTextEntry={this.state.isSecurePassword1}
+            // disableImg={true}
+            // iconName={this.state.isSecurePassword1 ? 'eye' : 'eye-off'}
+            // iconPressAction={() => {
+            //   this.setState({
+            //     isSecurePassword1: !this.state.isSecurePassword1,
+            //   });
+            // }}
+            onSubmitEditing={() => {
+              // this.experienceInput.focus()
+            }}
+          />
+          {/* <DropDownboxSec
             lableText={(this.state.speciality == '') ? 'Speciality' : this.state.speciality}
             boxPressAction={() => {
               this.setState({
@@ -1288,44 +1323,44 @@ export default class Editprofile extends Component {
                     style={{
                       width: '100%',
                     }}>
-                  {
-                    this.state.specialityArr.map((data, index) => {
-                      return (
-                        <TouchableOpacity style={{
-                          width: '100%',
-                        }} onPress={() => {
-                          this.setState({
-                            speciality: data.name,
-                            showSpeciality: false
-                          })
-                        }}>
-                          <View style={{
-                            width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                            marginLeft: 15,
-                            borderBottomColor: Colors.gray6,
-                            borderBottomWidth: (index == (this.state.userType.length - 1)) ? 0 : 1,
+                    {
+                      this.state.specialityArr.map((data, index) => {
+                        return (
+                          <TouchableOpacity style={{
+                            width: '100%',
+                          }} onPress={() => {
+                            this.setState({
+                              speciality: data.name,
+                              showSpeciality: false
+                            })
                           }}>
-                            <Text style={{
-                              color: '#041A27',
-                              fontSize: 15,
-                              fontFamily: Font.headingfontfamily,
-                              // marginLeft: 15,
-                              paddingTop: 15,
-                              paddingBottom: 15,
-                              width: '94.5%',
+                            <View style={{
+                              width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                              marginLeft: 15,
+                              borderBottomColor: Colors.gray6,
+                              borderBottomWidth: (index == (this.state.userType.length - 1)) ? 0 : 1,
+                            }}>
+                              <Text style={{
+                                color: '#041A27',
+                                fontSize: 15,
+                                fontFamily: Font.headingfontfamily,
+                                // marginLeft: 15,
+                                paddingTop: 15,
+                                paddingBottom: 15,
+                                width: '94.5%',
 
-                              // backgroundColor: 'red'
-                            }}>{data.name}</Text>
-                          </View>
-                        </TouchableOpacity>
-                      )
-                    })
-                  }
+                                // backgroundColor: 'red'
+                              }}>{data.name}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        )
+                      })
+                    }
                   </ScrollView>
                 </View>
               </View>
             </TouchableOpacity>
-          </Modal>
+          </Modal> */}
         </View>
         <View
           style={{
@@ -1375,7 +1410,7 @@ export default class Editprofile extends Component {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          <TouchableOpacity activeOpacity={0.9}
+          {/* <TouchableOpacity activeOpacity={0.9}
             style={{
               width: '45%', flexDirection: 'row',
               paddingLeft: mobileW * 1 / 100
@@ -1402,10 +1437,11 @@ export default class Editprofile extends Component {
                 Upload Certificate
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
+          <View style={{ width: '45%', alignSelf: 'center', }}>
 
-
+          </View>
 
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
@@ -1521,7 +1557,7 @@ export default class Editprofile extends Component {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          <TouchableOpacity activeOpacity={0.9}
+          {/* <TouchableOpacity activeOpacity={0.9}
             style={{
               width: '55%', flexDirection: 'row',
               paddingLeft: mobileW * 1 / 100
@@ -1548,12 +1584,14 @@ export default class Editprofile extends Component {
                 Upload Photocopy of Reg. ID
               </Text>
             </View>
-          </TouchableOpacity>
-
-
+          </TouchableOpacity> */}
 
 
           <View style={{ width: '45%', alignSelf: 'center', }}>
+
+          </View>
+
+          <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
               onPress={() => {
                 //this.props.navigation.navigate('Forgotpage');
@@ -1641,7 +1679,7 @@ export default class Editprofile extends Component {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          <TouchableOpacity activeOpacity={0.9}
+          {/* <TouchableOpacity activeOpacity={0.9}
             style={{
               width: '45%', flexDirection: 'row',
               paddingLeft: mobileW * 1 / 100
@@ -1668,10 +1706,11 @@ export default class Editprofile extends Component {
                 Upload Certificate
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
+          <View style={{ width: '45%', alignSelf: 'center', }}>
 
-
+          </View>
 
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
@@ -1811,7 +1850,7 @@ export default class Editprofile extends Component {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          <TouchableOpacity activeOpacity={0.9}
+          {/* <TouchableOpacity activeOpacity={0.9}
             style={{
               width: '45%', flexDirection: 'row',
               paddingLeft: mobileW * 1 / 100
@@ -1840,7 +1879,11 @@ export default class Editprofile extends Component {
                 Upload Photocopy of ID
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+          <View style={{ width: '45%', alignSelf: 'center', }}>
+
+          </View>
 
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
@@ -1932,7 +1975,7 @@ export default class Editprofile extends Component {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          <TouchableOpacity activeOpacity={0.9}
+          {/* <TouchableOpacity activeOpacity={0.9}
             style={{
               width: '45%', flexDirection: 'row',
               paddingLeft: mobileW * 1 / 100
@@ -1961,7 +2004,12 @@ export default class Editprofile extends Component {
                 Upload Certificate
               </Text>
             </View>
-          </TouchableOpacity>
+
+          </TouchableOpacity> */}
+
+          <View style={{ width: '45%', alignSelf: 'center', }}>
+
+          </View>
 
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
@@ -1975,7 +2023,7 @@ export default class Editprofile extends Component {
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
                 textAlign: config.textalign,
-              }} numberOfLines={1}>
+              }}>
               {(this.state.hosp_reg_image != undefined) ? this.state.hosp_reg_image.filename.trim() : 'No Attachment'}
             </Text>
           </View>
@@ -1985,7 +2033,7 @@ export default class Editprofile extends Component {
   }
 
   render() {
-    
+
     const windowHeight = Math.round(Dimensions.get("window").height);
     const windowWidth = Math.round(Dimensions.get("window").width);
     const deviceHeight = Dimensions.get('screen').height;
@@ -3022,7 +3070,7 @@ export default class Editprofile extends Component {
                         fontFamily: Font.headingfontfamily,
                         color: Colors.placeholder_text,
                       }}>
-                      {(this.state.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language]}
+                      {(this.state?.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language]}
                     </Text>
                   </View>
                   <View style={{
@@ -3168,7 +3216,7 @@ export default class Editprofile extends Component {
                                 width: '100%',
                                 alignSelf: 'center',
                                 flexDirection: 'row',
-                              }}>
+                              }} disabled >
                               <Icon style={{ alignSelf: 'center' }}
                                 name={(this.state.mabtn == false) ? "circle-thin" : "dot-circle-o"}
                                 size={22}
@@ -3211,7 +3259,7 @@ export default class Editprofile extends Component {
                                 alignSelf: 'center',
                                 flexDirection: 'row',
                                 alignItems: 'center'
-                              }}>
+                              }} disabled>
                               <Icon style={{ alignSelf: 'center' }}
                                 name={(this.state.febtn == false) ? "circle-thin" : "dot-circle-o"}
                                 size={22}

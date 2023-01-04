@@ -31,7 +31,7 @@ const AddEditAddress = ({
     longitudeParam = '',
     latitudeParam = '',
     shouldShowEditParam = true,
-    navToBackThen=false
+    navToBackThen = false
 }) => {
 
     const [title, setTitle] = useState('')
@@ -57,6 +57,12 @@ const AddEditAddress = ({
             setNearest(nearestLandmarkParam)
             setBuilding(buildingNameParam)
             setDefaultAddress((isDefaultParam != '' && isDefaultParam != '0') ? false : true)
+        } else if (type == 'addAddress') {
+            setTitle(addressTitleParam)
+            setGoogleAddress(googleAddressParam)
+            setNearest(nearestLandmarkParam)
+            setBuilding(buildingNameParam)
+            setDefaultAddress((isDefaultParam != '' && isDefaultParam != '0') ? false : true)
         }
 
     }, [addressIDParam, addressTitleParam, googleAddressParam, nearestLandmarkParam, buildingNameParam, isDefaultParam, longitudeParam, latitudeParam, shouldShowEditParam])
@@ -73,35 +79,60 @@ const AddEditAddress = ({
         scrollRef.props.scrollToFocusedInput(reactNode)
     }
 
-    const editAddress = async () => {
+    const addEditAddress = async () => {
         var user_details = await localStorage.getItemObject("user_arr");
         let user_id = user_details["user_id"];
-        let url = config.baseURL + "api-provider-update-address";
+
+        console.log({user_details});
+
+        let endpoint = ''
+        if (type === 'editAddress') {
+            endpoint = "api-provider-update-address"
+        } else if (type === 'addAddress') {
+            endpoint = "api-provider-insert-address"
+        }
+
+        let url = config.baseURL + endpoint;
 
         if (title == '') {
             msgProvider.showError("Please add address title");
             return false;
         }
         var data = new FormData();
-        data.append("login_user_id", user_id);
-        data.append("id", addressIDParam);
-        data.append("title", title);
-        data.append("address", googleAddress);
-        data.append("lat", latitudeParam);
-        data.append("lng", longitudeParam);
-        data.append("landmark", nearest);
-        data.append("building_name", building);
-        data.append("default", defaultAddress ? '0' : '1');
-        data.append("service_address", googleAddress);
-        data.append("google_address", googleAddress);
 
-        console.log({ data });
+        if (type === 'editAddress') {
+            data.append("login_user_id", user_id);
+            data.append("id", addressIDParam);
+            data.append("title", title);
+            data.append("address", googleAddress);
+            data.append("lat", latitudeParam);
+            data.append("lng", longitudeParam);
+            data.append("landmark", nearest);
+            data.append("building_name", building);
+            data.append("default", defaultAddress ? '0' : '1');
+            data.append("service_address", googleAddress);
+            data.append("google_address", googleAddress);
+
+        } else if (type === 'addAddress') {
+            data.append("user_id", user_id);
+            data.append("title", title);
+            data.append("service_type", user_details?.user_type);
+            data.append("address", googleAddress);
+            data.append("landmark", nearest);
+            data.append("building_name", building);
+            data.append("lat", latitudeParam);
+            data.append("lng", longitudeParam);
+            data.append("default", defaultAddress ? '0' : '1');
+            data.append("service_address", googleAddress);
+            data.append("google_address", googleAddress);
+        }
+
 
         setIsLoading(true)
         apifuntion
             .postApi(url, data, 1)
             .then((obj) => {
-                consolepro.consolelog("editAddress-res----", obj);
+                consolepro.consolelog("addaddress-res----", obj);
                 setIsLoading(false)
                 if (obj.status == true) {
                     msgProvider.showSuccess(obj.message)
@@ -118,7 +149,7 @@ const AddEditAddress = ({
                 msgProvider.showError(error.message)
                 onRequestClose()
                 console.log("-------- error ------- " + error);
-            }).finally(()=>{
+            }).finally(() => {
                 if (navToBackThen) {
                     navigation.replace('ServiceAddressF1')
                 }
@@ -178,7 +209,7 @@ const AddEditAddress = ({
                         textAlign: config.textRotate,
                         color: Colors.darkText
 
-                    }}>{'Edit Address'}</Text>
+                    }}>{(type === 'editAddress') ? 'Edit Address' : 'Add Address'}</Text>
 
                 <KeyboardAwareScrollView
                     // keyboardOpeningTime={200}
@@ -236,7 +267,8 @@ const AddEditAddress = ({
                                         onRequestClose()
                                         setTimeout(() => {
                                             navigation.replace('SearchPlaceScreen', {
-                                                address_id: addressIDParam
+                                                address_id: addressIDParam,
+                                                isNew: false
                                             })
                                         }, 500)
                                     } : () => { }}
@@ -350,7 +382,7 @@ const AddEditAddress = ({
                             <Button
                                 text={"Save Address"}
                                 onPress={() => {
-                                    editAddress()
+                                    addEditAddress()
                                 }}
                                 btnStyle={{ marginTop: vs(10) }}
                                 onLoading={isLoading}
