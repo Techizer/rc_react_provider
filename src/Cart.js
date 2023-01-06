@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Platform, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal,FlatList, StatusBar,ActivityIndicator,} from 'react-native';
 
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,  localimag, consolepro,handleback, Lang_chg,apifuntion, msgTitle} from './Provider/utilslib/Utils';
+import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,   consolepro,handleback, Lang_chg,apifuntion, msgTitle} from './Provider/utilslib/Utils';
 import { WebView } from 'react-native-webview';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Styles from './Styles';

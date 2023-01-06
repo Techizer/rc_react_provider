@@ -1,6 +1,6 @@
 import { Text, Modal, Alert, View, Image, StatusBar, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import React, { Component } from 'react'
-import { Colors, localimag, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
 import ScreenHeader from './Components/ScreenHeader';
 import { Icons } from './icons/IReferences'
 

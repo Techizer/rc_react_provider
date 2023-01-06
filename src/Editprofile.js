@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Footer from './Footer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { consolepro, Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, localStorage, apifuntion, msgProvider, msgText, msgTitle, Cameragallery, mediaprovider } from './Provider/utilslib/Utils';
+import { consolepro, Colors,  Font, mobileH, config, mobileW, Lang_chg, localStorage, apifuntion, msgProvider, msgText, msgTitle, Cameragallery, mediaprovider } from './Provider/utilslib/Utils';
 import Styles from './Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from 'react-native-date-picker'

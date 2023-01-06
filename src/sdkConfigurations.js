@@ -1,7 +1,7 @@
 import RNGoSell from '@tap-payments/gosell-sdk-react-native';
 import React, { useRef, useState, useEffect } from 'react';
 const { Languages, PaymentTypes, AllowedCadTypes, TrxMode, SDKMode } = RNGoSell.goSellSDKModels;
-import {Colors,localimag,Font,mobileH,config,mobileW,Lang_chg,apifuntion,msgText,msgTitle,consolepro,msgProvider,localStorage} from './Provider/utilslib/Utils';
+import {Colors,Font,mobileH,config,mobileW,Lang_chg,apifuntion,msgText,msgTitle,consolepro,msgProvider,localStorage} from './Provider/utilslib/Utils';
 const transactionCurrency = 'sar';
 
 

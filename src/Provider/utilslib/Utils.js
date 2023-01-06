@@ -16,7 +16,6 @@ import {mediaprovider} from '../Mediaprovider/Mediaprovider';
 // import {SocialLogin} from '../Apicallingprovider/SocialLoginProvider';
 import {apifuntion} from '../Apicallingprovider/apiProvider';
 import {Colors, Font} from '../Colorsfont';
-import {localimag} from '../Localimage';
 // import Mapprovider from '../Mapprovider';
 import Otpprovider from '../Otpprovider';
 // import MapproviderLocationShow from '../MapproviderLocationShow';
@@ -37,7 +36,7 @@ const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : Status
 export {
   config,
   Otpprovider,
-  localimag,
+  
   apifuntion,
   Colors,
   Footer,

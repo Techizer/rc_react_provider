@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, SafeAreaView, Text, View, StyleSheet, PermissionsAndroid, Alert, Platform, TouchableOpacity, Image } from 'react-native'
-import { Colors, mediaprovider, Font, config, localStorage, localimag, consolepro, Currentltlg, Lang_chg, mobileW, msgTitle } from './utilslib/Utils';
+import { Colors, mediaprovider, Font, config, localStorage,  consolepro, Currentltlg, Lang_chg, mobileW, msgTitle } from './utilslib/Utils';
 import Geolocation from '@react-native-community/geolocation';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import MapView, { Marker, PROVIDER_GOOGLE, } from 'react-native-maps';

@@ -2,7 +2,7 @@ import { Text, View, StatusBar, BackHandler, Alert, SafeAreaView, KeyboardAwareS
 import React, { Component } from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
-import { Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, apifuntion, localStorage, msgProvider, msgText, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, config, mobileW, Lang_chg, apifuntion, localStorage, msgProvider, msgText, msgTitle, consolepro } from './Provider/utilslib/Utils';
 import { Icons } from './icons/IReferences';
 export default class Otp_forget extends Component {
 

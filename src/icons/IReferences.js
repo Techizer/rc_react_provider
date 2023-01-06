@@ -132,4 +132,5 @@ export const Icons = {
     Emptycart: require('./Empty-cart-ic2x.png'),
     Nurse1: require('./photo-73x.png'),
     
+    
 }

@@ -14,7 +14,7 @@ import {
   config,
   mobileW,
   localStorage,
-  localimag,
+  
   consolepro,
   handleback,
   Lang_chg,

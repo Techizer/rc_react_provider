@@ -4,7 +4,7 @@ import { Shareratepro } from './Provider/Sharerateapp';
 import Geolocation from '@react-native-community/geolocation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
-  Colors, localimag, Font, mobileH, config, mobileW,
+  Colors,  Font, mobileH, config, mobileW,
   Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider,
   localStorage, FlushMsg
 } from './Provider/utilslib/Utils';

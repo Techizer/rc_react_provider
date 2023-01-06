@@ -22,7 +22,7 @@ import {
 import DeviceInfo from 'react-native-device-info';
 import {
   Colors, Font, mobileH, Mapprovider, msgProvider,
-  msgText, config, mobileW, localStorage, localimag, consolepro,
+  msgText, config, mobileW, localStorage,  consolepro,
   handleback, Lang_chg, apifuntion, msgTitle,
 } from './Provider/utilslib/Utils';
 

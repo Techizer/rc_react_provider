@@ -4,7 +4,7 @@ import {
   Alert, ScrollView, PermissionsAndroid, StyleSheet, Image, TouchableOpacity,
   ImageBackground, Platform, BackHandler
 } from 'react-native';
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, localimag, consolepro, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
+import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,  consolepro, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from './Styles';
 import messaging from '@react-native-firebase/messaging';
@@ -88,7 +88,7 @@ export default class Home extends Component {
           img: Icons.AppointmentArt,
           title: 'My Appointment',
           details: 'Pending Appointment \n\nUpcoming Appointment \n\nOngoing Appointment \n\nPast Appointment',
-          goTo: 'Appointmenttab', //'Appointment', //'Show_other_appoinment'
+          goTo: 'Appointmenttab', 
           actionColor: '',
           actionMessage: '',
           actionTextColor: ''

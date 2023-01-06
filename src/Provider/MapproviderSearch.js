@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, Text, View, StyleSheet, Dimensions, TouchableOpacity, Image, TouchableHighlight, Alert, ImageBackground } from 'react-native'
-import { Colors, mediaprovider, config, localStorage, localimag, Currentltlg, Lang_chg, mobileW, mobileH, Font } from './utilslib/Utils';
+import { Colors, mediaprovider, config, localStorage,  Currentltlg, Lang_chg, mobileW, mobileH, Font } from './utilslib/Utils';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import MapView, { Callout, Circle, Marker, PROVIDER_GOOGLE, } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';

@@ -1,7 +1,7 @@
 import {Text,View,Modal,StatusBar,BackHandler,Alert, SafeAreaView,KeyboardAwareScrollView,ScrollView,styles,TouchableOpacity,Image,TextInput} from 'react-native';
 import React, {Component} from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
-import {Colors,localimag,Font,mobileH,config,mobileW,Lang_chg,apifuntion,localStorage,msgProvider,msgText,msgTitle,consolepro} from './Provider/utilslib/Utils';
+import {Colors,Font,mobileH,config,mobileW,Lang_chg,apifuntion,localStorage,msgProvider,msgText,msgTitle,consolepro} from './Provider/utilslib/Utils';
 import { Icons } from './icons/IReferences';
 export default class Optpage extends Component {
    

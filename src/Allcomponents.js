@@ -14,7 +14,7 @@ import {
   Lang_chg,
   apifuntion,
   msgTitle,
-  localimag,
+  
 } from './Provider/utilslib/Utils';
 import {
   View,

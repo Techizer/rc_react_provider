@@ -15,7 +15,7 @@ import {
   config,
   localStorage,
   mobileW,
-  localimag,
+  
   Currentltlg,
   Lang_chg,
 } from './utilslib/Utils';

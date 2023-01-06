@@ -1,6 +1,6 @@
 import { Text, View,Image,StatusBar ,TouchableOpacity} from 'react-native'
 import React, { Component } from 'react'
-import {Colors,localimag,Font,mobileH,Mapprovider,msgProvider,msgText,config,mobileW,localStorage, handleback, Lang_chg,apifuntion, msgTitle,consolepro} from './Provider/utilslib/Utils';
+import {Colors,Font,mobileH,Mapprovider,msgProvider,msgText,config,mobileW,localStorage, handleback, Lang_chg,apifuntion, msgTitle,consolepro} from './Provider/utilslib/Utils';
 import { Icons } from './icons/IReferences';
 
 

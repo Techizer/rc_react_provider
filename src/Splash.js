@@ -1,6 +1,6 @@
 import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking } from 'react-native'
 import React, { Component } from 'react'
-import { Colors, localimag, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
 global.add_location = 'NA';
 global.amount_total = 0;
 global.username = 'NA'

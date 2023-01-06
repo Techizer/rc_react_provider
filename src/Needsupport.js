@@ -1,6 +1,6 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView } from 'react-native'
 import React, { Component } from 'react'
-import { Colors, localimag, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
 import { AppHeader, Appheading, Searchbarandicon } from './Allcomponents';
 // import { Nodata_foundimage } from './Provider/Nodata_foundimage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

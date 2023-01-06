@@ -32,7 +32,7 @@ import {
   Lang_chg,
   apifuntion,
   msgTitle,
-  localimag,
+  
 } from './Provider/utilslib/Utils';
 import PropTypes from 'prop-types';
 import { Icons } from './icons/IReferences';

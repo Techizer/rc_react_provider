@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { consolepro, Colors, localimag, Font, mobileH, config, mobileW, Lang_chg, localStorage, apifuntion, msgProvider, msgText, msgTitle, Cameragallery, mediaprovider } from './Provider/utilslib/Utils';
+import { consolepro, Colors,  Font, mobileH, config, mobileW, Lang_chg, localStorage, apifuntion, msgProvider, msgText, msgTitle, Cameragallery, mediaprovider } from './Provider/utilslib/Utils';
 import Styles from './Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from 'react-native-date-picker'

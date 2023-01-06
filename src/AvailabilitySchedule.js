@@ -8,7 +8,7 @@ import {
   config,
   mobileW,
   localStorage,
-  localimag,
+  
   consolepro,
   Lang_chg,
   apifuntion,

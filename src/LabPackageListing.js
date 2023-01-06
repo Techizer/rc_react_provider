@@ -8,7 +8,7 @@ import {
   consolepro,
   Font,
   Lang_chg,
-  localimag,
+  
   localStorage,
   mobileW,
   msgProvider,
