@@ -205,7 +205,7 @@ export default class More extends Component {
           <View style={{ width: '5%', alignSelf: 'center', }}>
             <View style={{ width: '100%', alignSelf: 'center' }}>
               <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-                source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
+                source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
 
             </View>
 
@@ -229,7 +229,7 @@ export default class More extends Component {
             <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
 
 
-              source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
+              source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
 
           </View>
 
@@ -250,7 +250,7 @@ export default class More extends Component {
           <View style={{ width: '5%', alignSelf: 'center', }}>
             <View style={{ width: '100%', alignSelf: 'center' }}>
               <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-                source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
+                source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
 
             </View>
 
@@ -270,7 +270,7 @@ export default class More extends Component {
           <View style={{ width: '5%', alignSelf: 'center', }}>
             <View style={{ width: '100%', alignSelf: 'center' }}>
               <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-                source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
+                source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
 
             </View>
 
@@ -304,7 +304,7 @@ export default class More extends Component {
           <View style={{ width: '12%', alignSelf: 'center' }}>
 
             <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'flex-end', resizeMode: 'contain', tintColor: Colors.textblack_new }}
-              source={config.textalign == 'right' ? Icons.arabic_next : Icons.forwardarrow}></Image>
+              source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
           </View>
 
         </TouchableOpacity>

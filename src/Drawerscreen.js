@@ -150,7 +150,7 @@ export default class Drawerscreen extends Component {
   //                   alignSelf: 'center'
 
   //                 }}
-  //                 source={this.state.profile_img == 'NA' || this.state.profile_img == null ? Icons.p1 : { uri: this.state.profile_img }}
+  //                 source={this.state.profile_img == 'NA' || this.state.profile_img == null ? Icons.AccountFilled : { uri: this.state.profile_img }}
   //               >
   //                 <View
   //                   style={{
@@ -306,14 +306,14 @@ export default class Drawerscreen extends Component {
   //                           height: (mobileW * 3.5) / 100,
   //                           marginBottom: (mobileW * 2) / 100,
   //                         }}
-  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
+  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
 
   //                     </View>
   //                   </View>
   //                 </TouchableOpacity> */}
 
   //                 <DrawerSubMenu
-  //                   iconImage={Icons.pricelistmenu}
+  //                   iconImage={Icons.PriceListArt}
   //                   onPress={() => {
   //                     this.props.navigation.dispatch(DrawerActions.closeDrawer()),
   //                       this.props.navigation.navigate('PriceListtab')
@@ -391,7 +391,7 @@ export default class Drawerscreen extends Component {
   //                           height: (mobileW * 3.5) / 100,
   //                           marginBottom: (mobileW * 2) / 100,
   //                         }}
-  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
+  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
   //                     </View>
   //                   </View>
   //                 </TouchableOpacity>
@@ -451,7 +451,7 @@ export default class Drawerscreen extends Component {
   //                           height: (mobileW * 3.5) / 100,
   //                           marginBottom: (mobileW * 2) / 100,
   //                         }}
-  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
+  //                         source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
   //                     </View>
   //                   </View>
   //                 </TouchableOpacity> */}
@@ -532,7 +532,7 @@ export default class Drawerscreen extends Component {
   //                         width: (mobileW * 3.5) / 100,
   //                         height: (mobileW * 3.5) / 100,
   //                       }}
-  //                       source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
+  //                       source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
   //                   </View>
   //                 </View>
   //               </TouchableOpacity> */}
@@ -626,7 +626,7 @@ export default class Drawerscreen extends Component {
   //                         width: (mobileW * 3.5) / 100,
   //                         height: (mobileW * 3.5) / 100,
   //                       }}
-  //                       source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
+  //                       source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
   //                   </View>
   //                 </View>
   //               </TouchableOpacity> */}

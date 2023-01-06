@@ -111,7 +111,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={Icons.forwardarrow}>
+                         source={Icons.RightArrow}>
                          </Image>
 
                             </TouchableOpacity>
@@ -134,7 +134,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={Icons.forwardarrow}>
+                         source={Icons.RightArrow}>
                          </Image>
 
                             </TouchableOpacity>
@@ -158,7 +158,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={Icons.forwardarrow}>
+                         source={Icons.RightArrow}>
                          </Image>
 
                             </TouchableOpacity>
@@ -192,7 +192,7 @@ export default class Supportandmore extends Component {
                         <View style={{width:'5%',alignSelf:'center',}}>
                             <TouchableOpacity style={{width:'100%',alignSelf:'center'}}>
                             <Image style={{width:mobileW*4/100,height:mobileW*4/100,alignSelf:'center',resizeMode:'contain'}}
-                         source={Icons.forwardarrow}>
+                         source={Icons.RightArrow}>
                          </Image>
 
                             </TouchableOpacity>

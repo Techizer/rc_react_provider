@@ -247,7 +247,7 @@ export default class Splash extends Component {
         />
 
         <Image style={{ height: mobileW * 80 / 100, width: mobileW * 95 / 100, resizeMode: 'contain', alignSelf: 'center', marginTop: mobileW * 15 / 100 }}
-          source={Icons.splashlogo}>
+          source={Icons.SplashLogo}>
 
         </Image>
         

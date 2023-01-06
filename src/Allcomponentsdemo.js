@@ -412,7 +412,7 @@ export function Selectionboxandarrow(props) {
               width: (mobileW * 8) / 100,
               height: (mobileW * 8) / 100,
             }}
-            source={Icons.rightarrow}></Image>
+            source={Icons.RightArrow}></Image>
         </TouchableOpacity>
       </View>
     </View>

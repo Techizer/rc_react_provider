@@ -1,9 +1,9 @@
 export const localimag = {
   //----------------------------------------------by gunjan
-  splashlogo: require('../icons/Logo2x.png'),
+  SplashLogo: require('../icons/Logo2x.png'),
   logo: require('../icons/logo.png'),
   remembertick: require('../icons/chcek-icon.png'),
-  rememberdeactivate: require('../icons/graycheckbox.png'),
+  UnCheckedBox: require('../icons/UnCheckedBox.png'),
   // backarrow: require('../icons/backarrow.png'),
   bellicon: require('../icons/notifications3x.png'),
   profileimg: require('../icons/black-profile-image3x.png'),
@@ -48,7 +48,7 @@ export const localimag = {
   //26
   p2: require('../icons/photo-13x.png'),
   p3: require('../icons/photo-23x.png'),
-  addicon: require('../icons/Group11453x.png'),
+  AddIcon: require('../icons/Group11453x.png'),
   cross: require('../icons/Group10883x.png'),
   cross2: require('../icons/Path19223x.png'),
   search: require('../icons/Component23x.png'),
@@ -84,7 +84,7 @@ export const localimag = {
   upload: require("../icons/attachment.png"),
   //05-03 radhekrishan
   bluetick: require('../icons/bluetick.png'),
-  graycheckbox: require('../icons/graycheckbox.png'),
+  UnCheckedBox: require('../icons/UnCheckedBox.png'),
   greentick: require('../icons/greentick.png'),
   rocketicon: require('../icons/rocketicon.png'),
 

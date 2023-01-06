@@ -59,7 +59,7 @@ export function AppHeader(props) {
           }}>
           <TouchableOpacity onPress={props.onPressEditProfile}>
             <Image
-              source={Icons.p1}
+              source={Icons.AccountFilled}
               style={{
                 resizeMode: 'contain',
                 width: (mobileW * 9) / 100,
@@ -79,7 +79,7 @@ export function AppHeader(props) {
           <TouchableOpacity onPress={props.onPresshandler2}>
             <Image
               // tintColor="#fff"
-              source={Icons.notifications}
+              source={Icons.NotificationBadge}
               style={{
                 alignSelf: 'flex-end',
                 resizeMode: 'contain',
@@ -146,7 +146,7 @@ export function AppHeader2(props) {
             }}>
             <Image
               // tintColor="#fff"
-              source={Icons.notifications_sec}
+              source={Icons.Notification}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -259,7 +259,7 @@ export function AppHeader3(props) {
             }}>
             <Image
               // tintColor="#fff"
-              source={Icons.notifications}
+              source={Icons.NotificationBadge}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -465,7 +465,7 @@ export function Searchbarandicon(props) {
         <View style={{alignSelf: 'center'}}>
        
           <Image
-            source={Icons.searchiocn2}
+            source={Icons.SearchFilled}
             style={{
               width: (mobileW * 8) / 100,
               height: (mobileW * 8) / 100,
@@ -542,7 +542,7 @@ export function Appcheckedbox(props) {
             alignSelf: 'flex-start',
             flex: 0.1,
           }}
-          source={Icons.remembertick}></Image>
+          source={Icons.CheckedBox}></Image>
       </View>
       <Text
         style={{
@@ -593,7 +593,7 @@ export function Appuncheckedbox(props) {
             alignSelf: 'flex-start',
             flex: 0.1,
           }}
-          source={Icons.rememberdeactivate}></Image>
+          source={Icons.UnCheckedBox}></Image>
       </View>
       <Text
         style={{

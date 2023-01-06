@@ -2614,7 +2614,7 @@ export default class Editprofile extends Component {
                             alignSelf: 'center',
 
                           }}
-                          source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? Icons.profileimg : { uri: this.state.profile_img }}
+                          source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? Icons.ProfileImage : { uri: this.state.profile_img }}
                         ></Image>
                       </View>
                     </View>

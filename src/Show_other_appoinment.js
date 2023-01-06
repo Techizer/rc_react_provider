@@ -633,7 +633,7 @@ if(this.state.check_booking=='TASK_BOOKING')
                     }}>
                     <Image
                       // tintColor="#fff"
-                      source={this.state.notification_count>0? Icons.notifications: Icons.notifications_sec}
+                      source={this.state.notification_count>0? Icons.NotificationBadge: Icons.Notification}
                       style={{
                         alignSelf: 'center',
                         resizeMode: 'contain',

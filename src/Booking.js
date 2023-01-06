@@ -1079,7 +1079,7 @@ console.log('muska test',sum)
             }}>
             <Image
               // tintColor="#fff"
-              source={this.state.notification_count>0? Icons.notifications: Icons.notifications_sec}
+              source={this.state.notification_count>0? Icons.NotificationBadge: Icons.Notification}
               style={{
                 alignSelf: 'center',
                 resizeMode: 'contain',
@@ -1108,7 +1108,7 @@ console.log('muska test',sum)
                 flexDirection: 'row',alignItems:'center'}}>           
                    <View style={{width: '25%',}}>
                 <Image
-                  source={item.image == 'NA' || item.image == null  || item.image == ''? Icons.p1:{uri:config.img_url3+item.image}}
+                  source={item.image == 'NA' || item.image == null  || item.image == ''? Icons.AccountFilled:{uri:config.img_url3+item.image}}
                   style={{
                     width: (mobileW * 20) / 100,
                     height: (mobileW * 20) / 100,
@@ -1171,7 +1171,7 @@ console.log('muska test',sum)
                 },this.state.active_status==true?{backgroundColor: '#d1e9f6'}:{backgroundColor: '#fff'}]}>
                 <Image
                  
-                  source={this.state.profile_img == 'NA' || this.state.profile_img == null? Icons.user_img:{uri:config.img_url3+this.state.profile_img}}
+                  source={this.state.profile_img == 'NA' || this.state.profile_img == null? Icons.AccountRectangle:{uri:config.img_url3+this.state.profile_img}}
                   style={{
                     alignSelf: 'center',
                     width: (mobileW * 16) / 100,
@@ -1215,7 +1215,7 @@ console.log('muska test',sum)
                 <ImageBackground
                 
                   imageStyle={{borderRadius:mobileW*2.5/100}}
-                  source={item.image == 'NA' || item.image == null? Icons.user_img:{uri:config.img_url3+item.image}}
+                  source={item.image == 'NA' || item.image == null? Icons.AccountRectangle:{uri:config.img_url3+item.image}}
                   style={{
                     alignSelf: 'center',
                     width: (mobileW * 13) / 100,
@@ -1260,7 +1260,7 @@ console.log('muska test',sum)
                 }}>
                 <Image
                   resizeMode="contain"
-                  source={Icons.addicon}
+                  source={Icons.AddIcon}
                   style={{
                    
                     width: (mobileW * 10) / 100,
@@ -1521,7 +1521,7 @@ console.log('muska test',sum)
                             alignSelf: 'flex-start',
                          
                           }}
-                          source={Icons.remembertick}></Image>:
+                          source={Icons.CheckedBox}></Image>:
                           <Image
                           style={{
                             width: (mobileW * 5) / 100,
@@ -1533,7 +1533,7 @@ console.log('muska test',sum)
                             alignSelf: 'flex-start',
                         
                           }}
-                          source={require('./icons/graycheckbox.png')}></Image>
+                          source={require('./icons/UnCheckedBox.png')}></Image>
                       }
                       </View>
                       <Text

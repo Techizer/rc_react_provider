@@ -67,7 +67,7 @@ const DrawerSubMenu = ({
                       width: (mobileW * 3.5) / 100,
                       height: (mobileW * 3.5) / 100,
                     }}
-                    source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
+                    source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
                 </View>
               </View>
             </TouchableOpacity>
@@ -125,7 +125,7 @@ const DrawerSubMenu = ({
                       height: (mobileW * 3.5) / 100,
                       marginBottom: (mobileW * 2) / 100,
                     }}
-                    source={config.textalign == 'right' ? Icons.arabic_next : Icons.rightarrow}></Image>
+                    source={config.textalign == 'right' ? Icons.arabic_next : Icons.RightArrow}></Image>
                 </View>
               </View>
             </TouchableOpacity>

@@ -635,7 +635,7 @@ export default class AddBank extends Component {
                         { height: 23, width: 23, resizeMode: 'contain', }
                         : { height: 23, width: 23, resizeMode: 'contain', tintColor: '#696464' }
                     }
-                      source={(this.state.isCheck) ? Icons.RememberTick : require('./icons/blank-check-box.png')}></Image>
+                      source={(this.state.isCheck) ? Icons.CheckedBox : require('./icons/blank-check-box.png')}></Image>
                   </View>
 
                   <Text

@@ -249,7 +249,7 @@ export default class ReviewRating extends Component {
                         source={item.image == 'NA'
                           || item.image == null
                           || item.image == '' ?
-                          Icons.p1 :
+                          Icons.AccountFilled :
                           {
                             uri: config.img_url3 + item.image
                           }}

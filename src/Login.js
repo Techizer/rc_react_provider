@@ -1000,7 +1000,7 @@ export default class Login extends Component {
 
                       <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ width: '20%' }}>
-                          <Image style={{ height: 23, width: 23, resizeMode: 'contain' }} source={Icons.remembertick}></Image>
+                          <Image style={{ height: 23, width: 23, resizeMode: 'contain' }} source={Icons.CheckedBox}></Image>
                         </View>
                         <Text
                           style={{

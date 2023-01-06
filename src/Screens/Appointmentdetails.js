@@ -1918,7 +1918,7 @@ export default class Appointmentdetails extends Component {
 
                       <View style={{ width: '28%', alignSelf: 'center' }}>
                         <Image
-                          source={item.provider_image == 'NA' || item.provider_image == null || item.provider_image == '' ? Icons.p1 : { uri: config.img_url3 + item.provider_image }}
+                          source={item.provider_image == 'NA' || item.provider_image == null || item.provider_image == '' ? Icons.AccountFilled : { uri: config.img_url3 + item.provider_image }}
 
                           style={{
                             width: (mobileW * 21) / 100,

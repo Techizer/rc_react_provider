@@ -127,7 +127,7 @@ const ScreenHeader = ({
                                         alignItems: 'center',
 
                                     }}>
-                                    <Image source={notiCount > 0 ? Icons.notifications : Icons.notifications_sec} style={{
+                                    <Image source={notiCount > 0 ? Icons.NotificationBadge : Icons.Notification} style={{
                                         width: iconSize,
                                         height: iconSize
                                     }} resizeMethod='resize' resizeMode="contain" />
@@ -281,8 +281,8 @@ const ScreenHeader = ({
                             <Image
                                 source={
                                     this.state.notification_count > 0
-                                        ? Icons.notifications
-                                        : Icons.notifications_sec
+                                        ? Icons.NotificationBadge
+                                        : Icons.Notification
                                 }
                                 style={{
                                     alignSelf: "flex-end",

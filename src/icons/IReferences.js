@@ -3,24 +3,28 @@ export const Icons = {
     UnfilledStar: require('./unfillstar.png'),
     SplashLogo: require('./Logo2x.png'),
     Logo: require('./logo.png'),
-    RememberTick: require('./chcek-icon.png'),
-    RememberDeactivate: require('./graycheckbox.png'),
-    BellIcon: require('./notifications3x.png'),
+    CheckedBox: require('./chcek-icon.png'),
+    UnCheckedBox: require('./graycheckbox.png'),
     ProfileImage: require('./black-profile-image3x.png'),
     EditIcon: require('./editicon.png'),
-    NotificationSet: require('./notifiva.png'),
-    Account: require('./account2x.png'),
-    Transaction: require('./transection.png'),
+    Notification: require('./notifiva.png'),
+
+    AccountArt: require('./account2x.png'),
+    TransactionArt: require('./transection.png'),
     ScheduleArt: require('./Schedule-art.png'),
-    PriceList: require('./Pricelist.png'),
-    Appointment: require('./appointment-art.png'),
-    RightArrowGreenFilled: require('./rightArrow.png'),
+    PriceListArt: require('./Pricelist.png'),
+    AppointmentArt: require('./appointment-art.png'),
+    ServiceAddressArt: require('./service_address.png'),
+
     RightArrow: require('./back-33x.png'),
-    ServiceAddress: require('./service_address.png'),
+
     AccountFilled: require('./download33x.png'),
     AccountRectangle: require('./photo-43x.png'),
     NotificationBadge: require('./notifications3x.png'),
     SearchFilled: require('./searchiocn2.png'),
+
+    // Completed Up to Here -------------------------
+
     NurseDummy1: require('./covid-19-preventing-virus-health-healthcare-workers-quarantine-concept-professional-female-nurse-doctor-blue-scrubs-medical-mask-gloves-writing-down-p3x.png'),
     NurseDummy2: require('./dj31p7w93x.png'),
     NurseDummy3: require('./photo-73x.png'),
@@ -46,7 +50,7 @@ export const Icons = {
     //26
     p2: require('./photo-13x.png'),
     p3: require('./photo-23x.png'),
-    addicon: require('./Group11453x.png'),
+    AddIcon: require('./Group11453x.png'),
     cross: require('./Group10883x.png'),
     cross2: require('./Path19223x.png'),
     search: require('./Component23x.png'),
@@ -62,12 +66,10 @@ export const Icons = {
     //01-03  radhekrishan
     editpen: require('./Group11713x.png'),
     user2: require('./Group10503x.png'),
-    rightarrow: require('./back-33x.png'),
     calender: require('./Union683x.png'),
     calender2: require('./Union723x.png'),
     setting: require('./Component7813x.png'),
     transactionhistory: require('./transactionhistory.png'),
-    pricelistmenu: require('./pricelistmenu.png'),
     reviewrating: require('./reviewrating.png'),
     support: require('./Path61473x.png'),
     logout: require('./Export3x.png'),
@@ -82,13 +84,11 @@ export const Icons = {
     upload: require("./attachment.png"),
     //05-03 radhekrishan
     bluetick: require('./bluetick.png'),
-    graycheckbox: require('./graycheckbox.png'),
     greentick: require('./greentick.png'),
     rocketicon: require('./rocketicon.png'),
 
     //28 gunjan
     Forgotlogo: require('./rc-logo3x.png'),
-    forwardarrow: require('./back-33x.png'),
     needsupportimg: require('./Path51083x.png'),
     backarrow: require('./Vector-1.png'),
 
@@ -109,30 +109,8 @@ export const Icons = {
     pause: require('./pause.png'),
 
 
-    splashlogo: require('./Logo2x.png'),
+    SplashLogo: require('./Logo2x.png'),
     logo: require('./logo.png'),
-    remembertick: require('./chcek-icon.png'),
-    rememberdeactivate: require('./graycheckbox.png'),
-    // backarrow: require('./backarrow.png'),
-    bellicon: require('./notifications3x.png'),
-    profileimg: require('./black-profile-image3x.png'),
-    editicon: require('./editicon.png'),
-    notifications_sec: require('./notifiva.png'),
-    // camera: require('./camera.png'),
-    //----------------------------------------------
-    account2xIcon: require('./account2x.png'),
-    transectionIcon: require('./transection.png'),
-    ScheduleartIcon: require('./Schedule-art.png'),
-    PricelistIcon: require('./Pricelist.png'),
-    appointmentIcon: require('./appointment-art.png'),
-    appointmentIcon: require('./appointment-art.png'),
-    rightDIcon: require('./rightArrow.png'),
-    rightarrow: require('./back-33x.png'),
-    serviceaddress: require('./service_address.png'),
-    p1: require('./download33x.png'),
-    user_img: require('./photo-43x.png'),
-    notifications: require('./notifications3x.png'),
-    searchiocn2: require('./searchiocn2.png'),
     nurse: require('./covid-19-preventing-virus-health-healthcare-workers-quarantine-concept-professional-female-nurse-doctor-blue-scrubs-medical-mask-gloves-writing-down-p3x.png'),
     nurse2: require('./dj31p7w93x.png'),
     starrating: require('./Path19633x.png'),
@@ -153,69 +131,5 @@ export const Icons = {
     More: require('./ic_more_horiz_24px3x.png'),
     Emptycart: require('./Empty-cart-ic2x.png'),
     Nurse1: require('./photo-73x.png'),
-
-    //26
-    p2: require('./photo-13x.png'),
-    p3: require('./photo-23x.png'),
-    addicon: require('./Group11453x.png'),
-    cross: require('./Group10883x.png'),
-    cross2: require('./Path19223x.png'),
-    search: require('./Component23x.png'),
-    search2: require('./Component2023x.png'),
-    camera: require('./Path63433x.png'),
-    downarrow: require('./back-svg.png'),
-    uparrow: require('./up_arrow.png'),
-    //28 radhekrishan
-    location: require('./Path94313x.png'),
-    clock: require('./Path94303x.png'),
-    clock_arabic: require('./clocl_arabic.png'),
-    clock_arabic_gray: require('./grya_cloc.png'),
-    //01-03  radhekrishan
-    editpen: require('./Group11713x.png'),
-    user2: require('./Group10503x.png'),
-    rightarrow: require('./back-33x.png'),
-    calender: require('./Union683x.png'),
-    calender2: require('./Union723x.png'),
-    setting: require('./Component7813x.png'),
-    transactionhistory: require('./transactionhistory.png'),
-    pricelistmenu: require('./pricelistmenu.png'),
-    reviewrating: require('./reviewrating.png'),
-    support: require('./Path61473x.png'),
-    logout: require('./Export3x.png'),
-    logout_opp: require('./loout_opp.png'),
-    dots: require('./Group12383x.png'),
-    purse: require('./Path58733x.png'),
-    //02-03 radhekrishan
-    purse: require('./Path58733x.png'),
-    //04-03 radhekrishan
-    prescription: require('./prescription.png'),
-    report: require('./report.png'),
-    upload: require("./attachment.png"),
-    //05-03 radhekrishan
-    bluetick: require('./bluetick.png'),
-    graycheckbox: require('./graycheckbox.png'),
-    greentick: require('./greentick.png'),
-    rocketicon: require('./rocketicon.png'),
-
-    //28 gunjan
-    Forgotlogo: require('./rc-logo3x.png'),
-    forwardarrow: require('./back-33x.png'),
-    needsupportimg: require('./Path51083x.png'),
-    backarrow: require('./Vector-1.png'),
-
-    //---02/03 gunjan
-
-    dobimg: require('./date.png'),
-    locationcurrent: require('./locationcurrent.png'),
-    rightimg: require('./Group1336-22x.png'),
-    //--05-03-22 gunjan
-    crossimg: require('./Group10883x.png'),
-    calendarimg: require('./date.png'),
-    arabic_back: require('./next.png'),
-    arabic_next: require('./left-arrow.png'),
-    arabic_call: require('./arabic_call.png'),
-    purse_arbic: require('./arabic_wallet.png'),
-    rocket_gray: require('./gry_rocekt.png'),
-    play: require('./play.png'),
-    pause: require('./pause.png')
+    
 }

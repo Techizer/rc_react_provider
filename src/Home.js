@@ -85,7 +85,7 @@ export default class Home extends Component {
       profileCompletionData: null,
       HomeHealthcareServiceAppointments: [
         {
-          img: Icons.appointmentIcon,
+          img: Icons.AppointmentArt,
           title: 'My Appointment',
           details: 'Pending Appointment \n\nUpcoming Appointment \n\nOngoing Appointment \n\nPast Appointment',
           goTo: 'Appointmenttab', //'Appointment', //'Show_other_appoinment'
@@ -94,7 +94,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: Icons.ScheduleartIcon,
+          img: Icons.ScheduleArt,
           title: 'My Availability Schedule',
           details: 'Schedule Availibility \n\nPlan Week, MON - SUN \n\nDay Wise Time Setting \n\nBooking OFF and ON',
           goTo: 'AvailabilityScheduletab',
@@ -103,7 +103,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: Icons.PricelistIcon,
+          img: Icons.PriceListArt,
           title: 'Price List',
           details: 'Select Tasks \n\nPrice Each Tasks \n\nSelect Duration \n\nON and OFF Tasks',
           titleL: 'Manage Tests & Packages',
@@ -114,7 +114,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: Icons.serviceaddress,
+          img: Icons.ServiceAddressArt,
           title: 'Service Address',
           details: 'Point Service Location \n\nManage Location Anytime \n\nGoogle Map Integrated \n\nPatient Address Assistance',
           goTo: 'ServiceAddressF1',
@@ -123,7 +123,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: Icons.transectionIcon,
+          img: Icons.TransactionArt,
           title: 'Transactions & More',
           details: 'Track Each Transaction \n\nFees & Charges \n\nWithdrawals \n\nSet & Transfer To Bank',
           goTo: 'Transactiontab',
@@ -132,7 +132,7 @@ export default class Home extends Component {
           actionTextColor: ''
         },
         {
-          img: Icons.account2xIcon,
+          img: Icons.AccountArt,
           title: 'Account & Settings',
           details: 'Upload Picture \n\nAdd Certifications \n\nAdd Experience \n\nPersonalise Anytime',
           goTo: 'MyProfile',
@@ -484,7 +484,7 @@ export default class Home extends Component {
                   this.props.navigation.toggleDrawer();
                 }}>
                   <Image
-                    source={this.state.profile_img == null || this.state.profile_img == '' ? Icons.p1 : { uri: this.state.profile_img }}
+                    source={this.state.profile_img == null || this.state.profile_img == '' ? Icons.AccountFilled : { uri: this.state.profile_img }}
                     style={{
                       // resizeMode: 'contain',
                       width: (mobileW * 9) / 100,
@@ -506,46 +506,6 @@ export default class Home extends Component {
                     {Lang_chg.dashboardtext[config.language]}
                   </Text>
                 </View>
-                {/* <TouchableOpacity onPress={() => { this.props.navigation.navigate('Show_currentlocation') }} style={{ flexDirection: 'row', width: '25%', alignItems: 'center', marginLeft: mobileW * 2 / 100 }}>
-                  <Text style={{
-                    fontFamily: Font.Medium,
-                    fontSize: (mobileW * 3.5) / 100,
-                  }}>{Lang_chg.MyDashboard[config.language]}</Text>
-                  <Image
-                    source={require('./icons/back-svg.png')}
-                    style={{
-                      marginLeft: mobileW * 2 / 100,
-                      width: 8.5,
-                      height: 8.5,
-                      tintColor: '#000'
-
-                    }}></Image>
-                </TouchableOpacity>
-                {this.state.address_old != null && this.state.address_old != '' ?
-                  <Text onPress={() => { this.props.navigation.navigate('Show_currentlocation') }}
-                    numberOfLines={1}
-                    style={{
-                      color: '#6D737E',
-                      fontFamily: Font.Regular,
-                      fontSize: Font.sregulartext_size,
-                      textAlign: config.textRotate,
-                      marginLeft: mobileW * 2 / 100,
-                      width: '50%',
-                    }}>{this.state.address_show}
-
-                  </Text> :
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      color: '#6D737E',
-                      fontFamily: Font.Regular,
-                      fontSize: Font.sregulartext_size,
-                      textAlign: config.textRotate,
-                      marginLeft: mobileW * 2 / 100,
-                      width: '50%',
-                    }}>NA
-
-                  </Text>} */}
               </View>
               <View
                 style={{
@@ -557,7 +517,7 @@ export default class Home extends Component {
                   {/* <TouchableOpacity onPress={()=>{this.notificationfunctoion()}}> */}
                   <Image
                     // tintColor="#fff"
-                    source={this.state.notification_count > 0 ? Icons.notifications : Icons.notifications_sec}
+                    source={this.state.notification_count > 0 ? Icons.NotificationBadge : Icons.Notification}
                     style={{
                       alignSelf: 'flex-end',
                       resizeMode: 'contain',
@@ -748,7 +708,7 @@ export default class Home extends Component {
                               justifyContent: 'center',
                               alignItems: 'center',
                             }}>
-                              <Image source={Icons.rightarrow} style={{
+                              <Image source={Icons.RightArrow} style={{
                                 width: 14,
                                 height: 14
                               }} resizeMethod='scale' resizeMode='contain' />
@@ -778,7 +738,7 @@ export default class Home extends Component {
                     actionColor={item.actionColor}
                     actionTextColor={item?.actionTextColor}
                     actionMessage={item?.actionMessage}
-                    rightIcon={Icons.rightarrow}
+                    rightIcon={Icons.RightArrow}
                     isBorder={(item?.title == "About Rootscare") ? false : true}
                     isMargin={(item?.title == "Help & Support") ? false : true}
                     onPress={() => {

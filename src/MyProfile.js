@@ -1392,7 +1392,7 @@ export default class MyProfile extends Component {
                           }}
                           source={this.state.profile_img == 'NA' ||
                             this.state.profile_img == null ||
-                            this.state.profile_img == '' ? Icons.profileimg :
+                            this.state.profile_img == '' ? Icons.ProfileImage :
                             { uri: this.state.profile_img }}
                         ></Image>
                       </View>
@@ -1436,7 +1436,7 @@ export default class MyProfile extends Component {
                               // borderRadius: mobileW * 10 / 100,
                               // alignSelf: 'center',
                             }}
-                            source={Icons.editicon}
+                            source={Icons.EditIcon}
                           ></Image>
                           <Text style={{
                             color: Colors.textblue,
@@ -1948,7 +1948,6 @@ export default class MyProfile extends Component {
                 textTitle={'Schedule Availability'}
                 // textInfo={item?.details}
                 infoIcon={''}
-                // rightIcon={Icons.rightDIcon}
                 rightText={"Edit"}
                 isBorder={false}
                 isMargin={true}
@@ -1960,7 +1959,6 @@ export default class MyProfile extends Component {
                 textTitle={(this.state.user_type == "lab") ? 'Tests & Packages' : 'Price List'}
                 // textInfo={item?.details}
                 infoIcon={''}
-                // rightIcon={Icons.rightDIcon}
                 rightText={"Edit"}
                 isBorder={true}
                 isMargin={false}

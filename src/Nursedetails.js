@@ -219,7 +219,7 @@ export default class Nursedetails extends Component {
 
                           <View style={{width: '28%'}}>
                             <Image
-                             source={item.image == 'NA' || item.image == null || item.image == ''? Icons.p1:{uri:config.img_url3+item.image}}
+                             source={item.image == 'NA' || item.image == null || item.image == ''? Icons.AccountFilled:{uri:config.img_url3+item.image}}
                               style={{
                                 width: (mobileW * 20) / 100,
                                 height: (mobileW * 20) / 100,
@@ -636,7 +636,7 @@ export default class Nursedetails extends Component {
                           height: (mobileW * 28) / 100,
                           alignSelf:'center'
                         }}
-                        source={item.image == 'NA' || item.image == null? Icons.p1:{uri:config.img_url3+item.image}}
+                        source={item.image == 'NA' || item.image == null? Icons.AccountFilled:{uri:config.img_url3+item.image}}
                         >
                 <View
                                style={{

@@ -248,7 +248,7 @@ export default class AddPatient extends Component {
                 }}>
                 <View style={{ width: '10%', alignSelf: 'center' }}>
                   <Image
-                    source={this.state.notification_count > 0 ? Icons.notifications : Icons.notifications_sec}
+                    source={this.state.notification_count > 0 ? Icons.NotificationBadge : Icons.Notification}
                     style={{
                       height: (mobileW * 6) / 100,
                       width: (mobileW * 6) / 100,
@@ -303,7 +303,7 @@ export default class AddPatient extends Component {
                       height: (mobileW * 21) / 100,
                       borderRadius: (mobileW * 10.5) / 100,
                     }}
-                    source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? Icons.profileimg : { uri: this.state.profile_img }}>
+                    source={this.state.profile_img == 'NA' || this.state.profile_img == null || this.state.profile_img == '' ? Icons.ProfileImage : { uri: this.state.profile_img }}>
                   </Image>
                 </View>
               </View>
