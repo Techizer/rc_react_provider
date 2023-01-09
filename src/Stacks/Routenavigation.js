@@ -9,7 +9,7 @@ import Signup from '../Signup';
 import Optpage from '../Optpage';
 import MyProfile from '../MyProfile';
 import Editprofile from '../Editprofile';
-import Home from '../Home';
+import Home from '../Screens/Home';
 import Appointment from '../Appointment';
 import Appointmenttab from '../Appointmenttab';
 import VideoCall from '../VideoCall';
