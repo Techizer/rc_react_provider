@@ -5,7 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import MapView, { Marker, PROVIDER_GOOGLE, } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Icons } from '../icons/IReferences';
+import { Icons } from '../Assets/Icons/IReferences';
 
 export default class Mapprovider extends Component {
   constructor(props) {
@@ -229,7 +229,7 @@ export default class Mapprovider extends Component {
           <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', paddingTop: 10, backgroundColor: Colors.theme_color }}>
             <TouchableOpacity style={{ paddingVertical: 15, width: '20%', alignSelf: 'center', backgroundColor: Colors.theme_color }} onPress={() => { this.setState({ makermove: 0 }); this.props.canclemap() }}>
               <View style={{ width: '100%', alignSelf: 'center' }}>
-                <Image source={Icons.back} style={{ alignSelf: 'center', width: 25, height: 25 }} />
+                <Image source={Icons.LeftArrow} style={{ alignSelf: 'center', width: 25, height: 25 }} />
               </View>
             </TouchableOpacity>
             <View style={{ paddingVertical: 15, width: '60%' }}>
@@ -404,7 +404,7 @@ export default class Mapprovider extends Component {
                     renderRightButton={() => (<TouchableOpacity style={{ alignSelf: 'center', paddingRight: 10 }} onPress={() => { this.GooglePlacesRef.setAddressText(""); this.setState({ addressselected: 'search' }) }}>
                       <Icon2 name='circle-with-cross' size={25} color='#c2cfc4' style={{ alignSelf: 'center' }} />
                     </TouchableOpacity>)}
-                  //   <Image source={require('./icons/location.png')} style={{alignContent:'center',alignSelf:'center',resizeMode:'contain',width:20,height:20,marginLeft:10}}/>}
+                  //   <Image source={require('./Assets/Icons/location.png')} style={{alignContent:'center',alignSelf:'center',resizeMode:'contain',width:20,height:20,marginLeft:10}}/>}
                   />
                 </View>
 

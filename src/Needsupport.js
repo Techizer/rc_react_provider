@@ -2,7 +2,7 @@ import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextIn
 import React, { Component } from 'react'
 import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 const Select_arr = [
   {
     id: 1,
@@ -251,7 +251,7 @@ export default class Needsupport extends Component {
                   source={Icons.GreenTick}></Image>
                 :
                 <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
-                  source={require('./icons/ryt_opp.png')}></Image>
+                  source={require('./Assets/Icons/ryt_opp.png')}></Image>
               }
               <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: config.textalign, }}>{Lang_chg.thank[config.language]}
 

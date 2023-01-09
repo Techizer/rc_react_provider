@@ -16,7 +16,7 @@ import {
   msgProvider,
 } from "./Provider/utilslib/Utils";
 import Styles from "./Styles";
-import { Icons } from "./icons/IReferences";
+import { Icons } from "./Assets/Icons/IReferences";
 
 const LabPackageDetails = (props) => {
   const { navigation } = props;

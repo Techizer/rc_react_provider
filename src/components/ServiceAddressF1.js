@@ -6,7 +6,7 @@ import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
 import { windowWidth, deviceHeight, Lang_chg, config, localStorage, apifuntion } from "../Provider/utilslib/Utils";
-import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../../src/icons/SvgIcons/Index";
+import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../../src/Assets/Icons/SvgIcons/Index";
 import ScreenHeader from "./ScreenHeader";
 import { useIsFocused } from "@react-navigation/native";
 import AddEditAddress from "./Add_Edit_Address";

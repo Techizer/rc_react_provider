@@ -270,7 +270,7 @@ export default class Footer extends Component{
                                 <TouchableOpacity activeOpacity={0.8} style={[style1.footericon]} onPress={()=>{this.usercheckbtn(item.name)}}>
                                 <View style={style1.footericonview}>
                                 {/* {index == 2?
-                                  <Image source={require('../icons/post-job-icon.png')} resizeMethod='resize' style={[style1.footerimage, {resizeMode:'contain',
+                                  <Image source={require('../Assets/Icons/post-job-icon.png')} resizeMethod='resize' style={[style1.footerimage, {resizeMode:'contain',
                         width:35,
                         height:35
                       }]} />: */}

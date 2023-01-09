@@ -13,7 +13,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';

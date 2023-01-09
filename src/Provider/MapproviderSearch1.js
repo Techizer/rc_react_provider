@@ -7,7 +7,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import Header from '../common/Header';
 import Input from '../common/Input';
 import StarRating from 'react-native-star-rating';
-import { Icons } from '../icons/IReferences';
+import { Icons } from '../Assets/Icons/IReferences';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -431,7 +431,7 @@ export default class MapproviderSearch extends Component {
                   renderRightButton={() => (<TouchableOpacity style={{ alignSelf: 'center', paddingRight: 10 }} onPress={() => { this.GooglePlacesRef.setAddressText(""); this.setState({ addressselected: 'search' }) }}>
                     <Icon2 name='circle-with-cross' size={25} color='#c2cfc4' style={{ alignSelf: 'center' }} />
                   </TouchableOpacity>)}
-                //   <Image source={require('./icons/location.png')} style={{alignContent:'center',alignSelf:'center',resizeMode:'contain',width:20,height:20,marginLeft:10}}/>}
+                //   <Image source={require('./Assets/Icons/location.png')} style={{alignContent:'center',alignSelf:'center',resizeMode:'contain',width:20,height:20,marginLeft:10}}/>}
                 />
               </View>
             </View> */}

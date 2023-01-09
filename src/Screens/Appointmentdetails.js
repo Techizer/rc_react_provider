@@ -22,7 +22,7 @@ import moment from 'moment-timezone';
 import RNFetchBlob from "rn-fetch-blob";
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
-import { Icons } from '../icons/IReferences';
+import { Icons } from '../Assets/Icons/IReferences';
 
 export default class Appointmentdetails extends Component {
 
@@ -3572,7 +3572,7 @@ export default class Appointmentdetails extends Component {
                               </>
                               // <TouchableOpacity onPress={() => { this.setState({ modalVisiblerating: true, set_order: item.order_id }) }} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: mobileW * 2 / 100, paddingHorizontal: mobileW * 2 / 100, backgroundColor: '#FFA800', borderRadius: mobileW * 2 / 100 }}>
                               //   <Image
-                              //     source={require('./icons/unfillstar.png')}
+                              //     source={require('./Assets/Icons/unfillstar.png')}
                               //     style={{
                               //       resizeMode: 'contain',
                               //       width: (mobileW * 4.5) / 100,

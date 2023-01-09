@@ -6,10 +6,10 @@ import { DrawerSubMenu } from './Components'
 import Styles from './Styles';
 import { DrawerActions } from '@react-navigation/native';
 import { s, vs } from 'react-native-size-matters';
-import { Appointment, MyAppointment, dummyUser, leftArrow, rightArrow } from './icons/SvgIcons/Index';
+import { Appointment, MyAppointment, dummyUser, leftArrow, rightArrow } from './Assets/Icons/SvgIcons/Index';
 import { SvgXml } from 'react-native-svg';
 import DrawerItemContainer from './Components/DrawerItem';
-import { DrawerIcons } from './icons/drawer';
+import { DrawerIcons } from './Assets/Icons/drawer';
 global.add_location = 'NA';
 const windowWidth = Dimensions.get('window').width
 export default class Drawerscreen extends Component {

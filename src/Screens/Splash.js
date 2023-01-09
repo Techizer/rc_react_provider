@@ -6,7 +6,7 @@ global.amount_total = 0;
 global.username = 'NA'
 import HTMLView from 'react-native-htmlview';
 import DeviceInfo from 'react-native-device-info';
-import { Icons } from '../icons/IReferences';
+import { Icons } from '../Assets/Icons/IReferences';
 const appVersion = DeviceInfo.getVersion();
 
 export default Splash = ({navigation, route}) => {

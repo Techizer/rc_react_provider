@@ -11,7 +11,7 @@ import {
   List,
 } from 'react-native-paper';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 export default class Forgotpage extends Component {
   constructor(props) {
     super(props);

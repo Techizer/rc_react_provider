@@ -6,7 +6,7 @@ import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
 import { windowWidth, deviceHeight, Lang_chg, config, localStorage } from "../Provider/utilslib/Utils";
-import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../../src/icons/SvgIcons/Index";
+import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../../src/Assets/Icons/SvgIcons/Index";
 
 
 const AddressContainer = ({

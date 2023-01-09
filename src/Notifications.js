@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar, Dimensions, Platform } from 'react-native';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,  consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
 import ScreenHeader from './Components/ScreenHeader';
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 
 
 
@@ -129,7 +129,7 @@ export default class Notifications extends Component {
               <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", paddingVertical: mobileW * 3 / 100 }}>
 
                 <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingBottom: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
-                  <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
+                  <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./Assets/Icons/logo.png')}></Image>
                   <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.Notification[config.language]}</Text>
                 </View>
                 <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>

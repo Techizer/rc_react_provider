@@ -2,7 +2,7 @@ import { Text, Modal, Alert, View, Image, StatusBar, TouchableOpacity, Dimension
 import React, { Component } from 'react'
 import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
 import ScreenHeader from './Components/ScreenHeader';
-import { Icons } from './icons/IReferences'
+import { Icons } from './Assets/Icons/IReferences'
 
 export default class More extends Component {
   constructor(props) {
@@ -332,7 +332,7 @@ export default class More extends Component {
               <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
 
                 <View style={{ alignSelf: 'flex-start', width: mobileW * 60 / 100, paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
-                  <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
+                  <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./Assets/Icons/logo.png')}></Image>
                   <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 3 / 100 }}>{Lang_chg.Lang_change[config.language]}</Text>
                 </View>
 

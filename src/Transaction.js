@@ -19,7 +19,7 @@ import {
   msgTitle,
 } from './Provider/utilslib/Utils';
 
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 const taskArr = [
   {
     id: 1,

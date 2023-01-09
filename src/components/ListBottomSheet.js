@@ -6,7 +6,7 @@ import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
 import { config, Lang_chg, mobileH, } from "../Provider/utilslib/Utils";
-import { Cross } from "../icons/SvgIcons/Index";
+import { Cross } from "../Assets/Icons/SvgIcons/Index";
 
 
 const windowWidth = Dimensions.get('window').width

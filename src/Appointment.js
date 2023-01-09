@@ -23,7 +23,7 @@ import Styles from './Styles';
 
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { AppointmentBox } from './Components'
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 const tabheadings = [
   {
     id: 1,

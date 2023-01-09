@@ -5,7 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import MapView, { Marker, PROVIDER_GOOGLE, } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Icons } from '../icons/IReferences';
+import { Icons } from '../Assets/Icons/IReferences';
 
 export default class MapproviderLocationShow extends Component {
   constructor(props) {

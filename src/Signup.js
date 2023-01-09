@@ -6,7 +6,7 @@ import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DocumentPicker from 'react-native-document-picker';
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 
 export default class Signup extends Component {
   constructor(props) {
@@ -2616,7 +2616,7 @@ export default class Signup extends Component {
                   <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
 
                     <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
-                      <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
+                      <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./Assets/Icons/logo.png')}></Image>
                       <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.registration[config.language]}</Text>
                     </View>
 

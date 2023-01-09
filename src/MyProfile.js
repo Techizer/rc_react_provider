@@ -13,7 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { AuthInputBoxSec, DropDownboxSec, DashBoardBox } from './Components'
 import { Col } from 'ionic-angular';
 import ScreenHeader from './Components/ScreenHeader';
-import { Icons } from './icons/IReferences';
+import { Icons } from './Assets/Icons/IReferences';
 const bloodModal_arr = [
   {
     id: 1,

@@ -8,7 +8,7 @@ import {
     localStorage, consolepro, apifuntion, msgProvider, windowHeight,
 } from "../Provider/utilslib/Utils";
 
-import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../icons/SvgIcons/Index";
+import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../Assets/Icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import AuthInputBoxSec from "./AuthInputBoxSec";
@@ -355,7 +355,7 @@ const AddEditAddress = ({
                                                             tintColor: Colors.White
                                                         }}
                                                         resizeMode="contain"
-                                                        source={require('../icons/tick.png')}
+                                                        source={require('../Assets/Icons/tick.png')}
                                                     />
                                                     :
                                                     null

@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SearchPlaceScreen, Button } from './Components'
 import { Dropdown } from 'react-native-material-dropdown-v2';
 import ListBottomSheet from './Components/ListBottomSheet';
-import { Arrow } from './icons/SvgIcons/Index';
+import { Arrow } from './Assets/Icons/SvgIcons/Index';
 const radiusArr = [
   {
     id: 1,

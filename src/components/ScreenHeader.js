@@ -21,9 +21,9 @@ import {
     apifuntion,
 } from "../Provider/utilslib/Utils";
 
-import { Icons } from '../icons/IReferences'
+import { Icons } from '../Assets/Icons/IReferences'
 
-import { leftArrow, rightArrow, Notification, dummyUser } from "../icons/SvgIcons/Index";
+import { leftArrow, rightArrow, Notification, dummyUser } from "../Assets/Icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 

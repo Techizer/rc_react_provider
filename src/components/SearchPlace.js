@@ -40,7 +40,7 @@ import ScreenHeader from './ScreenHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SimpleToast from 'react-native-simple-toast';
 import AddEditAddress from './Add_Edit_Address';
-import { Icons } from '../icons/IReferences';
+import { Icons } from '../Assets/Icons/IReferences';
 
 let ScreenHeight = Dimensions.get('window').height;
 
@@ -422,7 +422,7 @@ class SearchPlaceScreen extends Component {
 
                                 }}>
                                     <Image
-                                        source={require('../icons/search.png')}
+                                        source={require('../Assets/Icons/search.png')}
                                         style={{
                                             width: 18,
                                             height: 18,

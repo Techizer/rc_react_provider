@@ -3,6 +3,7 @@ import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Moda
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,  consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ScreenHeader from './Components/ScreenHeader';
+import { Icons } from './Assets/Icons/IReferences';
 
 
 export default class ReviewRating extends Component {
@@ -133,7 +134,7 @@ export default class ReviewRating extends Component {
               <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", paddingVertical: mobileW * 3 / 100 }}>
 
                 <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingBottom: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
-                  <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./icons/logo.png')}></Image>
+                  <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('./Assets/Icons/logo.png')}></Image>
                   <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.Notification[config.language]}</Text>
                 </View>
                 <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
@@ -212,22 +213,6 @@ export default class ReviewRating extends Component {
                     elevation: 5,
                     //   paddingtop: (mobileW * 3) / 100,
                   }}>
-
-                  {/* <View
-                      style={{
-                        width: '15%',
-                        paddingTop: (mobileW * 4) / 100,
-                        paddingRight: (mobileW * 2) / 100,
-                      }}>
-                      <Image
-                        source={item.read == '0' ? Icons.Rocket : Icons.RocketGrey}
-                        style={{
-                          alignSelf: 'center',
-                          width: (mobileW * 8) / 100,
-                          height: (mobileW * 8) / 100,
-
-                        }}></Image>
-                    </View> */}
 
                   <View style={{
                     flexDirection: 'row',
