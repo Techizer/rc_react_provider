@@ -262,14 +262,14 @@ export default class MapproviderSearch extends Component {
                   isPreselected={true}
                   // onDragEnd={(e) => { console.log("dragEnd", (e.nativeEvent.coordinate)) }}
                   draggable
-                  // image={Icons.location_tags}
+                  // image={Icons.Location_tags}
                   title={this.state.username != null ? this.state.username : 'Guest user'}
                   description={'Your are here location'}
                   on
 
                 //onPress={()=>console.log('gdfg')}
                 >
-                  <ImageBackground source={Icons.location_tags} imageStyle={{ tintColor: item.chat_status == 0 && 'red' }} style={{ resizeMode: 'contain', width: mobileW * 0.11, height: mobileW * 0.11, alignItems: 'center' }} >
+                  <ImageBackground source={Icons.Location_tags} imageStyle={{ tintColor: item.chat_status == 0 && 'red' }} style={{ resizeMode: 'contain', width: mobileW * 0.11, height: mobileW * 0.11, alignItems: 'center' }} >
                     {
                       item.provider_image == 'NA' || item.provider_image == '' || item.provider_image == null
                         ?
@@ -427,7 +427,7 @@ export default class MapproviderSearch extends Component {
                     'country']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
                   //   predefinedPlaces={[homePlace, workPlace]}
                   debounce={100}
-                  renderLeftButton={() => <Image style={{ width: 25, height: 25, alignSelf: 'center', marginLeft: 25 }} source={Icons.search} />}
+                  renderLeftButton={() => <Image style={{ width: 25, height: 25, alignSelf: 'center', marginLeft: 25 }} source={Icons.Search} />}
                   renderRightButton={() => (<TouchableOpacity style={{ alignSelf: 'center', paddingRight: 10 }} onPress={() => { this.GooglePlacesRef.setAddressText(""); this.setState({ addressselected: 'search' }) }}>
                     <Icon2 name='circle-with-cross' size={25} color='#c2cfc4' style={{ alignSelf: 'center' }} />
                   </TouchableOpacity>)}

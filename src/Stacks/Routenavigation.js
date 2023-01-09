@@ -3,8 +3,8 @@ import { Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import Splash from '../Splash';
-import Login from '../Login';
+import Splash from '../Screens/Splash';
+import Login from '../Screens/Login';
 import Signup from '../Signup';
 import Optpage from '../Optpage';
 import MyProfile from '../MyProfile';
@@ -69,6 +69,12 @@ const Stacknav = navigation => {
       {/* 3 march radhekrishan */}
 
       <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      
+      <Stack.Screen
         name="Appointmentdetails"
         component={Appointmentdetails}
         options={{ headerShown: false, gestureEnabled: false }}
@@ -95,11 +101,6 @@ const Stacknav = navigation => {
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
-      <Stack.Screen
-        name="Splash"
-        component={Splash}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
       <Stack.Screen
         name="Login"
         component={Login}
@@ -181,36 +182,43 @@ const Stacknav = navigation => {
         component={LabPackageListing}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+      
       <Stack.Screen
         name="LabPackageDetails"
         component={LabPackageDetails}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+
       <Stack.Screen
         name="Transactiontab"
         component={Transactiontab}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+
       <Stack.Screen
         name="Transaction"
         component={Transaction}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+
       <Stack.Screen
         name="Withdrawal"
         component={Withdrawal}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+
       <Stack.Screen
         name="AddBank"
         component={AddBank}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+
       <Stack.Screen
         name="ReviewRating"
         component={ReviewRating}
         options={{ headerShown: false, gestureEnabled: false }}
       />
+
       <Stack.Screen
         name="More"
         component={More}

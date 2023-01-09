@@ -166,8 +166,8 @@ const LabPackageDetails = (props) => {
                 <Image
                   source={
                     config.textalign == "right"
-                      ? Icons.arabic_back
-                      : Icons.backarrow
+                      ? Icons.BackRTL
+                      : Icons.LeftArrow
                   }
                   style={{
                     resizeMode: "contain",
@@ -476,8 +476,8 @@ const LabPackageDetails = (props) => {
                                     }}
                                     source={
                                       showTaskDetails
-                                        ? Icons.upArrow
-                                        : Icons.downarrow
+                                        ? Icons.UpArrow
+                                        : Icons.DownArrow
                                     }
                                   />
                                 </View>

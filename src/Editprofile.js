@@ -1,6 +1,5 @@
 import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform, Dimensions } from 'react-native';
 import React, { Component } from 'react';
-import Footer from './Footer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { consolepro, Colors,  Font, mobileH, config, mobileW, Lang_chg, localStorage, apifuntion, msgProvider, msgText, msgTitle, Cameragallery, mediaprovider } from './Provider/utilslib/Utils';
@@ -2668,7 +2667,7 @@ export default class Editprofile extends Component {
                             marginTop: (mobileW * 1.8) / 100,
 
                           }}
-                          source={Icons.camera}></Image>
+                          source={Icons.Camera}></Image>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -3096,7 +3095,7 @@ export default class Editprofile extends Component {
                         }}>{this.state.dob_date.length <= 0 ? (this.state.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
-                          <Image source={Icons.dobimg}
+                          <Image source={Icons.DatePicker}
                             style={{ height: 25, width: 25 }}>
                           </Image>
                         </View>
@@ -3127,7 +3126,7 @@ export default class Editprofile extends Component {
                         <Text style={{ width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text }}>{this.state.dob_date.length <= 0 ? Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
-                          <Image source={Icons.dobimg}
+                          <Image source={Icons.DatePicker}
                             style={{ height: 25, width: 25 }}>
                           </Image>
                         </View>
@@ -3471,7 +3470,7 @@ export default class Editprofile extends Component {
                         </View>
                         <Text style={{ width: '77%', alignSelf: 'center', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: config.textRotate, fontFamily: Font.placeholderfontfamily }}>{this.state.nationality.length <= 0 ? Lang_chg.nationality[config.language] : this.state.nationality}</Text>
                         <View style={{ width: '20%', alignSelf: 'center', alignItems: 'flex-end' }}>
-                          <Image source={Icons.downarrow} style={{ height: 16, width: 16 }}>
+                          <Image source={Icons.DownArrow} style={{ height: 16, width: 16 }}>
                           </Image>
                         </View>
                       </View>
@@ -4829,7 +4828,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={Icons.downarrow}></Image>
+                              source={Icons.DownArrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -4895,7 +4894,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={Icons.downarrow}></Image>
+                              source={Icons.DownArrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -4961,7 +4960,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={Icons.downarrow}></Image>
+                              source={Icons.DownArrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -5026,7 +5025,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={Icons.downarrow}></Image>
+                              source={Icons.DownArrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -5091,7 +5090,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={Icons.downarrow}></Image>
+                              source={Icons.DownArrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -5156,7 +5155,7 @@ export default class Editprofile extends Component {
                                 width: (mobileW * 4) / 100,
                                 alignSelf: 'flex-end',
                               }}
-                              source={Icons.downarrow}></Image>
+                              source={Icons.DownArrow}></Image>
                           </View>
                         </View>
                       </TouchableOpacity>

@@ -293,7 +293,7 @@ getValue = () => {
                   description={'Your are here location'}
 
                 >
-                  <Image source={Icons.location_green} style={{ height: 30, width: 30, resizeMode: 'contain', }} />
+                  <Image source={Icons.Location_green} style={{ height: 30, width: 30, resizeMode: 'contain', }} />
                 </Marker.Animated>
               </MapView>
               <View style={{ position: 'absolute', width: '100%', top: 20 }}>

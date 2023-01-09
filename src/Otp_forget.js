@@ -165,7 +165,7 @@ export default class Otp_forget extends Component {
                   style={{ width: '100%' }}>
                   <Image
                     style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                    source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}>
+                    source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
 
 
                   </Image>
@@ -175,7 +175,7 @@ export default class Otp_forget extends Component {
               <View style={{ width: '80%', alignSelf: 'center' }}>
                 <Image
                   style={{ width: mobileW * 50 / 100, height: mobileW * 40 / 100, alignSelf: 'center', resizeMode: 'contain' }}
-                  source={Icons.Forgotlogo}>
+                  source={Icons.LogoWithText}>
 
 
                 </Image>
@@ -285,94 +285,6 @@ export default class Otp_forget extends Component {
                   this.loginbtn();
                 }}
               />
-              {/* <View style={{ width: '90%', alignSelf: 'center' }}>
-                <TextInput
-                  style={{
-                    width: '95%',
-                    alignSelf: 'center',
-                    color: Colors.textblack,
-                    fontSize: Font.placeholdersize,
-                    textAlign: config.textalign,
-                    height: (mobileW * 12) / 100,
-                    fontFamily: Font.placeholderfontfamily,
-                  }}
-                  maxLength={50}
-                  placeholder={
-                    this.state.passwordfocus != true
-                      ? Lang_chg.create_new_pass[config.language]
-                      : null
-                  }
-                  placeholderTextColor={Colors.placeholder_text}
-                  onChangeText={txt => {
-                    this.setState({ password: txt });
-                  }}
-                  value={this.state.password}
-                  onFocus={() => {
-                    this.setState({ passwordfocus: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      passwordfocus: this.state.email.length > 0 ? true : false,
-                    });
-                  }}
-
-                  returnKeyLabel="done"
-                  returnKeyType="done"
-                  secureTextEntry={this.state.isSecurePassword}
-                />
-              </View>
-              {this.state.passwordfocus == true && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    backgroundColor: 'white',
-                    left: (mobileW * 4) / 100,
-                    top: (-mobileW * 2) / 100,
-                    paddingHorizontal: (mobileW * 1) / 100,
-                  }}>
-                  <Text style={{ color: '#0057A5', textAlign: config.textalign }}>
-                    {Lang_chg.create_new_pass[config.language]}
-                  </Text>
-                </View>
-              )}
-
-              <TouchableOpacity
-                style={{ width: '10%', alignSelf: 'center' }}
-                onPress={() => {
-                  this.setState({
-                    isSecurePassword: !this.state.isSecurePassword,
-                  });
-                }}>
-                {this.state.isSecurePassword == false ? (
-                  <View
-                    style={{
-                      width: '100%',
-                      alignSelf: 'center',
-                      justifyContent: 'flex-end',
-                    }}>
-                    <Image
-                      style={{
-                        height: (mobileW * 6) / 100,
-                        width: (mobileW * 6) / 100,
-                      }}
-                      source={require('./icons/eye-icon.png')}></Image>
-                  </View>
-                ) : (
-                  <View
-                    style={{
-                      width: '100%',
-                      alignSelf: 'center',
-                      justifyContent: 'flex-end',
-                    }}>
-                    <Image
-                      style={{
-                        height: (mobileW * 6) / 100,
-                        width: (mobileW * 6) / 100,
-                      }}
-                      source={require('./icons/eye-icon02.png')}></Image>
-                  </View>
-                )}
-              </TouchableOpacity> */}
 
             </View>
             <View

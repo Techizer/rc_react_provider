@@ -24,7 +24,6 @@ import {
 
 import Styles from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Footer from './Footer';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 const taskArr = [

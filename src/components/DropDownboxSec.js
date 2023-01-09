@@ -74,7 +74,7 @@ const DropDownboxSec = ({
                     top: (dHeight) ? 4 : 15,
                     right: 5,
                   }}
-                  source={Icons.downarrow} />
+                  source={Icons.DownArrow} />
             }
             <Text style={styles.textBoxStyle}>{lableText}</Text>
           </View>

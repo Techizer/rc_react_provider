@@ -21,7 +21,6 @@ import {
 
 import Styles from './Styles';
 
-import Footer from './Footer';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { AppointmentBox } from './Components'
 import { Icons } from './icons/IReferences';
@@ -784,7 +783,7 @@ export default class Appointment extends Component {
 
                       <TouchableOpacity onPress={() => this.setState({ modalVisible: false })}>
                         <Image
-                          source={Icons.cross}
+                          source={Icons.Cross}
                           style={{
                             resizeMode: 'contain',
                             // backgroundColor: Colors.white_color,
@@ -972,7 +971,7 @@ export default class Appointment extends Component {
                       </Text>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          source={Icons.calendarimg}
+                          source={Icons.DatePicker}
                           style={{
                             resizeMode: 'contain',
                             // backgroundColor: Colors.white_color,

@@ -130,7 +130,7 @@ const AppointmentBox = ({
 
                 </Text>
                 <Image
-                  source={Icons.dots}
+                  source={Icons.OptionMenuFilled}
                   style={{
                     width: 25,
                     height: 13,
@@ -301,7 +301,7 @@ const AppointmentBox = ({
                 }}>
                 {config.language == 0 ?
                   <Image
-                    source={Icons.clock}
+                    source={Icons.Clock}
                     style={{
                       tintColor: Colors.theme_color,
                       resizeMode: 'contain',
@@ -309,7 +309,7 @@ const AppointmentBox = ({
                       height: (mobileW * 3.5) / 100,
                     }}></Image> :
                   <Image
-                    source={Icons.clock_arabic}
+                    source={Icons.ClockRTLFilled}
                     style={{
                       tintColor: Colors.theme_color,
                       resizeMode: 'contain',
@@ -352,7 +352,7 @@ const AppointmentBox = ({
               }}>
               {config.language == 0 ?
                 <Image
-                  source={Icons.purse}
+                  source={Icons.Wallet}
                   style={{
                     resizeMode: 'contain',
                     width: 15,
@@ -360,7 +360,7 @@ const AppointmentBox = ({
 
                   }}></Image> :
                 <Image
-                  source={Icons.purse_arbic}
+                  source={Icons.Wallet_arbic}
                   style={{
                     resizeMode: 'contain',
                     width: 15,
@@ -481,7 +481,7 @@ const AppointmentBox = ({
                     marginLeft: 10
                   }}>
                   <Image
-                    source={Icons.cross}
+                    source={Icons.Cross}
                     style={{
                       width: mobileW * 6 / 100,
                       height: mobileW * 6 / 100,

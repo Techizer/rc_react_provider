@@ -1,6 +1,5 @@
 import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform, Dimensions } from 'react-native';
 import React, { Component } from 'react';
-import Footer from './Footer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -1828,7 +1827,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.moh_lic_image == 'NA' ||
                               this.state.moh_lic_image == null ||
-                              this.state.moh_lic_image == '' ? Icons.prescription :
+                              this.state.moh_lic_image == '' ? Icons.Prescription :
                               { uri: config.img_url3 + this.state.moh_lic_image.filename }}
                           ></Image>
                           <Text>{this.state.hosp_moh_lic_no}</Text>
@@ -1854,7 +1853,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.hosp_reg_image == 'NA' ||
                               this.state.hosp_reg_image == null ||
-                              this.state.hosp_reg_image == '' ? Icons.prescription :
+                              this.state.hosp_reg_image == '' ? Icons.Prescription :
                               { uri: config.img_url3 + this.state.hosp_reg_image.filename }}
                           ></Image>
                           <Text>{this.state.hosp_reg_no}</Text>
@@ -1880,7 +1879,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.id_image == 'NA' ||
                               this.state.id_image == null ||
-                              this.state.id_image == '' ? Icons.prescription :
+                              this.state.id_image == '' ? Icons.Prescription :
                               { uri: config.img_url3 + this.state.id_image.filename }}
                           ></Image>
                           <Text>{this.state.id_number}</Text>
@@ -1906,7 +1905,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.certificate == 'NA' ||
                               this.state.certificate == null ||
-                              this.state.certificate == '' ? Icons.prescription :
+                              this.state.certificate == '' ? Icons.Prescription :
                               { uri: config.img_url3 + this.state.certificate.filename }}
                           ></Image>
                           <Text>{this.state.qualification}</Text>
@@ -1932,7 +1931,7 @@ export default class MyProfile extends Component {
                             }}
                             source={this.state.scfhs_image == 'NA' ||
                               this.state.scfhs_image == null ||
-                              this.state.scfhs_image == '' ? Icons.prescription :
+                              this.state.scfhs_image == '' ? Icons.Prescription :
                               { uri: config.img_url3 + this.state.scfhs_image.filename }}
                           ></Image>
                           <Text>{this.state.scfhs_number}</Text>

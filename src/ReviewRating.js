@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar, Dimensions, Platform } from 'react-native';
 import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,  consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
-import { Appbtn3, AppHeader2, AppHeader4 } from './Allcomponents';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ScreenHeader from './Components/ScreenHeader';
 
@@ -221,7 +220,7 @@ export default class ReviewRating extends Component {
                         paddingRight: (mobileW * 2) / 100,
                       }}>
                       <Image
-                        source={item.read == '0' ? Icons.rocketicon : Icons.rocket_gray}
+                        source={item.read == '0' ? Icons.Rocket : Icons.RocketGrey}
                         style={{
                           alignSelf: 'center',
                           width: (mobileW * 8) / 100,

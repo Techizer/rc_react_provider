@@ -1,8 +1,6 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView } from 'react-native'
 import React, { Component } from 'react'
 import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
-import { AppHeader, Appheading, Searchbarandicon } from './Allcomponents';
-// import { Nodata_foundimage } from './Provider/Nodata_foundimage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from './icons/IReferences';
 const Select_arr = [
@@ -250,7 +248,7 @@ export default class Needsupport extends Component {
             <View style={{ width: '100%', backgroundColor: 'white', borderRadius: mobileW * 4 / 100, position: 'absolute', bottom: 0, alignItems: 'center', justifyContent: 'center', paddingBottom: mobileW * 5 / 100, alignSelf: 'center' }}>
               {config.language == 0 ?
                 <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
-                  source={require('./icons/greentick.png')}></Image>
+                  source={Icons.GreenTick}></Image>
                 :
                 <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
                   source={require('./icons/ryt_opp.png')}></Image>
@@ -308,7 +306,7 @@ export default class Needsupport extends Component {
               }}
                 style={{ width: '100%', }}>
                 <Image style={{ width: mobileW * 8 / 100, height: mobileW * 8 / 100, alignSelf: 'center' }}
-                  source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}></Image>
+                  source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}></Image>
               </TouchableOpacity>
             </View>
             <View style={{ width: '95%', alignSelf: 'center', }}>
@@ -328,7 +326,7 @@ export default class Needsupport extends Component {
             <View style={{ alignItems: 'center', width: '90%', alignSelf: 'center', flexDirection: 'row', marginTop: mobileW * 3 / 100 }}>
               <View style={{ width: '8%', alignSelf: 'center' }}>
                 <Image style={{ width: mobileW * 5 / 100, height: mobileW * 5 / 100, resizeMode: 'contain' }}
-                  source={Icons.needsupportimg}>
+                  source={Icons.NeedSupoort}>
                 </Image>
               </View>
 
@@ -369,7 +367,7 @@ export default class Needsupport extends Component {
                   >{this.state.select.length <= 0 ? Lang_chg.select_issues_text[config.language] : this.state.select}</Text>
                   <View style={{ width: '10%', alignSelf: 'center' }}>
                     <Image
-                      source={Icons.downarrow}
+                      source={Icons.DownArrow}
                       style={{ height: mobileW * 4 / 100, width: mobileW * 4 / 100, alignSelf: 'flex-end' }}>
                     </Image>
                   </View>

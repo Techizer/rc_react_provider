@@ -167,7 +167,7 @@ export default class Optpage extends Component {
                   resizeMode: 'contain',
                   alignItems: 'center',
                 }}
-                source={Icons.Forgotlogo}></Image>
+                source={Icons.LogoWithText}></Image>
             </View>
             <View
               style={{

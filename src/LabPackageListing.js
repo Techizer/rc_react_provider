@@ -133,8 +133,8 @@ const LabPackageListing = (props) => {
                 <Image
                   source={
                     config.textalign == "right"
-                      ? Icons.arabic_back
-                      : Icons.backarrow
+                      ? Icons.BackRTL
+                      : Icons.LeftArrow
                   }
                   style={{
                     resizeMode: "contain",

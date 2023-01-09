@@ -96,7 +96,7 @@ export default class Forgotpage extends Component {
                     style={{ width: '100%' }}>
                     <Image
                       style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                      source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}>
+                      source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
 
 
                     </Image>
@@ -111,7 +111,7 @@ export default class Forgotpage extends Component {
                       alignSelf: 'center',
                       resizeMode: 'contain',
                     }}
-                    source={Icons.Forgotlogo}>
+                    source={Icons.LogoWithText}>
 
 
                   </Image>

@@ -357,28 +357,14 @@ export default class Signup extends Component {
       consolepro.consolelog("obj", obj)
       console.log('obj mess', obj.message)
       if (obj.status == true) {
-        // var user_details = obj.user_details;
-        // const uservalue = { id_number: this.state.id, confirm_password: this.state.confirm, phone_number: phone_number_send, name: this.state.name, email: this.state.email, password: this.state.password, work_area: this.state.country_short_code };
-        // localStorage.setItemObject('user_login', uservalue);
 
         setTimeout(() => {
-          // this.setState({ error_msg: obj.message, status_new: obj.status, modalVisible3: true })
-          // this.props.navigation.navigate('Optpage')
           this.props.navigation.goBack()
           msgProvider.showSuccess(obj.message)
         }, 500);
 
-
-
       } else {
-        // if (obj.active_status == 0 || obj.msg == msgTitle.user_not_exist[config.language]) {
-        //   setTimeout(() => {
-        //     msgProvider.alert(msgTitle.information[config.language], obj.msg[config.language], false);
-        //   }, 200)
-        //   config.checkUserDeactivate(this.props.navigation)
-        // } else {
         setTimeout(() => {
-          // this.setState({ error_msg: obj.message, status_new: obj.status, modalVisible3: true })
           msgProvider.showError(obj.message)
         }, 200)
         // }
@@ -1641,7 +1627,7 @@ export default class Signup extends Component {
                     resizeMode: 'contain',
                     alignItems: 'center',
                   }}
-                  source={Icons.Forgotlogo}></Image>
+                  source={Icons.LogoWithText}></Image>
               </View>
 
               <View
@@ -1662,7 +1648,7 @@ export default class Signup extends Component {
                       resizeMode: 'contain',
                       alignSelf: 'center',
                     }}
-                    source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}></Image>
+                    source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}></Image>
                 </TouchableOpacity>
               </View>
 
@@ -2081,7 +2067,7 @@ export default class Signup extends Component {
                           }}>{this.state.dob_date.length <= 0 ? Lang_chg.dob[config.language] : this.state.dob_date}</Text>
                           <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
-                            <Image source={Icons.dobimg}
+                            <Image source={Icons.DatePicker}
                               style={{ height: 25, width: 25 }}>
                             </Image>
                           </View>

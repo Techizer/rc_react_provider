@@ -16,8 +16,6 @@ import {
 import Moment from "moment-timezone";
 import Styles from './Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import Footer from './Footer';
-// import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { SearchPlaceScreen, Button } from './Components'
 import { Dropdown } from 'react-native-material-dropdown-v2';
 import ListBottomSheet from './Components/ListBottomSheet';
@@ -1117,53 +1115,6 @@ export default class AvailabilitySchedule extends Component {
                       }
 
                     </View>
-
-                    {/* <View style={{
-                      marginTop: 28,
-                      paddingLeft: 15,
-                      paddingRight: 15,
-                      paddingBottom: 16
-                    }}>
-                      <Text style={Styles.textheading}>Service Address or Pickup Point</Text>
-                      <Text style={[Styles.textcontent, {
-                        marginTop: 6,
-                        borderColor: Colors.field_border_color,
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        paddingVertical: (mobileW * 2) / 100,
-                        paddingHorizontal: (mobileW * 2) / 100,
-                      }]}>{this.state.service_address}</Text>
-                      <View style={{
-                        // backgroundColor: 'red',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        marginTop: 8
-                      }}>
-                        <Image
-                          source={Icons.locationcurrent}
-                          style={{
-                            height: (mobileW * 4) / 100,
-                            width: (mobileW * 4) / 100,
-                            marginRight: 6
-                          }}
-                        />
-                        <TouchableOpacity
-                          onPress={() => {
-                            this.openGooglePlace();
-                          }}
-                        >
-                          <Text style={{
-                            fontFamily: Font.Regular,
-                            fontSize: mobileW * 3.6 / 100,
-                            color: Colors.textblue
-                          }}>Manage Location</Text>
-                        </TouchableOpacity>
-                      </View>
-
-                    </View> */}
-
-
                   </>
                 }
 

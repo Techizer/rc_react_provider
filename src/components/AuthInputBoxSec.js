@@ -54,19 +54,6 @@ const AuthInputBoxSec = (props) => {
   return (
     <>
       <View style={[styles.mainContainer, mainContainer]}>
-        {/* {lableText ? (
-          <Text
-            style={{
-              fontFamily: Font.Regular,
-              fontSize: 14,
-              marginBottom: 5,
-              marginTop: 15,
-              color: Colors.textblack,
-            }}
-          >
-            {lableText} {lblTxtInfo ? "(" + lblTxtInfo + ")" : ""}
-          </Text>
-        ) : null} */}
         <View
           style={[
             styles.inputLayout,
@@ -76,26 +63,10 @@ const AuthInputBoxSec = (props) => {
             inputLayout,
           ]}
         >
-          {/* {showCode ? (
-            <Text
-              style={{
-                // position: 'absolute',
-                // top: '50%',
-                // left: 0,
-                marginTop: 10,
-                marginRight: 10,
-                color: "black", //"#7C7C7C",
-                fontFamily: Font.Regular,
-                fontSize: 14,
-              }}
-            >
-              +0
-            </Text>
-          ) : null} */}
           <View style={{ width: '100%', //alignSelf: 'center', 
           // backgroundColor: 'red'
            }}>
-            <TextInput //OutlineInput
+            <TextInput
               style={[styles.inputFieldStyle, inputFieldStyle, {
                 backgroundColor: (editable == false) ? Colors.tab_background_color : 'white',
                 alignSelf: 'flex-start',
@@ -112,14 +83,6 @@ const AuthInputBoxSec = (props) => {
               outlineColor={Colors.field_border_color}
               activeOutlineColor={Colors.placholderactive}
               secureTextEntry={secureTextEntry}
-              // activeValueColor={Colors.textblack}
-              // activeBorderColor={Colors.placholderactive}
-              // activeLabelColor={Colors.placholderactive}
-              // passiveBorderColor={Colors.field_border_color}
-              // passiveLabelColor={Colors.gray4}
-              // passiveValueColor={Colors.gray4}
-              // height={48}
-              // width={'100%'}
               autoCapitalize="none"
               {...props}
               value={value}
@@ -139,50 +102,13 @@ const AuthInputBoxSec = (props) => {
               }
             />
           </View>
-          {/* {disableImg ? (
-            // <View style={[styles.imgView, imgView]}>
-            //     <Image
-            //         style={[styles.img, imgStyle]}
-            //         resizeMode="contain"
-            //         source={icon}
-            //     />
-            // </View>
-            <Icon
-              style={{
-                position: "absolute",
-                top: 6,
-                right: -35,
-                color: iconColor ? iconColor : "#7C7C7C",
-              }}
-              name={iconName}
-              size={25}
-              onPress={iconPressAction}
-            />
-          ) : null} */}
-
-          {/* <TouchableOpacity style={[styles.textStyle, textStyle]} {...props}>
-            {loading ?
-              <ActivityIndicator color="white" {...props} size={'small'} />
-              :
-              <Text style={{ color: THEME_WHITE }}>{buttin}</Text>
-            }
-          </TouchableOpacity> */}
+          
         </View>
       </View>
-      {/* {error ? (
-                <View style={[styles.errorLayout, errorLayout]}>
-                    <Text
-                        ellipsizeMode="tail"
-                        numberOfLines={3}
-                        style={[styles.errorTxt]}>
-                        {error}
-                    </Text>
-                </View>
-            ) : null} */}
     </>
   );
 };
-// };
+
 AuthInputBoxSec.defaultProps = { mainContainer: {} };
 
 const styles = StyleSheet.create({

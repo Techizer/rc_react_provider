@@ -40,6 +40,7 @@ import ScreenHeader from './ScreenHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SimpleToast from 'react-native-simple-toast';
 import AddEditAddress from './Add_Edit_Address';
+import { Icons } from '../icons/IReferences';
 
 let ScreenHeight = Dimensions.get('window').height;
 
@@ -510,7 +511,7 @@ class SearchPlaceScreen extends Component {
                                 (lLan === 0) &&
                                 <View style={{ width: '12%', alignItems: 'center' }}>
                                     <Image
-                                        source={require('../icons/locations_current.png')}
+                                        source={Icons.CurrentLocation}
                                         style={{
                                             width: 22,
                                             height: 22,
@@ -528,7 +529,7 @@ class SearchPlaceScreen extends Component {
                                 (lLan === 1) &&
                                 <View style={{ width: '12%', alignItems: 'center' }}>
                                     <Image
-                                        source={require('../icons/locations_current.png')}
+                                        source={Icons.CurrentLocation}
                                         style={{
                                             width: 22,
                                             height: 22,
@@ -542,7 +543,7 @@ class SearchPlaceScreen extends Component {
                                 (lLan == 0) &&
                                 <View style={{ width: '12%', alignItems: 'center', }}>
                                     <Image
-                                        source={require('../icons/information_button.png')}
+                                        source={Icons.InformationButton}
                                         style={{
                                             width: 18,
                                             height: 18,
@@ -560,7 +561,7 @@ class SearchPlaceScreen extends Component {
                                 (lLan == 1) &&
                                 <View style={{ width: '12%', alignItems: 'center', }}>
                                     <Image
-                                        source={require('../icons/information_button.png')}
+                                        source={Icons.InformationButton}
                                         style={{
                                             width: 18,
                                             height: 18,

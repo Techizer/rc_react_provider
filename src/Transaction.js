@@ -19,11 +19,6 @@ import {
   msgTitle,
 } from './Provider/utilslib/Utils';
 
-import Styles from './Styles';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Footer from './Footer';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { Icons } from './icons/IReferences';
 const taskArr = [
   {
@@ -694,7 +689,7 @@ export default class Transaction extends Component {
                           alignItems: 'center',
                         }}>
                         <Image
-                          source={Icons.cross}
+                          source={Icons.Cross}
                           style={{
                             width: mobileW * 6 / 100,
                             height: mobileW * 6 / 100,

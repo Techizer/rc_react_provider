@@ -8,9 +8,7 @@ import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobil
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from './Styles';
 import messaging from '@react-native-firebase/messaging';
-import { AppHeader, Appheading, Searchbarandicon } from './Allcomponents';
 import { DashBoardBox } from './Components'
-import Footer from './Footer';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
@@ -21,52 +19,6 @@ global.myLatitude = 'NA';
 global.myLongitude = 'NA';
 global.post_location = 'NA'
 global.cart_customer = [];
-
-const DoctorAppointment = [
-  {
-    id: 1,
-    img: Icons.InstantVideoConsultation,
-    star: '5.0',
-    title: 'Instant Video Consultation',
-    arabic_title: 'استشارة فيديو فورية',
-    details: '15-30 mins',
-    arabic_details: '30-15 دقيقة',
-  },
-  {
-    id: 2,
-    img: Icons.HomeVisitConsultation,
-    star: '5.0',
-    title: 'Home Visit Consultation',
-    arabic_title: 'استشارة زيارة منزلية  ',
-    arabic_details: 'لمدة 30 دقيقة    ',
-    details: 'for 30 mins',
-  },
-];
-
-const HospitalAppointment = [
-  {
-    id: 1,
-    img: Icons.BookaLabTest,
-    star: '5.0',
-    title: 'Book a Lab Test',
-    arabic_title: 'حجز فحص مختبر  ',
-    details: 'Get the sample collected today',
-    arabic_details: 'احجز لجمع العينات اليوم  ',
-    arabic_condition: 'ونضمن لك الحصول على النتائج في نفس اليوم  ',
-    condition: 'within 1 day report guaranteed',
-    status: false
-  },
-  {
-    id: 2,
-    img: Icons.HoptlInstantVideoConsultation,
-    star: '5.0',
-    title: 'Instant Video Consultaion',
-    arabic_title: ' استشارة فيديو فورية  ',
-    details: '15-30 mins',
-    arabic_details: '30-15 دقيقة',
-    status: true
-  },
-];
 
 export default class Home extends Component {
   constructor(props) {
@@ -765,52 +717,6 @@ export default class Home extends Component {
               }} />
           </View>
         </View>
-        {/* </ScrollView> */}
-        {/* <HideWithKeyboard>
-          <Footer
-            activepage="Home"
-            usertype={1}
-            footerpage={[
-              {
-                name: 'Home',
-                fname:Lang_chg.home_footer[config.language],
-                countshow: false,
-                image: Icons.Home,
-                activeimage: Icons.Home,
-              },
-              {
-                name: 'Appointment',
-                fname:Lang_chg.Appointment_footer[config.language],
-                countshow: false,
-                image: Icons.Appointment,
-                activeimage: Icons.Appointment,
-              },
-              {
-                name: 'Cart',
-                fname:Lang_chg.Cart_footer[config.language],
-                countshow: false,
-                image: Icons.Cart,
-                activeimage: Icons.Cart,
-              },
-              {
-                name: 'More',
-                fname:Lang_chg.More_footer[config.language],
-                countshow: false,
-                image: Icons.More,
-                activeimage: Icons.More,
-              },
-            ]}
-            navigation={this.props.navigation}
-            imagestyle1={{
-              width:25,
-              height:25,
-              paddingBottom: (mobileW * 5.4) / 100,
-              backgroundColor: 'white',
-              countcolor: 'red',
-              countbackground: 'red',
-            }}
-          />
-        </HideWithKeyboard> */}
       </View>
     );
   }

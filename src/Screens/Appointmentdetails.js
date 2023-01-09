@@ -6,7 +6,6 @@ import {
   Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar
 } from 'react-native';
 import { Cameragallery, mediaprovider, Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from '../Provider/utilslib/Utils';
-import { Appheading, Searchbarandicon, CarAppHeader2 } from '../Allcomponents';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -1327,7 +1326,7 @@ export default class Appointmentdetails extends Component {
 
                         <TouchableOpacity onPress={() => this.setState({ modalVisible: false })}>
                           <Image
-                            source={Icons.cross}
+                            source={Icons.Cross}
                             style={{
                               resizeMode: 'contain',
                               // backgroundColor: Colors.white_color,
@@ -1504,7 +1503,7 @@ export default class Appointmentdetails extends Component {
                         </Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Image
-                            source={Icons.calendarimg}
+                            source={Icons.DatePicker}
                             style={{
                               resizeMode: 'contain',
                               // backgroundColor: Colors.white_color,
@@ -2075,7 +2074,7 @@ export default class Appointmentdetails extends Component {
                                 }}>
                                 {config.language == 0 ?
                                   <Image
-                                    source={Icons.clock}
+                                    source={Icons.Clock}
                                     style={{
                                       tintColor: Colors.theme_color,
                                       resizeMode: 'contain',
@@ -2083,7 +2082,7 @@ export default class Appointmentdetails extends Component {
                                       height: (mobileW * 4) / 100,
                                     }}></Image> :
                                   <Image
-                                    source={Icons.clock_arabic}
+                                    source={Icons.ClockRTLFilled}
                                     style={{
                                       tintColor: Colors.theme_color,
                                       resizeMode: 'contain',
@@ -2174,7 +2173,7 @@ export default class Appointmentdetails extends Component {
                               }}>
                                 <Image
                                   source={(this.state.playState == 'paused') ?
-                                    Icons.play : Icons.pause}
+                                    Icons.Play : Icons.Pause}
 
                                   style={{
                                     width: (mobileW * 10) / 100,
@@ -2254,7 +2253,7 @@ export default class Appointmentdetails extends Component {
                             }}>
                               <Image
                                 resizeMode="contain"
-                                source={Icons.upload}
+                                source={Icons.FileAttachment}
                                 style={{
                                   width: 15,
                                   height: 15,
@@ -2346,7 +2345,7 @@ export default class Appointmentdetails extends Component {
                               }
                             >
                               <Image
-                                source={Icons.cross}
+                                source={Icons.Cross}
                                 style={{
                                   resizeMode: "contain",
                                   width: 30,
@@ -2402,10 +2401,10 @@ export default class Appointmentdetails extends Component {
                             <Image
                               // source={item.provider_prescription == 'NA' ||
                               //   item.provider_prescription == null ||
-                              //   item.provider_prescription == '' ? Icons.prescription :
+                              //   item.provider_prescription == '' ? Icons.Prescription :
                               //   { uri: config.img_url3 + item.provider_prescription }}
-                              defaultSource={Icons.prescription}
-                              source={Icons.prescription}
+                              defaultSource={Icons.Prescription}
+                              source={Icons.Prescription}
                               style={{
                                 width: (mobileW * 20.5) / 100,
                                 height: (mobileW * 17.2) / 100,
@@ -2510,10 +2509,10 @@ export default class Appointmentdetails extends Component {
                                   <Image
                                     // source={rItem.report == 'NA' ||
                                     //   rItem.report == null ||
-                                    //   rItem.report == '' ? Icons.prescription :
+                                    //   rItem.report == '' ? Icons.Prescription :
                                     //   { uri: config.img_url3 + rItem.report }}
-                                    defaultSource={Icons.report}
-                                    source={Icons.report}
+                                    defaultSource={Icons.Report}
+                                    source={Icons.Report}
                                     style={{
                                       width: (mobileW * 14) / 100,
                                       height: (mobileW * 16) / 100,
@@ -2646,7 +2645,7 @@ export default class Appointmentdetails extends Component {
                                         }}>
                                         <Image
                                           // source={require('../assets/images/close.png')}
-                                          source={Icons.cross}
+                                          source={Icons.Cross}
                                           style={{ width: 25, height: 25 }}
                                         />
 
@@ -2684,7 +2683,7 @@ export default class Appointmentdetails extends Component {
                                         }}>
                                           {/* <Image
                                       // source={require('../assets/images/close.png')}
-                                      source={Icons.cross}
+                                      source={Icons.Cross}
                                       style={{ width: 25, height: 25 }}
                                     /> */}
                                           <FontAwesome5 style={{ alignSelf: 'center' }}
@@ -2740,10 +2739,10 @@ export default class Appointmentdetails extends Component {
                                                     <Image
                                                       // source={rItem.report == 'NA' ||
                                                       //   rItem.report == null ||
-                                                      //   rItem.report == '' ? Icons.prescription :
+                                                      //   rItem.report == '' ? Icons.Prescription :
                                                       //   { uri: config.img_url3 + rItem.report }}
-                                                      defaultSource={Icons.report}
-                                                      source={Icons.report}
+                                                      defaultSource={Icons.Report}
+                                                      source={Icons.Report}
                                                       style={{
                                                         width: (mobileW * 12) / 100,
                                                         height: (mobileW * 16) / 100,
@@ -2799,7 +2798,7 @@ export default class Appointmentdetails extends Component {
                                                           color={Colors.gray4}></Entypo> */}
                                                         <Image
                                                           // source={require('../assets/images/close.png')}
-                                                          source={Icons.cross}
+                                                          source={Icons.Cross}
                                                           style={{ width: 20, height: 20 }}
                                                         />
                                                       </TouchableOpacity>
@@ -2964,7 +2963,7 @@ export default class Appointmentdetails extends Component {
                                 height: (mobileW * 4.5) / 100,
                                 width: (mobileW * 4.5) / 100,
                               }}
-                              source={(this.state.showPDetails) ? Icons.uparrow : Icons.downarrow} />
+                              source={(this.state.showPDetails) ? Icons.UpArrow : Icons.DownArrow} />
                           </View>
                         </TouchableOpacity>
                       </View>
@@ -2991,7 +2990,7 @@ export default class Appointmentdetails extends Component {
                               width: '100%'
                             }}>
                             <Image
-                              source={Icons.location}
+                              source={Icons.Location}
                               style={{
                                 marginTop: (mobileW * 1) / 100,
                                 width: (mobileW * 3.5) / 100,
@@ -3053,7 +3052,7 @@ export default class Appointmentdetails extends Component {
                                   tintColor: Colors.theme_color,
                                 }}></Image> :
                               <Image
-                                source={Icons.arabic_call}
+                                source={Icons.CallRTL}
                                 style={{
                                   width: (mobileW * 3.5) / 100,
                                   height: (mobileW * 3.5) / 100,
@@ -3352,14 +3351,14 @@ export default class Appointmentdetails extends Component {
                         }}>
                         {config.language == 0 ?
                           <Image
-                            source={Icons.purse}
+                            source={Icons.Wallet}
                             style={{
                               resizeMode: 'contain',
                               width: 15,
                               height: 15,
                             }}></Image> :
                           <Image
-                            source={Icons.purse_arbic}
+                            source={Icons.Wallet_arbic}
                             style={{
                               resizeMode: 'contain',
                               width: 15,
@@ -3426,7 +3425,7 @@ export default class Appointmentdetails extends Component {
                                 marginLeft: 10
                               }}>
                               <Image
-                                source={Icons.cross}
+                                source={Icons.Cross}
                                 style={{
                                   width: mobileW * 6 / 100,
                                   height: mobileW * 6 / 100,
@@ -3500,7 +3499,7 @@ export default class Appointmentdetails extends Component {
                                 marginLeft: 10
                               }}>
                               <Image
-                                source={Icons.cross}
+                                source={Icons.Cross}
                                 style={{
                                   width: mobileW * 6 / 100,
                                   height: mobileW * 6 / 100,

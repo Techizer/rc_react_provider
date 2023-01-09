@@ -1,8 +1,6 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView } from 'react-native'
 import React, { Component } from 'react'
 import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
-import { AppHeader, Appheading, Searchbarandicon } from './Allcomponents';
-// import { Nodata_foundimage } from './Provider/Nodata_foundimage';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from './icons/IReferences';
@@ -295,7 +293,7 @@ export default class AddBank extends Component {
             <View style={{ width: '100%', backgroundColor: 'white', borderRadius: mobileW * 4 / 100, position: 'absolute', bottom: 0, alignItems: 'center', justifyContent: 'center', paddingBottom: mobileW * 5 / 100, alignSelf: 'center' }}>
               {config.language == 0 ?
                 <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
-                  source={require('./icons/greentick.png')}></Image>
+                  source={Icons.GreenTick}></Image>
                 :
                 <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
                   source={require('./icons/ryt_opp.png')}></Image>
@@ -353,7 +351,7 @@ export default class AddBank extends Component {
               }}
                 style={{ width: '100%', }}>
                 <Image style={{ width: mobileW * 8 / 100, height: mobileW * 8 / 100, alignSelf: 'center' }}
-                  source={config.textalign == 'right' ? Icons.arabic_back : Icons.backarrow}></Image>
+                  source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}></Image>
               </TouchableOpacity>
             </View>
             <View style={{ width: '95%', alignSelf: 'center', }}>
@@ -635,7 +633,7 @@ export default class AddBank extends Component {
                         { height: 23, width: 23, resizeMode: 'contain', }
                         : { height: 23, width: 23, resizeMode: 'contain', tintColor: '#696464' }
                     }
-                      source={(this.state.isCheck) ? Icons.CheckedBox : require('./icons/blank-check-box.png')}></Image>
+                      source={(this.state.isCheck) ? Icons.CheckedBox : Icons.BlackBox}></Image>
                   </View>
 
                   <Text
