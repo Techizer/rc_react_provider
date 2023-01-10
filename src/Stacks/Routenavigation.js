@@ -10,11 +10,11 @@ import Optpage from '../Optpage';
 import MyProfile from '../MyProfile';
 import Editprofile from '../Editprofile';
 import Home from '../Screens/Home';
-import Appointment from '../Appointment';
+import Appointment from '../Screens/Appointment';
 import Appointmenttab from '../Appointmenttab';
 import VideoCall from '../VideoCall';
 import AvailabilityScheduletab from '../AvailabilityScheduletab';
-import AvailabilitySchedule from '../AvailabilitySchedule';
+import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
 import PriceListtab from '../PriceListtab';
 import PriceList from '../PriceList';
 import LabPackageListing from '../LabPackageListing';
@@ -66,8 +66,7 @@ const Stacknav = navigation => {
   }, [])
   return (
     <Stack.Navigator initialRouteName={'Splash'}>
-      {/* 3 march radhekrishan */}
-
+      
       <Stack.Screen
         name="Splash"
         component={Splash}

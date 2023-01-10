@@ -14,7 +14,7 @@ import {
   Lang_chg,
   apifuntion,
   msgTitle,
-} from './Provider/utilslib/Utils';
+} from '../Provider/utilslib/Utils';
 
 export default Styles = StyleSheet.create({
   container1: {

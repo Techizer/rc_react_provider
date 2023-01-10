@@ -20,7 +20,7 @@ import {
 
 import Styles from './Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import Appointment from './Appointment';
+import Appointment from './Screens/Appointment';
 import ScreenHeader from './Components/ScreenHeader';
 const tabheadings = [
   {
