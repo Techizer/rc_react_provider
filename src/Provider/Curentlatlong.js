@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View ,Platform,PermissionsAndroid} from 'react-native'
 // import Geolocation from '@react-native-community/geolocation';
-import {consolepro,config } from './utilslib/Utils';
+import {config } from './utilslib/Utils';
 global.currentlatlong='NA';
 class Currentlatlong{
     requestLocation= async () => {
@@ -39,11 +39,11 @@ class Currentlatlong{
       };
      getOneTimeLocation = () => {
       return new Promise((resolve, reject) => {
-        consolepro.consolelog('Getting Location ...');
+        console.log('Getting Location ...');
       Geolocation.getCurrentPosition(
       //Will give you the current location
       (position) => {
-        consolepro.consolelog('You are Here' ,position);
+        console.log('You are Here' ,position);
         global.props.hideLoader();
         resolve(position)
      },

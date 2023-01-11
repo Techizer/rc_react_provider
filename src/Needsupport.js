@@ -1,8 +1,9 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView } from 'react-native'
 import React, { Component } from 'react'
-import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from './Assets/Icons/IReferences';
+import { ScreenReferences } from './Stacks/ScreenReferences';
 const Select_arr = [
   {
     id: 1,
@@ -16,7 +17,7 @@ const Select_arr = [
   },
   {
     id: 3,
-    select: 'Withdrawal',
+    select: ScreenReferences.Withdrawal,
 
   },
   {
@@ -86,9 +87,9 @@ export default class Needsupport extends Component {
     var data = new FormData();
     data.append('login_user_id', user_id)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         console.log('result', obj.result)
         let result = obj.result
@@ -100,7 +101,7 @@ export default class Needsupport extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
   }
@@ -120,9 +121,9 @@ export default class Needsupport extends Component {
     data.append('issue_topic', this.state.select)
     data.append('message', this.state.message)
     data.append('service_type', user_type)
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         console.log('result', obj.result)
         let result = obj.result
@@ -137,7 +138,7 @@ export default class Needsupport extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
   }

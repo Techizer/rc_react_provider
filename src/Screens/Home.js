@@ -4,7 +4,7 @@ import {
   Alert, ScrollView, PermissionsAndroid, StyleSheet, Image, TouchableOpacity,
   ImageBackground, Platform, BackHandler
 } from 'react-native';
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, consolepro, handleback, Lang_chg, apifuntion, msgTitle } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage,  handleback, Lang_chg, apifuntion, msgTitle } from '../Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from '../Styles';
 import messaging from '@react-native-firebase/messaging';
@@ -14,6 +14,7 @@ import PushNotification from 'react-native-push-notification';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { Icons } from '../Assets/Icons/IReferences';
+import { ScreenReferences } from '../Stacks/ScreenReferences';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
@@ -41,7 +42,7 @@ export default Home = ({ navigation, route }) => {
         img: Icons.AppointmentArt,
         title: 'My Appointment',
         details: 'Pending Appointment \n\nUpcoming Appointment \n\nOngoing Appointment \n\nPast Appointment',
-        goTo: 'Appointmenttab',
+        goTo: ScreenReferences.AppointmentTabStack,
         actionColor: '',
         actionMessage: '',
         actionTextColor: ''
@@ -50,7 +51,7 @@ export default Home = ({ navigation, route }) => {
         img: Icons.ScheduleArt,
         title: 'My Availability Schedule',
         details: 'Schedule Availibility \n\nPlan Week, MON - SUN \n\nDay Wise Time Setting \n\nBooking OFF and ON',
-        goTo: 'AvailabilityScheduletab',
+        goTo: ScreenReferences.AvailabilityScheduleTabStack,
         actionColor: '',
         actionMessage: '',
         actionTextColor: ''
@@ -61,7 +62,7 @@ export default Home = ({ navigation, route }) => {
         details: 'Select Tasks \n\nPrice Each Tasks \n\nSelect Duration \n\nON and OFF Tasks',
         titleL: 'Manage Tests & Packages',
         detailsL: 'Select Tests \n\nPrice Each Tests \n\nCreate Package \n\nON and OFF Tasks or Package',
-        goTo: 'PriceListtab',
+        goTo: ScreenReferences.PriceListTabStack,
         actionColor: '',
         actionMessage: '',
         actionTextColor: ''
@@ -70,7 +71,7 @@ export default Home = ({ navigation, route }) => {
         img: Icons.ServiceAddressArt,
         title: 'Service Address',
         details: 'Point Service Location \n\nManage Location Anytime \n\nGoogle Map Integrated \n\nPatient Address Assistance',
-        goTo: 'ServiceAddressF1',
+        goTo: ScreenReferences.ServiceAddress,
         actionColor: '',
         actionMessage: '',
         actionTextColor: ''
@@ -79,7 +80,7 @@ export default Home = ({ navigation, route }) => {
         img: Icons.TransactionArt,
         title: 'Transactions & More',
         details: 'Track Each Transaction \n\nFees & Charges \n\nWithdrawals \n\nSet & Transfer To Bank',
-        goTo: 'Transactiontab',
+        goTo: ScreenReferences.TransactionTabStack,
         actionColor: '',
         actionMessage: '',
         actionTextColor: ''
@@ -88,7 +89,7 @@ export default Home = ({ navigation, route }) => {
         img: Icons.AccountArt,
         title: 'Account & Settings',
         details: 'Upload Picture \n\nAdd Certifications \n\nAdd Experience \n\nPersonalise Anytime',
-        goTo: 'MyProfile',
+        goTo: ScreenReferences.ShowProfile,
         actionColor: '',
         actionMessage: '',
         actionTextColor: ''
@@ -97,13 +98,13 @@ export default Home = ({ navigation, route }) => {
         img: '',
         title: 'About Rootscare',
         details: '',
-        goTo: 'Tremsandcondition'
+        goTo: ScreenReferences.TermsAndConditions
       },
       {
         img: '',
         title: 'Help & Support',
         details: '',
-        goTo: 'More'
+        goTo: ScreenReferences.More
       },
     ]
 
@@ -115,7 +116,7 @@ export default Home = ({ navigation, route }) => {
 
     navigation.reset({
       index: 0,
-      routes: [{ name: "Login" }],
+      routes: [{ name: ScreenReferences.Login }],
     });
   };
 
@@ -192,7 +193,7 @@ export default Home = ({ navigation, route }) => {
 
   handleBackButton = () => {
     console.log('Back button is pressed', route.name);
-    if (route.name == "Home") {
+    if (route.name == ScreenReferences.Home) {
       return true;
     } else {
       return false;
@@ -257,8 +258,8 @@ export default Home = ({ navigation, route }) => {
       (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
     )
 
-    // consolepro.consolelog('logmy',remoteMessage.notification.body)
-    // consolepro.consolelog('logmy',remoteMessage.notification.title)
+    // console.log('logmy',remoteMessage.notification.body)
+    // console.log('logmy',remoteMessage.notification.title)
 
 
 
@@ -311,7 +312,7 @@ export default Home = ({ navigation, route }) => {
       "type": data.type,
       "ispage": "accept"
     }
-    navigation.navigate('VideoCall', {
+    navigation.navigate(ScreenReferences.VideoCall, {
       item: myData
     });
   }
@@ -331,11 +332,11 @@ export default Home = ({ navigation, route }) => {
     data.append("toUserName", notidata.fromUserName);
     data.append("type", "doctor_to_patient_video_call_reject");
 
-    consolepro.consolelog("data", data);
+    
     apifuntion
       .postApi(url, data, 1)
       .then((obj) => {
-        consolepro.consolelog("obj", obj);
+        ;
         if (obj.status == true) {
         } else {
           return false;
@@ -356,9 +357,9 @@ export default Home = ({ navigation, route }) => {
     var data = new FormData();
     data.append('login_user_id', user_id)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data, 1).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         setState(prev => ({
           ...prev,
@@ -462,7 +463,7 @@ export default Home = ({ navigation, route }) => {
                 paddingTop: (mobileW * 2) / 100,
                 justifyContent: 'center',
               }}>
-              <TouchableOpacity onPress={() => { navigation.navigate('Notifications') }}>
+              <TouchableOpacity onPress={() => { navigation.navigate(ScreenReferences.Notifications) }}>
                 {/* <TouchableOpacity onPress={()=>{notificationfunctoion()}}> */}
                 <Image
                   // tintColor="#fff"
@@ -619,13 +620,13 @@ export default Home = ({ navigation, route }) => {
                       state?.profileCompletionData?.profile_section === 0) &&
                     <TouchableOpacity onPress={() => {
                       if (state?.profileCompletionData?.availability_schedule === 0) {
-                        navigation.navigate('AvailabilityScheduletab')
+                        navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
                       } else if (state?.profileCompletionData?.price_section === 0) {
-                        navigation.navigate('PriceListtab')
+                        navigation.navigate(ScreenReferences.PriceListTabStack)
                       } else if (state?.profileCompletionData?.address === 0) {
-                        navigation.navigate('ServiceAddressF1')
+                        navigation.navigate(ScreenReferences.ServiceAddress)
                       } else if (state?.profileCompletionData?.profile_section === 0) {
-                        navigation.navigate('MyProfile')
+                        navigation.navigate(ScreenReferences.ShowProfile)
                       }
                     }} >
                       <View style={{

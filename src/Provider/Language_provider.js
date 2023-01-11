@@ -115,7 +115,6 @@ class Language_provider {
   CC_code = ['CC', 'CC'];
   Country_code = ['Country Code', 'الرقم الدولي']
 
-  //--------------------------------------------------------------optpage-----------------------------------------
   opt = ['OTP Verification Code', 'رمز التحقق لمرة واحدة  '];
   opttext = ['We have sent the code verification to your email', 'لقد أرسلنا رمز التحقق إلى بريدك الإلكتروني  '];
   opttext_forget = ['We have sent the code verification to your email', 'لقد أرسلنا رمز التحقق إلى بريدك الإلكتروني  '];
@@ -149,10 +148,10 @@ class Language_provider {
   SearchNurse = ['Search Nurse near your address', 'Search Nurse near your address'];
   BOOKNOW = ['BOOK NOW', 'احجز الآن'];
 
-  // ------------------------------------------------------------editprofile-----------------------------------------------
+  // ------------------------------------------------------------EditProfile-----------------------------------------------
 
   //profile tab
-  Editprofile = ['Edit Your Profile', 'تعديل الحساب  '];
+  EditProfile = ['Edit Your Profile', 'تعديل الحساب  '];
   tabnameprofile = ['Personal', ' شخصي     '];
   tabnamemedical = ['Medical', ' طبي    '];
   tabnamelifestyle = ['Life Style', ' أسلوب الحياة  ']

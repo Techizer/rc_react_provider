@@ -5,22 +5,21 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Splash from '../Screens/Splash';
 import Login from '../Screens/Login';
-import Signup from '../Signup';
-import Optpage from '../Optpage';
-import MyProfile from '../MyProfile';
-import Editprofile from '../Editprofile';
+import Signup from '../Screens/Signup';
+import MyProfile from '../Screens/MyProfile';
+import EditProfile from '../Screens/EditProfile';
 import Home from '../Screens/Home';
-import Appointment from '../Screens/Appointment';
+// import Appointment from '../Screens/Appointment';
 import Appointmenttab from '../Appointmenttab';
 import VideoCall from '../VideoCall';
 import AvailabilityScheduletab from '../AvailabilityScheduletab';
-import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
+// import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
 import PriceListtab from '../PriceListtab';
-import PriceList from '../PriceList';
-import LabPackageListing from '../LabPackageListing';
+// import PriceList from '../PriceList';
+// import LabPackageListing from '../LabPackageListing';
 import LabPackageDetails from '../LabPackageDetails';
 import Transactiontab from '../Transactiontab';
-import Transaction from '../Transaction';
+// import Transaction from '../Transaction';
 import Withdrawal from '../Withdrawal';
 import AddBank from '../AddBank';
 import ReviewRating from '../ReviewRating';
@@ -30,12 +29,13 @@ import Tremsandcondition from '../Tremsandcondition';
 import Forgotpage from '../Forgotpage';
 import Drawerscreen from '../Drawerscreen';
 import Notifications from '../Notifications';
-import Appointmentdetails from '../Screens/Appointmentdetails';
+import AppointmentDetails from '../Screens/AppointmentDetails';
 import Needsupport from '../Needsupport';
 import Otp_forget from '../Otp_forget';
 import ServiceAddressF1 from '../Components/ServiceAddressF1';
 import { SearchPlaceScreen } from '../Components';
 import { apifuntion } from '../Provider/Apicallingprovider/apiProvider';
+import { ScreenReferences } from './ScreenReferences';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -49,7 +49,7 @@ function Mydrawer() {
 
       drawerContent={props => <Drawerscreen {...props} />}>
       <Drawer.Screen
-        name="Home"
+        name={ScreenReferences.Home}
         options={{
 
           headerShown: false,
@@ -65,167 +65,134 @@ const Stacknav = navigation => {
 
   }, [])
   return (
-    <Stack.Navigator initialRouteName={'Splash'}>
+    <Stack.Navigator initialRouteName={ScreenReferences.Splash}>
       
       <Stack.Screen
-        name="Splash"
+        name={ScreenReferences.Splash}
         component={Splash}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       
       <Stack.Screen
-        name="Appointmentdetails"
-        component={Appointmentdetails}
+        name={ScreenReferences.AppointmentDetails}
+        component={AppointmentDetails}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="Needsupport"
+        name={ScreenReferences.NeedSupport}
         component={Needsupport}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Notifications"
+        name={ScreenReferences.Notifications}
         component={Notifications}
         options={{ headerShown: false }}
       />
       
       <Stack.Screen
-        name="Forgotpage"
+        name={ScreenReferences.ForgotPassword}
         component={Forgotpage}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="Tremsandcondition"
+        name={ScreenReferences.TermsAndConditions}
         component={Tremsandcondition}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
       <Stack.Screen
-        name="Login"
+        name={ScreenReferences.Login}
         component={Login}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="Signup"
+        name={ScreenReferences.Signup}
         component={Signup}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="Optpage"
-        component={Optpage}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name="MyProfile"
+        name={ScreenReferences.ShowProfile}
         component={MyProfile}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Editprofile"
-        component={Editprofile}
+        name={ScreenReferences.EditProfile}
+        component={EditProfile}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Home"
+        name={ScreenReferences.Home}
         component={Mydrawer}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="VideoCall"
+        name={ScreenReferences.VideoCall}
         component={VideoCall}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="Appointment"
-        component={Appointment}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name="Appointmenttab"
+        name={ScreenReferences.AppointmentTabStack}
         component={Appointmenttab}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="AvailabilityScheduletab"
+        name={ScreenReferences.AvailabilityScheduleTabStack}
         component={AvailabilityScheduletab}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="AvailabilitySchedule"
-        component={AvailabilitySchedule}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name="PriceListtab"
+        name={ScreenReferences.PriceListTabStack}
         component={PriceListtab}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="PriceList"
-        component={PriceList}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name="ServiceAddressF1"
+        name={ScreenReferences.ServiceAddress}
         component={ServiceAddressF1}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="SearchPlaceScreen"
+        name={ScreenReferences.SearchPlace}
         component={SearchPlaceScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-
       <Stack.Screen
-        name="LabPackageListing"
-        component={LabPackageListing}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      
-      <Stack.Screen
-        name="LabPackageDetails"
+        name={ScreenReferences.LabPackageDetails}
         component={LabPackageDetails}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
       <Stack.Screen
-        name="Transactiontab"
+        name={ScreenReferences.TransactionTabStack}
         component={Transactiontab}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-
+      
       <Stack.Screen
-        name="Transaction"
-        component={Transaction}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-
-      <Stack.Screen
-        name="Withdrawal"
+        name={ScreenReferences.Withdrawal}
         component={Withdrawal}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
       <Stack.Screen
-        name="AddBank"
+        name={ScreenReferences.AddBank}
         component={AddBank}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
       <Stack.Screen
-        name="ReviewRating"
+        name={ScreenReferences.ReviewRating}
         component={ReviewRating}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
       <Stack.Screen
-        name="More"
+        name={ScreenReferences.More}
         component={More}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
       <Stack.Screen
-        name="Otp_forget"
+        name={ScreenReferences.OTP}
         component={Otp_forget}
         options={{ headerShown: false, gestureEnabled: false }}
       />

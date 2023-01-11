@@ -9,7 +9,7 @@ import {
   mobileW,
   localStorage,
 
-  consolepro,
+  
   Lang_chg,
   apifuntion,
 } from '../Provider/utilslib/Utils';
@@ -202,7 +202,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
       if (obj.status == true) {
 
@@ -249,7 +249,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 

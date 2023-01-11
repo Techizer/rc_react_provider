@@ -4,6 +4,7 @@ import { Colors, Font, mediaprovider, msgProvider, msgText, config, localStorage
 import AppLoader from './AppLoader'
 import * as Animatable from 'react-native-animatable';
 import NetInfo from '@react-native-community/netinfo';
+import { ScreenReferences } from "../../Stacks/ScreenReferences";
 
 const AppContext = React.createContext({})
 export const AppConsumer = AppContext.Consumer
@@ -84,7 +85,7 @@ export class AppProvider extends Component {
           {this.props.children}
 
           <AppLoader loading={loading} />
-          {screens != 'Splash' &&
+          {screens != ScreenReferences.Splash &&
             <View>
               {!this.state.isConnected && <View style={{ position: 'absolute', bottom: 5, width: '100%' }}>
                 <Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 14, color: Colors.internettextcolor }} onPress={msgProvider.toast(msgText.NoInternet[config.language], 'bottom')}></Text>

@@ -11,6 +11,7 @@ import ScreenHeader from "./ScreenHeader";
 import { useIsFocused } from "@react-navigation/native";
 import AddEditAddress from "./Add_Edit_Address";
 import AddressContainer from "./AddressContainer";
+import { ScreenReferences } from "../Stacks/ScreenReferences";
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
@@ -75,7 +76,7 @@ const ServiceAddressF1 = ({
             setIsLoading(false)
             setAddressList([])
             // msgProvider.showError(obj.message)
-            consolepro.consolelog("getAddresses-error ------- " + error);
+            console.log("getAddresses-error ------- " + error);
         });
     }
 
@@ -124,7 +125,7 @@ const ServiceAddressF1 = ({
                                                 onPress={() => {
                                                     // setIsBottomSheet(true)
                                                     // setType('addAddress')
-                                                    navigation.navigate('SearchPlaceScreen', {
+                                                    navigation.navigate(ScreenReferences.SearchPlace, {
                                                         isNew: true,
                                                         address_id: '',
                                                     })

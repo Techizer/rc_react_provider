@@ -2,14 +2,11 @@ import { StyleSheet } from 'react-native';
 import {
   Colors,
   Font,
-  mobileH,
-  Mapprovider,
-  msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,

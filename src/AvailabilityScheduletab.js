@@ -4,14 +4,13 @@ import {
   Colors,
   Font,
   mobileH,
-  Mapprovider,
   msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
   
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,
@@ -50,33 +49,7 @@ const tabheadings = [
     arbic_name: 'جليسه اطفال  ',
     pass_status: 'babysitter',
     status: false,
-  },
-  // {
-  //   id: 5,
-  //   name: 'Physiotherapist',
-  //   arbic_name:'اخصائي العلاج الطبيعي   ',
-  //   pass_status:'physiotherapy',
-  //   status: false,
-  // },
-
-]
-
-// const FirstRoute = props => (
-//   <Appointment {...props} />
-// );
-
-// const SecondRoute = props => (
-//   <Appointment {...props} />
-// );
-
-
-
-// const renderScene = SceneMap({
-//   ongoing: FirstRoute,
-//   pending: SecondRoute,
-//   upcoming: FirstRoute,
-//   past: SecondRoute,
-// });
+  }]
 
 const renderTabBar = props => (
   <TabBar
@@ -99,9 +72,6 @@ const renderTabBar = props => (
     renderLabel={({ focused, route }) => {
       return (
         <Text
-          // size={20}
-          // category="Medium"
-          // color={focused ? 'BLACK' : 'GRAY3'}
           style={{
             color: (focused) ? Colors.textblue : Colors.splashtextcolor,
             textTransform: 'capitalize',
@@ -117,7 +87,7 @@ const renderTabBar = props => (
   />
 );
 
-export default function Appointmenttab({ navigation }) {
+export default function AvailabilityScheduletab({ navigation }) {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);

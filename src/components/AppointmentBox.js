@@ -6,7 +6,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
 import moment from "moment-timezone";
-import { Colors, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle,  msgProvider, localStorage } from '../Provider/utilslib/Utils';
 import { Icons } from "../Assets/Icons/IReferences";
 const AppointmentBox = ({
   item, onPressViewDetails, onPressAccept, onPressReject, onPressVideoCall,
@@ -445,10 +445,6 @@ const AppointmentBox = ({
 
               <TouchableOpacity
                 onPress={onPressViewDetails}
-                // onPress={() => {
-                //   this.props.navigation.navigate('Appointmentdetails',
-                //     { status: item.provider_type, appoinment_id: item.id, send_id: item.provider_id })
-                // }}
                 style={{
                   backgroundColor: Colors.lbluebtn,
                   width: '45%',

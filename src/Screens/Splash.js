@@ -1,12 +1,13 @@
 import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle } from '../Provider/utilslib/Utils';
 global.add_location = 'NA';
 global.amount_total = 0;
 global.username = 'NA'
 import HTMLView from 'react-native-htmlview';
 import DeviceInfo from 'react-native-device-info';
 import { Icons } from '../Assets/Icons/IReferences';
+import { ScreenReferences } from '../Stacks/ScreenReferences';
 const appVersion = DeviceInfo.getVersion();
 
 export default Splash = ({navigation, route}) => {
@@ -98,9 +99,9 @@ export default Splash = ({navigation, route}) => {
     // var data = new FormData();
     // data.append('divice_lang',"AR")
 
-    // consolepro.consolelog('data', data)
+    // 
     apifuntion.getApi(url, 1).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         if (parseFloat(obj.result.appVer) > parseFloat(appVersion)) {
           setState(prev => ({
@@ -214,7 +215,7 @@ export default Splash = ({navigation, route}) => {
     await localStorage.removeItem("user_login");
     navigation.reset({
       index: 0,
-      routes: [{ name: "Login" }],
+      routes: [{ name: ScreenReferences.Login }],
     });
   };
 

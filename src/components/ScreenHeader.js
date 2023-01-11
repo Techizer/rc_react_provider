@@ -16,7 +16,7 @@ import {
     mobileH,
     mobileW,
     localStorage,
-    consolepro,
+    
     Lang_chg,
     apifuntion,
 } from "../Provider/utilslib/Utils";
@@ -26,6 +26,7 @@ import { Icons } from '../Assets/Icons/IReferences'
 import { leftArrow, rightArrow, Notification, dummyUser } from "../Assets/Icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
+import { ScreenReferences } from "../Stacks/ScreenReferences";
 
 
 // console.log(headerHeight + '   ' + Platform.OS);
@@ -117,7 +118,7 @@ const ScreenHeader = ({
                         <TouchableHighlight
                             underlayColor={Colors.Highlight}
                             onPress={() => {
-                                navigation.navigate("Notifications");
+                                navigation.navigate(ScreenReferences.Notifications);
                             }}
                             style={{
                                 width: "14%",

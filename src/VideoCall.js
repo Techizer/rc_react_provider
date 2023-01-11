@@ -21,8 +21,8 @@ import {
 
 import DeviceInfo from 'react-native-device-info';
 import {
-  Colors, Font, mobileH, Mapprovider, msgProvider,
-  msgText, config, mobileW, localStorage,  consolepro,
+  Colors, Font, mobileH, msgProvider,
+  msgText, config, mobileW, localStorage,  
   handleback, Lang_chg, apifuntion, msgTitle,
 } from './Provider/utilslib/Utils';
 
@@ -159,23 +159,10 @@ const VideoCall = (props, { navigation }) => {
     data.append('toUserName', props.route.params.item.patient_name)
     data.append('type', callType)
 
-    consolepro.consolelog('data', data)
-
-    // var myData = JSON.stringify({
-    //   "fromUserId": "406",
-    //   "fromUserName": "Mohammad Nabi",
-    //   "order_id": "ORD22-4486588",
-    //   "room_name": "rootvideo_room_443_406",
-    //   "toUserId": "443", "toUserName": "Binay raut",
-    //   "type": "doctor_to_patient_video_call"
-    // });
-
-
-    // consolepro.consolelog('myDatamyData', myData)
-
+    
     apifuntion.postApi(url, data).then((obj) => {
       // apifuntion.postRawApi(url, myData).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         console.log('obj.result', obj.result)
@@ -186,7 +173,7 @@ const VideoCall = (props, { navigation }) => {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -215,23 +202,11 @@ const VideoCall = (props, { navigation }) => {
     data.append('toUserName', props.route.params.item.toUserName)
     data.append('type', props.route.params.item.type)
 
-    consolepro.consolelog('data', data)
-
-    // var myData = JSON.stringify({
-    //   "fromUserId": "406",
-    //   "fromUserName": "Mohammad Nabi",
-    //   "order_id": "ORD22-4486588",
-    //   "room_name": "rootvideo_room_443_406",
-    //   "toUserId": "443", "toUserName": "Binay raut",
-    //   "type": "doctor_to_patient_video_call"
-    // });
-
-
-    // consolepro.consolelog('myDatamyData', myData)
+    
 
     apifuntion.postApi(url, data).then((obj) => {
       // apifuntion.postRawApi(url, myData).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         console.log('obj.result', obj.result)
@@ -242,7 +217,7 @@ const VideoCall = (props, { navigation }) => {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 

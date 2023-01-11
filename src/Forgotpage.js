@@ -1,6 +1,6 @@
 import { Text, View, ScrollView, Platform, SafeAreaView, StatusBar, Image, TouchableOpacity, Keyboard } from 'react-native'
 import React, { Component } from 'react'
-import { Colors,  Font, mobileH, config, mobileW, consolepro, Lang_chg, localStorage, msgProvider, msgText, apifuntion, msgTitle } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, config, mobileW,  Lang_chg, localStorage, msgProvider, msgText, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   TextInput,
@@ -12,6 +12,7 @@ import {
 } from 'react-native-paper';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { Icons } from './Assets/Icons/IReferences';
+import { ScreenReferences } from './Stacks/ScreenReferences';
 export default class Forgotpage extends Component {
   constructor(props) {
     super(props);
@@ -41,15 +42,15 @@ export default class Forgotpage extends Component {
 
     var data = new FormData();
     data.append('emailId', this.state.email)
-    consolepro.consolelog('data', data)
+    
 
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
 
         setTimeout(() => {
           msgProvider.toast(obj.message, 'center')
-          this.props.navigation.navigate('Otp_forget', { email: email_new })
+          this.props.navigation.navigate(ScreenReferences.OTP, { email: email_new })
         }, 300)
       } else {
         console.log('muksna')
@@ -60,7 +61,7 @@ export default class Forgotpage extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
 

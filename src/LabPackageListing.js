@@ -5,7 +5,7 @@ import { config } from "./Provider/configProvider";
 import {
   apifuntion,
   Colors,
-  consolepro,
+  
   Font,
   Lang_chg,
   
@@ -14,6 +14,7 @@ import {
   msgProvider,
 } from "./Provider/utilslib/Utils";
 import Styles from "./Styles";
+import {ScreenReferences} from './Stacks/ScreenReferences'
 
 const LabPackageListing = (props) => {
   const { navigation } = props;
@@ -45,11 +46,11 @@ const LabPackageListing = (props) => {
     data.append('task_type', "package_base")
     data.append('service_type', user_type)
 
-    consolepro.consolelog("data", data);
+    
     apifuntion
       .postApi(url, data, 0)
       .then((obj) => {
-        consolepro.consolelog("response ---> ", JSON.stringify(obj));
+        
 
         if (obj.status == true) {
           setLabData(obj.result);
@@ -59,7 +60,7 @@ const LabPackageListing = (props) => {
         }
       })
       .catch((error) => {
-        consolepro.consolelog("-------- error ------- " + error);
+        console.log("-------- error ------- ", error)
       });
   };
 
@@ -76,11 +77,11 @@ const LabPackageListing = (props) => {
     data.append('package_id', item.id)
     data.append('service_type', user_type)
 
-    consolepro.consolelog("data", data);
+    
     apifuntion
       .postApi(url, data, 1)
       .then((obj) => {
-        consolepro.consolelog("response ---> ", JSON.stringify(obj));
+        
 
         if (obj.status == true) {
           // setLabData(obj.result);
@@ -93,7 +94,7 @@ const LabPackageListing = (props) => {
         }
       })
       .catch((error) => {
-        consolepro.consolelog("-------- error ------- " + error);
+        console.log("-------- error ------- ", error)
       });
   };
 
@@ -164,7 +165,7 @@ const LabPackageListing = (props) => {
               >
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("LabPackageDetails", {
+                    navigation.navigate(ScreenReferences.LabPackageDetails, {
                       packageId: item.id,
                       providerId: providerId,
                       reloadPackList: reloadPackList.bind(this)
@@ -208,7 +209,7 @@ const LabPackageListing = (props) => {
                         if (!value) {
                           apiLabPackageDisable(item, index)
                         } else {
-                          navigation.navigate("LabPackageDetails", {
+                          navigation.navigate(ScreenReferences.LabPackageDetails, {
                             packageId: item.id,
                             providerId: providerId,
                             reloadPackList: reloadPackList.bind(this)

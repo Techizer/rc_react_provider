@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar, Dimensions, Platform } from 'react-native';
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,  consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
+import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage,   handleback, Lang_chg, apifuntion, msgTitle, } from './Provider/utilslib/Utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ScreenHeader from './Components/ScreenHeader';
 import { Icons } from './Assets/Icons/IReferences';
@@ -38,9 +38,9 @@ export default class ReviewRating extends Component {
     data.append('user_id', user_id)
     data.append('service_type', user_type)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data, page).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
 
       if (obj.status == true) {
         this.setState({
@@ -55,7 +55,7 @@ export default class ReviewRating extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -71,9 +71,9 @@ export default class ReviewRating extends Component {
     var data = new FormData();
     data.append('id', this.state.notificat_id)
     data.append('read', 1)
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data, 1).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
 
       this.get_notification(1);
       if (obj.status == true) {
@@ -88,7 +88,7 @@ export default class ReviewRating extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 

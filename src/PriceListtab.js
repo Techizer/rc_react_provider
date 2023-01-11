@@ -4,14 +4,13 @@ import {
   Colors,
   Font,
   mobileH,
-  Mapprovider,
   msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
   
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,
@@ -124,7 +123,7 @@ const deviceHeight = Dimensions.get('screen').height;
 const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
 let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
 headerHeight += (Platform.OS === 'ios') ? 28 : -60
-export default function Appointmenttab({ navigation }) {
+export default function PriceListtab({ navigation }) {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);

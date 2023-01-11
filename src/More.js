@@ -1,8 +1,9 @@
 import { Text, Modal, Alert, View, Image, StatusBar, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import React, { Component } from 'react'
-import { Colors,  Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import ScreenHeader from './Components/ScreenHeader';
 import { Icons } from './Assets/Icons/IReferences'
+import { ScreenReferences } from './Stacks/ScreenReferences';
 
 export default class More extends Component {
   constructor(props) {
@@ -57,9 +58,9 @@ export default class More extends Component {
     data.append('login_user_id', user_id)
     data.append('device_lang', this.state.device_lang)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data, 1).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         console.log('result', obj.result)
         let result = obj.result
@@ -72,7 +73,7 @@ export default class More extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
   }
@@ -105,9 +106,9 @@ export default class More extends Component {
     data.append('user_id', user_id)
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data, 1).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         localStorage.removeItem('user_arr');
         localStorage.removeItem('user_login');
@@ -121,7 +122,7 @@ export default class More extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
   }
@@ -192,7 +193,7 @@ export default class More extends Component {
 
 
         <TouchableOpacity onPress={() => {
-          this.props.navigation.navigate('Tremsandcondition', {
+          this.props.navigation.navigate(ScreenReferences.TermsAndConditions, {
             contantpage: 2, content: config.term_url_eng,
             content_ar: config.term_url_ar
           })
@@ -219,7 +220,7 @@ export default class More extends Component {
 
 
 
-        <TouchableOpacity onPress={() => { this.props.navigation.navigate('Tremsandcondition', { contantpage: 0, content: config.about_url_eng, content_ar: config.about_url_ar }) }}
+        <TouchableOpacity onPress={() => { this.props.navigation.navigate(ScreenReferences.TermsAndConditions, { contantpage: 0, content: config.about_url_eng, content_ar: config.about_url_ar }) }}
           style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 5 / 100, flexDirection: 'row', justifyContent: 'space-between' }}>
 
           <Text style={{ textAlign: config.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.ques_fontfamily, }}>{Lang_chg.aboutrootcare[config.language]} </Text>
@@ -242,7 +243,7 @@ export default class More extends Component {
 
 
 
-        <TouchableOpacity onPress={() => { this.props.navigation.navigate('Tremsandcondition', { contantpage: 1, content: config.privacy_url_eng, content_ar: config.privacy_url_ar }) }}
+        <TouchableOpacity onPress={() => { this.props.navigation.navigate(ScreenReferences.TermsAndConditions, { contantpage: 1, content: config.privacy_url_eng, content_ar: config.privacy_url_ar }) }}
           style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 5 / 100, flexDirection: 'row', justifyContent: 'space-between' }}>
 
           <Text style={{ textAlign: config.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.ques_fontfamily, }}>{Lang_chg.privacy[config.language]} </Text>
@@ -287,7 +288,7 @@ export default class More extends Component {
 
 
         <TouchableOpacity
-          onPress={() => { this.props.navigation.navigate('Needsupport') }}
+          onPress={() => { this.props.navigation.navigate(ScreenReferences.NeedSupport) }}
           style={{ justifyContent: 'space-between', width: '90%', alignSelf: 'center', marginTop: mobileW * 5 / 100, flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ width: '8%', alignSelf: 'center', marginRight: mobileW * 3 / 100 }}>

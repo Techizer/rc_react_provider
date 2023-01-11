@@ -5,7 +5,7 @@ import {
   StyleSheet, SafeAreaView, Image, TouchableOpacity,
   Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar
 } from 'react-native';
-import { Cameragallery, mediaprovider, Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, consolepro, handleback, Lang_chg, apifuntion, msgTitle, } from '../Provider/utilslib/Utils';
+import { Cameragallery, mediaprovider, Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage,  handleback, Lang_chg, apifuntion, msgTitle, } from '../Provider/utilslib/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,8 +23,9 @@ import RNFetchBlob from "rn-fetch-blob";
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
+import { ScreenReferences } from '../Stacks/ScreenReferences';
 
-export default class Appointmentdetails extends Component {
+export default class AppointmentDetails extends Component {
 
   constructor(props) {
     super(props);
@@ -222,9 +223,9 @@ export default class Appointmentdetails extends Component {
     data.append('service_type', user_type)
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data, page).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
 
       if (obj.status == true) {
 
@@ -245,7 +246,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -304,9 +305,9 @@ export default class Appointmentdetails extends Component {
     data.append('service_type', this.state.status_pass)
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
 
       if (obj.status == true) {
 
@@ -353,7 +354,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -378,7 +379,7 @@ export default class Appointmentdetails extends Component {
         var cureent = new Date();
         var timcurrent = cureent.getHours() + ":" + cureent.getMinutes();
         this.setState({ timcurrent_for_check: timcurrent })
-        consolepro.consolelog("obj.result", obj.result)
+        console.log("obj.result", obj.result)
         if (this.state.slot_booking_id == 'TASK_BOOKING') {
           if (obj.result.task_time != '') {
             var names = obj.result.task_time;
@@ -503,7 +504,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -643,7 +644,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
 
@@ -684,7 +685,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
 
@@ -723,9 +724,9 @@ export default class Appointmentdetails extends Component {
     data.append('service_type', user_type)
     data.append('acceptance_status', acceptance_status)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         console.log('obj.result', obj.result)
         // let appoinment_detetails = [...this.state.appoinment_detetails];
@@ -739,7 +740,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
     });
 
   }
@@ -762,9 +763,9 @@ export default class Appointmentdetails extends Component {
     data.append('service_type', user_type)
     data.append('otp', this.state.ennterOTP)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         console.log('obj.result', obj.result)
         // let appoinment_detetails = [...this.state.appoinment_detetails];
@@ -778,7 +779,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
     });
 
   }
@@ -800,27 +801,7 @@ export default class Appointmentdetails extends Component {
       // data.append('report', this.state.reportsArr)
       console.log('this.state.reportsArr::: ', this.state.reportsArr)
       for (var i = 0; i < this.state.reportsArr.length; i++) {
-        // let filename;
-        // if (Platform.OS == "ios") {
-        //   filename = this.state.reportsArr[i].fileName;
-        //   if (filename == null) {
-        //     var getFilename =
-        //       this.state.reportsArr[i].uri != undefined && this.state.reportsArr[i].uri.split("/");
-        //     filename = getFilename[getFilename.length - 1];
-        //     this.state.reportsArr[i].fileName = filename;
-        //     console.log("Select Image name", this.state.reportsArr[i]);
-        //   }
-        // }
-        // data.append('report[]', {
-        //   name: this.state.reportsArr[i].fileName,
-        //   // type: this.state.reportsArr[i].type,
-        //   type: this.state.provider_prescription.mime, //'image/jpg',
-        //   uri:
-        //     Platform.OS === "android"
-        //       ? this.state.reportsArr[i].uri
-        //       : this.state.reportsArr[i].uri.replace("file://", ""),
-        // });
-        // data.append('report[]', this.state.reportsArr[i])
+        
         let dataObj = {
           uri: this.state.reportsArr[i].path,
           type: this.state.reportsArr[i].mime, //'image/jpg',
@@ -837,12 +818,8 @@ export default class Appointmentdetails extends Component {
     console.log('data::: ', data)
 
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
-      console.log('obj mess', obj.message)
+      
       if (obj.status == true) {
-        // var user_details = obj.user_details;
-        // const uservalue = { id_number: this.state.id, confirm_password: this.state.confirm, phone_number: phone_number_send, name: this.state.name, email: this.state.email, password: this.state.password, work_area: this.state.country_short_code };
-        // localStorage.setItemObject('user_login', uservalue);
         this.setState({
           reportModalVisible: false,
           reportsArr: [],
@@ -855,24 +832,16 @@ export default class Appointmentdetails extends Component {
         }, 800);
 
       } else {
-        // if (obj.active_status == 0 || obj.msg == msgTitle.user_not_exist[config.language]) {
-        //   setTimeout(() => {
-        //     msgProvider.alert(msgTitle.information[config.language], obj.msg[config.language], false);
-        //   }, 200)
-        //   config.checkUserDeactivate(this.props.navigation)
-        // } else {
         setTimeout(() => {
-          // this.setState({ error_msg: obj.message, status_new: obj.status, modalVisible3: true })
           this.setState({
             reportModalVisible: true,
           })
           msgProvider.showError(obj.message)
         }, 200)
-        // }
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false, reportModalVisible: true, });
     });
 
@@ -882,7 +851,7 @@ export default class Appointmentdetails extends Component {
     this.setState({
       reportModalVisible: (this.state.isFromReportModal == true) ? true : false
     }, () => {
-      // console.log("reportsArrreportsArr:: ", this.state.reportsArr);
+      
     })
   }
 
@@ -1012,10 +981,10 @@ export default class Appointmentdetails extends Component {
         name: (Platform.OS == 'ios') ? this.state.provider_prescription.filename : 'image',
       })
     }
-    consolepro.consolelog('data', data)
+    
 
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       console.log('obj mess', obj.message)
       if (obj.status == true) {
         // var user_details = obj.user_details;
@@ -1043,7 +1012,7 @@ export default class Appointmentdetails extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
 
@@ -3459,7 +3428,7 @@ export default class Appointmentdetails extends Component {
                               // }, () => {
                               //   this.updateProviderAppointmentStatus("Accept")
                               // })
-                              this.props.navigation.navigate('VideoCall', {
+                              this.props.navigation.navigate(ScreenReferences.VideoCall, {
                                 item: item
                               });
                             }}
@@ -3520,9 +3489,6 @@ export default class Appointmentdetails extends Component {
                               }, () => {
 
                               })
-                              // this.props.navigation.navigate('VideoCall',{
-                              //   item: item
-                              // });
                             }}
 
                               style={{

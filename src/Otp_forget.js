@@ -2,7 +2,7 @@ import { Text, View, StatusBar, BackHandler, Alert, SafeAreaView, KeyboardAwareS
 import React, { Component } from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
-import { Colors,  Font, mobileH, config, mobileW, Lang_chg, apifuntion, localStorage, msgProvider, msgText, msgTitle, consolepro } from './Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, config, mobileW, Lang_chg, apifuntion, localStorage, msgProvider, msgText, msgTitle } from './Provider/utilslib/Utils';
 import { Icons } from './Assets/Icons/IReferences';
 export default class Otp_forget extends Component {
 
@@ -68,15 +68,15 @@ export default class Otp_forget extends Component {
 
     var data = new FormData();
     data.append('emailId', this.state.email)
-    consolepro.consolelog('data', data)
+    
 
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
 
         setTimeout(() => {
           msgProvider.showSuccess(obj.message)
-          //  this.props.navigation.navigate('Otp_forget',{email:email_new}) 
+          
         }, 300)
       } else {
 
@@ -87,7 +87,7 @@ export default class Otp_forget extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
 
@@ -114,9 +114,9 @@ export default class Otp_forget extends Component {
     data.append('code', this.state.otp)
     data.append('password', this.state.password)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
 
 
@@ -134,7 +134,7 @@ export default class Otp_forget extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       this.setState({ loading: false });
     });
   }

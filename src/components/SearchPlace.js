@@ -23,13 +23,12 @@ import {
     Colors,
     Font,
     mobileH,
-    Mapprovider,
     msgProvider,
     msgText,
     config,
     mobileW,
     localStorage,
-    consolepro,
+    
     handleback,
     Lang_chg,
     apifuntion,
@@ -41,6 +40,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import SimpleToast from 'react-native-simple-toast';
 import AddEditAddress from './Add_Edit_Address';
 import { Icons } from '../Assets/Icons/IReferences';
+import { ScreenReferences } from '../Stacks/ScreenReferences';
 
 let ScreenHeight = Dimensions.get('window').height;
 
@@ -115,13 +115,7 @@ class SearchPlaceScreen extends Component {
                 isVisible: true
             },
             () => {
-                // this.props.navigation.replace('ServiceAddressF1', {
-                //     isMTrue: true,
-                //     lat: this.state.service_lat,
-                //     lng: this.state.service_long,
-                //     id: this.props.route.params.address_id,
-                //     googleAddress: this.state.service_address
-                // })
+                
             }
         );
     };
@@ -158,7 +152,6 @@ class SearchPlaceScreen extends Component {
                 let data2 = { 'latitude': details.geometry.location.lat, 'longitude': details.geometry.location.lng, 'address': details.formatted_address, 'city': city, 'administrative_area_level_1': administrative_area_level_1, 'description': details?.formatted_address }
 
                 post_location = data2
-                // consolepro.consolelog('responseJson1234', add_location)
                 this.GooglePlacesRef && this.GooglePlacesRef.setAddressText(details.formatted_address)
                 console.log({ data2, details })
                 this.setState(
@@ -356,7 +349,7 @@ class SearchPlaceScreen extends Component {
                 }}>
 
                     <ScreenHeader navigation={this.props.navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
-                        this.props.navigation.replace('ServiceAddressF1')
+                        this.props.navigation.replace(ScreenReferences.ServiceAddress)
                     }} />
                     <AddEditAddress
                         navigation={this.props.navigation}

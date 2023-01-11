@@ -5,7 +5,7 @@ import { TextInput } from "react-native-paper";
 import { Colors, Font } from "../Provider/Colorsfont";
 import {
     windowWidth, deviceHeight, Lang_chg, config,
-    localStorage, consolepro, apifuntion, msgProvider, windowHeight,
+    localStorage,  apifuntion, msgProvider, windowHeight,
 } from "../Provider/utilslib/Utils";
 
 import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../Assets/Icons/SvgIcons/Index";
@@ -14,6 +14,7 @@ import { SvgXml } from "react-native-svg";
 import AuthInputBoxSec from "./AuthInputBoxSec";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Button from "./Button";
+import { ScreenReferences } from "../Stacks/ScreenReferences";
 
 const AddEditAddress = ({
     visible,
@@ -132,7 +133,7 @@ const AddEditAddress = ({
         apifuntion
             .postApi(url, data, 1)
             .then((obj) => {
-                consolepro.consolelog("addaddress-res----", obj);
+                console.log("addaddress-res----", obj);
                 setIsLoading(false)
                 if (obj.status == true) {
                     msgProvider.showSuccess(obj.message)
@@ -151,7 +152,7 @@ const AddEditAddress = ({
                 console.log("-------- error ------- " + error);
             }).finally(() => {
                 if (navToBackThen) {
-                    navigation.replace('ServiceAddressF1')
+                    navigation.replace(ScreenReferences.ServiceAddress)
                 }
             })
     };
@@ -165,11 +166,9 @@ const AddEditAddress = ({
             animationInTiming={350}
             animationOutTimixng={350}
             avoidKeyboard={false}
-            // onBackButtonPress={onRequestClose}
             hasBackdrop={true}
             useNativeDriver={true}
             useNativeDriverForBackdrop={true}
-            // backdropColor='rgba(0,0,0,0.8)'
             style={{ margin: 0, }} >
 
 
@@ -266,7 +265,7 @@ const AddEditAddress = ({
                                     iconPressAction={shouldShowEditParam ? () => {
                                         onRequestClose()
                                         setTimeout(() => {
-                                            navigation.replace('SearchPlaceScreen', {
+                                            navigation.replace(ScreenReferences.SearchPlace, {
                                                 address_id: addressIDParam,
                                                 isNew: false
                                             })

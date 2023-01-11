@@ -7,7 +7,7 @@ import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import {
   apifuntion,
   Colors,
-  consolepro,
+  
   Font,
   Lang_chg,
   
@@ -44,11 +44,11 @@ const LabPackageDetails = (props) => {
     data.append("provider_id", providerId);
     data.append("package_id", packageId);
 
-    consolepro.consolelog("data", data);
+    
     apifuntion
       .postApi(url, data, 0)
       .then((obj) => {
-        consolepro.consolelog("response ---> ", JSON.stringify(obj));
+        
 
         if (obj.status == true) {
           setLabDetailsData(obj.result);
@@ -60,7 +60,7 @@ const LabPackageDetails = (props) => {
         }
       })
       .catch((error) => {
-        consolepro.consolelog("-------- error ------- " + error);
+        console.log("-------- error ------- ", error)
       });
   };
 
@@ -108,9 +108,9 @@ const LabPackageDetails = (props) => {
     data.append('price', priceData)
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         msgProvider.showSuccess(obj.message)
@@ -123,7 +123,7 @@ const LabPackageDetails = (props) => {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 

@@ -9,14 +9,13 @@ import {
   Colors,
   Font,
   mobileH,
-  Mapprovider,
   msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
   
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,
@@ -28,6 +27,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { AuthInputBoxSec, DropDownboxSec, Button } from './Components'
 import { Icons } from './Assets/Icons/IReferences';
+import { ScreenReferences } from './Stacks/ScreenReferences';
 const taskArr = [
   {
     id: 1,
@@ -161,11 +161,9 @@ export default class Withdrawal extends Component {
 
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
-      consolepro.consolelog("obj withdrawal", obj.result.withdrawal[0])
-      // this.setState({ appoinment_detetails: '' })
+      
       if (obj.status == true) {
         this.setState({
           withdrawalArr: obj.result.withdrawal,
@@ -191,7 +189,7 @@ export default class Withdrawal extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -228,9 +226,9 @@ export default class Withdrawal extends Component {
     var data = new FormData();
     data.append('user_id', user_id)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         console.log('obj.result', obj.result)
         // let appoinment_detetails = [...this.state.appoinment_detetails];
@@ -244,7 +242,7 @@ export default class Withdrawal extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
     });
 
   }
@@ -899,7 +897,7 @@ export default class Withdrawal extends Component {
                       }}>
                       <TouchableOpacity
                         onPress={() => {
-                          this.props.navigation.navigate('AddBank',{
+                          this.props.navigation.navigate(ScreenReferences.AddBank,{
                             reloadList: this.reloadList.bind(this)
                           })
                         }}>

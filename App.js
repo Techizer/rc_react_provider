@@ -6,13 +6,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppProvider, AppConsumer } from './src/Provider/context/AppProvider';
 import Stacknav from './src/Stacks/Routenavigation';
 import { firebapushnotification } from './src/firbase_pushnotification';
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle, consolepro } from './src/Provider/utilslib/Utils';
+import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle } from './src/Provider/utilslib/Utils';
 import FlashMessage from "react-native-flash-message";
-global.MapAddress = 'NA';
-global.screens = 'Splash';
-global.fcmtoken = '123456'
 import RNRestart from 'react-native-restart';
 import moment from 'moment-timezone';
+import { ScreenReferences } from './src/Stacks/ScreenReferences';
+global.MapAddress = 'NA';
+global.screens = ScreenReferences.Splash;
+global.fcmtoken = '123456'
 console.reportErrorsAsExceptions = false;
 class App extends Component {
   constructor(props) {

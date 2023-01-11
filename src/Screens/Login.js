@@ -1,11 +1,10 @@
 import { TouchableWithoutFeedback, Pressable, Modal, Text, Dimensions, View, PermissionsAndroid, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, keyboardType, Keyboard } from 'react-native';
 import React, { Component, useEffect, useState } from 'react';
-import { Shareratepro } from '../Provider/Sharerateapp';
 import Geolocation from '@react-native-community/geolocation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   Colors, Font, mobileH, config, mobileW,
-  Lang_chg, apifuntion, msgText, msgTitle, consolepro, msgProvider,
+  Lang_chg, apifuntion, msgText, msgTitle,  msgProvider,
   localStorage, FlushMsg
 } from '../Provider/utilslib/Utils';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
@@ -13,6 +12,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { firebapushnotification } from '../firbase_pushnotification';
 import { Icons } from '../Assets/Icons/IReferences'
+import { ScreenReferences } from '../Stacks/ScreenReferences';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -85,9 +85,6 @@ export default Login = ({ navigation, route }) => {
     navigation.addListener('focus', () => {
       get_rem_data()
       get_language()
-
-      //  checkPermission();
-      //   messageListener();
     });
     _willBlurSubscription = navigation.addListener(
       'blur',
@@ -98,8 +95,6 @@ export default Login = ({ navigation, route }) => {
         ),
     );
   }, [])
-
-
 
   get_language = async () => {
     let textalign = await localStorage.getItemObject('language');
@@ -120,7 +115,6 @@ export default Login = ({ navigation, route }) => {
     }
 
   }
-
 
   checkPermission = async () => {
     const enabled = await firebase.messaging().hasPermission();
@@ -147,17 +141,8 @@ export default Login = ({ navigation, route }) => {
   requestPermission = async () => {
     try {
       await firebase.messaging().requestPermission();
-      // User has authorised
     } catch (error) {
-      // User has rejected permissions
     }
-  }
-  shareApp = () => {
-    let url = 'NA'
-
-    url = fcmtoken
-
-    Shareratepro.sharefunction(url);
   }
 
   getlatlong = async () => {
@@ -165,20 +150,16 @@ export default Login = ({ navigation, route }) => {
     let permission = await localStorage.getItemString('permission')
     if (permission != 'denied') {
       var that = this;
-      //Checking for the permission just after component loaded
       if (Platform.OS === 'ios') {
         callLocation(that);
       } else {
-        // callLocation(that);
         async function requestLocationPermission() {
           try {
             const granted = await PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
               'title': 'Location Access Required',
               'message': 'This App needs to Access your location'
-            }
-            )
-            // console.log('granted', PermissionsAndroid.RESULTS.GRANTED)
+            })
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
               that.callLocation(that);
             } else {
@@ -223,8 +204,6 @@ export default Login = ({ navigation, route }) => {
           { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
         );
         that.watchID = Geolocation.watchPosition((position) => {
-          //Will give you the location on location change
-          // console.log('data', position);
 
           if (pointcheck1 != 1) {
             localStorage.setItemObject('position', position)
@@ -235,14 +214,10 @@ export default Login = ({ navigation, route }) => {
 
       }
       else {
-        // console.log('helo gkjodi')
         var pointcheck = 0
         Geolocation.getCurrentPosition(
-          //Will give you the current location
           (position) => {
-
             localStorage.setItemObject('position', position)
-
             getalldata(position)
             pointcheck = 1
           },
@@ -255,8 +230,6 @@ export default Login = ({ navigation, route }) => {
           { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
         );
         that.watchID = Geolocation.watchPosition((position) => {
-          //Will give you the location on location change
-          // console.log('data', position);
 
           if (pointcheck != 1) {
 
@@ -288,7 +261,6 @@ export default Login = ({ navigation, route }) => {
   }
 
   getadddressfromlatlong = (event) => {
-    // alert('hi')
 
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + config.mapkey + '&language=' + config.maplanguage)
 
@@ -387,7 +359,6 @@ export default Login = ({ navigation, route }) => {
     }
     setState(prev => ({
       ...prev,
-      //remember_me: !state?.remember_me,
       remember_me: true
     }))
   }
@@ -406,7 +377,6 @@ export default Login = ({ navigation, route }) => {
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (state?.selectuserType == -1) {
       msgProvider.showError(msgText.emptyUsertype[config.language])
-      // msgProvider.toast(msgText.emptyUsertype[config.language], 'bottom')
       return false;
     }
 
@@ -424,10 +394,6 @@ export default Login = ({ navigation, route }) => {
       msgProvider.showError(msgText.emptyPassword[config.language])
       return false
     }
-    // if (state?.password.length < 8) {
-    //     msgProvider.toast(msgText.emptyPasswordValid[config.language], 'center')
-    //     return false
-    // }
     var device_lang
     if (config.language == 0) {
       device_lang = 'ENG'
@@ -448,8 +414,8 @@ export default Login = ({ navigation, route }) => {
     console.log('loginData', data)
 
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
-      consolepro.consolelog("obj", obj.status)
+      
+      console.log("obj", obj.status)
       if (obj.status == true) {
 
         var user_details = obj.result;
@@ -460,14 +426,13 @@ export default Login = ({ navigation, route }) => {
           passwordfocus: false
         }))
 
-        consolepro.consolelog('user_details', user_details);
+        console.log('user_details', user_details);
         const uservalue = {
           email_phone: state?.email, email: state?.email,
           password: state?.password
         };
         localStorage.setItemObject('user_login', uservalue);
         localStorage.setItemObject('user_arr', user_details);
-        // msgProvider.toast(msgText.sucess_message_login[config.language], 'center')
         setTimeout(() => {
           navigation.navigate('Home');
         }, 700);
@@ -481,7 +446,7 @@ export default Login = ({ navigation, route }) => {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       setState(prev => ({
         ...prev,
         loading: false
@@ -498,7 +463,7 @@ export default Login = ({ navigation, route }) => {
   }
 
   const onSwipeLeft = (gestureState) => {
-    navigation.navigate('Signup')
+    navigation.navigate(ScreenReferences.Signup)
   }
 
   changePwdType = () => {
@@ -847,7 +812,7 @@ export default Login = ({ navigation, route }) => {
                 <View style={{ width: '55%', alignSelf: 'center', }}>
                   <Text
                     onPress={() => {
-                      navigation.navigate('Forgotpage');
+                      navigation.navigate(ScreenReferences.ForgotPassword);
                     }}
                     style={{
                       color: Colors.textblue,
@@ -909,7 +874,7 @@ export default Login = ({ navigation, route }) => {
                     // mainContainer: styles.butonContainer
                   }
                 }
-                onPress={() => navigation.navigate('Signup')}
+                onPress={() => navigation.navigate(ScreenReferences.Signup)}
                 isBlank={true}
               />
 

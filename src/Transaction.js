@@ -5,14 +5,13 @@ import {
   Colors,
   Font,
   mobileH,
-  Mapprovider,
   msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
   
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,
@@ -161,9 +160,9 @@ export default class Transaction extends Component {
 
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         this.setState({
@@ -188,7 +187,7 @@ export default class Transaction extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 

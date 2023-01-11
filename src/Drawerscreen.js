@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, StatusBar, Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Colors, Font, mobileH, Mapprovider, msgProvider, msgText, config, mobileW, localStorage,  handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
+import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage,  handleback, Lang_chg, apifuntion, msgTitle } from './Provider/utilslib/Utils';
 import { DrawerSubMenu } from './Components'
 import Styles from './Styles';
 import { DrawerActions } from '@react-navigation/native';
@@ -10,6 +10,7 @@ import { Appointment, MyAppointment, dummyUser, leftArrow, rightArrow } from './
 import { SvgXml } from 'react-native-svg';
 import DrawerItemContainer from './Components/DrawerItem';
 import { DrawerIcons } from './Assets/Icons/drawer';
+import { ScreenReferences } from './Stacks/ScreenReferences';
 global.add_location = 'NA';
 const windowWidth = Dimensions.get('window').width
 export default class Drawerscreen extends Component {
@@ -139,7 +140,7 @@ export default class Drawerscreen extends Component {
               onPress={() => {
                 setTimeout(() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('Editprofile');
+                  this.props.navigation.navigate(ScreenReferences.EditProfile);
                 }, 350);
               }}
               activeOpacity={0.7}
@@ -193,7 +194,7 @@ export default class Drawerscreen extends Component {
                       // this.props.navigation.dispatch(DrawerActions.toggleDrawer())
                       setTimeout(() => {
                         this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                        this.props.navigation.navigate('Editprofile');
+                        this.props.navigation.navigate(ScreenReferences.EditProfile);
                       }, 350);
                     }}>
                     <Text
@@ -254,7 +255,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer()),
-                    this.props.navigation.navigate('Appointmenttab')
+                    this.props.navigation.navigate(ScreenReferences.AppointmentTabStack)
                 }}
 
                 title={Lang_chg.MyAppointments[config.language]}
@@ -288,7 +289,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('AvailabilityScheduletab')
+                  this.props.navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
                 }}
 
                 title={Lang_chg.scheduleavailability_heading[config.language]}
@@ -305,7 +306,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('PriceListtab')
+                  this.props.navigation.navigate(ScreenReferences.PriceListTabStack)
                 }}
 
                 title={Lang_chg.pricelist_heading[config.language]}
@@ -322,7 +323,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('ServiceAddressF1')
+                  this.props.navigation.navigate(ScreenReferences.ServiceAddress)
                 }}
 
                 title={'Service Address'}
@@ -354,7 +355,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('MyProfile');
+                  this.props.navigation.navigate(ScreenReferences.ShowProfile);
                 }}
 
                 title={'Profile Settings'}
@@ -370,7 +371,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('Transactiontab');
+                  this.props.navigation.navigate(ScreenReferences.TransactionTabStack);
                 }}
 
                 title={'Transaction & More'}
@@ -386,7 +387,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('ReviewRating');
+                  this.props.navigation.navigate(ScreenReferences.ReviewRating);
                 }}
 
                 title={'Review & Rating'}
@@ -401,7 +402,7 @@ export default class Drawerscreen extends Component {
 
                 onPress={() => {
                   this.props.navigation.dispatch(DrawerActions.closeDrawer())
-                  this.props.navigation.navigate('More');
+                  this.props.navigation.navigate(ScreenReferences.More);
                 }}
 
                 title={'Support & More'}

@@ -8,14 +8,13 @@ import {
   Colors,
   Font,
   mobileH,
-  Mapprovider,
   msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
   
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,
@@ -174,9 +173,9 @@ export default class PriceList extends Component {
 
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj::: ", task_type, obj)
+      console.log("obj::: ", task_type, obj)
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         this.setState({
@@ -195,7 +194,7 @@ export default class PriceList extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -275,9 +274,9 @@ export default class PriceList extends Component {
     data.append('price', taskPrice)
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         msgProvider.showSuccess(obj.message)
@@ -289,7 +288,7 @@ export default class PriceList extends Component {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 

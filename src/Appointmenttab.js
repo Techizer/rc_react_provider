@@ -4,14 +4,13 @@ import {
   Colors,
   Font,
   mobileH,
-  Mapprovider,
   msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
   
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,
@@ -141,9 +140,9 @@ export default function Appointmenttab({ navigation }) {
     var data = new FormData();
     data.append('login_user_id', user_id)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data, 1).then((obj) => {
-      consolepro.consolelog("obj", obj)
+      
       if (obj.status == true) {
         // this.setState({ notification_count: obj.result })
         setNoticount(obj.result)

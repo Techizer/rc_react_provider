@@ -5,14 +5,13 @@ import {
   Colors,
   Font,
   mobileH,
-  Mapprovider,
   msgProvider,
   msgText,
   config,
   mobileW,
   localStorage,
 
-  consolepro,
+  
   handleback,
   Lang_chg,
   apifuntion,
@@ -24,6 +23,7 @@ import Styles from '../Styles';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { AppointmentBox } from '../Components'
 import { Icons } from '../Assets/Icons/IReferences';
+import { ScreenReferences } from '../Stacks/ScreenReferences';
 
 const tabheadings = [
   {
@@ -136,7 +136,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
 
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
       setState(
         prev => ({
@@ -162,7 +162,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
         return false;
       }
     }).catch((error) => {
-      //consolepro.consolelog("-------- error ------- " + error);
+      //console.log("-------- error ------- ", error)
 
     });
 
@@ -317,7 +317,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
         return false;
       }
     }).catch((error) => {
-      //consolepro.consolelog("-------- error ------- " + error);
+      //console.log("-------- error ------- ", error)
 
     });
 
@@ -367,7 +367,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
       setState(
         prev => ({
           ...prev,
@@ -411,9 +411,9 @@ export default Appointment = ({ navigation, route, pageName }) => {
     data.append('service_type', user_type)
     data.append('acceptance_status', acceptance_status)
 
-    consolepro.consolelog('data', data)
+    
     apifuntion.postApi(url, data).then((obj) => {
-      //consolepro.consolelog("obj", obj)
+      //
       if (obj.status == true) {
         var array = [...state.appoinment_detetails]; // make a separate copy of the array
         var index = state.index
@@ -432,7 +432,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
         return false;
       }
     }).catch((error) => {
-      // consolepro.consolelog("-------- error ------- " + error);
+      // console.log("-------- error ------- ", error)
     });
 
   }
@@ -447,9 +447,9 @@ export default Appointment = ({ navigation, route, pageName }) => {
     var data = new FormData();
     data.append('login_user_id', user_id)
 
-    // consolepro.consolelog('data', data)
+    // 
     apifuntion.postApi(url, data, 1).then((obj) => {
-      // consolepro.consolelog("obj", obj)
+      // 
       if (obj.status == true) {
         setState(
           prev => ({
@@ -640,7 +640,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
         return false;
       }
     }).catch((error) => {
-      consolepro.consolelog("-------- error ------- " + error);
+      console.log("-------- error ------- ", error)
 
     });
 
@@ -704,7 +704,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
                           index={index}
                           onPressViewDetails={() => {
                             console.log("props:: ", props);
-                            navigation.navigate('Appointmentdetails',
+                            navigation.navigate(ScreenReferences.AppointmentDetails,
                               {
                                 status: item.provider_type,
                                 appoinment_id: item.id,
@@ -742,7 +742,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
                                 index: index
                               })
                             )
-                            navigation.navigate('VideoCall', {
+                            navigation.navigate(ScreenReferences.VideoCall, {
                               item: item
                             });
 
