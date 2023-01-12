@@ -3,16 +3,16 @@ import {
   Colors,
   Font,
   mobileH,
-  msgProvider,
-  msgText,
+  MessageFunctions,
+  MessageTexts,
   config,
   mobileW,
   localStorage,
   
   handleback,
-  Lang_chg,
-  apifuntion,
-  msgTitle,
+  LanguageConfiguration,
+  API,
+  MessageHeadings,
 } from './Provider/utilslib/Utils';
 
 export default Styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import firebase from '../Chat/config1';
 import Firebase from 'firebase';
-import { msgProvider, msgText, msgTitle, localStorage } from './utilslib/Utils'
+import { MessageFunctions, MessageTexts, MessageHeadings, localStorage } from './utilslib/Utils'
 global.FirebaseUserJson = [];
 global.FirebaseGroupJson = [];
 global.FirebaseInboxJson = [];
@@ -337,7 +337,7 @@ class FirebaseProvider {
 			}
 		}).catch(function (error) {
 			console.log("CreateUser error: " + error.message);
-			//msgProvider.alert('Error CreateUser',error.message);
+			//MessageFunctions.alert('Error CreateUser',error.message);
 		});
 	}
 
@@ -377,7 +377,7 @@ class FirebaseProvider {
 		})
 			.catch(function (error) {
 				console.log("CreateGroup error: " + error.message);
-				// msgProvider.alert('Error CreateGroup',error.message);
+				// MessageFunctions.alert('Error CreateGroup',error.message);
 			});
 	}
 
@@ -388,7 +388,7 @@ class FirebaseProvider {
 		})
 			.catch(function (error) {
 				console.log("Update Inbox failed: " + error.message);
-				// msgProvider.alert('Error CreateUserInbox',error.message);
+				// MessageFunctions.alert('Error CreateUserInbox',error.message);
 			});
 	}
 
@@ -399,7 +399,7 @@ class FirebaseProvider {
 		})
 			.catch((error) => {
 				console.log("Update Inbox failed: " + error.message);
-				// msgProvider.alert('Error CreateGroupMembers',error.message);
+				// MessageFunctions.alert('Error CreateGroupMembers',error.message);
 			});
 	}
 
@@ -643,7 +643,7 @@ class FirebaseProvider {
 		})
 			.catch(function (error) {
 				console.log("Update Inbox failed: " + error.message);
-				msgProvider.alert('Error CreateUserInboxOther', error.message);
+				MessageFunctions.alert('Error CreateUserInboxOther', error.message);
 			});
 	}
 
@@ -654,7 +654,7 @@ class FirebaseProvider {
 		})
 			.catch(function (error) {
 				console.log("Update Inbox failed: " + error.message);
-				msgProvider.alert('Error UpdateUserInboxMe', error.message);
+				MessageFunctions.alert('Error UpdateUserInboxMe', error.message);
 			});
 	}
 
@@ -696,7 +696,7 @@ class FirebaseProvider {
 		})
 			.catch(function (error) {
 				console.log("Update Inbox failed: " + error.message);
-				msgProvider.alert('Error SendUserMessage', error.message);
+				MessageFunctions.alert('Error SendUserMessage', error.message);
 			});
 
 		if (messageType == 'text') {
@@ -713,7 +713,7 @@ class FirebaseProvider {
 		})
 			.catch((error) => {
 				console.log("Update Inbox failed: " + error.message);
-				msgProvider.alert('Error UpdateUserInboxOther', error.message);
+				MessageFunctions.alert('Error UpdateUserInboxOther', error.message);
 			});
 	}
 

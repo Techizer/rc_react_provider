@@ -5,7 +5,7 @@ import {
   StyleSheet, SafeAreaView, Image, TouchableOpacity,
   Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar
 } from 'react-native';
-import { Cameragallery, mediaprovider, Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage,  handleback, Lang_chg, apifuntion, msgTitle, } from '../Provider/utilslib/Utils';
+import { Cameragallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings, } from '../Provider/utilslib/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -224,7 +224,7 @@ export default class AppointmentDetails extends Component {
 
 
     
-    apifuntion.postApi(url, data, page).then((obj) => {
+    API.post(url, data, page).then((obj) => {
       
 
       if (obj.status == true) {
@@ -306,7 +306,7 @@ export default class AppointmentDetails extends Component {
 
 
     
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
       
 
       if (obj.status == true) {
@@ -372,7 +372,7 @@ export default class AppointmentDetails extends Component {
     data.append(' task_type', this.state.set_task)
     data.append('service_type', this.state.status_pass)
     console.log('data', data)
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
 
 
       if (obj.status == true) {
@@ -606,7 +606,7 @@ export default class AppointmentDetails extends Component {
   submit_btn = async () => {
 
     if (this.state.time_take_data.length <= 0) {
-      msgProvider.toast(msgText.EmptyTime[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.EmptyTime[config.language], 'center')
       return false;
     }
 
@@ -625,20 +625,20 @@ export default class AppointmentDetails extends Component {
     data.append('from_date', this.state.set_date)
     data.append('from_time', this.state.time_take_data)
 
-    apifuntion.postApi(url, data, 1).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
         this.setState({ modalVisible: false })
         setTimeout(() => {
-          msgProvider.toast(obj.message, 'center')
+          MessageFunctions.toast(obj.message, 'center')
           this.get_all_details(1)
         }, 700);
       } else {
-        // if (obj.active_status == msgTitle.deactivate[config.language] || obj.msg[config.language] == msgTitle.usererr[config.language]) {
+        // if (obj.active_status == MessageHeadings.deactivate[config.language] || obj.msg[config.language] == MessageHeadings.usererr[config.language]) {
         //   usernotfound.loginFirst(this.props, obj.msg[config.language])
         // } else {
         setTimeout(() => {
-          msgProvider.alert('', obj.message, false);
+          MessageFunctions.alert('', obj.message, false);
         }, 700);
         // }
         return false;
@@ -665,21 +665,21 @@ export default class AppointmentDetails extends Component {
     data.append('review', this.state.email)
     data.append('provider_id', this.state.send_id)
 
-    apifuntion.postApi(url, data, 1).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
         this.setState({ modalVisiblerating: false })
         setTimeout(() => {
-          msgProvider.toast(obj.message, 'center')
+          MessageFunctions.toast(obj.message, 'center')
           this.get_all_details(1)
         }, 700);
       } else {
-        // if (obj.active_status == msgTitle.deactivate[config.language] || obj.msg[config.language] == msgTitle.usererr[config.language]) {
+        // if (obj.active_status == MessageHeadings.deactivate[config.language] || obj.msg[config.language] == MessageHeadings.usererr[config.language]) {
         //   usernotfound.loginFirst(this.props, obj.msg[config.language])
         // } else {
 
         setTimeout(() => {
-          msgProvider.alert('', obj.message, false);
+          MessageFunctions.alert('', obj.message, false);
         }, 700);
         // }
         return false;
@@ -725,7 +725,7 @@ export default class AppointmentDetails extends Component {
     data.append('acceptance_status', acceptance_status)
 
     
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
       
       if (obj.status == true) {
         console.log('obj.result', obj.result)
@@ -734,9 +734,9 @@ export default class AppointmentDetails extends Component {
         // this.setState({ appoinment_detetails });
         this.props.route.params.reloadList()
         this.get_all_details(0)
-        msgProvider.showSuccess(obj.message)
+        MessageFunctions.showSuccess(obj.message)
       } else {
-        msgProvider.showError(obj.message)
+        MessageFunctions.showError(obj.message)
         return false;
       }
     }).catch((error) => {
@@ -748,7 +748,7 @@ export default class AppointmentDetails extends Component {
   otpPressed = async (id) => {
 
     if (this.state.ennterOTP.length <= 0) {
-      msgProvider.showError("Please enter OTP to continue!")
+      MessageFunctions.showError("Please enter OTP to continue!")
       return false;
     }
 
@@ -764,7 +764,7 @@ export default class AppointmentDetails extends Component {
     data.append('otp', this.state.ennterOTP)
 
     
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
       
       if (obj.status == true) {
         console.log('obj.result', obj.result)
@@ -773,9 +773,9 @@ export default class AppointmentDetails extends Component {
         // this.setState({ appoinment_detetails });
         this.props.route.params.reloadList()
         this.get_all_details(0)
-        msgProvider.showSuccess(obj.message)
+        MessageFunctions.showSuccess(obj.message)
       } else {
-        msgProvider.showError(obj.message)
+        MessageFunctions.showError(obj.message)
         return false;
       }
     }).catch((error) => {
@@ -817,7 +817,7 @@ export default class AppointmentDetails extends Component {
     }
     console.log('data::: ', data)
 
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
       
       if (obj.status == true) {
         this.setState({
@@ -828,7 +828,7 @@ export default class AppointmentDetails extends Component {
         setTimeout(() => {
           this.props.route.params.reloadList()
           this.get_all_details(0)
-          msgProvider.showSuccess(obj.message)
+          MessageFunctions.showSuccess(obj.message)
         }, 800);
 
       } else {
@@ -836,7 +836,7 @@ export default class AppointmentDetails extends Component {
           this.setState({
             reportModalVisible: true,
           })
-          msgProvider.showError(obj.message)
+          MessageFunctions.showError(obj.message)
         }, 200)
         return false;
       }
@@ -858,7 +858,7 @@ export default class AppointmentDetails extends Component {
   Galleryopen = () => {
     console.log('Galleryopen');
     const { imageType } = this.state;
-    mediaprovider.launchGellery(false).then((obj) => {
+    Media.launchGellery(false).then((obj) => {
       console.log(obj);
       console.log(obj.path);
       if (this.state.isFromReportModal == true) {
@@ -914,7 +914,7 @@ export default class AppointmentDetails extends Component {
     // Pick a single file
     console.log('uploadVoiceFile');
     const { imageType } = this.state;
-    mediaprovider.launchDocumentGellery(true).then((res) => {
+    Media.launchDocumentGellery(true).then((res) => {
       console.log('resresresres', res);
       console.log(
         res.uri,
@@ -983,7 +983,7 @@ export default class AppointmentDetails extends Component {
     }
     
 
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
       
       console.log('obj mess', obj.message)
       if (obj.status == true) {
@@ -994,19 +994,19 @@ export default class AppointmentDetails extends Component {
         setTimeout(() => {
           this.props.route.params.reloadList()
           this.get_all_details(0)
-          msgProvider.showSuccess(obj.message)
+          MessageFunctions.showSuccess(obj.message)
         }, 500);
 
       } else {
-        // if (obj.active_status == 0 || obj.msg == msgTitle.user_not_exist[config.language]) {
+        // if (obj.active_status == 0 || obj.msg == MessageHeadings.user_not_exist[config.language]) {
         //   setTimeout(() => {
-        //     msgProvider.alert(msgTitle.information[config.language], obj.msg[config.language], false);
+        //     MessageFunctions.alert(MessageHeadings.information[config.language], obj.msg[config.language], false);
         //   }, 200)
         //   config.checkUserDeactivate(this.props.navigation)
         // } else {
         setTimeout(() => {
           // this.setState({ error_msg: obj.message, status_new: obj.status, modalVisible3: true })
-          msgProvider.showError(obj.message)
+          MessageFunctions.showError(obj.message)
         }, 200)
         // }
         return false;
@@ -1059,11 +1059,11 @@ export default class AppointmentDetails extends Component {
 
       // CameraRoll.save(imgUrl)
       //   .then(() => {
-      //     msgProvider.showSuccess("Prescription download successfully")
+      //     MessageFunctions.showSuccess("Prescription download successfully")
       //   })
       //   .catch(err => {
       //     console.log('err:', err)
-      //     msgProvider.showError(err)
+      //     MessageFunctions.showError(err)
       //   })
       this.permissionFunc(imgUrl, filename)
     }
@@ -1080,7 +1080,7 @@ export default class AppointmentDetails extends Component {
           this.actualDownload(imgUrl, filename);
         } else {
           // global.props.hideLoader();
-          msgProvider.showError('You need to give storage permission to download the file');
+          MessageFunctions.showError('You need to give storage permission to download the file');
         }
       } catch (err) {
         // global.props.hideLoader();
@@ -1089,7 +1089,7 @@ export default class AppointmentDetails extends Component {
       // }
       // else {
       //   // global.props.hideLoader();
-      //   msgProvider.showSuccess('File is already downloaded.');
+      //   MessageFunctions.showSuccess('File is already downloaded.');
       // }
     }
   }
@@ -1127,14 +1127,14 @@ export default class AppointmentDetails extends Component {
         // setisdownloaded(false)
         // global.props.hideLoader();
         if (Platform.OS == 'android') {
-          msgProvider.showSuccess('File downloaded');
+          MessageFunctions.showSuccess('File downloaded');
         }
         console.log('The file saved to ', res);
       })
       .catch((e) => {
         // setisdownloaded(true)
         // global.props.hideLoader();
-        msgProvider.showError(e.message);
+        MessageFunctions.showError(e.message);
         console.log('The file saved to ERROR', e.message)
       });
   }
@@ -1226,7 +1226,7 @@ export default class AppointmentDetails extends Component {
           leftIcon
           rightIcon={false}
           navigation={this.props.navigation}
-          title={Lang_chg.AppointmentDetails[config.language]}
+          title={LanguageConfiguration.AppointmentDetails[config.language]}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
           <Modal
@@ -1279,7 +1279,7 @@ export default class AppointmentDetails extends Component {
                         style={{
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 4 / 100,
-                        }}>{Lang_chg.Reschedule[config.language]}
+                        }}>{LanguageConfiguration.Reschedule[config.language]}
 
                       </Text>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -1467,7 +1467,7 @@ export default class AppointmentDetails extends Component {
                             fontSize: Font.name,
 
                             textAlign: config.textRotate
-                          }}>{Lang_chg.Appoinmentschedule[config.language]}
+                          }}>{LanguageConfiguration.Appoinmentschedule[config.language]}
 
                         </Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -1514,7 +1514,7 @@ export default class AppointmentDetails extends Component {
                             fontFamily: Font.Regular,
                             fontSize: Font.subtext, textAlign: config.textRotate,
                             color: '#000'
-                          }}>{Lang_chg.SelectDate[config.language]}
+                          }}>{LanguageConfiguration.SelectDate[config.language]}
 
                         </Text>
 
@@ -1571,7 +1571,7 @@ export default class AppointmentDetails extends Component {
                             fontFamily: Font.Regular,
                             fontSize: Font.subtext,
                             textAlign: config.textRotate,
-                          }}>{Lang_chg.Select_start_time[config.language]}
+                          }}>{LanguageConfiguration.Select_start_time[config.language]}
 
 
                         </Text>
@@ -1635,7 +1635,7 @@ export default class AppointmentDetails extends Component {
                                 </View>
                               </View>
                               :
-                              <Text style={{ fontFamily: Font.MediumItalic, fontSize: mobileW * 4 / 100, alignSelf: 'center', marginTop: mobileW * 3 / 100, textAlign: 'center', marginLeft: mobileW * 32 / 100 }}>{Lang_chg.no_data_Found[config.language]}</Text>}
+                              <Text style={{ fontFamily: Font.MediumItalic, fontSize: mobileW * 4 / 100, alignSelf: 'center', marginTop: mobileW * 3 / 100, textAlign: 'center', marginLeft: mobileW * 32 / 100 }}>{LanguageConfiguration.no_data_Found[config.language]}</Text>}
                           </View>
                         </ScrollView>
                       </View>
@@ -1658,7 +1658,7 @@ export default class AppointmentDetails extends Component {
                             alignSelf: 'flex-end',
                             textAlign: config.textalign,
                             alignSelf: 'center',
-                          }}>{Lang_chg.SAVECHANGERESCHEDULE[config.language]}
+                          }}>{LanguageConfiguration.SAVECHANGERESCHEDULE[config.language]}
 
                         </Text>
                       </TouchableOpacity>
@@ -1711,7 +1711,7 @@ export default class AppointmentDetails extends Component {
                     {/* task booking section */}
 
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
-                      <Text style={{ fontSize: mobileW * 4.5 / 100, fontFamily: Font.Regular, color: '#000', textAlign: config.textRotate, }}>{Lang_chg.rate_appointment[config.language]}</Text>
+                      <Text style={{ fontSize: mobileW * 4.5 / 100, fontFamily: Font.Regular, color: '#000', textAlign: config.textRotate, }}>{LanguageConfiguration.rate_appointment[config.language]}</Text>
                       <View style={{ width: '65%', alignSelf: 'center', marginTop: mobileW * 5 / 100, justifyContent: 'center' }}>
                         <StarRating
                           disabled={false}
@@ -1749,7 +1749,7 @@ export default class AppointmentDetails extends Component {
                             maxLength={200}
                             placeholder={
                               this.state.emailfocus != true
-                                ? Lang_chg.Write_review[config.language]
+                                ? LanguageConfiguration.Write_review[config.language]
                                 : null
                             }
                             placeholderTextColor={Colors.placeholder_text}
@@ -1782,7 +1782,7 @@ export default class AppointmentDetails extends Component {
                               paddingHorizontal: (mobileW * 1) / 100,
                             }}>
                             <Text style={{ color: '#0057A5', textAlign: config.textalign }}>
-                              {Lang_chg.Write_review[config.language]}
+                              {LanguageConfiguration.Write_review[config.language]}
                             </Text>
                           </View>
                         )}
@@ -1793,10 +1793,10 @@ export default class AppointmentDetails extends Component {
                       }
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: mobileW * 7 / 100 }}>
                         <TouchableOpacity onPress={() => { this.setState({ modalVisiblerating: false, emailfocus: false }) }} style={{ width: '45%', paddingVertical: mobileW * 2 / 100, alignItems: 'center', borderWidth: 1, borderRadius: mobileW * 1.5 / 100, borderColor: '#515C6F' }}>
-                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: Colors.theme_color, textTransform: 'uppercase' }}>{Lang_chg.cancelmedia[config.language]}</Text>
+                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: Colors.theme_color, textTransform: 'uppercase' }}>{LanguageConfiguration.cancelmedia[config.language]}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { this.rating_btn() }} style={{ width: '45%', paddingVertical: mobileW * 2 / 100, alignItems: 'center', borderRadius: mobileW * 1.5 / 100, backgroundColor: Colors.theme_color }}>
-                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: '#fff', textTransform: 'uppercase' }}>{Lang_chg.submitbtntext[config.language]}</Text>
+                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: '#fff', textTransform: 'uppercase' }}>{LanguageConfiguration.submitbtntext[config.language]}</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -1842,7 +1842,7 @@ export default class AppointmentDetails extends Component {
                             fontFamily: Font.Medium,
                             fontSize: Font.regulartext_size,
                             color: Colors.darkgraytextheading,
-                          }}>{Lang_chg.BookingID[config.language]}
+                          }}>{LanguageConfiguration.BookingID[config.language]}
 
                         </Text>
                         <Text
@@ -1948,7 +1948,7 @@ export default class AppointmentDetails extends Component {
                             color: Colors.theme_color,
                             textAlign: config.textRotate,
                             paddingBottom: (mobileW * 3) / 100,
-                          }}>{Lang_chg.appointment_schedule[config.language]}
+                          }}>{LanguageConfiguration.appointment_schedule[config.language]}
 
                         </Text>
                       </View>
@@ -1973,7 +1973,7 @@ export default class AppointmentDetails extends Component {
                                 fontSize: Font.regulartext_size,
                                 textAlign: config.textRotate,
                               }}>
-                              {Lang_chg.AppointmentDate[config.language]}
+                              {LanguageConfiguration.AppointmentDate[config.language]}
                             </Text>
                             <Text
                               style={{
@@ -2021,7 +2021,7 @@ export default class AppointmentDetails extends Component {
                                   color: Colors.theme_color,
                                   fontSize: Font.regulartext_size,
                                   textAlign: config.textRotate,
-                                }}>{Lang_chg.AppointmentTime[config.language]}
+                                }}>{LanguageConfiguration.AppointmentTime[config.language]}
 
                               </Text>
                               <Text
@@ -2876,7 +2876,7 @@ export default class AppointmentDetails extends Component {
                             fontFamily: Font.Regular,
                             fontSize: Font.regulartext_size,
                             color: Colors.darkgraytextheading,
-                          }}>{Lang_chg.BookingOn[config.language]}
+                          }}>{LanguageConfiguration.BookingOn[config.language]}
 
                         </Text>
                         <Text
@@ -2916,7 +2916,7 @@ export default class AppointmentDetails extends Component {
                             color: Colors.theme_color,
                             textAlign: config.textRotate,
                             paddingBottom: 15, paddingTop: 15
-                          }}>{Lang_chg.patient_details[config.language]}</Text>
+                          }}>{LanguageConfiguration.patient_details[config.language]}</Text>
                         <TouchableOpacity onPress={() => {
                           this.setState({
                             showPDetails: !this.state.showPDetails
@@ -3128,7 +3128,7 @@ export default class AppointmentDetails extends Component {
                         </> :
                         <>
                           <View style={{ width: '90%', alignSelf: 'center', paddingVertical: mobileW * 2 / 100, flexDirection: 'row', borderTopWidth: 1, borderTopColor: Colors.bordercolor }}>
-                            <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: config.textRotate, fontFamily: Font.Medium }}>{Lang_chg.appointment_closed_otp_text[config.language]}</Text>
+                            <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: config.textRotate, fontFamily: Font.Medium }}>{LanguageConfiguration.appointment_closed_otp_text[config.language]}</Text>
                             <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '25%', textAlign: 'right', fontFamily: Font.Medium }}>{item.OTP}</Text>
                           </View>
                         </> : null
@@ -3137,7 +3137,7 @@ export default class AppointmentDetails extends Component {
                     }
                     {(item.acceptance_status == 'Completed' && (item.service_type != "Doctor" && item.service_type != "Lab")) &&
                       <View style={{ width: '90%', alignSelf: 'center', paddingVertical: mobileW * 2 / 100, flexDirection: 'row', borderTopWidth: 1, borderTopColor: Colors.bordercolor }}>
-                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.buttoncolorhgreen, width: '75%', textAlign: config.textRotate, fontFamily: Font.Regular }}>{Lang_chg.appointment_closed_otp_text[config.language]}</Text>
+                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.buttoncolorhgreen, width: '75%', textAlign: config.textRotate, fontFamily: Font.Regular }}>{LanguageConfiguration.appointment_closed_otp_text[config.language]}</Text>
                         <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.buttoncolorhgreen, width: '25%', textAlign: 'right', fontFamily: Font.Regular }}>{item.OTP}</Text>
                       </View>
                     }
@@ -3158,7 +3158,7 @@ export default class AppointmentDetails extends Component {
                               fontSize: Font.headingfont_booking,
                               textAlign: config.textRotate,
                               color: Colors.theme_color,
-                            }}>{Lang_chg.Payment[config.language]}
+                            }}>{LanguageConfiguration.Payment[config.language]}
 
                           </Text>
                         </View>
@@ -3237,7 +3237,7 @@ export default class AppointmentDetails extends Component {
                                 fontFamily: Font.Regular,
                                 fontSize: mobileW * 3.6 / 100,
                                 color: '#000',
-                              }}>{Lang_chg.distanceFare[config.language]}
+                              }}>{LanguageConfiguration.distanceFare[config.language]}
 
                             </Text>
                             <Text
@@ -3516,7 +3516,7 @@ export default class AppointmentDetails extends Component {
                           <View style={{ alignItems: 'flex-end' }}>
                             {item.avg_rating != '' && item.avg_rating != 0 ?
                               <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: '2%' }}>
-                                <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{Lang_chg.rated[config.language]}</Text>
+                                <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{LanguageConfiguration.rated[config.language]}</Text>
                                 <StarRating
                                   disabled={false}
                                   fullStar={Icons.YellowStar}
@@ -3550,7 +3550,7 @@ export default class AppointmentDetails extends Component {
                               //   <Text style={{ fontFamily: Font.SemiBold, 
                               //     color: '#fff', fontSize: mobileW * 4 / 100,
                               //      marginLeft: mobileW * 1 / 100
-                              //       }}>{Lang_chg.rate_appointment[config.language]}</Text>
+                              //       }}>{LanguageConfiguration.rate_appointment[config.language]}</Text>
                               // </TouchableOpacity>
                             }
                           </View>
@@ -3573,7 +3573,7 @@ export default class AppointmentDetails extends Component {
                                 textTransform: 'uppercase',
                                 fontFamily: Font.SemiBold,
                                 fontSize: mobileW * 2.5 / 100,
-                              }}>{Lang_chg.Refunde[config.language]}
+                              }}>{LanguageConfiguration.Refunde[config.language]}
 
                             </Text>
                           </View>}

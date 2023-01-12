@@ -4,13 +4,13 @@ import Geolocation from '@react-native-community/geolocation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   Colors, Font, mobileH, config, mobileW,
-  Lang_chg, apifuntion, msgText, msgTitle,  msgProvider,
-  localStorage, FlushMsg
+  LanguageConfiguration, API, MessageTexts, MessageHeadings,  MessageFunctions,
+  localStorage
 } from '../Provider/utilslib/Utils';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
-import { firebapushnotification } from '../firbase_pushnotification';
+import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import { Icons } from '../Assets/Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 
@@ -310,13 +310,13 @@ export default Login = ({ navigation, route }) => {
 
   handleBackPress = () => {
     Alert.alert(
-      Lang_chg.titleexitapp[config.language],
-      Lang_chg.exitappmessage[config.language], [{
-        text: Lang_chg.no_txt[config.language],
+      LanguageConfiguration.titleexitapp[config.language],
+      LanguageConfiguration.exitappmessage[config.language], [{
+        text: LanguageConfiguration.no_txt[config.language],
         onPress: () => console.log('Cancel Pressed'),
-        style: Lang_chg.no_txt[config.language],
+        style: LanguageConfiguration.no_txt[config.language],
       }, {
-        text: Lang_chg.yes_txt[config.language],
+        text: LanguageConfiguration.yes_txt[config.language],
         onPress: () => BackHandler.exitApp()
       }], {
       cancelable: false
@@ -325,7 +325,7 @@ export default Login = ({ navigation, route }) => {
     return true;
   };
   launguage_setbtn = (language) => {
-    Lang_chg.language_set(language)
+    LanguageConfiguration.language_set(language)
     setState(prev => ({
       ...prev,
       engbtn: !state?.engbtn,
@@ -376,22 +376,22 @@ export default Login = ({ navigation, route }) => {
     var email = state?.email.trim()
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (state?.selectuserType == -1) {
-      msgProvider.showError(msgText.emptyUsertype[config.language])
+      MessageFunctions.showError(MessageTexts.emptyUsertype[config.language])
       return false;
     }
 
     if (email.length <= 0) {
-      msgProvider.showError(msgText.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
       return false;
     }
 
     if (regemail.test(email) !== true) {
-      msgProvider.showError(msgText.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[config.language])
       return false
     }
 
     if (state?.password.length <= 0 || state?.password.trim().length <= 0) {
-      msgProvider.showError(msgText.emptyPassword[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPassword[config.language])
       return false
     }
     var device_lang
@@ -408,12 +408,12 @@ export default Login = ({ navigation, route }) => {
     data.append('password', state?.password)
     data.append('device_type', config.device_type)
     data.append('device_lang', device_lang)
-    data.append('fcm_token', await firebapushnotification.getFcmToken())
+    data.append('fcm_token', await FBPushNotifications.getFcmToken())
     data.append('user_type', state?.userType[state?.selectuserType].value)
 
     console.log('loginData', data)
 
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
       
       console.log("obj", obj.status)
       if (obj.status == true) {
@@ -441,7 +441,7 @@ export default Login = ({ navigation, route }) => {
 
       } else {
         setTimeout(() => {
-          msgProvider.showError(obj.message)
+          MessageFunctions.showError(obj.message)
         }, 700);
         return false;
       }
@@ -558,7 +558,7 @@ export default Login = ({ navigation, route }) => {
                  
                   color: Colors.textblack,
                 },Platform.OS=='ios'?{textAlign:config.textalign}:{textAlign:config.textalign}]}>
-                {Lang_chg.Login[config.language]}
+                {LanguageConfiguration.Login[config.language]}
               </Text> */}
                 <Text
                   style={{
@@ -567,7 +567,7 @@ export default Login = ({ navigation, route }) => {
                     textAlign: config.textRotate,
                     color: Colors.textblack,
                   }}>
-                  {Lang_chg.Login[config.language]}
+                  {LanguageConfiguration.Login[config.language]}
                 </Text>
               </View>
 
@@ -585,7 +585,7 @@ export default Login = ({ navigation, route }) => {
                     color: '#515C6F',
                     textAlign: config.textRotate,
                   }}>
-                  {Lang_chg.Logintext[config.language]}
+                  {LanguageConfiguration.Logintext[config.language]}
                 </Text>
               </View>
               <View
@@ -595,7 +595,7 @@ export default Login = ({ navigation, route }) => {
                   marginTop: (mobileW * 4) / 100,
                 }}>
                 <DropDownboxSec
-                  lableText={(state?.selectuserType == -1) ? Lang_chg.UserTypeText[config.language] : state?.userType[state?.selectuserType].title}
+                  lableText={(state?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[config.language] : state?.userType[state?.selectuserType].title}
                   boxPressAction={() => { showUsertypeModal(true) }}
                 />
 
@@ -644,7 +644,7 @@ export default Login = ({ navigation, route }) => {
                             color: Colors.white_color,
                             fontSize: 15,
                             fontFamily: Font.headingfontfamily,
-                          }}>{Lang_chg.UserTypeText[config.language]}</Text>
+                          }}>{LanguageConfiguration.UserTypeText[config.language]}</Text>
                         </View>
 
                         {
@@ -696,7 +696,7 @@ export default Login = ({ navigation, route }) => {
                     width: '100%',
                   }}
                   // icon={layer9_icon}
-                  lableText={Lang_chg.Mobileno[config.language]}
+                  lableText={LanguageConfiguration.Mobileno[config.language]}
                   inputRef={(ref) => {
                     emailInput = ref;
                   }}
@@ -734,7 +734,7 @@ export default Login = ({ navigation, route }) => {
                     width: '100%',
                   }}
                   // icon={layer9_icon}
-                  lableText={Lang_chg.password[config.language]}
+                  lableText={LanguageConfiguration.password[config.language]}
                   inputRef={(ref) => {
                     passwordInput = ref;
                   }}
@@ -781,7 +781,7 @@ export default Login = ({ navigation, route }) => {
                         // textAlign: config.textalign,
                         fontSize: Font.Remember,
                       }}>
-                      {Lang_chg.Remember[config.language]}
+                      {LanguageConfiguration.Remember[config.language]}
                     </Text>
                   </View>
                 </TouchableOpacity>}
@@ -800,7 +800,7 @@ export default Login = ({ navigation, route }) => {
                           // textAlign: config.textalign,
                           fontSize: Font.Remember,
                         }}>
-                        {Lang_chg.Remember[config.language]}
+                        {LanguageConfiguration.Remember[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -821,13 +821,13 @@ export default Login = ({ navigation, route }) => {
                       alignSelf: 'flex-end',
                       textAlign: config.textalign,
                     }}>
-                    {Lang_chg.Forgotpassword[config.language]}
+                    {LanguageConfiguration.Forgotpassword[config.language]}
                   </Text>
                 </View>
               </View>
 
               <Button
-                text={Lang_chg.Contiunebtn[config.language]}
+                text={LanguageConfiguration.Contiunebtn[config.language]}
                 customStyles={
                   {
 
@@ -861,13 +861,13 @@ export default Login = ({ navigation, route }) => {
                     alignSelf: 'center',
                     color: Colors.regulartextcolor,
                   }}>
-                  {Lang_chg.donot[config.language]}
-                  {/* {Lang_chg.donot[config.language]} */}
+                  {LanguageConfiguration.donot[config.language]}
+                  {/* {LanguageConfiguration.donot[config.language]} */}
                 </Text>
               </View>
 
               <Button
-                text={Lang_chg.createnewaccountbtn[config.language]}
+                text={LanguageConfiguration.createnewaccountbtn[config.language]}
                 // onLoading={state?.loading}
                 customStyles={
                   {
@@ -893,7 +893,7 @@ export default Login = ({ navigation, route }) => {
                     alignSelf: 'center',
                     color: Colors.regulartextcolor,
                   }}>
-                  {Lang_chg.swipe_text[config.language]}
+                  {LanguageConfiguration.swipe_text[config.language]}
                 </Text>
               </View>
             </View>

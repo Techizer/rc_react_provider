@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { Colors, Font, mobileH, config, mobileW, Lang_chg, localStorage, apifuntion, msgProvider, msgText, msgTitle, Cameragallery, mediaprovider } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, localStorage, API, MessageFunctions, MessageTexts, MessageHeadings, Cameragallery, Media } from '../Provider/utilslib/Utils';
 import Styles from '../Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from 'react-native-date-picker'
@@ -337,7 +337,7 @@ get_all_notification = async () => {
   data.append('login_user_id', user_id)
 
 
-  apifuntion.postApi(url, data, 1).then((obj) => {
+  API.post(url, data, 1).then((obj) => {
 
     if (obj.status == true) {
       setState({ notification_count: obj.result })
@@ -367,7 +367,7 @@ get_all_nationlity = async () => {
   data.append('login_user_id', user_id)
 
 
-  apifuntion.postApi(url, data, 1).then((obj) => {
+  API.post(url, data, 1).then((obj) => {
 
     if (obj.status == true) {
       console.log('obj nationaltity', obj)
@@ -446,7 +446,7 @@ getProfile = async () => {
 
 
 
-  apifuntion.postApi(url, data).then((obj) => {
+  API.post(url, data).then((obj) => {
 
     if (obj.status == true) {
       console.log('result123456', obj.result)
@@ -575,7 +575,7 @@ getProfile = async () => {
 
     }
     else {
-      msgProvider.alert(msgTitle.information[config.language], obj.message[config.language], false);
+      MessageFunctions.alert(MessageHeadings.information[config.language], obj.message[config.language], false);
 
       return false;
     }
@@ -606,7 +606,7 @@ medical_click = async () => {
   data.append('chronic_diseases', classStateData.chronic_diseases)
   data.append('chronic_diseases_data', classStateData.chronic_diseases_data)
 
-  apifuntion.postApi(url, data).then((obj) => {
+  API.post(url, data).then((obj) => {
 
 
     if (obj.status == true) {
@@ -615,7 +615,7 @@ medical_click = async () => {
       localStorage.setItemObject('user_arr', user_details);
 
     } else {
-      msgProvider.toast(obj.message, 'center')
+      MessageFunctions.toast(obj.message, 'center')
       return false;
     }
   }).catch((error) => {
@@ -626,7 +626,7 @@ medical_click = async () => {
 }
 
 Camerapopen = async () => {
-  mediaprovider.launchCamera(true).then((obj) => {
+  Media.launchCamera(true).then((obj) => {
     console.log(obj);
     console.log(obj.path);
     if (classStateData.img_type == 0) {
@@ -641,7 +641,7 @@ Camerapopen = async () => {
   })
 }
 Galleryopen = () => {
-  mediaprovider.launchGellery(true).then((obj) => {
+  Media.launchGellery(true).then((obj) => {
     console.log(obj);
     console.log(obj.path);
     if (classStateData.img_type == 0) {
@@ -663,23 +663,23 @@ submit_click = async () => {
 
 
   if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
-    msgProvider.toast(msgText.emptyName[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.emptyName[config.language], 'center')
     return false;
   }
 
   let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
   if (classStateData.email.length <= 0 || classStateData.email.trim().length <= 0) {
-    msgProvider.toast(msgText.emptyEmail[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.emptyEmail[config.language], 'center')
     return false;
   }
 
   if (regemail.test(classStateData.email) !== true) {
-    msgProvider.toast(msgText.validEmail[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.validEmail[config.language], 'center')
     return false
   }
 
   if (classStateData.id_number.length <= 0 || classStateData.id_number.trim().length <= 0) {
-    msgProvider.toast(msgText.emptyid[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.emptyid[config.language], 'center')
     return false;
   }
 
@@ -715,7 +715,7 @@ submit_click = async () => {
 
 
   setState({ loading: true })
-  apifuntion.postApi(url, data).then((obj) => {
+  API.post(url, data).then((obj) => {
 
     setState({ loading: false });
     if (obj.status == true) {
@@ -725,7 +725,7 @@ submit_click = async () => {
 
     } else {
 
-      msgProvider.alert(obj.message, false);
+      MessageFunctions.alert(obj.message, false);
     }
     return false;
 
@@ -742,27 +742,27 @@ lifestyle_click = async () => {
 
 
   if (classStateData.smoking.length <= 0) {
-    msgProvider.toast(msgText.smoking_msg[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.smoking_msg[config.language], 'center')
     return false;
   }
   if (classStateData.alcohol.length <= 0) {
-    msgProvider.toast(msgText.alcohal_msg[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.alcohal_msg[config.language], 'center')
     return false;
   }
   if (classStateData.blood_group.length <= 0) {
-    msgProvider.toast(msgText.bloodgrp_msg[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.bloodgrp_msg[config.language], 'center')
     return false;
   }
   if (classStateData.activity_level.length <= 0) {
-    msgProvider.toast(msgText.activity_level[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.activity_level[config.language], 'center')
     return false;
   }
   if (classStateData.food.length <= 0) {
-    msgProvider.toast(msgText.food_preferance[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.food_preferance[config.language], 'center')
     return false;
   }
   if (classStateData.occupation.length <= 0) {
-    msgProvider.toast(msgText.occuation[config.language], 'center')
+    MessageFunctions.toast(MessageTexts.occuation[config.language], 'center')
     return false;
   }
 
@@ -782,7 +782,7 @@ lifestyle_click = async () => {
 
   data.append('occupation', classStateData.occupation)
 
-  apifuntion.postApi(url, data).then((obj) => {
+  API.post(url, data).then((obj) => {
 
 
     if (obj.status == true) {
@@ -790,7 +790,7 @@ lifestyle_click = async () => {
       let user_details = obj.result;
       localStorage.setItemObject('user_arr', user_details);
     } else {
-      msgProvider.toast(obj.message, 'center')
+      MessageFunctions.toast(obj.message, 'center')
       return false;
     }
   }).catch((error) => {
@@ -866,8 +866,8 @@ lifestyle_click = async () => {
                     color: Colors.textwhite,
                   }}>
                   {classStateData.smoking_btn == true
-                    ? Lang_chg.smoking[config.language]
-                    : Lang_chg.Alcohol[config.language]}
+                    ? LanguageConfiguration.smoking[config.language]
+                    : LanguageConfiguration.Alcohol[config.language]}
                 </Text>
               </View>
             </View>
@@ -896,7 +896,7 @@ lifestyle_click = async () => {
                       fontSize: (mobileW * 4) / 100,
                       textAlign: config.textRotate
                     }}>
-                    {Lang_chg.yes_txt_new[config.language]}
+                    {LanguageConfiguration.yes_txt_new[config.language]}
                   </Text>
 
                 </View>
@@ -926,7 +926,7 @@ lifestyle_click = async () => {
                         fontSize: (mobileW * 4) / 100,
                         textAlign: config.textRotate
                       }}>
-                      {Lang_chg.no_txt_new[config.language]}
+                      {LanguageConfiguration.no_txt_new[config.language]}
                     </Text>
                   </View>
                 </View>
@@ -979,7 +979,7 @@ lifestyle_click = async () => {
                       alignSelf: 'center',
                       color: Colors.textwhite,
                     }}>
-                    {Lang_chg.nationality[config.language]}
+                    {LanguageConfiguration.nationality[config.language]}
                   </Text>
                 </View>
               </View>
@@ -1063,7 +1063,7 @@ lifestyle_click = async () => {
 
                     color: Colors.textwhite,
                   }}>
-                  {classStateData.occ_food_activity == 'activity' ? Lang_chg.ActivityLevel[config.language] : classStateData.occ_food_activity == 'food' ? Lang_chg.FoodPreference[config.language] : Lang_chg.Occupation[config.language]}
+                  {classStateData.occ_food_activity == 'activity' ? LanguageConfiguration.ActivityLevel[config.language] : classStateData.occ_food_activity == 'food' ? LanguageConfiguration.FoodPreference[config.language] : LanguageConfiguration.Occupation[config.language]}
                 </Text>
               </View>
             </View>
@@ -1122,7 +1122,7 @@ lifestyle_click = async () => {
           <View style={{ width: '70%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
             <View style={{ width: '100%', backgroundColor: Colors.backgroundcolorblue, paddingVertical: mobileW * 2 / 100 }}>
 
-              <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{Lang_chg.blood[config.language]}</Text>
+              <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{LanguageConfiguration.blood[config.language]}</Text>
 
             </View>
 

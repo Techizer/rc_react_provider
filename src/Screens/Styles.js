@@ -2,15 +2,15 @@ import { StyleSheet } from 'react-native';
 import {
   Colors,
   Font,
-  msgText,
+  MessageTexts,
   config,
   mobileW,
   localStorage,
   
   handleback,
-  Lang_chg,
-  apifuntion,
-  msgTitle,
+  LanguageConfiguration,
+  API,
+  MessageHeadings,
 } from '../Provider/utilslib/Utils';
 
 export default Styles = StyleSheet.create({

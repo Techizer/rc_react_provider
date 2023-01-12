@@ -2,7 +2,7 @@ import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpaci
 import React, { Component, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { Colors, Font, mobileH, config, mobileW, Lang_chg, localStorage, apifuntion, msgProvider, msgText, msgTitle, Cameragallery, mediaprovider } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, localStorage, API, MessageFunctions, MessageTexts, MessageHeadings, Cameragallery, Media } from '../Provider/utilslib/Utils';
 import Styles from '../Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from 'react-native-date-picker'
@@ -390,7 +390,7 @@ export default EditProfile = ({navigation, route}) => {
     data.append('login_user_id', user_id)
 
 
-    apifuntion.postApi(url, data, 1).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
         setState({ notification_count: obj.result })
@@ -421,7 +421,7 @@ export default EditProfile = ({navigation, route}) => {
     data.append('login_user_id', user_id)
 
 
-    apifuntion.postApi(url, data, 1).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
         console.log('obj nationaltity', obj)
@@ -501,7 +501,7 @@ export default EditProfile = ({navigation, route}) => {
 
 
 
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
 
       if (obj.status == true) {
         console.log('result123456', obj.result)
@@ -639,7 +639,7 @@ export default EditProfile = ({navigation, route}) => {
       else {
 
 
-        msgProvider.alert(msgTitle.information[config.language], obj.message[config.language], false);
+        MessageFunctions.alert(MessageHeadings.information[config.language], obj.message[config.language], false);
 
         return false;
       }
@@ -670,7 +670,7 @@ export default EditProfile = ({navigation, route}) => {
     data.append('chronic_diseases', classStateData.chronic_diseases)
     data.append('chronic_diseases_data', classStateData.chronic_diseases_data)
 
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
 
 
       if (obj.status == true) {
@@ -678,10 +678,10 @@ export default EditProfile = ({navigation, route}) => {
         let user_details = obj.result;
         localStorage.setItemObject('user_arr', user_details);
 
-        // msgProvider.toast(obj.message,'center')
+        // MessageFunctions.toast(obj.message,'center')
 
       } else {
-        msgProvider.toast(obj.message, 'center')
+        MessageFunctions.toast(obj.message, 'center')
         return false;
       }
     }).catch((error) => {
@@ -692,7 +692,7 @@ export default EditProfile = ({navigation, route}) => {
   }
 
   Camerapopen = async () => {
-    mediaprovider.launchCamera(true).then((obj) => {
+    Media.launchCamera(true).then((obj) => {
       console.log(obj);
       console.log(obj.path);
       if (classStateData.img_type == 0) {
@@ -707,7 +707,7 @@ export default EditProfile = ({navigation, route}) => {
     })
   }
   Galleryopen = () => {
-    mediaprovider.launchGellery(true).then((obj) => {
+    Media.launchGellery(true).then((obj) => {
       console.log(obj);
       console.log(obj.path);
       // editImage(obj.path);
@@ -730,54 +730,54 @@ export default EditProfile = ({navigation, route}) => {
 
 
     if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
-      msgProvider.showError(msgText.emptyName[config.language])
+      MessageFunctions.showError(MessageTexts.emptyName[config.language])
       return false;
     }
 
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (classStateData.email.length <= 0 || classStateData.email.trim().length <= 0) {
-      msgProvider.showError(msgText.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
       return false;
     }
 
     if (regemail.test(classStateData.email) !== true) {
-      msgProvider.showError(msgText.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[config.language])
       return false
     }
 
     if (classStateData.country_code.length <= 0 || classStateData.country_code.trim().length <= 0) {
-      msgProvider.showError(msgText.emptyCountrycode[config.language])
+      MessageFunctions.showError(MessageTexts.emptyCountrycode[config.language])
       return false;
     }
 
     if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-      msgProvider.showError(msgText.emptymobileNumber[config.language])
+      MessageFunctions.showError(MessageTexts.emptymobileNumber[config.language])
       return false;
     }
 
     if (classStateData.user_type == "lab") {
       if (classStateData.dob_date.length <= 0) {
-        msgProvider.showError("Please choose year of establishment")
+        MessageFunctions.showError("Please choose year of establishment")
         return false;
       }
       if (classStateData.address.length <= 0 || classStateData.address.trim().length <= 0) {
-        msgProvider.showError("Please enter your address")
+        MessageFunctions.showError("Please enter your address")
         return false;
       }
     } else {
       if (classStateData.dob_date.length <= 0 || classStateData.dob_date.trim().length <= 0) {
-        msgProvider.showError("Please choose your date of birth")
+        MessageFunctions.showError("Please choose your date of birth")
         return false;
       }
     }
     if (classStateData.user_type != "lab") {
       if (classStateData.gender.length <= 0 || classStateData.gender.trim().length <= 0) {
-        msgProvider.showError("Please choose your gender")
+        MessageFunctions.showError("Please choose your gender")
         return false;
       }
     }
     // if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-    //   msgProvider.toast(msgText.emptymobileNumber[config.language], 'center')
+    //   MessageFunctions.toast(MessageTexts.emptymobileNumber[config.language], 'center')
     //   return false;
     // }
 
@@ -785,31 +785,31 @@ export default EditProfile = ({navigation, route}) => {
 
     if (classStateData.user_type != "lab") {
       if ((classStateData.id_number.length < 10 || classStateData.id_number.trim().length < 10)) {
-        msgProvider.showError("Please enter ID Number between 10 to 15 characters or digits")
+        MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
         return false;
       }
 
       if ((classStateData.id_number.length > 15 || classStateData.id_number.trim().length > 15)) {
-        msgProvider.showError("Please enter ID Number between 10 to 15 characters or digits")
+        MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
         return false;
       }
     }
     if (classStateData.user_type == "nurse" || classStateData.user_type == "physiotherapy"
       || classStateData.user_type == "doctor") {
       if (classStateData.speciality.length <= 0 || classStateData.speciality.trim().length <= 0) {
-        msgProvider.showError("Please select speciality")
+        MessageFunctions.showError("Please select speciality")
         return false;
       }
     }
 
     if (classStateData.user_type != "lab") {
       if (classStateData.qualification.length <= 0 || classStateData.qualification.trim().length <= 0) {
-        msgProvider.showError("Please enter your qualification")
+        MessageFunctions.showError("Please enter your qualification")
         return false;
       }
 
       if (classStateData.experience.length <= 0 || classStateData.experience.trim().length <= 0) {
-        msgProvider.showError("Please enter your years of experience")
+        MessageFunctions.showError("Please enter your years of experience")
         return false;
       }
     }
@@ -817,24 +817,24 @@ export default EditProfile = ({navigation, route}) => {
     if (classStateData.user_type == "nurse" || classStateData.user_type == "physiotherapy"
       || classStateData.user_type == "doctor") {
       if ((classStateData.scfhs_number.length < 8 || classStateData.scfhs_number.trim().length < 8)) {
-        msgProvider.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
+        MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
         return false;
       }
 
       if (classStateData.scfhs_number.length > 11 || classStateData.scfhs_number.trim().length > 11) {
-        msgProvider.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
+        MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
         return false;
       }
     }
 
     if (classStateData.user_type == "lab") {
       if (classStateData.hosp_moh_lic_no == null || classStateData.hosp_moh_lic_no.length <= 0 || classStateData.hosp_moh_lic_no.trim().length <= 0) {
-        msgProvider.showError("Please enter health registration ID")
+        MessageFunctions.showError("Please enter health registration ID")
         return false;
       }
 
       if (classStateData.hosp_reg_no == null || classStateData.hosp_reg_no.length <= 0 || classStateData.hosp_reg_no.trim().length <= 0) {
-        msgProvider.showError("Please enter company registration certificate number")
+        MessageFunctions.showError("Please enter company registration certificate number")
         return false;
       }
     }
@@ -928,16 +928,16 @@ export default EditProfile = ({navigation, route}) => {
 
 
     setState({ loading: true })
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
 
       setState({ loading: false });
       if (obj.status == true) {
         let user_details = obj.result;
         localStorage.setItemObject('user_arr', user_details);
-        msgProvider.showSuccess(obj.message)
+        MessageFunctions.showSuccess(obj.message)
       } else {
-        msgProvider.showError(obj.message)
-        // msgProvider.alert(obj.message, false);
+        MessageFunctions.showError(obj.message)
+        // MessageFunctions.alert(obj.message, false);
       }
       return false;
 
@@ -954,27 +954,27 @@ export default EditProfile = ({navigation, route}) => {
 
 
     if (classStateData.smoking.length <= 0) {
-      msgProvider.toast(msgText.smoking_msg[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.smoking_msg[config.language], 'center')
       return false;
     }
     if (classStateData.alcohol.length <= 0) {
-      msgProvider.toast(msgText.alcohal_msg[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.alcohal_msg[config.language], 'center')
       return false;
     }
     if (classStateData.blood_group.length <= 0) {
-      msgProvider.toast(msgText.bloodgrp_msg[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.bloodgrp_msg[config.language], 'center')
       return false;
     }
     if (classStateData.activity_level.length <= 0) {
-      msgProvider.toast(msgText.activity_level[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.activity_level[config.language], 'center')
       return false;
     }
     if (classStateData.food.length <= 0) {
-      msgProvider.toast(msgText.food_preferance[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.food_preferance[config.language], 'center')
       return false;
     }
     if (classStateData.occupation.length <= 0) {
-      msgProvider.toast(msgText.occuation[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.occuation[config.language], 'center')
       return false;
     }
 
@@ -994,7 +994,7 @@ export default EditProfile = ({navigation, route}) => {
 
     data.append('occupation', classStateData.occupation)
 
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
 
 
       if (obj.status == true) {
@@ -1002,10 +1002,10 @@ export default EditProfile = ({navigation, route}) => {
         let user_details = obj.result;
         localStorage.setItemObject('user_arr', user_details);
 
-        // msgProvider.toast(obj.message,'center')
+        // MessageFunctions.toast(obj.message,'center')
 
       } else {
-        msgProvider.toast(obj.message, 'center')
+        MessageFunctions.toast(obj.message, 'center')
         return false;
       }
     }).catch((error) => {
@@ -1027,8 +1027,8 @@ export default EditProfile = ({navigation, route}) => {
     data.append('service_type', user_type)
 
 
-    apifuntion.postApi(url, data).then((obj) => {
-      //apifuntion.getApi(url, 1).then((obj) => {
+    API.post(url, data).then((obj) => {
+      //API.get(url, 1).then((obj) => {
 
       if (obj.status == true) {
         setState({
@@ -2086,8 +2086,8 @@ export default EditProfile = ({navigation, route}) => {
                     color: Colors.textwhite,
                   }}>
                   {classStateData.smoking_btn == true
-                    ? Lang_chg.smoking[config.language]
-                    : Lang_chg.Alcohol[config.language]}
+                    ? LanguageConfiguration.smoking[config.language]
+                    : LanguageConfiguration.Alcohol[config.language]}
                 </Text>
               </View>
             </View>
@@ -2116,7 +2116,7 @@ export default EditProfile = ({navigation, route}) => {
                       fontSize: (mobileW * 4) / 100,
                       textAlign: config.textRotate
                     }}>
-                    {Lang_chg.yes_txt_new[config.language]}
+                    {LanguageConfiguration.yes_txt_new[config.language]}
                   </Text>
 
                 </View>
@@ -2146,7 +2146,7 @@ export default EditProfile = ({navigation, route}) => {
                         fontSize: (mobileW * 4) / 100,
                         textAlign: config.textRotate
                       }}>
-                      {Lang_chg.no_txt_new[config.language]}
+                      {LanguageConfiguration.no_txt_new[config.language]}
                     </Text>
                   </View>
                 </View>
@@ -2203,7 +2203,7 @@ export default EditProfile = ({navigation, route}) => {
                       alignSelf: 'center',
                       color: Colors.textwhite,
                     }}>
-                    {Lang_chg.nationality[config.language]}
+                    {LanguageConfiguration.nationality[config.language]}
                   </Text>
                 </View>
               </View>
@@ -2284,7 +2284,7 @@ export default EditProfile = ({navigation, route}) => {
 
                     color: Colors.textwhite,
                   }}>
-                  {classStateData.occ_food_activity == 'activity' ? Lang_chg.ActivityLevel[config.language] : classStateData.occ_food_activity == 'food' ? Lang_chg.FoodPreference[config.language] : Lang_chg.Occupation[config.language]}
+                  {classStateData.occ_food_activity == 'activity' ? LanguageConfiguration.ActivityLevel[config.language] : classStateData.occ_food_activity == 'food' ? LanguageConfiguration.FoodPreference[config.language] : LanguageConfiguration.Occupation[config.language]}
                 </Text>
               </View>
             </View>
@@ -2343,7 +2343,7 @@ export default EditProfile = ({navigation, route}) => {
           <View style={{ width: '70%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
             <View style={{ width: '100%', backgroundColor: Colors.backgroundcolorblue, paddingVertical: mobileW * 2 / 100 }}>
 
-              <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{Lang_chg.blood[config.language]}</Text>
+              <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{LanguageConfiguration.blood[config.language]}</Text>
 
             </View>
 
@@ -2390,7 +2390,7 @@ export default EditProfile = ({navigation, route}) => {
           rightIcon={true}
           navigation={navigation}
           notiCount={classStateData.notification_count > 0 ? classStateData.notification_count : false}
-          title={Lang_chg.EditProfile[config.language]}
+          title={LanguageConfiguration.EditProfile[config.language]}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
         <ScrollView
           style={{ backgroundColor: 'white', marginTop: 10 }}
@@ -2440,7 +2440,7 @@ export default EditProfile = ({navigation, route}) => {
                             alignSelf: 'center',
                           }
                       }>
-                      {Lang_chg.tabnameprofile[config.language]}
+                      {LanguageConfiguration.tabnameprofile[config.language]}
                     </Text>
 
 
@@ -2477,7 +2477,7 @@ export default EditProfile = ({navigation, route}) => {
                             alignSelf: 'center',
                           }
                       }>
-                      {Lang_chg.tabnamemedical[config.language]}
+                      {LanguageConfiguration.tabnamemedical[config.language]}
                     </Text>
                     <View style={classStateData.mbtn == true ? { width: mobileW * 28 / 100, alignSelf: 'center', borderWidth: 2.2, borderColor: Colors.bordercolorblue, borderTopLeftRadius: mobileW * 2 / 100, borderTopRightRadius: mobileW * 2 / 100, backgroundColor: Colors.bordercolorblue, alignSelf: 'center' } : { width: mobileW * 30 / 100, alignSelf: 'center', borderColor: Colors.tab_background_color, borderWidth: 2.5 }}></View>
 
@@ -2514,7 +2514,7 @@ export default EditProfile = ({navigation, route}) => {
                             alignSelf: 'center',
                           }
                       }>
-                      {Lang_chg.tabnamelifestyle[config.language]}
+                      {LanguageConfiguration.tabnamelifestyle[config.language]}
                     </Text>
                   </View>
 
@@ -2703,7 +2703,7 @@ export default EditProfile = ({navigation, route}) => {
                       width: '100%',
                     }}
                     // icon={layer9_icon}
-                    lableText={Lang_chg.textinputname[config.language]}
+                    lableText={LanguageConfiguration.textinputname[config.language]}
                     inputRef={(ref) => {
                       nameInput = ref;
                     }}
@@ -2731,7 +2731,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.namefocus != true ? Lang_chg.textinputname[config.language] : null}
+                        placeholder={classStateData.namefocus != true ? LanguageConfiguration.textinputname[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ name: txt }) }}
                         value={classStateData.name}
@@ -2742,7 +2742,7 @@ export default EditProfile = ({navigation, route}) => {
                         returnKeyType='done'
                       /> */}
                   {/* {classStateData.namefocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign, }}>{Lang_chg.textinputname[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign, }}>{LanguageConfiguration.textinputname[config.language]}</Text>
                     </View>} */}
 
                 </View>
@@ -2761,12 +2761,12 @@ export default EditProfile = ({navigation, route}) => {
                       fontFamily: Font.headingfontfamily,
                       color: Colors.placeholder_text,
                     }}>
-                    {Lang_chg.selectcountrytitle[config.language]}
+                    {LanguageConfiguration.selectcountrytitle[config.language]}
                   </Text>
                 </View>
 
                 <DropDownboxSec
-                  lableText={classStateData.work_area.length <= 0 ? Lang_chg.select[config.language] : classStateData.work_area}
+                  lableText={classStateData.work_area.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.work_area}
                   boxPressAction={() => {
                     // setState({ bloodModal: true });
                   }}
@@ -2792,7 +2792,7 @@ export default EditProfile = ({navigation, route}) => {
                         marginBottom: (mobileW * 4) / 100,
                       }}
                       // icon={layer9_icon}
-                      lableText={Lang_chg.CC_code[config.language]}
+                      lableText={LanguageConfiguration.CC_code[config.language]}
                       inputRef={(ref) => {
                         country_codeInput = ref;
                       }}
@@ -2823,7 +2823,7 @@ export default EditProfile = ({navigation, route}) => {
                         editable={false}
                         placeholder={
                           classStateData.country_codefocus != true
-                            ? Lang_chg.CC_code[config.language]
+                            ? LanguageConfiguration.CC_code[config.language]
                             : null
                         }
                         placeholderTextColor={Colors.placeholder_text}
@@ -2857,7 +2857,7 @@ export default EditProfile = ({navigation, route}) => {
                             paddingHorizontal: (mobileW * 1) / 100,
                           }}>
                           <Text style={{ color: '#0057A5' }}>
-                            {Lang_chg.CC_code[config.language]}
+                            {LanguageConfiguration.CC_code[config.language]}
                           </Text>
                         </View>
                       } */}
@@ -2874,7 +2874,7 @@ export default EditProfile = ({navigation, route}) => {
                         width: '100%',
                       }}
                       // icon={layer9_icon}
-                      lableText={Lang_chg.textinputnumber[config.language]}
+                      lableText={LanguageConfiguration.textinputnumber[config.language]}
                       inputRef={(ref) => {
                         mobileInput = ref;
                       }}
@@ -2904,7 +2904,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.headingfontfamily,
                           color: Colors.textgray,
                         }}>
-                        {Lang_chg.mobletexttitle[config.language]}
+                        {LanguageConfiguration.mobletexttitle[config.language]}
                       </Text>
                     </View>
 
@@ -2922,7 +2922,7 @@ export default EditProfile = ({navigation, route}) => {
                       width: '100%',
                     }}
                     // icon={layer9_icon}
-                    lableText={Lang_chg.Mobileno[config.language]}
+                    lableText={LanguageConfiguration.Mobileno[config.language]}
                     inputRef={(ref) => {
                       emailInput = ref;
                     }}
@@ -2952,7 +2952,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={100}
-                        placeholder={classStateData.emailfocus != true ? Lang_chg.textinputemails[config.language] : null}
+                        placeholder={classStateData.emailfocus != true ? LanguageConfiguration.textinputemails[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ email: txt }) }}
                         value={classStateData.email}
@@ -2965,7 +2965,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.emailfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputemails[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputemails[config.language]}</Text>
                     </View>} */}
 
                 </View>
@@ -2985,7 +2985,7 @@ export default EditProfile = ({navigation, route}) => {
                       fontFamily: Font.headingfontfamily,
                       color: Colors.placeholder_text,
                     }}>
-                    {(classStateData?.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language]}
+                    {(classStateData?.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[config.language]}
                   </Text>
                 </View>
                 <View style={{
@@ -3007,7 +3007,7 @@ export default EditProfile = ({navigation, route}) => {
                         color: Colors.placeholder_text,
                         fontFamily: Font.Regular,
                         fontSize: Font.placeholdersize,
-                      }}>{classStateData.dob_date.length <= 0 ? (classStateData.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language] : classStateData.dob_date}</Text>
+                      }}>{classStateData.dob_date.length <= 0 ? (classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[config.language] : classStateData.dob_date}</Text>
                       <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
                         <Image source={Icons.DatePicker}
@@ -3025,7 +3025,7 @@ export default EditProfile = ({navigation, route}) => {
                       fontSize: Font.sregulartext_size,
                       fontFamily: Font.placeholderfontfamily,
                       textAlign: config.textalign
-                    }}>{(classStateData.user_type == "lab") ? "Year of Establishment" : Lang_chg.dob[config.language]}</Text>
+                    }}>{(classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[config.language]}</Text>
                   </View>}
 
                 </View>
@@ -3038,7 +3038,7 @@ export default EditProfile = ({navigation, route}) => {
                       <View style={{ width: '1%' }}>
                       </View>
                       <View style={{ width: '100%', height: Font.placeholder_height, marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row' }}>
-                        <Text style={{ width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text }}>{classStateData.dob_date.length <= 0 ? Lang_chg.dob[config.language] : classStateData.dob_date}</Text>
+                        <Text style={{ width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[config.language] : classStateData.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
                           <Image source={Icons.DatePicker}
@@ -3051,7 +3051,7 @@ export default EditProfile = ({navigation, route}) => {
                     </TouchableOpacity>
 
                     {classStateData.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.dob[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.dob[config.language]}</Text>
                     </View>}
 
                   </View> */}
@@ -3067,7 +3067,7 @@ export default EditProfile = ({navigation, route}) => {
                         width: '100%',
                       }}
                       // icon={layer9_icon}
-                      lableText={Lang_chg.textinputaddress[config.language]}
+                      lableText={LanguageConfiguration.textinputaddress[config.language]}
                       inputRef={(ref) => {
                         addressInput = ref;
                       }}
@@ -3109,7 +3109,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
                           textAlign: config.textRotate,
                         }}>
-                        {Lang_chg.Gender[config.language]}
+                        {LanguageConfiguration.Gender[config.language]}
                       </Text>
                     </View>
 
@@ -3146,7 +3146,7 @@ export default EditProfile = ({navigation, route}) => {
                                   fontFamily: Font.Regular,
                                   fontSize: Font.placeholdersize,
                                 }}>
-                                {Lang_chg.male[config.language]}
+                                {LanguageConfiguration.male[config.language]}
                               </Text>
                             </View>
                           </TouchableOpacity>
@@ -3189,7 +3189,7 @@ export default EditProfile = ({navigation, route}) => {
                                 fontSize: Font.placeholdersize,
                                 // alignSelf: 'center',
                               }}>
-                              {Lang_chg.female[config.language]}
+                              {LanguageConfiguration.female[config.language]}
                             </Text>
 
                           </TouchableOpacity>
@@ -3221,7 +3221,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontSize: (mobileW * 4.1) / 100,
                           textAlign: config.textRotate,
                         }}>
-                        {Lang_chg.Gender[config.language]}
+                        {LanguageConfiguration.Gender[config.language]}
                       </Text>
                     </View>
 
@@ -3259,7 +3259,7 @@ export default EditProfile = ({navigation, route}) => {
                                     textAlign: config.textRotate
 
                                   }}>
-                                  {Lang_chg.male[config.language]}
+                                  {LanguageConfiguration.male[config.language]}
                                 </Text>
                               </View>
                             </TouchableOpacity>}
@@ -3286,7 +3286,7 @@ export default EditProfile = ({navigation, route}) => {
                                     textAlign: config.textRotate
 
                                   }}>
-                                  {Lang_chg.male[config.language]}
+                                  {LanguageConfiguration.male[config.language]}
                                 </Text>
                               </View>
                             </View>}
@@ -3328,7 +3328,7 @@ export default EditProfile = ({navigation, route}) => {
                                   marginLeft: mobileW * 1.5 / 100
                                   // alignSelf: 'center',
                                 }}>
-                                {Lang_chg.female[config.language]}
+                                {LanguageConfiguration.female[config.language]}
                               </Text>
 
                             </TouchableOpacity>}
@@ -3355,7 +3355,7 @@ export default EditProfile = ({navigation, route}) => {
                                   marginLeft: mobileW * 1.5 / 100
                                   // alignSelf: 'center',
                                 }}>
-                                {Lang_chg.female[config.language]}
+                                {LanguageConfiguration.female[config.language]}
                               </Text>
 
                             </View>}
@@ -3383,7 +3383,7 @@ export default EditProfile = ({navigation, route}) => {
                         <View style={{ width: '1%' }}>
 
                         </View>
-                        <Text style={{ width: '77%', alignSelf: 'center', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: config.textRotate, fontFamily: Font.placeholderfontfamily }}>{classStateData.nationality.length <= 0 ? Lang_chg.nationality[config.language] : classStateData.nationality}</Text>
+                        <Text style={{ width: '77%', alignSelf: 'center', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: config.textRotate, fontFamily: Font.placeholderfontfamily }}>{classStateData.nationality.length <= 0 ? LanguageConfiguration.nationality[config.language] : classStateData.nationality}</Text>
                         <View style={{ width: '20%', alignSelf: 'center', alignItems: 'flex-end' }}>
                           <Image source={Icons.DownArrow} style={{ height: 16, width: 16 }}>
                           </Image>
@@ -3392,7 +3392,7 @@ export default EditProfile = ({navigation, route}) => {
                     </TouchableOpacity>
 
                     {classStateData.nationalityfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textRotate }}>{Lang_chg.nationality[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textRotate }}>{LanguageConfiguration.nationality[config.language]}</Text>
                     </View>}
                   </View> */}
 
@@ -3417,7 +3417,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.addressfocus != true ? Lang_chg.textinputaddress[config.language] : null}
+                        placeholder={classStateData.addressfocus != true ? LanguageConfiguration.textinputaddress[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ address: txt }) }}
                         value={classStateData.address}
@@ -3429,7 +3429,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.addressfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputaddress[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputaddress[config.language]}</Text>
                     </View>}
 
                   </View> */}
@@ -3452,7 +3452,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={15}
-                        placeholder={classStateData.identityfocus != true ? Lang_chg.textinputidentity[config.language] : null}
+                        placeholder={classStateData.identityfocus != true ? LanguageConfiguration.textinputidentity[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ identity: txt }) }}
                         value={classStateData.identity}
@@ -3464,7 +3464,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.identityfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputidentity[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputidentity[config.language]}</Text>
                     </View>}
 
                   </View> */}
@@ -3544,7 +3544,7 @@ export default EditProfile = ({navigation, route}) => {
 
                 {/* ==========================================person btn================================ */}
                 <Button
-                  text={Lang_chg.submitbtntext[config.language]}
+                  text={LanguageConfiguration.submitbtntext[config.language]}
                   // onLoading={classStateData.loading}
                   customStyles={
                     {
@@ -3584,7 +3584,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate,
                         // textAlign:config.textalign,
                       }}>
-                      {Lang_chg.allergies[config.language]}
+                      {LanguageConfiguration.allergies[config.language]}
                     </Text>
                   </View>
                 </View>
@@ -3600,7 +3600,7 @@ export default EditProfile = ({navigation, route}) => {
 
 
                     }}>
-                    {Lang_chg.q1[config.language]}
+                    {LanguageConfiguration.q1[config.language]}
                   </Text>
                 </View>
 
@@ -3644,7 +3644,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {Lang_chg.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3679,7 +3679,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {Lang_chg.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3712,7 +3712,7 @@ export default EditProfile = ({navigation, route}) => {
 
                           }}
                           maxLength={70}
-                          placeholder={classStateData.allergiesfocus != true ? Lang_chg.textinputallierdies[config.language] : null}
+                          placeholder={classStateData.allergiesfocus != true ? LanguageConfiguration.textinputallierdies[config.language] : null}
                           placeholderTextColor={Colors.placeholder_text}
                           onChangeText={(txt) => { setState({ allergies_data: txt }) }}
                           value={classStateData.allergies_data}
@@ -3732,7 +3732,7 @@ export default EditProfile = ({navigation, route}) => {
                             top: (-mobileW * 2) / 100,
                             paddingHorizontal: (mobileW * 1) / 100,
                           }}>
-                          <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputallierdies[config.language]}</Text>
+                          <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputallierdies[config.language]}</Text>
                         </View>
                       )}
 
@@ -3761,7 +3761,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate,
 
                       }}>
-                      {Lang_chg.current[config.language]}
+                      {LanguageConfiguration.current[config.language]}
                     </Text>
                   </View>
                 </View>
@@ -3780,7 +3780,7 @@ export default EditProfile = ({navigation, route}) => {
                       textAlign: config.textRotate,
 
                     }}>
-                    {Lang_chg.q2[config.language]}
+                    {LanguageConfiguration.q2[config.language]}
                   </Text>
                 </View>
 
@@ -3827,7 +3827,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {Lang_chg.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3866,7 +3866,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {Lang_chg.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3900,7 +3900,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.currentfocus != true ? Lang_chg.textinputcurrent[config.language] : null}
+                        placeholder={classStateData.currentfocus != true ? LanguageConfiguration.textinputcurrent[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ current_medication_data: txt }) }}
                         value={classStateData.current_medication_data}
@@ -3912,7 +3912,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.currentfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputcurrent[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputcurrent[config.language]}</Text>
                     </View>}
 
 
@@ -3942,7 +3942,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate,
 
                       }}>
-                      {Lang_chg.pastmedication[config.language]}
+                      {LanguageConfiguration.pastmedication[config.language]}
                     </Text>
                   </View>
                 </View>
@@ -3961,7 +3961,7 @@ export default EditProfile = ({navigation, route}) => {
                       textAlign: config.textRotate,
 
                     }}>
-                    {Lang_chg.q3[config.language]}
+                    {LanguageConfiguration.q3[config.language]}
                   </Text>
                 </View>
 
@@ -4006,7 +4006,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {Lang_chg.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4045,7 +4045,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {Lang_chg.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4079,7 +4079,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.pastfocus != true ? Lang_chg.textinputpastmedication[config.language] : null}
+                        placeholder={classStateData.pastfocus != true ? LanguageConfiguration.textinputpastmedication[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ past_medication_data: txt }) }}
                         value={classStateData.past_medication_data}
@@ -4091,7 +4091,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.pastfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputpastmedication[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputpastmedication[config.language]}</Text>
                     </View>}
 
 
@@ -4121,7 +4121,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate,
 
                       }}>
-                      {Lang_chg.injuries[config.language]}
+                      {LanguageConfiguration.injuries[config.language]}
                     </Text>
                   </View>
                 </View>
@@ -4140,7 +4140,7 @@ export default EditProfile = ({navigation, route}) => {
                       textAlign: config.textRotate,
 
                     }}>
-                    {Lang_chg.q4[config.language]}
+                    {LanguageConfiguration.q4[config.language]}
                   </Text>
                 </View>
 
@@ -4187,7 +4187,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {Lang_chg.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4224,7 +4224,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {Lang_chg.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4258,7 +4258,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.injuriesfocus != true ? Lang_chg.textinputinjuries[config.language] : null}
+                        placeholder={classStateData.injuriesfocus != true ? LanguageConfiguration.textinputinjuries[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ injuries_data: txt }) }}
                         value={classStateData.injuries_data}
@@ -4270,7 +4270,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.injuriesfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputinjuries[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputinjuries[config.language]}</Text>
                     </View>}
 
 
@@ -4300,7 +4300,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate,
 
                       }}>
-                      {Lang_chg.surgeries[config.language]}
+                      {LanguageConfiguration.surgeries[config.language]}
                     </Text>
                   </View>
                 </View>
@@ -4319,7 +4319,7 @@ export default EditProfile = ({navigation, route}) => {
                       textAlign: config.textRotate,
 
                     }}>
-                    {Lang_chg.q5[config.language]}
+                    {LanguageConfiguration.q5[config.language]}
                   </Text>
                 </View>
 
@@ -4366,7 +4366,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {Lang_chg.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4405,7 +4405,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {Lang_chg.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[config.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4439,7 +4439,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.sugeriesfocus != true ? Lang_chg.textinputsurgeries[config.language] : null}
+                        placeholder={classStateData.sugeriesfocus != true ? LanguageConfiguration.textinputsurgeries[config.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ surgeries_data: txt }) }}
                         value={classStateData.surgeries_data}
@@ -4451,7 +4451,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.sugeriesfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputsurgeries[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputsurgeries[config.language]}</Text>
                     </View>}
 
 
@@ -4482,7 +4482,7 @@ export default EditProfile = ({navigation, route}) => {
                           textAlign: config.textRotate,
 
                         }}>
-                        {Lang_chg.chronic[config.language]}
+                        {LanguageConfiguration.chronic[config.language]}
                       </Text>
                     </View>
                   </View>
@@ -4501,7 +4501,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate,
 
                       }}>
-                      {Lang_chg.q6[config.language]}
+                      {LanguageConfiguration.q6[config.language]}
                     </Text>
                   </View>
 
@@ -4544,7 +4544,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center', fontSize: Font.text_height,
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                          {Lang_chg.yes_txt[config.language]}
+                          {LanguageConfiguration.yes_txt[config.language]}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -4581,7 +4581,7 @@ export default EditProfile = ({navigation, route}) => {
                             fontFamily: Font.allergies_heading_fontfamily,
                             alignSelf: 'center',
                           }}>
-                          {Lang_chg.no_txt[config.language]}
+                          {LanguageConfiguration.no_txt[config.language]}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -4615,7 +4615,7 @@ export default EditProfile = ({navigation, route}) => {
 
                           }}
                           maxLength={50}
-                          placeholder={classStateData.chronicfocus != true ? Lang_chg.textinputchronic[config.language] : null}
+                          placeholder={classStateData.chronicfocus != true ? LanguageConfiguration.textinputchronic[config.language] : null}
                           placeholderTextColor={Colors.placeholder_text}
                           onChangeText={(txt) => { setState({ chronic_diseases_data: txt }) }}
                           value={classStateData.chronic_diseases_data}
@@ -4627,7 +4627,7 @@ export default EditProfile = ({navigation, route}) => {
                         />
                       </View>
                       {classStateData.chronicfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                        <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.textinputchronic[config.language]}</Text>
+                        <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputchronic[config.language]}</Text>
                       </View>}
 
 
@@ -4663,7 +4663,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         alignSelf: 'center',
                       }}>
-                      {Lang_chg.savebtntext[config.language]}
+                      {LanguageConfiguration.savebtntext[config.language]}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -4704,7 +4704,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate
 
                       }}>
-                      {Lang_chg.smoking[config.language]}
+                      {LanguageConfiguration.smoking[config.language]}
                     </Text>
                   </View>
 
@@ -4732,7 +4732,7 @@ export default EditProfile = ({navigation, route}) => {
                         }}>
                         {/* <View style={{width: '80%'}}> */}
                         <Text style={{ fontSize: (mobileW * 3.7) / 100, fontFamily: Font.Regular, textAlign: config.textRotate }}>
-                          {classStateData.smoking.length <= 0 ? Lang_chg.select[config.language] : classStateData.smoking}
+                          {classStateData.smoking.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.smoking}
                         </Text>
                         {/* </View> */}
 
@@ -4770,7 +4770,7 @@ export default EditProfile = ({navigation, route}) => {
                         textAlign: config.textRotate
 
                       }}>
-                      {Lang_chg.Alcohol[config.language]}
+                      {LanguageConfiguration.Alcohol[config.language]}
                     </Text>
                   </View>
 
@@ -4798,7 +4798,7 @@ export default EditProfile = ({navigation, route}) => {
                         }}>
                         {/* <View style={{width: '80%'}}> */}
                         <Text style={{ fontSize: (mobileW * 3.7) / 100 }}>
-                          {classStateData.alcohol.length <= 0 ? Lang_chg.select[config.language] : classStateData.alcohol}
+                          {classStateData.alcohol.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.alcohol}
                         </Text>
                         {/* </View> */}
 
@@ -4836,7 +4836,7 @@ export default EditProfile = ({navigation, route}) => {
                         fontSize: Font.allergies_txt_size_edit,
                         textAlign: config.textRotate
                       }}>
-                      {Lang_chg.blood[config.language]}
+                      {LanguageConfiguration.blood[config.language]}
                     </Text>
                   </View>
 
@@ -4865,7 +4865,7 @@ export default EditProfile = ({navigation, route}) => {
                           justifyContent: 'space-between'
                         }}>
                         {/* <View style={{width: '80%'}}> */}
-                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>{classStateData.blood_group.length <= 0 ? Lang_chg.select[config.language] : classStateData.blood_group}</Text>
+                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>{classStateData.blood_group.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.blood_group}</Text>
                         {/* </View> */}
 
                         <View style={{ width: '20%', alignSelf: 'center' }}>
@@ -4901,7 +4901,7 @@ export default EditProfile = ({navigation, route}) => {
                         fontSize: Font.allergies_txt_size_edit,
                         textAlign: config.textRotate
                       }}>
-                      {Lang_chg.activity[config.language]}
+                      {LanguageConfiguration.activity[config.language]}
                     </Text>
                   </View>
 
@@ -4929,7 +4929,7 @@ export default EditProfile = ({navigation, route}) => {
                         }}>
                         {/* <View style={{width: '80%'}}> */}
                         <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>
-                          {classStateData.activity_level.length <= 0 ? Lang_chg.select[config.language] : classStateData.activity_level}
+                          {classStateData.activity_level.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.activity_level}
                         </Text>
                         {/* </View> */}
 
@@ -4966,7 +4966,7 @@ export default EditProfile = ({navigation, route}) => {
                         fontSize: Font.allergies_txt_size_edit,
                         textAlign: config.textRotate
                       }}>
-                      {Lang_chg.food[config.language]}
+                      {LanguageConfiguration.food[config.language]}
                     </Text>
                   </View>
 
@@ -4994,7 +4994,7 @@ export default EditProfile = ({navigation, route}) => {
                         }}>
                         {/* <View style={{width: '80%'}}> */}
                         <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>
-                          {classStateData.food.length <= 0 ? Lang_chg.select[config.language] : classStateData.food}
+                          {classStateData.food.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.food}
                         </Text>
                         {/* </View> */}
 
@@ -5031,7 +5031,7 @@ export default EditProfile = ({navigation, route}) => {
                         fontSize: Font.allergies_txt_size_edit,
                         textAlign: config.textRotate
                       }}>
-                      {Lang_chg.occupation[config.language]}
+                      {LanguageConfiguration.occupation[config.language]}
                     </Text>
                   </View>
 
@@ -5059,7 +5059,7 @@ export default EditProfile = ({navigation, route}) => {
                         }}>
                         {/* <View style={{width: '80%'}}> */}
                         <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>
-                          {classStateData.occupation.length <= 0 ? Lang_chg.select[config.language] : classStateData.occupation}
+                          {classStateData.occupation.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.occupation}
                         </Text>
                         {/* </View> */}
 
@@ -5100,7 +5100,7 @@ export default EditProfile = ({navigation, route}) => {
                           textAlign: config.textalign,
                           alignSelf: 'center',
                         }}>
-                        {Lang_chg.savebtntext[config.language]}
+                        {LanguageConfiguration.savebtntext[config.language]}
                       </Text>
                     </TouchableOpacity>
                   </View>

@@ -6,7 +6,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
 import moment from "moment-timezone";
-import { Colors, Font, mobileH, config, mobileW, Lang_chg, apifuntion, msgText, msgTitle,  msgProvider, localStorage } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, API, MessageHeadings,  MessageFunctions, localStorage } from '../Provider/utilslib/Utils';
 import { Icons } from "../Assets/Icons/IReferences";
 const AppointmentBox = ({
   item, onPressViewDetails, onPressAccept, onPressReject, onPressVideoCall,
@@ -126,7 +126,7 @@ const AppointmentBox = ({
                     fontSize: Font.sregulartext_size,
                     color: Colors.theme_color,
                     textAlign: config.textRotate
-                  }}>{Lang_chg.Patient[config.language]}
+                  }}>{LanguageConfiguration.Patient[config.language]}
 
                 </Text>
                 <Image
@@ -161,7 +161,7 @@ const AppointmentBox = ({
                     fontSize: Font.sregulartext_size,
                     color: Colors.darkgraytextheading,
                     textAlign: config.textRotate
-                  }}>{Lang_chg.Booked[config.language]}
+                  }}>{LanguageConfiguration.Booked[config.language]}
 
                 </Text>
                 <Text
@@ -200,7 +200,7 @@ const AppointmentBox = ({
                   color: Colors.darkgraytextheading,
                   textAlign: config.textRotate
                 }}>
-                {Lang_chg.Appointment_footer[config.language]}
+                {LanguageConfiguration.Appointment_footer[config.language]}
               </Text>
               <Text
                 style={{
@@ -210,7 +210,7 @@ const AppointmentBox = ({
                   fontSize: Font.sregulartext_size,
                   textAlign: config.textRotate
                 }}>
-                {Lang_chg.Date[config.language]}
+                {LanguageConfiguration.Date[config.language]}
               </Text>
               <Text
                 style={{
@@ -277,7 +277,7 @@ const AppointmentBox = ({
                   color: Colors.theme_color,
                   fontSize: Font.sregulartext_size,
                   textAlign: config.textRotate
-                }}>{Lang_chg.Time[config.language]}
+                }}>{LanguageConfiguration.Time[config.language]}
 
               </Text>
               <Text
@@ -460,7 +460,7 @@ const AppointmentBox = ({
                     //  paddingHorizontal: (mobileW * 2) / 100,
                     fontFamily: Font.Medium,
                     fontSize: mobileW * 3 / 100,
-                  }}>{Lang_chg.VIEWDETAILS[config.language]}
+                  }}>{LanguageConfiguration.VIEWDETAILS[config.language]}
 
                 </Text>
               </TouchableOpacity>

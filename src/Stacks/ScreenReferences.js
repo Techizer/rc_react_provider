@@ -8,19 +8,19 @@ export const ScreenReferences = {
 
     Login: "Login",
     Signup: "Signup",
-    ForgotPassword: "Forgotpage",
-    OTP: "Otp_forget",
+    ForgotPassword: "ForgetPassword",
+    OTP: "OTP",
     Home: "Home",
 
     AppointmentDetails: "AppointmentDetails",
     LabPackageDetails: "LabPackageDetails",
 
-    ServiceAddress: "ServiceAddressF1",
+    ServiceAddress: "ServiceAddress",
     SearchPlace: "SearchPlaceScreen",
 
-    NeedSupport: "Needsupport",
+    NeedSupport: "NeedSupport",
     Notifications: "Notifications",
-    TermsAndConditions: "Tremsandcondition",
+    TermsAndConditions: "TermsAndConditions",
     ReviewRating: "ReviewRating",
     More: "More",
 
@@ -29,5 +29,5 @@ export const ScreenReferences = {
 
     VideoCall: "VideoCall",
     Withdrawal: "Withdrawal",
-    AddBank: "AddBank",
+    AddBankInformation: "AddBankInformation",
 }

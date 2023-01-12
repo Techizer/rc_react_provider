@@ -4,8 +4,8 @@ import Modal from "react-native-modal";
 import { TextInput } from "react-native-paper";
 import { Colors, Font } from "../Provider/Colorsfont";
 import {
-    windowWidth, deviceHeight, Lang_chg, config,
-    localStorage,  apifuntion, msgProvider, windowHeight,
+    windowWidth, deviceHeight, LanguageConfiguration, config,
+    localStorage,  API, MessageFunctions, windowHeight,
 } from "../Provider/utilslib/Utils";
 
 import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../Assets/Icons/SvgIcons/Index";
@@ -96,7 +96,7 @@ const AddEditAddress = ({
         let url = config.baseURL + endpoint;
 
         if (title == '') {
-            msgProvider.showError("Please add address title");
+            MessageFunctions.showError("Please add address title");
             return false;
         }
         var data = new FormData();
@@ -130,13 +130,13 @@ const AddEditAddress = ({
 
 
         setIsLoading(true)
-        apifuntion
-            .postApi(url, data, 1)
+        API
+            .post(url, data, 1)
             .then((obj) => {
                 console.log("addaddress-res----", obj);
                 setIsLoading(false)
                 if (obj.status == true) {
-                    msgProvider.showSuccess(obj.message)
+                    MessageFunctions.showSuccess(obj.message)
                     onRequestClose()
                     editedAddress(title)
                     // user_details['current_address'] = obj.result.current_address
@@ -147,7 +147,7 @@ const AddEditAddress = ({
             })
             .catch((error) => {
                 setIsLoading(false)
-                msgProvider.showError(error.message)
+                MessageFunctions.showError(error.message)
                 onRequestClose()
                 console.log("-------- error ------- " + error);
             }).finally(() => {

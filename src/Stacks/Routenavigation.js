@@ -10,31 +10,30 @@ import MyProfile from '../Screens/MyProfile';
 import EditProfile from '../Screens/EditProfile';
 import Home from '../Screens/Home';
 // import Appointment from '../Screens/Appointment';
-import Appointmenttab from '../Appointmenttab';
-import VideoCall from '../VideoCall';
-import AvailabilityScheduletab from '../AvailabilityScheduletab';
+import Appointmenttab from '../Screens/Appointmenttab';
+import VideoCall from '../Screens/VideoCall';
+import AvailabilityScheduletab from '../Screens/AvailabilityScheduletab';
 // import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
-import PriceListtab from '../PriceListtab';
+import PriceListtab from '../Screens/PriceListtab';
 // import PriceList from '../PriceList';
 // import LabPackageListing from '../LabPackageListing';
-import LabPackageDetails from '../LabPackageDetails';
-import Transactiontab from '../Transactiontab';
+import LabPackageDetails from '../Screens/LabPackageDetails';
+import Transactiontab from '../Screens/Transactiontab';
 // import Transaction from '../Transaction';
-import Withdrawal from '../Withdrawal';
-import AddBank from '../AddBank';
-import ReviewRating from '../ReviewRating';
-import More from '../More';
+import Withdrawal from '../Screens/Withdrawal';
+import AddBankInformation from '../Screens/AddBankInformation';
+import ReviewRating from '../Screens/ReviewRating';
+import More from '../Screens/More';
 
-import Tremsandcondition from '../Tremsandcondition';
-import Forgotpage from '../Forgotpage';
-import Drawerscreen from '../Drawerscreen';
-import Notifications from '../Notifications';
+import TermsAndConditions from '../Screens/TermsAndConditions';
+import ForgetPassword from '../Screens/ForgetPassword';
+import Drawerscreen from '../Containers/Drawer';
+import Notifications from '../Screens/Notifications';
 import AppointmentDetails from '../Screens/AppointmentDetails';
-import Needsupport from '../Needsupport';
-import Otp_forget from '../Otp_forget';
-import ServiceAddressF1 from '../Components/ServiceAddressF1';
+import NeedSupport from '../Screens/NeedSupport';
+import OTP from '../Screens/OTP';
+import ServiceAddress from '../Screens/ServiceAddress';
 import { SearchPlaceScreen } from '../Components';
-import { apifuntion } from '../Provider/Apicallingprovider/apiProvider';
 import { ScreenReferences } from './ScreenReferences';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -80,7 +79,7 @@ const Stacknav = navigation => {
       />
       <Stack.Screen
         name={ScreenReferences.NeedSupport}
-        component={Needsupport}
+        component={NeedSupport}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -91,12 +90,12 @@ const Stacknav = navigation => {
       
       <Stack.Screen
         name={ScreenReferences.ForgotPassword}
-        component={Forgotpage}
+        component={ForgetPassword}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name={ScreenReferences.TermsAndConditions}
-        component={Tremsandcondition}
+        component={TermsAndConditions}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
@@ -147,7 +146,7 @@ const Stacknav = navigation => {
       />
       <Stack.Screen
         name={ScreenReferences.ServiceAddress}
-        component={ServiceAddressF1}
+        component={ServiceAddress}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
@@ -174,8 +173,8 @@ const Stacknav = navigation => {
       />
 
       <Stack.Screen
-        name={ScreenReferences.AddBank}
-        component={AddBank}
+        name={ScreenReferences.AddBankInformation}
+        component={AddBankInformation}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 
@@ -193,7 +192,7 @@ const Stacknav = navigation => {
 
       <Stack.Screen
         name={ScreenReferences.OTP}
-        component={Otp_forget}
+        component={OTP}
         options={{ headerShown: false, gestureEnabled: false }}
       />
 

@@ -1,21 +1,17 @@
 import {config} from '../configProvider';
 import {Dimensions, Platform, StatusBar} from 'react-native';
 import {localStorage} from '../localStorageProvider';
-import {Lang_chg} from '../Language_provider';
+import {LanguageConfiguration} from '../LanguageProvider';
 import {
-  msgProvider,
-  msgTitle,
-  msgText,
-  FlushMsg
-} from '../Messageconsolevalidationprovider/messageProvider';
-import {validation} from '../Messageconsolevalidationprovider/Validation_provider';
+  MessageFunctions,
+  MessageHeadings,
+  MessageTexts
+} from '../../Helpers/Message';
 import {Currentltlg} from '../Curentlatlong';
 import Cameragallery from '../../Components/Cameragallery';
-import {mediaprovider} from '../Mediaprovider/Mediaprovider';
-import {apifuntion} from '../Apicallingprovider/apiProvider';
+import {Media} from '../../Helpers/MediaProvider';
+import {API} from '../../Helpers/API';
 import {Colors, Font} from '../Colorsfont';
-import Otpprovider from '../Otpprovider';
-import Footer from '../Footer';
 
 const mobileH = Math.round(Dimensions.get('window').height);
 const mobileW = Math.round(Dimensions.get('window').width);
@@ -28,24 +24,19 @@ const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : Status
 
 export {
   config,
-  Otpprovider,
   
-  apifuntion,
+  API,
   Colors,
-  Footer,
   Font,
-  validation,
   mobileH,
   mobileW,
-  mediaprovider,
+  Media,
   Cameragallery,
   localStorage,
-  Lang_chg,
-  
-  msgProvider,
-  FlushMsg,
-  msgTitle,
-  msgText,
+  LanguageConfiguration,
+  MessageFunctions,
+  MessageHeadings,
+  MessageTexts,
   Currentltlg,
   windowHeight,
   windowWidth,

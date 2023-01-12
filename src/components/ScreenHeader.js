@@ -17,8 +17,8 @@ import {
     mobileW,
     localStorage,
     
-    Lang_chg,
-    apifuntion,
+    LanguageConfiguration,
+    API,
 } from "../Provider/utilslib/Utils";
 
 import { Icons } from '../Assets/Icons/IReferences'

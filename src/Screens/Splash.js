@@ -1,6 +1,6 @@
 import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
-import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Provider/utilslib/Utils';
 global.add_location = 'NA';
 global.amount_total = 0;
 global.username = 'NA'
@@ -100,7 +100,7 @@ export default Splash = ({navigation, route}) => {
     // data.append('divice_lang',"AR")
 
     // 
-    apifuntion.getApi(url, 1).then((obj) => {
+    API.get(url, 1).then((obj) => {
       
       if (obj.status == true) {
         if (parseFloat(obj.result.appVer) > parseFloat(appVersion)) {
@@ -166,7 +166,7 @@ export default Splash = ({navigation, route}) => {
     data.append('user_type', user_type)
 
     console.log('data', data)
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
       console.log('obj', obj)
       if (obj.status == true) {
         var user_details = obj.result;
@@ -194,8 +194,8 @@ export default Splash = ({navigation, route}) => {
 
     console.log("url", url);
     console.log("data", data);
-    apifuntion
-      .postApi(url, data, 1)
+    API
+      .post(url, data, 1)
       .then((obj) => {
         console.log("obj checkLogout: ", obj);
         if (obj.result == true) {
@@ -278,7 +278,7 @@ export default Splash = ({navigation, route}) => {
       </View>
 
       <View style={{ width: '50%', alignSelf: 'center', marginTop: mobileW * 3 / 100 }}>
-        <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{Lang_chg.Splashtext1[state?.loanguage]} </Text>
+        <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{LanguageConfiguration.Splashtext1[state?.loanguage]} </Text>
       </View>
 
       <View style={{ width: '50%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 6 / 100 }}>
@@ -287,7 +287,7 @@ export default Splash = ({navigation, route}) => {
       </View>
 
       <View style={{ width: '63%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
-        <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{Lang_chg.Splashtext2[state?.loanguage]} </Text>
+        <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{LanguageConfiguration.Splashtext2[state?.loanguage]} </Text>
 
       </View>
       <Modal
@@ -402,7 +402,7 @@ export default Splash = ({navigation, route}) => {
                     fontFamily: Font.Regular,
                     fontSize: mobileW * 3.8 / 100,
                     color: Colors.white_color, alignSelf: 'center'
-                  }}>{Lang_chg.Update[config.language]}</Text>
+                  }}>{LanguageConfiguration.Update[config.language]}</Text>
                 </TouchableOpacity>
               </View>
               {
@@ -424,7 +424,7 @@ export default Splash = ({navigation, route}) => {
                     fontSize: mobileW * 3.5 / 100,
                     color: Colors.placeholder_border,
                   }}>
-                    {Lang_chg.Help[config.language]}
+                    {LanguageConfiguration.Help[config.language]}
                   </Text>
                   <Text style={{
                     fontFamily: Font.SemiBold,

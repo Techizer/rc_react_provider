@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 import base64 from 'react-native-base64'
-import { msgProvider, localStorage } from './utilslib/Utils';
+import { MessageFunctions, localStorage } from './utilslib/Utils';
 // import {
 //     GoogleSignin,
 //    } from 'react-native-google-signin';
@@ -73,7 +73,7 @@ class configProvider {
 	}
 
 	checkUserDeactivate = async (navigation) => {
-		msgProvider.toast('Your account has been deactivated by admin', 'long')
+		MessageFunctions.toast('Your account has been deactivated by admin', 'long')
 		setTimeout(() => {
 			this.AppLogout(navigation);
 		}, 200);

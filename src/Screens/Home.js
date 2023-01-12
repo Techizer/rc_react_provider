@@ -4,7 +4,7 @@ import {
   Alert, ScrollView, PermissionsAndroid, StyleSheet, Image, TouchableOpacity,
   ImageBackground, Platform, BackHandler
 } from 'react-native';
-import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage,  handleback, Lang_chg, apifuntion, msgTitle } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Provider/utilslib/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from '../Styles';
 import messaging from '@react-native-firebase/messaging';
@@ -209,8 +209,8 @@ export default Home = ({ navigation, route }) => {
     var data = new FormData();
     data.append("login_user_id", user_id);
     data.append("user_type", user_type);
-    apifuntion
-      .postApi(url, data, 0)
+    API
+      .post(url, data, 0)
       .then((completionData) => {
         state.HomeHealthcareServiceAppointments[0].actionColor = '#FFD553'
         state.HomeHealthcareServiceAppointments[0].actionTextColor = '#886701'
@@ -295,7 +295,7 @@ export default Home = ({ navigation, route }) => {
         message: remoteMessage.data.body,
         userInfo: remoteMessage.data
       })
-      // msgProvider.showSuccess("yes call coming")
+      // MessageFunctions.showSuccess("yes call coming")
     }
     )
 
@@ -333,8 +333,8 @@ export default Home = ({ navigation, route }) => {
     data.append("type", "doctor_to_patient_video_call_reject");
 
     
-    apifuntion
-      .postApi(url, data, 1)
+    API
+      .post(url, data, 1)
       .then((obj) => {
         ;
         if (obj.status == true) {
@@ -358,7 +358,7 @@ export default Home = ({ navigation, route }) => {
     data.append('login_user_id', user_id)
 
     
-    apifuntion.postApi(url, data, 1).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
       
       if (obj.status == true) {
         setState(prev => ({
@@ -453,7 +453,7 @@ export default Home = ({ navigation, route }) => {
                   fontFamily: Font.Medium,
                   alignSelf: 'center'
                 }}>
-                  {Lang_chg.dashboardtext[config.language]}
+                  {LanguageConfiguration.dashboardtext[config.language]}
                 </Text>
               </View>
             </View>
@@ -702,7 +702,7 @@ export default Home = ({ navigation, route }) => {
                           })
                       } else if (item?.title == 'My Appointment') {
                         navigation.navigate(item?.goTo)
-                        // { title: Lang_chg.upcoming_heading[config.language], api_status: 0 })
+                        // { title: LanguageConfiguration.upcoming_heading[config.language], api_status: 0 })
                       } else {
                         navigation.navigate(item?.goTo);
                       }

@@ -1,7 +1,7 @@
 import { TouchableWithoutFeedback, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
 import React, { Component, useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Cameragallery, Colors, Font, mobileH, localStorage, config, mobileW, Lang_chg, apifuntion, msgProvider, msgText, msgTitle, mediaprovider } from '../Provider/utilslib/Utils';
+import { Cameragallery, Colors, Font, mobileH, localStorage, config, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Provider/utilslib/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -102,165 +102,165 @@ export default Signup = ({ navigation, route }) => {
     var realDigits = digits.map(Number)
 
     if (classStateData.selectuserType == -1) {
-      msgProvider.showError(msgText.emptyUsertype[config.language])
+      MessageFunctions.showError(MessageTexts.emptyUsertype[config.language])
       return false;
     }
     if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
-      msgProvider.showError(msgText.emptyName[config.language])
+      MessageFunctions.showError(MessageTexts.emptyName[config.language])
       return false;
     }
 
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (email <= 0) {
-      msgProvider.showError(msgText.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
       return false;
     }
 
     if (regemail.test(email) !== true) {
-      msgProvider.showError(msgText.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[config.language])
       return false
     }
     if (classStateData.country_code.length <= 0 || classStateData.country_code.trim().length <= 0) {
-      msgProvider.showError(msgText.emptyCountrycode[config.language])
+      MessageFunctions.showError(MessageTexts.emptyCountrycode[config.language])
       return false;
     }
 
     if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-      msgProvider.showError(msgText.emptymobileNumber[config.language])
+      MessageFunctions.showError(MessageTexts.emptymobileNumber[config.language])
       return false;
     }
     
     if (classStateData.country_short_code == 'UAE') {
       if (realDigits[0] == 0 || realDigits[0] == 1 || realDigits[0] == 2 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 8 || realDigits[0] == 9) {
-        msgProvider.showError(msgText.validIDnumberUAE[config.language])
+        MessageFunctions.showError(MessageTexts.validIDnumberUAE[config.language])
         return false
       }
     }
     else {
       if (realDigits[0] == 0 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 7 || realDigits[0] == 8 || realDigits[0] == 9) {
-        msgProvider.showError(msgText.validIDnumber[config.language])
+        MessageFunctions.showError(MessageTexts.validIDnumber[config.language])
         return false
       }
     }
 
     if (classStateData.userType[classStateData.selectuserType].value != "lab") {
       if (classStateData.dob_date.length <= 0 || classStateData.dob_date.trim().length <= 0) {
-        msgProvider.showError("Please choose your date of birth")
+        MessageFunctions.showError("Please choose your date of birth")
         return false;
       }
       if (classStateData.gender.length <= 0 || classStateData.gender.trim().length <= 0) {
-        msgProvider.showError("Please choose your gender")
+        MessageFunctions.showError("Please choose your gender")
         return false;
       }
     }
 
     let password = classStateData.password;
     if (password.length <= 0) {
-      msgProvider.showError(msgText.validataionnewpass[config.language])
+      MessageFunctions.showError(MessageTexts.validataionnewpass[config.language])
       return false;
     }
     if (password.length <= 7) {
-      msgProvider.showError(msgText.emptyPasswordValid[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPasswordValid[config.language])
       return false;
     }
     let confirmpass = classStateData.confirm;
     if (confirmpass.length <= 0) {
-      msgProvider.showError(msgText.emptyconfirmPassword[config.language])
+      MessageFunctions.showError(MessageTexts.emptyconfirmPassword[config.language])
       return false;
     }
     if (confirmpass.length <= 7) {
-      msgProvider.showError(msgText.emptyPasswordValid[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPasswordValid[config.language])
       return false;
     }
 
     if (confirmpass != password) {
-      msgProvider.showError(msgText.Password_notmatch[config.language])
+      MessageFunctions.showError(MessageTexts.Password_notmatch[config.language])
       return false;
     }
 
     if (classStateData.userType[classStateData.selectuserType].value != "lab") {
       if ((classStateData.id_number.length < 10 || classStateData.id_number.trim().length < 10)) {
-        msgProvider.showError("Please enter ID Number between 10 to 15 characters or digits")
+        MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
         return false;
       }
 
       if ((classStateData.id_number.length > 15 || classStateData.id_number.trim().length > 15)) {
-        msgProvider.showError("Please enter ID Number between 10 to 15 characters or digits")
+        MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
         return false;
       }
     } else {
       if (classStateData.hosp_moh_lic_no.length <= 0 || classStateData.hosp_moh_lic_no.trim().length <= 0) {
-        msgProvider.showError("Please enter health registration ID")
+        MessageFunctions.showError("Please enter health registration ID")
         return false;
       }
       if ((classStateData.hosp_moh_lic_no.length < 10 || classStateData.hosp_moh_lic_no.trim().length < 10)) {
-        msgProvider.showError("Please enter health registration ID between 10 to 15 characters or digits")
+        MessageFunctions.showError("Please enter health registration ID between 10 to 15 characters or digits")
         return false;
       }
 
       if ((classStateData.hosp_moh_lic_no.length > 15 || classStateData.hosp_moh_lic_no.trim().length > 15)) {
-        msgProvider.showError("Please enter health registration ID between 10 to 15 characters or digits")
+        MessageFunctions.showError("Please enter health registration ID between 10 to 15 characters or digits")
         return false;
       }
     }
 
     if (classStateData.id_image == undefined) {
-      msgProvider.showError("Please upload ID image")
+      MessageFunctions.showError("Please upload ID image")
       return false;
     }
 
     if (classStateData.userType[classStateData.selectuserType].value != "lab") {
       if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
         if (classStateData.speciality.length <= 0 || classStateData.speciality.trim().length <= 0) {
-          msgProvider.showError("Please select speciality")
+          MessageFunctions.showError("Please select speciality")
           return false;
         }
       }
 
 
       if (classStateData.qualification.length <= 0 || classStateData.qualification.trim().length <= 0) {
-        msgProvider.showError("Please enter your qualification")
+        MessageFunctions.showError("Please enter your qualification")
         return false;
       }
     } else {
       if (classStateData.hosp_reg_no.length <= 0 || classStateData.hosp_reg_no.trim().length <= 0) {
-        msgProvider.showError("Please enter company registration certificate number")
+        MessageFunctions.showError("Please enter company registration certificate number")
         return false;
       }
       if ((classStateData.hosp_reg_no.length < 8 || classStateData.hosp_reg_no.trim().length < 8)) {
-        msgProvider.showError("Please enter minimum 8 or 11 digits company registration certificate number")
+        MessageFunctions.showError("Please enter minimum 8 or 11 digits company registration certificate number")
         return false;
       }
 
       if (classStateData.hosp_reg_no.length > 11 || classStateData.hosp_reg_no.trim().length > 11) {
-        msgProvider.showError("Please enter minimum 8 or 11 digits company registration certificate number")
+        MessageFunctions.showError("Please enter minimum 8 or 11 digits company registration certificate number")
         return false;
       }
     }
 
     if (classStateData.certificate == undefined) {
-      msgProvider.showError("Please upload cerificate image")
+      MessageFunctions.showError("Please upload cerificate image")
       return false;
     }
 
     if (classStateData.userType[classStateData.selectuserType].value != "lab") {
       if (classStateData.experience.length <= 0 || classStateData.experience.trim().length <= 0) {
-        msgProvider.showError("Please enter your years of experience")
+        MessageFunctions.showError("Please enter your years of experience")
         return false;
       }
 
       if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
         if ((classStateData.scfhs_number.length < 8 || classStateData.scfhs_number.trim().length < 8)) {
-          msgProvider.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
+          MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
           return false;
         }
 
         if (classStateData.scfhs_number.length > 11 || classStateData.scfhs_number.trim().length > 11) {
-          msgProvider.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
+          MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
           return false;
         }
         if (classStateData.scfhs_image == undefined) {
-          msgProvider.showError("Please upload SCFHS file")
+          MessageFunctions.showError("Please upload SCFHS file")
           return false;
         }
       }
@@ -341,19 +341,19 @@ export default Signup = ({ navigation, route }) => {
 
 
 
-    apifuntion.postApi(url, data).then((obj) => {
+    API.post(url, data).then((obj) => {
 
       console.log('obj mess', obj.message)
       if (obj.status == true) {
 
         setTimeout(() => {
           navigation.goBack()
-          msgProvider.showSuccess(obj.message)
+          MessageFunctions.showSuccess(obj.message)
         }, 500);
 
       } else {
         setTimeout(() => {
-          msgProvider.showError(obj.message)
+          MessageFunctions.showError(obj.message)
         }, 200)
         // }
         return false;
@@ -368,7 +368,7 @@ export default Signup = ({ navigation, route }) => {
   Galleryopen = () => {
     console.log('Galleryopen');
     const { imageType } = classStateData;
-    mediaprovider.launchGellery(true).then((obj) => {
+    Media.launchGellery(true).then((obj) => {
       console.log(obj);
       console.log(obj.path);
       setState({
@@ -391,7 +391,7 @@ export default Signup = ({ navigation, route }) => {
     // Pick a single file
     console.log('uploadVoiceFile');
     const { imageType } = classStateData;
-    mediaprovider.launchDocumentGellery(true).then((res) => {
+    Media.launchDocumentGellery(true).then((res) => {
       console.log('resresresres', res);
       console.log(
         res.uri,
@@ -496,8 +496,8 @@ export default Signup = ({ navigation, route }) => {
     data.append('service_type', classStateData.userType[classStateData.selectuserType].value)
 
 
-    apifuntion.postApi(url, data, 1).then((obj) => {
-      //apifuntion.getApi(url, 1).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
+      //API.get(url, 1).then((obj) => {
 
       if (obj.status == true) {
         setState({
@@ -518,7 +518,7 @@ export default Signup = ({ navigation, route }) => {
     // var data = new FormData();
     // data.append('login_user_id',user_id)
     // 
-    apifuntion.getApi(url, 1).then((obj) => {
+    API.get(url, 1).then((obj) => {
 
       if (obj.status == true) {
         setState({ Countryarr: obj.result, country_name: obj.result[0].name, country_code: obj.result[0].country_code, country_short_code: obj.result[0].country_short_code })
@@ -1521,7 +1521,7 @@ export default Signup = ({ navigation, route }) => {
                     color: Colors.white_color,
                     fontSize: 15,
                     fontFamily: Font.headingfontfamily,
-                  }}>{Lang_chg.Country_code[config.language]}</Text>
+                  }}>{LanguageConfiguration.Country_code[config.language]}</Text>
 
                 </View>
 
@@ -1652,7 +1652,7 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.blackheadingfontfamily,
                   textAlign: config.textRotate
                 }}>
-                {Lang_chg.Signup[config.language]}
+                {LanguageConfiguration.Signup[config.language]}
               </Text>
             </View>
 
@@ -1669,14 +1669,14 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.headingfontfamily,
                   color: Colors.placeholder_text,
                 }}>
-                {Lang_chg.Signuptext1[config.language]}
+                {LanguageConfiguration.Signuptext1[config.language]}
               </Text>
             </View>
 
             {/* ----------------------------------------user type------------------------------------ */}
 
             <DropDownboxSec
-              lableText={(classStateData.selectuserType == -1) ? Lang_chg.UserTypeText[config.language] : classStateData.userType[classStateData.selectuserType].title}
+              lableText={(classStateData.selectuserType == -1) ? LanguageConfiguration.UserTypeText[config.language] : classStateData.userType[classStateData.selectuserType].title}
               boxPressAction={() => { showUsertypeModal(true) }}
             />
 
@@ -1796,7 +1796,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={(classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType].value == "lab") ? "Lab Name" : Lang_chg.textinputname[config.language]}
+                lableText={(classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType].value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[config.language]}
                 inputRef={(ref) => {
                   nameInput = ref;
                 }}
@@ -1831,7 +1831,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={Lang_chg.Mobileno[config.language]}
+                lableText={LanguageConfiguration.Mobileno[config.language]}
                 inputRef={(ref) => {
                   emailInput = ref;
                 }}
@@ -1862,12 +1862,12 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.headingfontfamily,
                   color: Colors.placeholder_text,
                 }}>
-                {Lang_chg.selectcountrytitle[config.language]}
+                {LanguageConfiguration.selectcountrytitle[config.language]}
               </Text>
             </View>
 
             <DropDownboxSec
-              lableText={classStateData.country_name.length <= 0 ? Lang_chg.select[config.language] : classStateData.country_name}
+              lableText={classStateData.country_name.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.country_name}
               boxPressAction={() => { setState({ bloodModal: true }); }}
             />
 
@@ -1891,7 +1891,7 @@ export default Signup = ({ navigation, route }) => {
                     marginBottom: (mobileW * 4) / 100,
                   }}
                   // icon={layer9_icon}
-                  lableText={Lang_chg.CC_code[config.language]}
+                  lableText={LanguageConfiguration.CC_code[config.language]}
                   inputRef={(ref) => {
                     country_codeInput = ref;
                   }}
@@ -1923,7 +1923,7 @@ export default Signup = ({ navigation, route }) => {
                       marginBottom: (mobileW * 4) / 100,
                       // borderColor: 'red', //Colors.placeholder_border
                     }}
-                    label={Lang_chg.CC_code[config.language]}
+                    label={LanguageConfiguration.CC_code[config.language]}
                     mode='outlined'
                     outlineColor={Colors.field_border_color}
                     activeOutlineColor={Colors.placholderactive}
@@ -1931,7 +1931,7 @@ export default Signup = ({ navigation, route }) => {
                     editable={false}
                     // placeholder={
                     //   classStateData.country_codefocus != true
-                    //     ? Lang_chg.CC_code[config.language]
+                    //     ? LanguageConfiguration.CC_code[config.language]
                     //     : null
                     // }
                     placeholderTextColor={Colors.placeholder_text}
@@ -1965,7 +1965,7 @@ export default Signup = ({ navigation, route }) => {
                         paddingHorizontal: (mobileW * 1) / 100,
                       }}>
                       <Text style={{ color: '#0057A5' }}>
-                        {Lang_chg.CC_code[config.language]}
+                        {LanguageConfiguration.CC_code[config.language]}
                       </Text>
                     </View>
                   } */}
@@ -1985,7 +1985,7 @@ export default Signup = ({ navigation, route }) => {
                     width: '100%',
                   }}
                   // icon={layer9_icon}
-                  lableText={Lang_chg.textinputnumber[config.language]}
+                  lableText={LanguageConfiguration.textinputnumber[config.language]}
                   inputRef={(ref) => {
                     mobileInput = ref;
                   }}
@@ -2014,7 +2014,7 @@ export default Signup = ({ navigation, route }) => {
                       fontFamily: Font.headingfontfamily,
                       color: Colors.textgray,
                     }}>
-                    {Lang_chg.mobletexttitle[config.language]}
+                    {LanguageConfiguration.mobletexttitle[config.language]}
                   </Text>
                 </View>
                 {/* {classStateData.numberfocus == true && (
@@ -2027,7 +2027,7 @@ export default Signup = ({ navigation, route }) => {
                         paddingHorizontal: (mobileW * 1) / 100,
                       }}>
                       <Text style={{ color: '#0057A5' }}>
-                        {Lang_chg.textinputnumber[config.language]}
+                        {LanguageConfiguration.textinputnumber[config.language]}
                       </Text>
                     </View>
                   )} */}
@@ -2051,7 +2051,7 @@ export default Signup = ({ navigation, route }) => {
                           width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text,
                           fontFamily: Font.Regular,
                           fontSize: Font.placeholdersize,
-                        }}>{classStateData.dob_date.length <= 0 ? Lang_chg.dob[config.language] : classStateData.dob_date}</Text>
+                        }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[config.language] : classStateData.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
                           <Image source={Icons.DatePicker}
@@ -2064,7 +2064,7 @@ export default Signup = ({ navigation, route }) => {
                     </TouchableOpacity>
 
                     {classStateData.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{Lang_chg.dob[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.dob[config.language]}</Text>
                     </View>}
 
                   </View>
@@ -2101,7 +2101,7 @@ export default Signup = ({ navigation, route }) => {
                           fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
                           textAlign: config.textRotate,
                         }}>
-                        {Lang_chg.Gender[config.language]}
+                        {LanguageConfiguration.Gender[config.language]}
                       </Text>
                     </View>
 
@@ -2138,7 +2138,7 @@ export default Signup = ({ navigation, route }) => {
                                   fontFamily: Font.Regular,
                                   fontSize: Font.placeholdersize,
                                 }}>
-                                {Lang_chg.male[config.language]}
+                                {LanguageConfiguration.male[config.language]}
                               </Text>
                             </View>
                           </TouchableOpacity>
@@ -2181,7 +2181,7 @@ export default Signup = ({ navigation, route }) => {
                                 fontSize: Font.placeholdersize,
                                 // alignSelf: 'center',
                               }}>
-                              {Lang_chg.female[config.language]}
+                              {LanguageConfiguration.female[config.language]}
                             </Text>
 
                           </TouchableOpacity>
@@ -2220,13 +2220,13 @@ export default Signup = ({ navigation, route }) => {
                       backgroundColor: 'white'
                     }}
                     mode='outlined'
-                    label={Lang_chg.dob[config.language]}
+                    label={LanguageConfiguration.dob[config.language]}
                     outlineColor={Colors.field_border_color}
                     activeOutlineColor={Colors.placholderactive}
                     maxLength={15}
                     // placeholder={
                     //   classStateData.idfocus != true
-                    //     ? Lang_chg.textinputnationalid[config.language]
+                    //     ? LanguageConfiguration.textinputnationalid[config.language]
                     //     : null
                     // }
                     placeholderTextColor={Colors.placeholder_text}
@@ -2267,7 +2267,7 @@ export default Signup = ({ navigation, route }) => {
                       paddingHorizontal: (mobileW * 1) / 100,
                     }}>
                     <Text style={{ color: '#0057A5' }}>
-                      {Lang_chg.textinputnationalid[config.language]}
+                      {LanguageConfiguration.textinputnationalid[config.language]}
                     </Text>
                   </View>
                 )}
@@ -2289,7 +2289,7 @@ export default Signup = ({ navigation, route }) => {
                       fontFamily: Font.headingfontfamily,
                       color: Colors.textgray,
                     }}>
-                    {Lang_chg.ProvideUAE[config.language]}
+                    {LanguageConfiguration.ProvideUAE[config.language]}
                   </Text> : <Text
                     style={{
                       textAlign: config.textRotate,
@@ -2297,7 +2297,7 @@ export default Signup = ({ navigation, route }) => {
                       fontFamily: Font.headingfontfamily,
                       color: Colors.textgray,
                     }}>
-                    {Lang_chg.Signuptext2[config.language]}
+                    {LanguageConfiguration.Signuptext2[config.language]}
                   </Text>}
               </View> */}
             {/* ------------------------------------------------------password */}
@@ -2317,7 +2317,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={Lang_chg.password[config.language]}
+                lableText={LanguageConfiguration.password[config.language]}
                 inputRef={(ref) => {
                   passwordInput = ref;
                 }}
@@ -2359,7 +2359,7 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.headingfontfamily,
                   color: Colors.textgray,
                 }}>
-                {Lang_chg.Signuptext3[config.language]}
+                {LanguageConfiguration.Signuptext3[config.language]}
               </Text>
             </View>
             {/* ----------------------------------------------------------------------confirmpasword */}
@@ -2379,7 +2379,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={Lang_chg.confirmpassword1[config.language]}
+                lableText={LanguageConfiguration.confirmpassword1[config.language]}
                 inputRef={(ref) => {
                   confirmInput = ref;
                 }}
@@ -2419,7 +2419,7 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.headingfontfamily,
                   color: Colors.textgray,
                 }}>
-                {Lang_chg.Signuptext4[config.language]}
+                {LanguageConfiguration.Signuptext4[config.language]}
               </Text>
             </View>
             {/*   ---------------------------------------------------------------------------- */}
@@ -2455,7 +2455,7 @@ export default Signup = ({ navigation, route }) => {
             }
 
             <Button
-              text={Lang_chg.btntext[config.language]}
+              text={LanguageConfiguration.btntext[config.language]}
               // onLoading={classStateData.loading}
               customStyles={
                 {
@@ -2486,7 +2486,7 @@ export default Signup = ({ navigation, route }) => {
                     color: Colors.placeholder_text,
                     textAlign: 'center', alignSelf: 'center'
                   }}>
-                  {Lang_chg.termsandconditiontext1[config.language]}
+                  {LanguageConfiguration.termsandconditiontext1[config.language]}
                 </Text>
                 <Text
                   onPress={() => {
@@ -2504,7 +2504,7 @@ export default Signup = ({ navigation, route }) => {
                     color: Colors.terms_text_color_blue, flexDirection: 'row', width: '100%', textAlign: 'center'
 
                   }}>
-                  {Lang_chg.termsandconditiontext2[config.language]}
+                  {LanguageConfiguration.termsandconditiontext2[config.language]}
                   <Text
                     style={{
                       textAlign: config.textalign,
@@ -2513,7 +2513,7 @@ export default Signup = ({ navigation, route }) => {
                       color: Colors.placeholder_text,
                       textAlign: 'center', alignSelf: 'center'
                     }}>
-                    {Lang_chg.termsandconditiontext3[config.language]}
+                    {LanguageConfiguration.termsandconditiontext3[config.language]}
                   </Text>
                   <Text
                     onPress={() => {
@@ -2529,7 +2529,7 @@ export default Signup = ({ navigation, route }) => {
                       color: Colors.terms_text_color_blue,
 
                     }}>
-                    {Lang_chg.termsandconditiontext4[config.language]}
+                    {LanguageConfiguration.termsandconditiontext4[config.language]}
                   </Text>
                 </Text>
 
@@ -2563,7 +2563,7 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.Medium,
                   color: Colors.placeholder_text,
                 }}>
-                {Lang_chg.allreadyhaveaccounttext[config.language]}
+                {LanguageConfiguration.allreadyhaveaccounttext[config.language]}
               </Text>
 
               <TouchableOpacity
@@ -2580,7 +2580,7 @@ export default Signup = ({ navigation, route }) => {
                     alignSelf: 'flex-end',
 
                   }}>
-                  {Lang_chg.loginheretext[config.language]}
+                  {LanguageConfiguration.loginheretext[config.language]}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -2599,8 +2599,8 @@ export default Signup = ({ navigation, route }) => {
                 <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
 
                   <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={require('../Assets/Icons/logo.png')}></Image>
-                    <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{Lang_chg.registration[config.language]}</Text>
+                    <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={Icons.Logo}></Image>
+                    <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.registration[config.language]}</Text>
                   </View>
 
                   <View style={{ alignSelf: 'flex-start', paddingLeft: mobileW * 4 / 100, width: '90%', marginTop: mobileW * 1.5 / 100 }}>
@@ -2622,7 +2622,7 @@ export default Signup = ({ navigation, route }) => {
                       }
                     }}
                       style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                      <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.theme_color, alignSelf: 'center', textAlign: config.textalign }}>{Lang_chg.OK[config.language]}</Text>
+                      <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.theme_color, alignSelf: 'center', textAlign: config.textalign }}>{LanguageConfiguration.OK[config.language]}</Text>
                     </TouchableOpacity>
 
 

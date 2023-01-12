@@ -8,7 +8,7 @@ import {
     Image,
     Text,
 } from "react-native"
-import { Colors, Font, config, Lang_chg } from '../Provider/utilslib/Utils';
+import { Colors, Font, config, LanguageConfiguration } from '../Provider/utilslib/Utils';
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -27,27 +27,27 @@ export default class Cameragallery extends Component {
                     <View style={{ width: screenWidth, }}>
                         <View style={{ width: '94%', backgroundColor: Colors.mediabackground, borderRadius: 5, paddingVertical: screenWidth * 4 / 100, alignSelf: 'center', marginTop: '3%' }}>
                             <View style={{ width: '85%', alignSelf: 'center' }}>
-                                <Text style={{ fontFamily: Font.Medium, textAlign: config.textRotate, fontSize: screenWidth * 5 / 100, color: '#000' }}>{Lang_chg.select_option[config.language]}</Text>
+                                <Text style={{ fontFamily: Font.Medium, textAlign: config.textRotate, fontSize: screenWidth * 5 / 100, color: '#000' }}>{LanguageConfiguration.select_option[config.language]}</Text>
                                 {
                                     (this.props.isCamera) &&
                                     <TouchableOpacity style={{ marginTop: '7%' }} activeOpacity={0.9} onPress={() => { this.props.Camerapopen() }}>
-                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{Lang_chg.MediaCamera[config.language]}</Text>
+                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.MediaCamera[config.language]}</Text>
                                     </TouchableOpacity>
                                 }
                                 {
                                     (this.props.isGallery) &&
                                     <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { this.props.Galleryopen() }}>
-                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{Lang_chg.Mediagallery[config.language]}</Text>
+                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.Mediagallery[config.language]}</Text>
                                     </TouchableOpacity>
                                 }
                                 {
                                     (this.props.isDocument) &&
                                     <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { this.props.DocumentGalleryopen() }}>
-                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{Lang_chg.Documentgallery[config.language]}</Text>
+                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.Documentgallery[config.language]}</Text>
                                     </TouchableOpacity>
                                 }
                                 <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { this.props.Canclemedia() }}>
-                                    <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{Lang_chg.cancelmedia[config.language]}</Text>
+                                    <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.cancelmedia[config.language]}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

@@ -22,17 +22,9 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import {
     Colors,
     Font,
-    mobileH,
-    msgProvider,
-    msgText,
     config,
-    mobileW,
     localStorage,
-    
-    handleback,
-    Lang_chg,
-    apifuntion,
-    msgTitle,
+    LanguageConfiguration,
 } from '../Provider/utilslib/Utils';
 import { s, vs } from 'react-native-size-matters';
 import ScreenHeader from './ScreenHeader';
@@ -514,8 +506,8 @@ class SearchPlaceScreen extends Component {
                             }
 
                             <View style={{ width: '88%' }}>
-                                <Text style={{ textAlign: lRot, fontSize: 16, fontFamily: Font.bold_font_family, color: '#17181A' }}>{Lang_chg.Currentlocation[lLan]}</Text>
-                                <Text style={{ textAlign: lRot, fontSize: 14, fontFamily: Font.Regular, color: '#6D737E', marginTop: vs(4) }}>{Lang_chg.Using_gpsofyoudevice[lLan]}</Text>
+                                <Text style={{ textAlign: lRot, fontSize: 16, fontFamily: Font.bold_font_family, color: '#17181A' }}>{LanguageConfiguration.Currentlocation[lLan]}</Text>
+                                <Text style={{ textAlign: lRot, fontSize: 14, fontFamily: Font.Regular, color: '#6D737E', marginTop: vs(4) }}>{LanguageConfiguration.Using_gpsofyoudevice[lLan]}</Text>
                             </View>
 
                             {
@@ -547,7 +539,7 @@ class SearchPlaceScreen extends Component {
                             }
                             <View style={{ width: '88%' }}>
                                 <Text style={{ textAlign: lRot, fontSize: s(11), fontFamily: Font.Regular, color: '#6D737E', lineHeight: 16 }}>
-                                    {Lang_chg.SearchScreenNote[lLan]}
+                                    {LanguageConfiguration.SearchScreenNote[lLan]}
                                 </Text>
                             </View>
                             {

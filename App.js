@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 import { I18nManager, StatusBar, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { AppProvider, AppConsumer } from './src/Provider/context/AppProvider';
+import { ApplicationContainerWrapper, AppConsumer } from './src/Containers/ApplicationContainerWrapper';
 import Stacknav from './src/Stacks/Routenavigation';
-import { firebapushnotification } from './src/firbase_pushnotification';
-import { Colors, Font, mobileH, msgProvider, msgText, config, mobileW, localStorage, handleback, Lang_chg, apifuntion, msgTitle } from './src/Provider/utilslib/Utils';
+import { FBPushNotifications } from './src/Helpers/FirebasePushNotifications';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from './src/Provider/utilslib/Utils';
 import FlashMessage from "react-native-flash-message";
 import RNRestart from 'react-native-restart';
 import moment from 'moment-timezone';
@@ -25,8 +25,8 @@ class App extends Component {
   componentDidMount() {
 
 
-    firebapushnotification.requestUserPermission();
-    // firebapushnotification.NotificationsListener();
+    FBPushNotifications.requestUserPermission();
+    // FBPushNotifications.NotificationsListener();
 
 
 
@@ -76,7 +76,7 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <AppProvider {...this.props}>
+        <ApplicationContainerWrapper {...this.props}>
           <AppConsumer>
             {funcs => {
               global.props = { ...funcs };
@@ -95,7 +95,7 @@ class App extends Component {
           //   fontSize: 20
           // }}
           />
-        </AppProvider>
+        </ApplicationContainerWrapper>
       </NavigationContainer>
     );
   }
