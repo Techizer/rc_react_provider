@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, Image, FlatList, StyleSheet, ScrollView, TouchableOpacity, Dimensions, StatusBar, SafeAreaView, Platform } from 'react-native'
 import { color } from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
-import { Colors,  Font, mobileH, mobileW, config, LanguageConfiguration } from '../Provider/utilslib/Utils'
+import { Colors,  Font, mobileH, mobileW, config, LanguageConfiguration } from '../Helpers/Utils'
 import ScreenHeader from '../Components/ScreenHeader';
 
 const deviceHeight = Dimensions.get('window').height;

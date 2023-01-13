@@ -1,7 +1,7 @@
 import { Alert, ToastAndroid, Platform } from "react-native";
 import Toast from 'react-native-simple-toast';
 import { showMessage, hideMessage } from "react-native-flash-message";
-import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration } from '../Helpers/Utils';
 
 class MessageFunctionsProvider {
 

@@ -6,7 +6,7 @@ import {
   Colors, Font, mobileH, config, mobileW,
   LanguageConfiguration, API, MessageTexts, MessageHeadings,  MessageFunctions,
   localStorage
-} from '../Provider/utilslib/Utils';
+} from '../Helpers/Utils';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'

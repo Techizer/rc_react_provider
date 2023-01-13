@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar, Dimensions, Platform } from 'react-native';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,   handleback, LanguageConfiguration, API, MessageHeadings, } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,   handleback, LanguageConfiguration, API, MessageHeadings, } from '../Helpers/Utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';

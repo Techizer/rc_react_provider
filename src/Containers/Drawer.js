@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, StatusBar, Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { DrawerSubMenu } from '../Components'
 import Styles from '../Styles';
 import { DrawerActions } from '@react-navigation/native';

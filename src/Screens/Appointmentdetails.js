@@ -5,7 +5,7 @@ import {
   StyleSheet, SafeAreaView, Image, TouchableOpacity,
   Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar
 } from 'react-native';
-import { Cameragallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings, } from '../Provider/utilslib/Utils';
+import { Cameragallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings, } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons';

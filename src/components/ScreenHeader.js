@@ -19,7 +19,7 @@ import {
     
     LanguageConfiguration,
     API,
-} from "../Provider/utilslib/Utils";
+} from "../Helpers/Utils";
 
 import { Icons } from '../Assets/Icons/IReferences'
 

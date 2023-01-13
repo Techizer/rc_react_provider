@@ -16,7 +16,7 @@ import {
   LanguageConfiguration,
   API,
   MessageHeadings,
-} from '../Provider/utilslib/Utils';
+} from '../Helpers/Utils';
 
 import Styles from '../Styles';
 

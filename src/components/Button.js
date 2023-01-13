@@ -5,7 +5,7 @@ import { StyleSheet, Text, Image, TouchableOpacity, ActivityIndicator, Dimension
 // import { color } from "react-native-reanimated";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
-import { Colors, Font, config } from '../Provider/utilslib/Utils';
+import { Colors, Font, config } from '../Helpers/Utils';
 
 const windowWidth = Dimensions.get('window').width
 

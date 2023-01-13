@@ -5,7 +5,7 @@ import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 // import { color } from "react-native-reanimated";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
-import { Colors, Font, config, mobileW } from '../Provider/utilslib/Utils';
+import { Colors, Font, config, mobileW } from '../Helpers/Utils';
 import { Icons } from "../Assets/Icons/IReferences";
 const DrawerSubMenu = ({
   menuTitle,

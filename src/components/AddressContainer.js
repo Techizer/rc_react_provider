@@ -5,7 +5,7 @@ import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
-import { windowWidth, deviceHeight, LanguageConfiguration, config, localStorage } from "../Provider/utilslib/Utils";
+import { windowWidth, deviceHeight, config, localStorage } from "../Helpers/Utils";
 import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../../src/Assets/Icons/SvgIcons/Index";
 
 

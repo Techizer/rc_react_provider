@@ -25,7 +25,7 @@ import {
     config,
     localStorage,
     LanguageConfiguration,
-} from '../Provider/utilslib/Utils';
+} from '../Helpers/Utils';
 import { s, vs } from 'react-native-size-matters';
 import ScreenHeader from './ScreenHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

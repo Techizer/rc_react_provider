@@ -12,7 +12,7 @@ import {
   localStorage,
   mobileW,
   MessageFunctions,
-} from "../Provider/utilslib/Utils";
+} from "../Helpers/Utils";
 import Styles from "../Styles";
 import {ScreenReferences} from '../Stacks/ScreenReferences'
 

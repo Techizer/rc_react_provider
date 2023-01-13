@@ -8,7 +8,7 @@ import {
     Image,
     Text,
 } from "react-native"
-import { Colors, Font, config, LanguageConfiguration } from '../Provider/utilslib/Utils';
+import { Colors, Font, config, LanguageConfiguration } from '../Helpers/Utils';
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 

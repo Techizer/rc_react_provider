@@ -6,7 +6,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
 import moment from "moment-timezone";
-import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, API, MessageHeadings,  MessageFunctions, localStorage } from '../Provider/utilslib/Utils';
+import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, API, MessageHeadings,  MessageFunctions, localStorage } from '../Helpers/Utils';
 import { Icons } from "../Assets/Icons/IReferences";
 const AppointmentBox = ({
   item, onPressViewDetails, onPressAccept, onPressReject, onPressVideoCall,

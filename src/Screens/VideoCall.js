@@ -24,7 +24,7 @@ import {
   Colors, Font, mobileH, MessageFunctions,
   MessageTexts, config, mobileW, localStorage,  
   handleback, LanguageConfiguration, API, MessageHeadings,
-} from '../Provider/utilslib/Utils';
+} from '../Helpers/Utils';
 
 import {
   TwilioVideoLocalView,
@@ -36,12 +36,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { min } from 'moment-timezone';
-// import { config } from './configProvider';
-// import Icon1 from 'react-native-vector-icons/Entypo'
-// import Loader from './Loader';
-// import {firebaseprovider}  from './providers/FirebaseProvider';
-// import { localStorage }  from './localStorageProvider';
-//import { MessageFunctions, MessageHeadings, MessageTexts } from './Message';
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 

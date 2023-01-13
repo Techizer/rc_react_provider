@@ -1,6 +1,6 @@
 import { Text, View, ScrollView, Platform, SafeAreaView, StatusBar, Image, TouchableOpacity, Keyboard } from 'react-native'
 import React, { Component } from 'react'
-import { Colors,  Font, mobileH, config, mobileW,  LanguageConfiguration, localStorage, MessageFunctions, MessageTexts, API, MessageHeadings } from '../Provider/utilslib/Utils';
+import { Colors,  Font, mobileH, config, mobileW,  LanguageConfiguration, localStorage, MessageFunctions, MessageTexts, API, MessageHeadings } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   TextInput,

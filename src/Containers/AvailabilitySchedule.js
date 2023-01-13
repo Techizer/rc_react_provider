@@ -12,7 +12,7 @@ import {
   
   LanguageConfiguration,
   API,
-} from '../Provider/utilslib/Utils';
+} from '../Helpers/Utils';
 import Moment from "moment-timezone";
 import Styles from '../Screens/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';

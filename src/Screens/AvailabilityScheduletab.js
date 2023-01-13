@@ -15,7 +15,7 @@ import {
   LanguageConfiguration,
   API,
   MessageHeadings,
-} from '../Provider/utilslib/Utils';
+} from '../Helpers/Utils';
 
 import Styles from '../Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';

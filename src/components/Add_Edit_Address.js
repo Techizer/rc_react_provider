@@ -4,9 +4,9 @@ import Modal from "react-native-modal";
 import { TextInput } from "react-native-paper";
 import { Colors, Font } from "../Provider/Colorsfont";
 import {
-    windowWidth, deviceHeight, LanguageConfiguration, config,
+    windowWidth, deviceHeight, config,
     localStorage,  API, MessageFunctions, windowHeight,
-} from "../Provider/utilslib/Utils";
+} from "../Helpers/Utils";
 
 import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../Assets/Icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";

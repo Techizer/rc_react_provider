@@ -5,7 +5,7 @@ import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
-import { windowWidth, deviceHeight, LanguageConfiguration, config, localStorage, API } from "../Provider/utilslib/Utils";
+import { windowWidth, deviceHeight, LanguageConfiguration, config, localStorage, API } from "../Helpers/Utils";
 import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../Assets/Icons/SvgIcons/Index";
 import ScreenHeader from "../Components/ScreenHeader";
 import { useIsFocused } from "@react-navigation/native";

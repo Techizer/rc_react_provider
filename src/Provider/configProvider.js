@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 import base64 from 'react-native-base64'
-import { MessageFunctions, localStorage } from './utilslib/Utils';
+import { MessageFunctions, localStorage } from '../Helpers/Utils';
 // import {
 //     GoogleSignin,
 //    } from 'react-native-google-signin';

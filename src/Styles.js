@@ -10,10 +10,9 @@ import {
   localStorage,
   
   handleback,
-  LanguageConfiguration,
   API,
   MessageHeadings,
-} from './Provider/utilslib/Utils';
+} from './Helpers/Utils';
 
 export default Styles = StyleSheet.create({
   container1: {
