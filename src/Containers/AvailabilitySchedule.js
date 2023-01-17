@@ -360,6 +360,8 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     } else {
       task_type = "hour_base"
     }
+
+    // Slot Type Cancel
     data.append('slot_type', task_type)
     data.append('service_type', user_type)
     data.append('slots', JSON.stringify(state.slotArr))
@@ -375,6 +377,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
       slot_type: task_type,
       service_type: user_type,
       slots: state.slotArr,
+      // Remove these
       service_address: state.service_address,
       service_lat: state.service_lat,
       service_long: state.service_long,

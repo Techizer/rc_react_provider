@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
+import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
 import React, { Component, useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Cameragallery, Colors, Font, mobileH, localStorage, config, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Helpers/Utils';
@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { vs, s } from 'react-native-size-matters';
 
 export default Signup = ({ navigation, route }) => {
   
@@ -93,7 +94,7 @@ export default Signup = ({ navigation, route }) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
-  signup_click = async () => {
+  const signup_click = async () => {
     Keyboard.dismiss()
 
     var email = classStateData.email.trim()
@@ -270,19 +271,7 @@ export default Signup = ({ navigation, route }) => {
     console.log("url", url)
     var phone_number_send = classStateData.country_code + classStateData.mobile
     var data = new FormData();
-    // {"user_type":"doctor", "name": "hello","email":"hello@test.com",
-    // "mobile_number":"000000000000","dob":"1990-12-17","gender":"Male",
-    // "password":"123456","confirm_password":"123456","id_number":"010000",
-    // "id_image":"","speciality":"Test","qualification":"MBBS",
-    // "certificate":"","experience":"10 Year","scfhs_number":"020000",
-    // "scfhs_image":""}
-
-    // {"user_type":"nurse", "name": "hello","email":"hello@test.com",
-    // "mobile_number":"000000000000","dob":"1990-12-17","gender":"Male",
-    // "password":"123456","confirm_password":"123456","id_number":"010000",
-    // "id_image":"","speciality":"Test","qualification":"MBBS","certificate":"",
-    // "experience":"10 Year","scfhs_number":"020000","scfhs_image":""}
-
+    
     data.append('service_type', classStateData.userType[classStateData.selectuserType].value)
     data.append('name', classStateData.name)
     data.append('email', classStateData.email)
@@ -365,7 +354,7 @@ export default Signup = ({ navigation, route }) => {
 
   }
 
-  Galleryopen = () => {
+  const Galleryopen = () => {
     console.log('Galleryopen');
     const { imageType } = classStateData;
     Media.launchGellery(true).then((obj) => {
@@ -387,7 +376,7 @@ export default Signup = ({ navigation, route }) => {
     })
   }
 
-  DocumentGalleryopen = async () => {
+  const DocumentGalleryopen = async () => {
     // Pick a single file
     console.log('uploadVoiceFile');
     const { imageType } = classStateData;
@@ -488,7 +477,7 @@ export default Signup = ({ navigation, route }) => {
     // }
   }
 
-  get_speciality = async () => {
+  const get_speciality = async () => {
 
     let url = config.baseURL + "api-provider-get-speciality";
     console.log("url", url)
@@ -512,7 +501,7 @@ export default Signup = ({ navigation, route }) => {
 
   }
 
-  get_all_count = async () => {
+  const get_all_count = async () => {
     let url = config.baseURL + "api-medical-service-area";
     console.log("url", url)
     // var data = new FormData();
@@ -531,13 +520,13 @@ export default Signup = ({ navigation, route }) => {
     })
   }
 
-  showUsertypeModal = (status) => {
+  const showUsertypeModal = (status) => {
     setState({
       showUsertype: status
     })
   }
 
-  setdatetwo = (res) => {
+  const setdatetwo = (res) => {
     let check_month
     let check_date
     let date = res.getDate()
@@ -562,7 +551,7 @@ export default Signup = ({ navigation, route }) => {
   }
 
 
-  renderIDNumber = () => {
+  const renderIDNumber = () => {
     return (
       <>
         <View
@@ -685,7 +674,7 @@ export default Signup = ({ navigation, route }) => {
     )
   }
 
-  renderSpeExpCer = () => {
+  const renderSpeExpCer = () => {
     return (
       <>
         <View
@@ -821,9 +810,6 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -842,14 +828,6 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
               experienceInput.focus()
             }}
@@ -883,8 +861,6 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Certificate
@@ -915,7 +891,7 @@ export default Signup = ({ navigation, route }) => {
     )
   }
 
-  renderExpRegid = () => {
+  const renderExpRegid = () => {
     return (
       <>
         <View
@@ -924,9 +900,6 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -945,14 +918,6 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
               scfhs_numberInput.focus()
             }}
@@ -965,15 +930,11 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'SCFHS Registration ID'}
             inputRef={(ref) => {
               scfhs_numberInput = ref;
@@ -987,16 +948,7 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="done"
             returnKeyType="done"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // signup_click()
             }}
           />
 
@@ -1028,17 +980,12 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Photocopy of Reg. ID
               </Text>
             </View>
           </TouchableOpacity>
-
-
-
 
           <View style={{ width: '45%', alignSelf: 'center', }}>
             <Text
@@ -1060,7 +1007,7 @@ export default Signup = ({ navigation, route }) => {
     )
   }
 
-  renderExpCer = () => {
+  const renderExpCer = () => {
     return (
       <>
         <View
@@ -1086,15 +1033,11 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Highest Qualification'}
             inputRef={(ref) => {
               qualificationInput = ref;
@@ -1107,14 +1050,6 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
               experienceInput.focus()
             }}
@@ -1148,8 +1083,6 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Certificate
@@ -1180,7 +1113,7 @@ export default Signup = ({ navigation, route }) => {
     )
   }
 
-  renderExp = () => {
+  const renderExp = () => {
     return (
       <>
         <View
@@ -1229,7 +1162,7 @@ export default Signup = ({ navigation, route }) => {
     )
   }
 
-  renderHealthIDNumber = () => {
+  const renderHealthIDNumber = () => {
     return (
       <>
         <View
@@ -1254,9 +1187,6 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -1276,16 +1206,7 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // qualificationInput.focus()
             }}
           />
 
@@ -1349,7 +1270,7 @@ export default Signup = ({ navigation, route }) => {
     )
   }
 
-  renderCRC = () => {
+  const renderCRC = () => {
     return (
       <>
         <View
@@ -1600,51 +1521,47 @@ export default Signup = ({ navigation, route }) => {
 
           <View style={{ paddingBottom: (mobileW * 14) / 100 }}>
 
-            <View
-              style={{
-                width: '50%',
-                alignSelf: 'center',
-                marginTop: (mobileW * 1) / 100,
-              }}>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: vs(16),
+            }}>
+            <View style={{ justifyContent: 'center' }}>
               <Image
                 style={{
                   width: (mobileW * 40) / 100,
                   height: (mobileW * 40) / 100,
                   alignSelf: 'center',
                   resizeMode: 'contain',
-                  alignItems: 'center',
                 }}
-                source={Icons.LogoWithText}></Image>
+                resizeMode='contain'
+                source={Icons.LogoWithText} />
             </View>
 
-            <View
-              style={{
-                width: '15%',
-                marginTop: (mobileW * -21) / 100,
-                alignSelf: 'flex-start',
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.goBack();
-                }}
-                style={{ width: '100%' }}>
-                <Image
-                  style={{
-                    width: (mobileW * 10) / 100,
-                    height: (mobileW * 10) / 100,
-                    resizeMode: 'contain',
-                    alignSelf: 'center',
-                  }}
-                  source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}></Image>
-              </TouchableOpacity>
-            </View>
+            <TouchableHighlight
+              underlayColor={Colors.Highlight}
+              onPress={() => {
+                navigation.pop();
+              }}
+              style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
+            >
+              <Image
+                style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
+                source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
+              </Image>
+
+            </TouchableHighlight>
+          </View>
 
 
             <View
               style={{
                 width: '90%',
                 alignSelf: 'center',
-                marginTop: (mobileW * 14) / 100,
+                marginTop: (mobileW * 2) / 100,
               }}>
               <Text
                 style={{
@@ -1672,8 +1589,6 @@ export default Signup = ({ navigation, route }) => {
                 {LanguageConfiguration.Signuptext1[config.language]}
               </Text>
             </View>
-
-            {/* ----------------------------------------user type------------------------------------ */}
 
             <DropDownboxSec
               lableText={(classStateData.selectuserType == -1) ? LanguageConfiguration.UserTypeText[config.language] : classStateData.userType[classStateData.selectuserType].title}
@@ -1771,25 +1686,11 @@ export default Signup = ({ navigation, route }) => {
               </TouchableOpacity>
             </Modal>
 
-            {/* ---------------------------------------------------------------------fullname */}
-            {/* {classStateData.namefocus == true && (
-                <View
-                  style={{borderBottomColor:'red'
-                   
-                  }}>
-                 
-                </View>
-              )} */}
-
-
             <View
               style={{
                 width: '90%',
                 alignSelf: 'center',
                 marginTop: (mobileW * 2) / 100,
-                // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-                // borderWidth: 1,
-                // borderRadius: (mobileW * 1) / 100,
               }}>
               <AuthInputBoxSec
                 mainContainer={{
@@ -1814,17 +1715,11 @@ export default Signup = ({ navigation, route }) => {
 
 
             </View>
-
-            {/* -----------------------------------------------------------------------------------email */}
-
             <View
               style={{
                 width: '90%',
                 alignSelf: 'center',
                 marginTop: (mobileW * 2) / 100,
-                // borderColor: classStateData.emailfocus == true ? '#0057A5' : Colors.placeholder_border,
-                // borderWidth: 1,
-                // borderRadius: (mobileW * 1) / 100,
               }}>
               <AuthInputBoxSec
                 mainContainer={{
@@ -1871,16 +1766,12 @@ export default Signup = ({ navigation, route }) => {
               boxPressAction={() => { setState({ bloodModal: true }); }}
             />
 
-            {/* -----------------------------------------------------------------------------no- */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '90%', alignSelf: 'center' }}>
               <View
                 style={{
                   width: '20%',
                   alignSelf: 'center',
                   marginTop: (mobileW * 2.3) / 100,
-                  // borderColor: classStateData.country_code.length > 0 ? '#0057A5' : Colors.placeholder_border,
-                  // borderWidth: 1,
-                  // borderRadius: (mobileW * 1) / 100,
                 }}>
                 <AuthInputBoxSec
                   mainContainer={{
@@ -1908,67 +1799,6 @@ export default Signup = ({ navigation, route }) => {
                     //passwordInput.focus();
                   }}
                 />
-                {/* <TextInput
-
-                    style={{
-                      width: '100%',
-                      height: 48,
-                      color: Colors.textblack,
-                      fontSize: Font.placeholdersize,
-                      textAlign: config.textalign,
-                      //height: (mobileW * 12) / 100,
-                      fontFamily: Font.placeholderfontfamily,
-                      borderRadius: (mobileW * 1) / 100,
-                      backgroundColor: 'white',
-                      marginBottom: (mobileW * 4) / 100,
-                      // borderColor: 'red', //Colors.placeholder_border
-                    }}
-                    label={LanguageConfiguration.CC_code[config.language]}
-                    mode='outlined'
-                    outlineColor={Colors.field_border_color}
-                    activeOutlineColor={Colors.placholderactive}
-                    maxLength={3}
-                    editable={false}
-                    // placeholder={
-                    //   classStateData.country_codefocus != true
-                    //     ? LanguageConfiguration.CC_code[config.language]
-                    //     : null
-                    // }
-                    placeholderTextColor={Colors.placeholder_text}
-                    onChangeText={txt => {
-                      setState({ country_code: txt });
-                    }}
-
-                    // onFocus={() => {
-                    //   setState({ country_codefocus: true });
-                    // }}
-                    // onBlur={() => {
-                    //   setState({
-                    //     country_codefocus: classStateData.country_code.length > 0 ? true : false,
-                    //   });
-                    // }}
-
-                    value={"" + classStateData.country_code + ""}
-                    keyboardType="number-pad"
-                    returnKeyLabel="done"
-                    returnKeyType="done"
-                    onSubmitEditing={() => { Keyboard.dismiss() }}
-                  /> */}
-
-                {/* {classStateData.country_code.length > 0 &&
-                    <View
-                      style={{
-                        position: 'absolute',
-                        backgroundColor: 'white',
-                        left: (mobileW * 5) / 100,
-                        top: (-mobileW * 2) / 100,
-                        paddingHorizontal: (mobileW * 1) / 100,
-                      }}>
-                      <Text style={{ color: '#0057A5' }}>
-                        {LanguageConfiguration.CC_code[config.language]}
-                      </Text>
-                    </View>
-                  } */}
               </View>
 
               <View
@@ -1976,9 +1806,6 @@ export default Signup = ({ navigation, route }) => {
                   width: '78%',
                   alignSelf: 'center',
                   marginTop: (mobileW * 2) / 100,
-                  // borderColor: classStateData.numberfocus == true ? '#0057A5' : Colors.placeholder_border,
-                  // borderWidth: 1,
-                  // borderRadius: (mobileW * 1) / 100,
                 }}>
                 <AuthInputBoxSec
                   mainContainer={{
@@ -2004,7 +1831,6 @@ export default Signup = ({ navigation, route }) => {
                 <View
                   style={{
                     width: '89%',
-                    // alignSelf: 'center',
                     marginTop: (mobileW * 0.5) / 100,
                   }}>
                   <Text
@@ -2017,20 +1843,6 @@ export default Signup = ({ navigation, route }) => {
                     {LanguageConfiguration.mobletexttitle[config.language]}
                   </Text>
                 </View>
-                {/* {classStateData.numberfocus == true && (
-                    <View
-                      style={{
-                        position: 'absolute',
-                        backgroundColor: 'white',
-                        left: (mobileW * 4) / 100,
-                        top: (-mobileW * 2) / 100,
-                        paddingHorizontal: (mobileW * 1) / 100,
-                      }}>
-                      <Text style={{ color: '#0057A5' }}>
-                        {LanguageConfiguration.textinputnumber[config.language]}
-                      </Text>
-                    </View>
-                  )} */}
               </View>
             </View>
 
@@ -2193,115 +2005,6 @@ export default Signup = ({ navigation, route }) => {
                 </>
             }
 
-
-            {/* ---------------------------------------------------------------------------idno */}
-
-            {/* <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 3) / 100,
-                  // borderColor: classStateData.idfocus == true ? '#0057A5' : Colors.placeholder_border,
-                  // borderWidth: 1,
-                  // borderRadius: (mobileW * 1) / 100,
-                }}>
-                <View style={{ width: '100%', alignSelf: 'center' }}>
-                  <TextInput
-                    style={{
-                      width: '100%',
-                      height: 48,
-                      color: Colors.textblack,
-                      fontSize: Font.placeholdersize,
-                      textAlign: config.textalign,
-                      //height: (mobileW * 12) / 100,
-                      fontFamily: Font.placeholderfontfamily,
-                      borderRadius: (mobileW * 1) / 100,
-                      borderColor: Colors.placeholder_border,
-                      backgroundColor: 'white'
-                    }}
-                    mode='outlined'
-                    label={LanguageConfiguration.dob[config.language]}
-                    outlineColor={Colors.field_border_color}
-                    activeOutlineColor={Colors.placholderactive}
-                    maxLength={15}
-                    // placeholder={
-                    //   classStateData.idfocus != true
-                    //     ? LanguageConfiguration.textinputnationalid[config.language]
-                    //     : null
-                    // }
-                    placeholderTextColor={Colors.placeholder_text}
-                    onChangeText={txt => {
-                      setState({ id: txt });
-                    }}
-                    value={classStateData.id}
-                    // onFocus={() => { setState({ idfocus: true }); }}
-                    // onBlur={() => { setState({ idfocus: classStateData.id.length > 0 ? true : false }); }}
-                    keyboardType="number-pad"
-                    returnKeyLabel="done"
-                    returnKeyType="done"
-                    onSubmitEditing={() => { Keyboard.dismiss() }}
-                    right={
-                      <TextInput.Icon
-                        name={'calendar'}
-                        // onPress={() => {
-                        //   setState({
-                        //     isSecurePassword: !classStateData.isSecurePassword,
-                        //   });
-                        // }}
-                        forceTextInputFocus={false}
-                        color={Colors.regulartextcolor}
-                        style={{
-                          marginTop: 12
-                        }}
-                      />
-                    }
-                  />
-                </View>
-                {classStateData.idfocus == true && (
-                  <View
-                    style={{
-                      position: 'absolute',
-                      backgroundColor: 'white',
-                      left: (mobileW * 4) / 100,
-                      top: (-mobileW * 2) / 100,
-                      paddingHorizontal: (mobileW * 1) / 100,
-                    }}>
-                    <Text style={{ color: '#0057A5' }}>
-                      {LanguageConfiguration.textinputnationalid[config.language]}
-                    </Text>
-                  </View>
-                )}
-              </View> */}
-
-            {/* --------------------------------------------------------------------------------text */}
-
-            {/* <View
-                style={{
-                  width: '89%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 0.5) / 100,
-                }}>
-                {classStateData.country_short_code == 'UAE' ?
-                  <Text
-                    style={{
-                      textAlign: config.textRotate,
-                      fontSize: Font.textsize,
-                      fontFamily: Font.headingfontfamily,
-                      color: Colors.textgray,
-                    }}>
-                    {LanguageConfiguration.ProvideUAE[config.language]}
-                  </Text> : <Text
-                    style={{
-                      textAlign: config.textRotate,
-                      fontSize: Font.textsize,
-                      fontFamily: Font.headingfontfamily,
-                      color: Colors.textgray,
-                    }}>
-                    {LanguageConfiguration.Signuptext2[config.language]}
-                  </Text>}
-              </View> */}
-            {/* ------------------------------------------------------password */}
-
             <View
               style={{
                 width: '90%',
@@ -2344,8 +2047,6 @@ export default Signup = ({ navigation, route }) => {
 
             </View>
 
-            {/* -----------------------------------------------------------text*/}
-
             <View
               style={{
                 width: '89%',
@@ -2362,7 +2063,6 @@ export default Signup = ({ navigation, route }) => {
                 {LanguageConfiguration.Signuptext3[config.language]}
               </Text>
             </View>
-            {/* ----------------------------------------------------------------------confirmpasword */}
 
             <View
               style={{
@@ -2422,11 +2122,6 @@ export default Signup = ({ navigation, route }) => {
                 {LanguageConfiguration.Signuptext4[config.language]}
               </Text>
             </View>
-            {/*   ---------------------------------------------------------------------------- */}
-
-
-
-
 
             {
               (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) &&

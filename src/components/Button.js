@@ -94,13 +94,16 @@ const styles = StyleSheet.create({
   },
   mainContainer1: {
     width: '90%',
+    height: 40,
     alignSelf: 'center',
     borderColor: Colors.buttoncolorblue,
     borderWidth: 2,
     borderRadius: (windowWidth * 2) / 100,
     backgroundColor: Colors.buttoncolorlight,
-    paddingVertical: (windowWidth * 3) / 100,
-    marginBottom: (windowWidth * 4) / 100,
+    paddingVertical: (windowWidth * 0.25) / 100,
+    marginTop: (windowWidth * 1) / 100,
+    marginBottom: (windowWidth * 3) / 100,
+    justifyContent:'center'
   },
   buttonText: {
     color: 'white',

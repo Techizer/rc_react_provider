@@ -110,7 +110,7 @@ export default Home = ({ navigation, route }) => {
 
   })
 
-  logout = async () => {
+  const logout = async () => {
     await localStorage.removeItem("user_arr");
     await localStorage.removeItem("user_login");
 
@@ -191,7 +191,7 @@ export default Home = ({ navigation, route }) => {
     }
   }, [])
 
-  handleBackButton = () => {
+  const handleBackButton = () => {
     console.log('Back button is pressed', route.name);
     if (route.name == ScreenReferences.Home) {
       return true;
@@ -201,7 +201,7 @@ export default Home = ({ navigation, route }) => {
 
   }
 
-  getPercentage = async () => {
+  const getPercentage = async () => {
     var user_details = await localStorage.getItemObject("user_arr");
     let { user_id, user_type } = user_details;
     let url = config.baseURL + "api-provider-profile-complete";
@@ -244,7 +244,7 @@ export default Home = ({ navigation, route }) => {
       });
   }
 
-  getnotification_Call = async () => {
+  const getnotification_Call = async () => {
 
 
     PushNotification.createChannel(
@@ -266,7 +266,7 @@ export default Home = ({ navigation, route }) => {
   }
 
 
-  messageListener = async () => {
+  const messageListener = async () => {
 
     //alert('come')
     // console.log('inside message listener ****** ')
@@ -301,7 +301,7 @@ export default Home = ({ navigation, route }) => {
 
   }
 
-  showVideoCallAlert = (data) => {
+  const showVideoCallAlert = (data) => {
     var myData = {
       "fromUserId": data.fromUserId,
       "fromUserName": data.fromUserName,
@@ -317,7 +317,7 @@ export default Home = ({ navigation, route }) => {
     });
   }
 
-  callRejectNotification = async (notidata) => {
+  const callRejectNotification = async (notidata) => {
     let user_details = await localStorage.getItemObject("user_arr");
     let user_id = user_details["user_id"];
     let apiName = "api-get-video-access-token-with-push-notification";
@@ -347,7 +347,7 @@ export default Home = ({ navigation, route }) => {
       });
   };
 
-  get_all_count = async () => {
+  const get_all_count = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
@@ -380,7 +380,7 @@ export default Home = ({ navigation, route }) => {
 
   }
 
-  getProfile = async () => {
+  const getProfile = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
     let address_arr = await localStorage.getItemObject('address_arr')
     console.log('user_details user_details', user_details)

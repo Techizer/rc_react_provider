@@ -48,7 +48,7 @@ const AuthInputBoxSec = (props) => {
     onChangeText,
     value,
     secureTextEntry
-    
+
   } = props
   //console.log(props.onSubmitEditing)
   return (
@@ -63,9 +63,10 @@ const AuthInputBoxSec = (props) => {
             inputLayout,
           ]}
         >
-          <View style={{ width: '100%', //alignSelf: 'center', 
-          // backgroundColor: 'red'
-           }}>
+          <View style={{
+            width: '100%', //alignSelf: 'center', 
+            // backgroundColor: 'red'
+          }}>
             <TextInput
               style={[styles.inputFieldStyle, inputFieldStyle, {
                 backgroundColor: (editable == false) ? Colors.tab_background_color : 'white',
@@ -86,6 +87,7 @@ const AuthInputBoxSec = (props) => {
               autoCapitalize="none"
               {...props}
               value={value}
+              allowFontScaling={false}
               right={
                 (disableImg) &&
                 <TextInput.Icon
@@ -94,15 +96,18 @@ const AuthInputBoxSec = (props) => {
                   forceTextInputFocus={false}
                   color={Colors.regulartextcolor}
                   style={{
-                    marginTop: 12
+                    marginTop: 12,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
-                  
+
                 />
-                
+
               }
             />
           </View>
-          
+
         </View>
       </View>
     </>
@@ -119,7 +124,8 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     width: "90%",
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    height: 'auto'
     //paddingLeft: 10,
     //paddingRight: 10,
     // borderBottomWidth: 0.5,

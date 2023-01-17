@@ -3,18 +3,7 @@ import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, 
 import {
   Colors,
   Font,
-  mobileH,
-  MessageFunctions,
-  MessageTexts,
-  config,
   mobileW,
-  localStorage,
-  
-  
-  handleback,
-  LanguageConfiguration,
-  API,
-  MessageHeadings,
 } from '../Helpers/Utils';
 
 import Styles from '../Styles';
@@ -22,61 +11,6 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Transaction from '../Containers/Transaction';
 import Withdrawal from './Withdrawal';
 import ScreenHeader from '../Components/ScreenHeader';
-const tabheadings = [
-  {
-    id: 1,
-    name: 'Ongoing',
-    arbic_name: 'الجميع ',
-    pass_status: 'all',
-    status: true,
-  },
-  {
-    id: 2,
-    name: 'Pending',
-    arbic_name: 'ممرضة  ',
-    pass_status: 'nurse',
-    status: false,
-  },
-  {
-    id: 3,
-    name: 'Upcoming',
-    arbic_name: 'مساعد ممرض   ',
-    pass_status: 'caregiver',
-    status: false,
-  },
-  {
-    id: 4,
-    name: 'Past',
-    arbic_name: 'جليسه اطفال  ',
-    pass_status: 'babysitter',
-    status: false,
-  },
-  // {
-  //   id: 5,
-  //   name: 'Physiotherapist',
-  //   arbic_name:'اخصائي العلاج الطبيعي   ',
-  //   pass_status:'physiotherapy',
-  //   status: false,
-  // },
-
-]
-
-// const FirstRoute = props => (
-//   <Appointment {...props} />
-// );
-
-// const SecondRoute = props => (
-//   <Appointment {...props} />
-// );
-
-
-
-// const renderScene = SceneMap({
-//   ongoing: FirstRoute,
-//   pending: SecondRoute,
-//   upcoming: FirstRoute,
-//   past: SecondRoute,
-// });
 
 const renderTabBar = props => (
   <TabBar
@@ -129,8 +63,6 @@ export default function Transactiontab({ navigation }) {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    // { key: 'first', title: 'First' },
-    // { key: 'second', title: 'Second' },
     {
       id: 1,
       name: 'Ongoing',
@@ -164,17 +96,13 @@ export default function Transactiontab({ navigation }) {
       <View
         style={{
           flex: 1,
-          // paddingBottom: (mobileW * 2) / 100 
         }}
 
       >
         <View style={{
           flex: 1,
-          // marginBottom: (mobileW * 2) / 100 
         }}>
-          {/* <Text>Home</Text> */}
 
-          {/* header */}
           <ScreenHeader
             onBackPress={() => {
               navigation.goBack();
@@ -186,7 +114,6 @@ export default function Transactiontab({ navigation }) {
             style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
 
-          {/* tabheadings */}
 
           <TabView
             navigationState={{ index, routes }}

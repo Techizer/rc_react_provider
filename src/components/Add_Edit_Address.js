@@ -249,18 +249,19 @@ const AddEditAddress = ({
 
                                 <AuthInputBoxSec
                                     mainContainer={{ marginTop: vs(5), width: '100%' }}
-                                    inputFieldStyle={{ height: vs(35) }}
                                     lableText={'Google Map Address'}
                                     //inputRef={addressRef}
                                     onChangeText={(val) => setGoogleAddress(val)}
-                                    value={googleAddress}
+                                    value={googleAddress.trim()}
                                     keyboardType="default"
                                     autoCapitalize="none"
                                     returnKeyType="next"
                                     editable={false}
-                                    numberOfLines={1}
                                     multiline
                                     disableImg={shouldShowEditParam}
+                                    inputFieldStyle={{
+                                        color: Colors.Black
+                                    }}
                                     iconName={'pencil'}
                                     iconPressAction={shouldShowEditParam ? () => {
                                         onRequestClose()

@@ -61,7 +61,7 @@ const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : Status
 let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
 headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
-export default function Appointmenttab({ navigation }) {
+export default Appointmenttab = ({ navigation }) => {
   const layout = useWindowDimensions();
   const [tabname, setTabname] = React.useState("");
   const [noticount, setNoticount] = React.useState("");
@@ -70,22 +70,6 @@ export default function Appointmenttab({ navigation }) {
     // { key: 'first', title: 'First' },
     // { key: 'second', title: 'Second' },
     {
-      id: 1,
-      name: 'Ongoing',
-      arbic_name: 'الجميع ',
-      pass_status: 'all',
-      status: true,
-      key: 'ongoing', title: 'Ongoing'
-    },
-    {
-      id: 2,
-      name: 'Pending',
-      arbic_name: 'ممرضة  ',
-      pass_status: 'nurse',
-      status: false,
-      key: 'pending', title: 'Pending'
-    },
-    {
       id: 3,
       name: 'Upcoming',
       arbic_name: 'مساعد ممرض   ',
@@ -93,6 +77,23 @@ export default function Appointmenttab({ navigation }) {
       status: false,
       key: 'upcoming', title: 'Upcoming'
     },
+    {
+      id: 1,
+      name: 'Ongoing',
+      arbic_name: 'الجميع ',
+      pass_status: 'all',
+      status: true,
+      key: 'ongoing', title: 'Ongoing'
+    },
+    // {
+    //   id: 2,
+    //   name: 'Pending',
+    //   arbic_name: 'ممرضة  ',
+    //   pass_status: 'nurse',
+    //   status: false,
+    //   key: 'pending', title: 'Pending'
+    // },
+    
     {
       id: 4,
       name: 'Past',
@@ -163,8 +164,8 @@ export default function Appointmenttab({ navigation }) {
     switch (route.key) {
       case 'ongoing':
         return <Appointment ref={child => { this.child = child }} pageName={"ongoing"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
-      case 'pending':
-        return <Appointment ref={child1 => { this.child1 = child1 }} pageName={"pending"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+      // case 'pending':
+      //   return <Appointment ref={child1 => { this.child1 = child1 }} pageName={"pending"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'upcoming':
         return <Appointment ref={child2 => { this.child2 = child2 }} pageName={"upcoming"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'past':

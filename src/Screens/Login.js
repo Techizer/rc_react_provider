@@ -96,7 +96,7 @@ export default Login = ({ navigation, route }) => {
     );
   }, [])
 
-  get_language = async () => {
+  const get_language = async () => {
     let textalign = await localStorage.getItemObject('language');
     if (textalign != null) {
       setState(prev => ({
@@ -116,7 +116,7 @@ export default Login = ({ navigation, route }) => {
 
   }
 
-  checkPermission = async () => {
+  const checkPermission = async () => {
     const enabled = await firebase.messaging().hasPermission();
     if (enabled) {
       getFcmToken();
@@ -127,7 +127,7 @@ export default Login = ({ navigation, route }) => {
     }
   }
 
-  showAlert = (title, message) => {
+  const showAlert = (title, message) => {
     Alert.alert(
       title,
       message,
@@ -138,14 +138,14 @@ export default Login = ({ navigation, route }) => {
     );
   }
 
-  requestPermission = async () => {
+  const requestPermission = async () => {
     try {
       await firebase.messaging().requestPermission();
     } catch (error) {
     }
   }
 
-  getlatlong = async () => {
+  const getlatlong = async () => {
 
     let permission = await localStorage.getItemString('permission')
     if (permission != 'denied') {
@@ -178,7 +178,7 @@ export default Login = ({ navigation, route }) => {
     }
   }
 
-  callLocation = async (that) => {
+  const callLocation = async (that) => {
     setState(prev => ({
       ...prev,
       loading: true
@@ -242,7 +242,7 @@ export default Login = ({ navigation, route }) => {
     })
   }
 
-  getalldata = (position) => {
+  const getalldata = (position) => {
 
     let longitude = position.coords.longitude
     let latitude = position.coords.latitude
@@ -260,7 +260,7 @@ export default Login = ({ navigation, route }) => {
     getadddressfromlatlong(event)
   }
 
-  getadddressfromlatlong = (event) => {
+  const getadddressfromlatlong = (event) => {
 
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + config.mapkey + '&language=' + config.maplanguage)
 
@@ -308,7 +308,7 @@ export default Login = ({ navigation, route }) => {
   }
 
 
-  handleBackPress = () => {
+  const handleBackPress = () => {
     Alert.alert(
       LanguageConfiguration.titleexitapp[config.language],
       LanguageConfiguration.exitappmessage[config.language], [{
@@ -324,7 +324,8 @@ export default Login = ({ navigation, route }) => {
     ); // works best when the goBack is async 
     return true;
   };
-  launguage_setbtn = (language) => {
+
+  const launguage_setbtn = (language) => {
     LanguageConfiguration.language_set(language)
     setState(prev => ({
       ...prev,
@@ -333,8 +334,7 @@ export default Login = ({ navigation, route }) => {
     }))
   }
 
-
-  get_rem_data = async () => {
+  const get_rem_data = async () => {
     let remeberdata_arr = await localStorage.getItemObject('remeberdata');
 
     if (remeberdata_arr != null) {
@@ -348,7 +348,7 @@ export default Login = ({ navigation, route }) => {
 
   }
 
-  remember_me_fun = async () => {
+  const remember_me_fun = async () => {
 
     if (state?.remember_me == false) {
       let data = { 'email': state?.email, 'password': state?.password }
@@ -363,14 +363,15 @@ export default Login = ({ navigation, route }) => {
     }))
   }
 
-  remove_remember_me_fun = async () => {
+  const remove_remember_me_fun = async () => {
     await localStorage.removeItem('remeberdata');
     setState(prev => ({
       ...prev,
       remember_me: false
     }))
   }
-  loginbtn = async () => {
+
+  const loginbtn = async () => {
 
     Keyboard.dismiss()
     var email = state?.email.trim()
@@ -455,7 +456,7 @@ export default Login = ({ navigation, route }) => {
 
   }
 
-  showUsertypeModal = (status) => {
+  const showUsertypeModal = (status) => {
     setState(prev => ({
       ...prev,
       showUsertype: status
@@ -466,7 +467,7 @@ export default Login = ({ navigation, route }) => {
     navigation.navigate(ScreenReferences.Signup)
   }
 
-  changePwdType = () => {
+  const changePwdType = () => {
     setState(prev => ({
       ...prev,
       isSecurePassword: !state?.isSecurePassword,
@@ -753,9 +754,6 @@ export default Login = ({ navigation, route }) => {
                   disableImg={true}
                   iconName={state?.isSecurePassword ? 'eye' : 'eye-off'}
                   iconPressAction={changePwdType}
-                // onSubmitEditing={() => {
-                //   loginbtn();
-                // }}
                 />
 
               </View>
@@ -777,8 +775,6 @@ export default Login = ({ navigation, route }) => {
                       style={{
                         color: Colors.regulartextcolor,
                         fontFamily: Font.Regular,
-                        // paddingLeft:mobileW*2/100,
-                        // textAlign: config.textalign,
                         fontSize: Font.Remember,
                       }}>
                       {LanguageConfiguration.Remember[config.language]}
@@ -796,8 +792,6 @@ export default Login = ({ navigation, route }) => {
                         style={{
                           color: Colors.regulartextcolor,
                           fontFamily: Font.Regular,
-                          // paddingLeft:mobileW*2/100,
-                          // textAlign: config.textalign,
                           fontSize: Font.Remember,
                         }}>
                         {LanguageConfiguration.Remember[config.language]}

@@ -75,7 +75,7 @@ const DashBoardBox = ({
 
             <View style={{
               // backgroundColor: 'yellow',
-              width: '50%',
+              width: '48%',
               justifyContent: 'center',
               alignItems: 'flex-start',
               paddingLeft: (mobileW * 5) / 100,
@@ -89,33 +89,32 @@ const DashBoardBox = ({
 
             <View style={{
               // backgroundColor: 'yellow',
-              width: '40%',
+              width: '38%',
               justifyContent: 'center',
               alignItems: 'flex-start',
               paddingHorizontal: (mobileW * 3) / 100,
-              height: '70%',
-              alignSelf:'center',
+              alignSelf: 'center',
             }}>
               <View style={{
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              paddingHorizontal: (mobileW * 3) / 100,
-              backgroundColor: actionColor, 
-              borderRadius: 12,
-              paddingVertical: 6
-            }}>
-              
-              <Text style={{
-                fontFamily: Font.Regular,
-                fontSize: Font.small,
-                color: actionTextColor,
-              }}>{actionMessage}</Text>
-            </View>
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                paddingHorizontal: (mobileW * 3) / 100,
+                backgroundColor: actionColor,
+                borderRadius: 12,
+                paddingVertical: 6
+              }}>
+
+                <Text style={{
+                  fontFamily: Font.Regular,
+                  fontSize: Font.small,
+                  color: actionTextColor,
+                }} allowFontScaling={false}>{actionMessage}</Text>
+              </View>
             </View>
 
             <View style={{
               // backgroundColor: 'blue',
-              width: '10%',
+              width: '14%',
               justifyContent: 'center',
               alignItems: 'flex-end',
               paddingRight: (mobileW * 5) / 100,
@@ -124,9 +123,9 @@ const DashBoardBox = ({
                 (rightText) ?
                   <Text style={{
                     fontFamily: Font.Medium,
-                    fontSize: 14,
+                    fontSize: 13,
                     color: Colors.textblue
-                  }}>{rightText}</Text> :
+                  }} allowFontScaling={false}>{rightText}</Text> :
                   <Image
                     style={[styles.imgR, imgStyle]}
                     resizeMode="contain"

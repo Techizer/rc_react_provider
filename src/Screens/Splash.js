@@ -40,7 +40,7 @@ export default Splash = ({navigation, route}) => {
     authenticateSession()
   }, [])
 
-  language_fun = async () => {
+  const language_fun = async () => {
     let textalign = await localStorage.getItemObject('language');
     console.log('textaligntextalign:: ', textalign);
     if (textalign != null) {
@@ -84,22 +84,14 @@ export default Splash = ({navigation, route}) => {
 
   }
 
-  authenticateSession = async () => {
+  const authenticateSession = async () => {
     apiIosPatientUpdate()
-
-    // setTimeout(() => {
-    //   new_authenticatesessinon()
-    // }, 2000);
   }
 
-  apiIosPatientUpdate = async () => {
+  const apiIosPatientUpdate = async () => {
     let lang = (state?.loanguage == 1) ? "ENG" : "ENG"
     let url = config.baseURL + "api-ios-provider-update" + "?divice_lang=" + lang;
     console.log("url", url, config.language)
-    // var data = new FormData();
-    // data.append('divice_lang',"AR")
-
-    // 
     API.get(url, 1).then((obj) => {
       
       if (obj.status == true) {
@@ -136,13 +128,13 @@ export default Splash = ({navigation, route}) => {
 
   }
 
-  checkAuth = () => {
+  const checkAuth = () => {
     setTimeout(() => {
       new_authenticatesessinon()
     }, 2000);
   }
 
-  checkAuthUserLogin = async (result, logindetail) => {
+  const checkAuthUserLogin = async (result, logindetail) => {
     let result1 = await localStorage.getItemObject('user_signup');
 
     let email = logindetail.email_phone
@@ -184,7 +176,7 @@ export default Splash = ({navigation, route}) => {
     });
   }
 
-  checkLogout = async (result, logindetail) => {
+  const checkLogout = async (result, logindetail) => {
 
     let user_id = result.user_id;
     let url = config.baseURL + "api-check-login";
@@ -210,7 +202,7 @@ export default Splash = ({navigation, route}) => {
       });
   }
 
-  logout = async () => {
+  const logout = async () => {
     await localStorage.removeItem("user_arr");
     await localStorage.removeItem("user_login");
     navigation.reset({
@@ -219,7 +211,7 @@ export default Splash = ({navigation, route}) => {
     });
   };
 
-  new_authenticatesessinon = async () => {
+  const new_authenticatesessinon = async () => {
 
     let result = await localStorage.getItemObject('user_arr');
     let logindetail = await localStorage.getItemObject('user_login');
@@ -240,7 +232,7 @@ export default Splash = ({navigation, route}) => {
 
   }
 
-  openAppstoreUrl = async (url) => {
+  const openAppstoreUrl = async (url) => {
     const supported = await Linking.canOpenURL(url);
     console.log('supported:: ', supported, url);
     if (supported) {

@@ -209,7 +209,6 @@ const activity_arr = [
 
 ]
 
-
 const food_arr = [
   {
     id: 1,
@@ -3131,7 +3130,7 @@ export default EditProfile = ({navigation, route}) => {
                               width: '100%',
                               alignSelf: 'center',
                               flexDirection: 'row',
-                            }} disabled >
+                            }} >
                             <Icon style={{ alignSelf: 'center' }}
                               name={(classStateData.mabtn == false) ? "circle-thin" : "dot-circle-o"}
                               size={22}
@@ -3174,7 +3173,7 @@ export default EditProfile = ({navigation, route}) => {
                               alignSelf: 'center',
                               flexDirection: 'row',
                               alignItems: 'center'
-                            }} disabled>
+                            }}>
                             <Icon style={{ alignSelf: 'center' }}
                               name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
                               size={22}
