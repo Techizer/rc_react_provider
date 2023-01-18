@@ -6,9 +6,8 @@ import {
   mobileW,
 } from '../Helpers/Utils';
 
-import Styles from '../Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import Transaction from '../Containers/Transaction';
+import TransactionContainer from '../Containers/Transaction';
 import Withdrawal from './Withdrawal';
 import ScreenHeader from '../Components/ScreenHeader';
 
@@ -58,7 +57,7 @@ const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : Status
 let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
 headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
-export default function Transactiontab({ navigation }) {
+export default Transaction = ({ navigation }) => {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
@@ -85,7 +84,7 @@ export default function Transactiontab({ navigation }) {
   const renderScene = ({ route, jumpTo }) => {
     switch (route.key) {
       case 'transaction':
-        return <Transaction page={'task'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <TransactionContainer page={'task'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'withdrawal':
         return <Withdrawal page={'hourly'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
     }

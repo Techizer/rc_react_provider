@@ -7,10 +7,8 @@ import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import {
   API,
   Colors,
-  
   Font,
   LanguageConfiguration,
-  
   localStorage,
   mobileW,
   MessageFunctions,
@@ -18,12 +16,10 @@ import {
 import Styles from "../Styles";
 import { Icons } from "../Assets/Icons/IReferences";
 
-const LabPackageDetails = (props) => {
-  const { navigation } = props;
-  const { packageId, providerId } = props.route.params;
+const LabPackageDetails = ({ navigation, route }) => {
+  const { packageId, providerId } = route.params;
   const [labDetailsData, setLabDetailsData] = useState();
   const [showTaskDetails, isShowTaskDetails] = useState(false);
-  console.log("providerId ", packageId);
   const [currencyData, setCurrency] = useState();
   const [priceData, setPrice] = useState("");
 
@@ -64,7 +60,7 @@ const LabPackageDetails = (props) => {
       });
   };
 
-  submitPress = () => {
+  const submitPress = () => {
     if (priceData == "") {
       MessageFunctions.showError("Selected slot must have a valid price")
     } else if (parseFloat(priceData) < parseFloat(labDetailsData.minrp)) {
@@ -74,30 +70,25 @@ const LabPackageDetails = (props) => {
     } else {
       console.log("taskId:: ", labDetailsData.pid);
       console.log("priceData:: ", priceData);
-      this.insertUpdatePriceList(labDetailsData.pid, priceData)
+      // workAreainsertUpdatePriceList(labDetailsData.pid, priceData)
     }
   }
 
-  insertUpdatePriceList = async (taskId, taskPrice) => {
+  const insertUpdatePriceList = async (taskId, taskPrice) => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    console.log('this.props.pageName:: ', this.props.pageName);
-
 
     let apiname = "api-add-lab-task_price"
 
 
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
+    let apishow = apiname 
 
     let url = config.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
-    // data.append('lgoin_user_id', user_id)
-    // { "user_id":"39","service_type":"nurse",
-    // "task_type":"hour_base","task_id":"1,2,3,4,5","price":"100,200,300,400,600"}
-
+    
     data.append('user_id', user_id)
 
     let task_type = "package_base"
@@ -111,12 +102,10 @@ const LabPackageDetails = (props) => {
     
     API.post(url, data).then((obj) => {
       
-      // this.setState({ appoinment_detetails: '' })
+      // workAreasetState({ appoinment_detetails: '' })
       if (obj.status == true) {
         MessageFunctions.showSuccess(obj.message)
-        console.log('obj.result', obj.result)
-        console.log('props', props)
-        props.route.params.reloadPackList()
+        route.params.reloadPackList()
       } else {
         MessageFunctions.showError(obj.message)
         console.log('obj.result', obj.result)
@@ -513,7 +502,7 @@ const LabPackageDetails = (props) => {
                 }}>
                   <Button
                     text={'SAVE PACKAGE'}
-                    // onLoading={this.state.loading}
+                    // onLoading={workAreastate.loading}
                     customStyles={
                       {
                         mainContainer: {
@@ -522,8 +511,8 @@ const LabPackageDetails = (props) => {
                         }
                       }
                     }
-                    onPress={() => this.submitPress()}
-                  // isDisabled={(this.state.taskArr.length > 0) ? false : true}
+                    onPress={() => workAreasubmitPress()}
+                  // isDisabled={(workAreastate.taskArr.length > 0) ? false : true}
                   // isBlank={false}
                   />
                 </View>

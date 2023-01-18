@@ -19,40 +19,8 @@ import {
 
 import Styles from '../Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import Appointment from '../Containers/Appointment';
+import AppointmentContainer from '../Containers/Appointment';
 import ScreenHeader from '../Components/ScreenHeader';
-const tabheadings = [
-  {
-    id: 1,
-    name: 'Ongoing',
-    arbic_name: 'الجميع ',
-    pass_status: 'all',
-    status: true,
-  },
-  {
-    id: 2,
-    name: 'Pending',
-    arbic_name: 'ممرضة  ',
-    pass_status: 'nurse',
-    status: false,
-  },
-  {
-    id: 3,
-    name: 'Upcoming',
-    arbic_name: 'مساعد ممرض   ',
-    pass_status: 'caregiver',
-    status: false,
-  },
-  {
-    id: 4,
-    name: 'Past',
-    arbic_name: 'جليسه اطفال  ',
-    pass_status: 'babysitter',
-    status: false,
-  },
-
-]
-
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const windowWidth = Math.round(Dimensions.get("window").width);
@@ -61,7 +29,7 @@ const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : Status
 let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
 headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
-export default Appointmenttab = ({ navigation }) => {
+export default Appointments = ({ navigation }) => {
   const layout = useWindowDimensions();
   const [tabname, setTabname] = React.useState("");
   const [noticount, setNoticount] = React.useState("");
@@ -163,13 +131,13 @@ export default Appointmenttab = ({ navigation }) => {
   const renderScene = ({ route, jumpTo }) => {
     switch (route.key) {
       case 'ongoing':
-        return <Appointment ref={child => { this.child = child }} pageName={"ongoing"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AppointmentContainer ref={child => { this.child = child }} pageName={"ongoing"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       // case 'pending':
-      //   return <Appointment ref={child1 => { this.child1 = child1 }} pageName={"pending"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+      //   return <AppointmentContainer ref={child1 => { this.child1 = child1 }} pageName={"pending"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'upcoming':
-        return <Appointment ref={child2 => { this.child2 = child2 }} pageName={"upcoming"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AppointmentContainer ref={child2 => { this.child2 = child2 }} pageName={"upcoming"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'past':
-        return <Appointment ref={child3 => { this.child3 = child3 }} pageName={"past"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AppointmentContainer ref={child3 => { this.child3 = child3 }} pageName={"past"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
     }
   };
 

@@ -30,7 +30,7 @@ import { s, vs } from 'react-native-size-matters';
 import ScreenHeader from './ScreenHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SimpleToast from 'react-native-simple-toast';
-import AddEditAddress from './Add_Edit_Address';
+import AddressInputPopup from './AddressInputPopup';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 
@@ -343,7 +343,7 @@ class SearchPlaceScreen extends Component {
                     <ScreenHeader navigation={this.props.navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
                         this.props.navigation.replace(ScreenReferences.ServiceAddress)
                     }} />
-                    <AddEditAddress
+                    <AddressInputPopup
                         navigation={this.props.navigation}
                         visible={this.state.isVisible}
                         onRequestClose={() => {

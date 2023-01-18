@@ -19,37 +19,8 @@ import {
 
 import Styles from '../Styles';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import AvailabilitySchedule from '../Containers/AvailabilitySchedule';
+import AvailabilityScheduleContainer from '../Containers/AvailabilitySchedule';
 import ScreenHeader from '../Components/ScreenHeader';
-const tabheadings = [
-  {
-    id: 1,
-    name: 'Ongoing',
-    arbic_name: 'الجميع ',
-    pass_status: 'all',
-    status: true,
-  },
-  {
-    id: 2,
-    name: 'Pending',
-    arbic_name: 'ممرضة  ',
-    pass_status: 'nurse',
-    status: false,
-  },
-  {
-    id: 3,
-    name: 'Upcoming',
-    arbic_name: 'مساعد ممرض   ',
-    pass_status: 'caregiver',
-    status: false,
-  },
-  {
-    id: 4,
-    name: 'Past',
-    arbic_name: 'جليسه اطفال  ',
-    pass_status: 'babysitter',
-    status: false,
-  }]
 
 const renderTabBar = props => (
   <TabBar
@@ -87,7 +58,7 @@ const renderTabBar = props => (
   />
 );
 
-export default function AvailabilityScheduletab({ navigation }) {
+export default function AvailabilitySchedule({ navigation }) {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
@@ -181,13 +152,13 @@ export default function AvailabilityScheduletab({ navigation }) {
   const renderScene = ({ route, jumpTo }) => {
     switch (route.key) {
       case 'taskschedule':
-        return <AvailabilitySchedule page={'taskschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AvailabilityScheduleContainer page={'taskschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'hourlyschedule':
-        return <AvailabilitySchedule page={'hourlyschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AvailabilityScheduleContainer page={'hourlyschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'onlinehomeschedule':
-        return <AvailabilitySchedule page={'onlinehomeschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AvailabilityScheduleContainer page={'onlinehomeschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'labschedule':
-        return <AvailabilitySchedule page={'labschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AvailabilityScheduleContainer page={'labschedule'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
     }
   };
 
@@ -217,7 +188,6 @@ export default function AvailabilityScheduletab({ navigation }) {
           // marginBottom: (mobileW * 2) / 100 
         }}>
           
-          {/* tabheadings */}
           {
             (routes.length > 0) &&
             <TabView

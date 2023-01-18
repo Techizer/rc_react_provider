@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-// import Spinner from "react-native-spinkit";
-// import { Colors } from "react-native/Libraries/NewAppScreen";
-// import { color } from "react-native-reanimated";
-// import { Color, Fonts } from "../utils";
-// import { RF } from "../utils/responsive";
 import moment from "moment-timezone";
 import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, API, MessageHeadings,  MessageFunctions, localStorage } from '../Helpers/Utils';
 import { Icons } from "../Assets/Icons/IReferences";
@@ -19,7 +14,6 @@ const AppointmentBox = ({
   isBorder,
 }) => {
   const aDate = new Date(item.appointment_date)
-  /* check video call button enable or not */
   var VideoCallBtn = false
   var appointmentDate = moment(item.app_date).format(
     "YYYY-MM-DD"
@@ -27,33 +21,19 @@ const AppointmentBox = ({
   var CurrentDate = moment().unix(); //Wed, 19 Oct 2022
   var MyDate = moment(appointmentDate + " " + item.app_time, 'YYYY-MM-DD hh:mm A').unix();
   var MyEndDate = moment(appointmentDate + " 11:59 PM", 'YYYY-MM-DD hh:mm A').unix();
-  // console.log('CurrentDate:: ', CurrentDate,
-  //   'MyDate:: ', MyDate,
-  //   '-- ', CurrentDate - MyDate
-  // );
 
   if (CurrentDate < MyDate) {
-    let diff = (MyDate - CurrentDate) / 60 //mins
-    //console.log('CurrentDate < MyDate:: ', diff);
+    let diff = (MyDate - CurrentDate) / 60 
     if (diff <= 10) {
       VideoCallBtn = true
     }
   }
   else if (CurrentDate > MyDate) {
-    // let diff = (CurrentDate - MyDate) / 60 //mins
-    // console.log('CurrentDate > MyDate:: ', diff);
-    // if (diff < 16) {
-    //   VideoCallBtn = true
-    // }
     VideoCallBtn = true
   }
-  // if (MyEndDate > MyDate) {
-  //   VideoCallBtn = true
-  // }
   if (CurrentDate > MyEndDate) {
     VideoCallBtn = false
   }
-  /* check video call button enable or not */
   return (
     <>
       <View
@@ -61,16 +41,6 @@ const AppointmentBox = ({
         style={{
           marginTop: mobileW * 3 / 100,
           backgroundColor: '#fff',
-          // shadowOpacity: 0.3,
-          // shadowColor: '#000',
-          // shadowOffset: { width: 1, height: 1 },
-          // elevation: 5,
-          // shadowRadius: 2,
-
-          // shadowColor: '#171717',
-          // shadowOffset: { width: -2, height: 4 },
-          // shadowOpacity: 0.3,
-          // shadowRadius: 3,
 
         }}>
         <View style={{ width: '98%', alignSelf: 'center' }}>
@@ -79,9 +49,7 @@ const AppointmentBox = ({
               flexDirection: 'row',
               width: '100%', alignSelf: 'center',
               padding: (mobileW * 2) / 100,
-              // justifyContent: 'space-between',
             }}>
-            {/* image and store name */}
 
             <View style={{ width: '42%' }}>
               <Text

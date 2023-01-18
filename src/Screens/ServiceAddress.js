@@ -9,7 +9,7 @@ import { windowWidth, deviceHeight, LanguageConfiguration, config, localStorage,
 import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../Assets/Icons/SvgIcons/Index";
 import ScreenHeader from "../Components/ScreenHeader";
 import { useIsFocused } from "@react-navigation/native";
-import AddEditAddress from "../Components/Add_Edit_Address";
+import AddressInputPopup from "../Components/AddressInputPopup";
 import AddressContainer from "../Components/AddressContainer";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 
@@ -180,7 +180,7 @@ const ServiceAddress = ({
 
 
             
-            <AddEditAddress
+            <AddressInputPopup
                 navigation={navigation}
                 visible={addressSheet || isMTrueState}
                 onRequestClose={() => {

@@ -1,8 +1,8 @@
 export const ScreenReferences = {
-    AppointmentTabStack: "Appointmenttab",
-    PriceListTabStack: "PriceListtab",
-    AvailabilityScheduleTabStack: "AvailabilityScheduletab",
-    TransactionTabStack: "Transactiontab",
+    AppointmentTabStack: "Appointments",
+    PriceListTabStack: "PriceList",
+    AvailabilityScheduleTabStack: "AvailabilitySchedule",
+    TransactionTabStack: "Transaction",
 
     Splash: "Splash",
 

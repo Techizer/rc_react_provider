@@ -16,7 +16,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Button from "./Button";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 
-const AddEditAddress = ({
+const AddressInputPopup = ({
     visible,
     onRequestClose,
     type,
@@ -139,8 +139,6 @@ const AddEditAddress = ({
                     MessageFunctions.showSuccess(obj.message)
                     onRequestClose()
                     editedAddress(title)
-                    // user_details['current_address'] = obj.result.current_address
-                    // localStorage.setItemObject("user_arr", user_details);
                 } else {
                     return false;
                 }
@@ -250,7 +248,6 @@ const AddEditAddress = ({
                                 <AuthInputBoxSec
                                     mainContainer={{ marginTop: vs(5), width: '100%' }}
                                     lableText={'Google Map Address'}
-                                    //inputRef={addressRef}
                                     onChangeText={(val) => setGoogleAddress(val)}
                                     value={googleAddress.trim()}
                                     keyboardType="default"
@@ -278,7 +275,6 @@ const AddEditAddress = ({
                                     mainContainer={{ marginTop: vs(5), width: '100%' }}
                                     inputFieldStyle={{ height: vs(35) }}
                                     lableText={'Nearest Landmark'}
-                                    //inputRef={landmarkRef}
                                     onChangeText={(val) => setNearest(val)}
                                     value={nearest}
                                     keyboardType="default"
@@ -433,6 +429,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddEditAddress;
+export default AddressInputPopup;
 
 

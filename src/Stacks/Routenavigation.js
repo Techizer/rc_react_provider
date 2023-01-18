@@ -10,15 +10,15 @@ import MyProfile from '../Screens/MyProfile';
 import EditProfile from '../Screens/EditProfile';
 import Home from '../Screens/Home';
 // import Appointment from '../Screens/Appointment';
-import Appointmenttab from '../Screens/Appointmenttab';
+import Appointments from '../Screens/Appointments';
 import VideoCall from '../Screens/VideoCall';
-import AvailabilityScheduletab from '../Screens/AvailabilityScheduletab';
+import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
 // import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
-import PriceListtab from '../Screens/PriceListtab';
+import PriceList from '../Screens/PriceList';
 // import PriceList from '../PriceList';
 // import LabPackageListing from '../LabPackageListing';
 import LabPackageDetails from '../Screens/LabPackageDetails';
-import Transactiontab from '../Screens/Transactiontab';
+import Transaction from '../Screens/Transaction';
 // import Transaction from '../Transaction';
 import Withdrawal from '../Screens/Withdrawal';
 import AddBankInformation from '../Screens/AddBankInformation';
@@ -131,17 +131,17 @@ const Stacknav = navigation => {
       />
       <Stack.Screen
         name={ScreenReferences.AppointmentTabStack}
-        component={Appointmenttab}
+        component={Appointments}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name={ScreenReferences.AvailabilityScheduleTabStack}
-        component={AvailabilityScheduletab}
+        component={AvailabilitySchedule}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name={ScreenReferences.PriceListTabStack}
-        component={PriceListtab}
+        component={PriceList}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
@@ -162,7 +162,7 @@ const Stacknav = navigation => {
 
       <Stack.Screen
         name={ScreenReferences.TransactionTabStack}
-        component={Transactiontab}
+        component={Transaction}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       

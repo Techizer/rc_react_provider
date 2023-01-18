@@ -3,27 +3,15 @@ import React, { Component, useEffect, useState, useRef } from 'react';
 import {
   Text,
   View,
-  Image,
-  TextInput,
   StyleSheet,
-  ScrollView,
-  Switch,
-  Modal,
   TouchableOpacity,
   Dimensions,
-  Alert,
-  FlatList,
-  BackHandler,
-  Button,
   PermissionsAndroid,
   Platform,
 } from 'react-native';
 
-import DeviceInfo from 'react-native-device-info';
 import {
-  Colors, Font, mobileH, MessageFunctions,
-  MessageTexts, config, mobileW, localStorage,  
-  handleback, LanguageConfiguration, API, MessageHeadings,
+  config, localStorage, API,
 } from '../Helpers/Utils';
 
 import {
@@ -66,7 +54,6 @@ const VideoCall = (props, { navigation }) => {
     }
 
     console.log(props);
-    // returned function will be called on component unmount 
     return () => {
       console.log('countTimeInterval', countTimeInterval, 'timerId', timerId);
       clearInterval(countTimeInterval)
@@ -125,26 +112,22 @@ const VideoCall = (props, { navigation }) => {
   }
 
   const timerClear = () => {
-    // clearInterval(countTimeInterval)
     props.navigation.goBack()
-    // get_call_token('patient_to_doctor_video_call_reject')
   }
 
   const get_call_token = async (callType) => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    // console.log('this.props.pageName:: ', this.props.pageName);
 
     let apiname = "api-get-video-access-token-with-push-notification"
 
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
+    let apishow = apiname
 
     let url = config.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
-    // data.append('lgoin_user_id', user_id)
     data.append('fromUserId', user_id)
     data.append('fromUserName', props.route.params.item.provider_name)
     data.append('order_id', props.route.params.item.order_id)
@@ -153,11 +136,8 @@ const VideoCall = (props, { navigation }) => {
     data.append('toUserName', props.route.params.item.patient_name)
     data.append('type', callType)
 
-    
+
     API.post(url, data).then((obj) => {
-      // API.postRaw(url, myData).then((obj) => {
-      
-      // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         console.log('obj.result', obj.result)
         setToken(obj.result.token)
@@ -196,11 +176,11 @@ const VideoCall = (props, { navigation }) => {
     data.append('toUserName', props.route.params.item.toUserName)
     data.append('type', props.route.params.item.type)
 
-    
+
 
     API.post(url, data).then((obj) => {
       // API.postRaw(url, myData).then((obj) => {
-      
+
       // this.setState({ appoinment_detetails: '' })
       if (obj.status == true) {
         console.log('obj.result', obj.result)
@@ -274,7 +254,7 @@ const VideoCall = (props, { navigation }) => {
       ])
     );
     setlocaltrackVideo(false)
-    
+
     clearInterval(countTimeInterval)
     callTimeCall()
   };
@@ -291,7 +271,7 @@ const VideoCall = (props, { navigation }) => {
 
   const _onNetworkLevelChanged = ({ participant, isLocalUser, quality }) => {
     console.log("Participant", participant, "isLocalUser", isLocalUser, "quality", quality);
-    if(isLocalUser == false && localtrackVideo == false){
+    if (isLocalUser == false && localtrackVideo == false) {
       setlocaltrackVideo(true)
       // setTimeout(() => {
       //   setlocaltrackVideo(true)
@@ -327,22 +307,6 @@ const VideoCall = (props, { navigation }) => {
 
   return (
     <View style={style1.container}>
-      {/* {status === "disconnected" && (
-        <View>
-          <Text style={style1.welcome}>React Native Twilio Video</Text>
-          <TextInput
-            style={style1.input}
-            autoCapitalize="none"
-            value={token}
-            onChangeText={(text) => setToken(text)}
-          ></TextInput>
-          <Button
-            title="Connect"
-            style={style1.button}
-            onPress={_onConnectButtonPress}
-          ></Button>
-        </View>
-      )} */}
 
       {(status === "connected" || status === "connecting") && (
         <View style={style1.callContainer}>
@@ -417,16 +381,12 @@ const VideoCall = (props, { navigation }) => {
                 style={style1.optionButtonEnd}
                 onPress={_onEndButtonPress}
               >
-                {/* <Text style={{ fontSize: 12 }}>End</Text> */}
                 <MaterialIcons style={{ alignSelf: 'center' }}
                   name={"call-end"}
                   size={28}
                   color={'#FFF'} />
               </TouchableOpacity>
             </View>
-
-
-            {/* <TwilioVideoLocalView enabled={true} style={style1.localVideo} /> */}
           </View>
           <View style={style1.localVideo}>
             {
@@ -496,25 +456,13 @@ const style1 = StyleSheet.create({
     position: "absolute",
     right: 20,
     top: 20,
-    // elevation: 3,
-    // zIndex: 999999,
     backgroundColor: 'black'
   },
   remoteGrid: {
-    // flex: 1,
-    // flexDirection: "row",
-    // flexWrap: "wrap",
-    // position: 'relative',
-    // zIndex: -1
   },
   remoteVideo: {
-    // marginTop: 20,
-    // marginLeft: 10,
-    // marginRight: 10,
     width: '100%',
     height: '100%',
-    // position: 'relative',
-    // zIndex: -1
   },
   optionsContainer: {
     position: "absolute",
@@ -523,9 +471,6 @@ const style1 = StyleSheet.create({
     right: 0,
     height: 170,
     backgroundColor: "#041A27",
-    // flexDirection: "row",
-    // alignItems: "center",
-    // justifyContent: "center",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25
   },

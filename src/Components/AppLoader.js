@@ -8,36 +8,33 @@ import {
     Image, Platform
 } from "react-native"
 import Spinner from 'react-native-spinkit';
-export default class AppLoader extends Component {
-    render() {
-        return (
-            <Modal
-                transparent={true}
-                animationType='fade'
-                visible={this.props.loading}
-            >
-                <TouchableOpacity
-                    activeOpacity={1}
-                    style={styles.container}>
-                    {/* Your own Custom component view*/}
-                    {/* <View style={styles.activityIndicatorWrapper}>
-                        <ActivityIndicator 
-                            size="large" 
-                            color='#FFFFFF'
-                        />
-                    </View> */}
-                    <Spinner isVisible={this.props.loading}
-                        size={60} type={(Platform.OS == "ios") ? 'Arc' : 'Circle'}
-                        color={'#0168B3'}
-                        style={{
-                            justifyContent: 'center',
-                            alignSelf: 'center'
-                        }}
-                        />
-                </TouchableOpacity>
-            </Modal>
-        )
-    }
+
+export default AppLoader = ({ loading }) => {
+    return (
+        <Modal
+            transparent={true}
+            animationType='fade'
+            visible={loading}>
+
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.container}>
+
+                <Spinner isVisible={loading}
+                    size={60} 
+                    type={(Platform.OS == "ios") ? 'Arc' : 'Circle'}
+                    color={'#0168B3'}
+                    style={{
+                        justifyContent: 'center',
+                        alignSelf: 'center'
+                    }}
+                />
+
+            </TouchableOpacity>
+
+        </Modal>
+    )
+
 }
 const styles = StyleSheet.create({
     container: {
