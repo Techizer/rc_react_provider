@@ -210,7 +210,7 @@ export default Home = ({ navigation, route }) => {
     data.append("login_user_id", user_id);
     data.append("user_type", user_type);
     API
-      .post(url, data, 0)
+      .post(url, data, 1)
       .then((completionData) => {
         state.HomeHealthcareServiceAppointments[0].actionColor = '#FFD553'
         state.HomeHealthcareServiceAppointments[0].actionTextColor = '#886701'
@@ -375,6 +375,10 @@ export default Home = ({ navigation, route }) => {
       }
     }).catch((error) => {
       getProfile()
+      setState(prev => ({
+        ...prev,
+        notification_count: 0
+      }))
       console.log("-------- error ------- " + error);
     })
 
@@ -488,7 +492,7 @@ export default Home = ({ navigation, route }) => {
             contentContainerStyle={{ paddingBottom: 120 }}
             showsVerticalScrollIndicator={false}
             horizontal={false}
-            ListHeaderComponent={state?.profileCompletionData ? () => {
+            ListHeaderComponent={(state?.profileCompletionData && state?.notification_count !== '') ? () => {
               const cProgress = (state?.profileCompletionData) ? state?.profileCompletionData?.total_complete : 25
               return (
                 <View style={{
@@ -514,7 +518,7 @@ export default Home = ({ navigation, route }) => {
                     }}>
 
                       <CircularProgress
-                        duration={500}
+                        duration={400}
                         activeStrokeColor={'#0888D1'}
                         inActiveStrokeColor='#E2E7EE'
                         maxValue={100}
@@ -529,6 +533,7 @@ export default Home = ({ navigation, route }) => {
                         strokeLinecap={'butt'}
                         radius={mobileW / 7.5}
                         progressValueColor='#0888D1'
+                        
 
                       />
 

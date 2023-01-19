@@ -27,13 +27,14 @@ const renderTabBar = props => (
     {...props}
     indicatorStyle={{
       backgroundColor: Colors.Theme,
-      height: (mobileW * 0.75) / 100,
+      height: 0
+      // height: (mobileW * 0.75) / 100,
       // borderTopRightRadius: 10,
       // borderTopLeftRadius: 10
     }}
     activeColor={Colors.Theme}
     inactiveColor={'#354052'}
-    style={{ backgroundColor: '#F1F2F4' }}
+    style={{ backgroundColor: '#F1F2F4', height: 0 }}
     labelStyle={{
       textTransform: 'capitalize',
       fontSize: (mobileW * 3.25) / 100,
@@ -58,7 +59,7 @@ const renderTabBar = props => (
   />
 );
 
-export default function AvailabilitySchedule({ navigation }) {
+export default AvailabilitySchedule = ({ navigation }) => {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
@@ -84,16 +85,16 @@ export default function AvailabilitySchedule({ navigation }) {
           arbic_name: 'الجميع ',
           pass_status: 'all',
           status: true,
-          key: 'taskschedule', title: 'Task Schedule'
+          key: 'taskschedule', title: 'Time Schedule'
         },
-        {
-          id: 2,
-          name: 'Pending',
-          arbic_name: 'ممرضة  ',
-          pass_status: 'nurse',
-          status: false,
-          key: 'hourlyschedule', title: 'Hourly Schedule'
-        },
+        // {
+        //   id: 2,
+        //   name: 'Pending',
+        //   arbic_name: 'ممرضة  ',
+        //   pass_status: 'nurse',
+        //   status: false,
+        //   key: 'hourlyschedule', title: 'Hourly Schedule'
+        // },
 
       ])
     } else if (user_type == "caregiver" || user_type == "babysitter") {

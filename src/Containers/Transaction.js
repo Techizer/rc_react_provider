@@ -124,7 +124,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   flexDirection: 'row',
                 }}>
                 <View style={{
-                  width: '20%',
+                  width: '27%',
                 }}>
                   <Text
                     style={{
@@ -155,6 +155,8 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                 <View
                   style={{
                     width: '20%',
+                    paddingRight: '4%',
+                    alignItems: 'center'
                   }}>
                   <Text
                     style={{
@@ -178,7 +180,9 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                 <View
                   style={{
-                    width: '20%',
+                    width: '18%',
+                    paddingRight: '4%',
+                    alignItems: 'center'
                   }}>
                   <Text
                     style={{
@@ -202,11 +206,11 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                 <View
                   style={{
-                    width: '20%',
+                    width: '15%',
                   }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: 'center',
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
                       fontSize: mobileW * 3.6 / 100,
@@ -248,14 +252,14 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                           flexDirection: 'row',
                         }}>
                         <View style={{
-                          width: '20%',
+                          width: '27%',
                         }}>
                           <Text
                             style={{
                               textAlign: config.textRotate,
                               color: Colors.textblue,
                               fontFamily: Font.Regular,
-                              fontSize: mobileW * 3 / 100,
+                              fontSize: mobileW * 2.5 / 100,
                             }}>
                             {item?.order_id}
                           </Text>
@@ -279,11 +283,12 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                         <View
                           style={{
                             width: '20%',
+                            paddingRight: '4%'
                           }}>
 
                           <Text
                             style={{
-                              textAlign: config.textRotate,
+                              textAlign: 'right',
                               color: Colors.placeholder_text_color,
                               fontFamily: Font.Regular,
                               fontSize: mobileW * 3 / 100,
@@ -294,12 +299,13 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                         <View
                           style={{
-                            width: '20%',
+                            width: '18%',
+                            paddingRight: '4%'
                           }}>
 
                           <Text
                             style={{
-                              textAlign: config.textRotate,
+                              textAlign: 'right',
                               color: Colors.placeholder_text_color,
                               fontFamily: Font.Regular,
                               fontSize: mobileW * 3 / 100,
@@ -310,27 +316,18 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                         <View
                           style={{
-                            width: '20%',
+                            width: '15%',
                           }}>
-                          <View style={{
-                            backgroundColor: Colors[item?.paymentStatus], //'#4FB82A',
-                            height: mobileW * 5 / 100,
-                            width: mobileW * 15 / 100,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderRadius: 3
-                          }}>
-                            <Text
+                          <Text
                               style={{
-                                textAlign: 'center',
-                                color: Colors.white_color,
+                                color: Colors[item?.paymentStatus],
                                 fontFamily: Font.Medium,
                                 fontSize: mobileW * 2.3 / 100,
+                                textAlign: 'center'
 
                               }}>
                               {item?.paymentStatus}
                             </Text>
-                          </View>
 
                         </View>
 

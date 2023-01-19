@@ -176,7 +176,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     get_Services()
   }, [])
 
-  get_Services = async () => {
+  const get_Services = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
@@ -255,7 +255,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
   }
 
-  submitPress = () => {
+  const submitPress = () => {
     if (state.accept_booking == '1') {
       insertUpdatePriceList()
     } else {
@@ -298,7 +298,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
   }
 
-  insertUpdatePriceList = async () => {
+  const insertUpdatePriceList = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     console.log({ user_details });
     let user_id = user_details['user_id']
@@ -315,41 +315,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
     let url = config.baseURL + apishow;
 
-    var data = new FormData();
-    // data.append('lgoin_user_id', user_id)
-    // { "user_id":"39","service_type":"nurse",
-    // "task_type":"hour_base","task_id":"1,2,3,4,5","price":"100,200,300,400,600"}
-
-    //   {"accept_booking":"0",
-    //   "service_type":"doctor",
-    //   "slot_type":"online/home_visit",
-    //   "slots":[{"slot_day":"MON","slot_day_enable":"1",
-    //   "slot_end_time":"08:30 PM","slot_start_time":"08:30 AM"},
-    //   {"slot_day":"TUE","slot_day_enable":"1",
-    //   "slot_end_time":"08:30 PM","slot_start_time":"08:30 AM"},
-    //   {"slot_day":"WED","slot_day_enable":"1",
-    //   "slot_end_time":"08:30 PM","slot_start_time":"08:30 AM"},
-    //   {"slot_day":"THU","slot_day_enable":"1",
-    //   "slot_end_time":"08:30 PM","slot_start_time":"08:30 AM"},
-    //   {"slot_day":"FRI","slot_day_enable":"1",
-    //   "slot_end_time":"08:30 PM","slot_start_time":"08:30 AM"},
-    //   {"slot_day":"SAT","slot_day_enable":"1",
-    //   "slot_end_time":"08:30 PM","slot_start_time":"08:30 AM"},
-    //   {"slot_day":"SUN","slot_day_enable":"1",
-    //   "slot_end_time":"08:30 PM","slot_start_time":"08:30 AM"}],
-
-    //   "user_id":"Login User id",
-    //   "service_address":"service addree",
-    //   "service_lat":"Service Lat",
-    //   "service_long": "Service long",
-    //   "service_radius": "Radius"
-    // }
-
-    // let slotsArr = [{ "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }, { "slot_day": "TUE", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }, { "slot_day": "WED", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }, { "slot_day": "THU", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }, { "slot_day": "FRI", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }, { "slot_day": "SAT", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }, { "slot_day": "SUN", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }];
-
-    data.append('accept_booking', state.accept_booking)
-    data.append('user_id', user_id)
-
     let task_type = ""
     if (page == "onlinehomeschedule") {
       task_type = "doctorslot"
@@ -361,16 +326,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
       task_type = "hour_base"
     }
 
-    // Slot Type Cancel
-    data.append('slot_type', task_type)
-    data.append('service_type', user_type)
-    data.append('slots', JSON.stringify(state.slotArr))
-
-    data.append('service_address', "Riyadh Road, Al Hofuf Saudi Arabia")
-    data.append('service_lat', "25.3535551")
-    data.append('service_long', "49.5264586")
-    data.append('service_radius', "")
-
     var myData = JSON.stringify({
       accept_booking: state.accept_booking,
       user_id: user_id,
@@ -378,22 +333,10 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
       service_type: user_type,
       slots: state.slotArr,
       // Remove these
-      service_address: state.service_address,
-      service_lat: state.service_lat,
-      service_long: state.service_long,
-      service_radius: state.service_radius,
-    });
-    console.log('-------------------------------');
-    console.log({
-      accept_booking: state.accept_booking,
-      user_id: user_id,
-      slot_type: task_type,
-      service_type: user_type,
-      slots: state.slotArr,
-      service_address: state.service_address,
-      service_lat: state.service_lat,
-      service_long: state.service_long,
-      service_radius: state.service_radius,
+      // service_address: state.service_address,
+      // service_lat: state.service_lat,
+      // service_long: state.service_long,
+      // service_radius: state.service_radius,
     });
     console.log('-------------------------------');
     API.postRaw(url, myData).then((obj) => {
@@ -410,18 +353,18 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
   }
 
-  GetHours = (d) => {
+  const GetHours = (d) => {
     var h = parseInt(d.split(':')[0]);
     if (d.split(':')[1].split(' ')[1] == "PM") {
       h = h + 12;
     }
     return h;
   }
-  GetMinutes = (d) => {
+  const GetMinutes = (d) => {
     return parseInt(d.split(':')[1].split(' ')[0]);
   }
 
-  openGooglePlace = () => {
+  const openGooglePlace = () => {
     setState(
       prev => ({
         ...prev,
@@ -430,7 +373,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     )
   };
 
-  closeGooglePlace = () => {
+  const closeGooglePlace = () => {
     setState(
       prev => ({
         ...prev,
@@ -440,7 +383,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     )
   };
 
-  selectGooglePlace = (info) => {
+  const selectGooglePlace = (info) => {
     setState(
       prev => ({
         ...prev,
@@ -452,7 +395,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     );
   };
 
-  validationTime = (strStartTime, strEndTime, isStart, index) => {
+  const validationTime = (strStartTime, strEndTime, isStart, index) => {
     var isError = false;
     var strStartTime = strStartTime //value;
     var strEndTime = strEndTime //item?.slot_end_time;
@@ -858,70 +801,65 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
                               </View>
                             </> :
-                            <>
-                              <Text style={Styles.textheading}>Bookings Preferences:</Text>
-                              <View
-                                style={{
-                                  width: '100%',
-                                  alignSelf: 'center',
-                                  marginTop: (mobileW * 3) / 100,
-                                  marginBottom: (mobileW * 2 / 100),
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                }}>
-                                <View
-                                  style={{
-                                    width: '100%',
-                                    alignSelf: 'center',
-                                    flexDirection: 'row',
-                                    // backgroundColor: 'red'
-                                  }}>
-                                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                      {/* {state.mabtn == false && */}
-                                      <TouchableOpacity
-                                        onPress={() => {
-                                        }}
-                                        style={{
-                                          width: '100%',
-                                          alignSelf: 'center',
-                                          flexDirection: 'row',
-                                        }}>
-                                        <View style={{
-                                          width: 22,
-                                          height: 22,
-                                          borderRadius: 22,
-                                          borderWidth: (state.mabtn == false) ? 1 : 6,
-                                          borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
-                                        }} />
-                                        {/* <Icon style={{ alignSelf: 'center' }}
-                                        name={(state.mabtn == false) ? "circle-thin" : "dot-circle-o"}
-                                        size={22}
-                                        color={(state.mabtn == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
-
-                                        <View style={{ width: '70%', alignSelf: 'center' }}>
-                                          <Text
-                                            style={{
-                                              marginLeft: mobileW * 1.5 / 100,
-                                              textAlign: config.textRotate,
-                                              fontFamily: Font.Regular,
-                                              color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
-                                              fontSize: Font.placeholdersize + 1,
-                                            }}>
-                                            {(page == 'taskschedule') ? '30 Min Slots' : (page == 'labschedule') ? '45 Min Slots' : '2, 4, 6, 8, 12 Hours'}
-                                          </Text>
-                                        </View>
-                                      </TouchableOpacity>
+                            <></>
+                            // <>
+                            //   <Text style={Styles.textheading}>Bookings Preferences:</Text>
+                            //   <View
+                            //     style={{
+                            //       width: '100%',
+                            //       alignSelf: 'center',
+                            //       marginTop: (mobileW * 3) / 100,
+                            //       marginBottom: (mobileW * 2 / 100),
+                            //       flexDirection: 'row',
+                            //       alignItems: 'center',
+                            //     }}>
+                            //     <View
+                            //       style={{
+                            //         width: '100%',
+                            //         alignSelf: 'center',
+                            //         flexDirection: 'row',
+                            //       }}>
+                            //       <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                            //         <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                      
+                            //           <TouchableOpacity
+                            //             onPress={() => {
+                            //             }}
+                            //             style={{
+                            //               width: '100%',
+                            //               alignSelf: 'center',
+                            //               flexDirection: 'row',
+                            //             }}>
+                            //             <View style={{
+                            //               width: 22,
+                            //               height: 22,
+                            //               borderRadius: 22,
+                            //               borderWidth: (state.mabtn == false) ? 1 : 6,
+                            //               borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
+                            //             }} />
+                            //             <View style={{ width: '70%', alignSelf: 'center' }}>
+                            //               <Text
+                            //                 style={{
+                            //                   marginLeft: mobileW * 1.5 / 100,
+                            //                   textAlign: config.textRotate,
+                            //                   fontFamily: Font.Regular,
+                            //                   color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
+                            //                   fontSize: Font.placeholdersize + 1,
+                            //                 }}>
+                            //                 {(page == 'taskschedule') ? '30 Min Slots' : (page == 'labschedule') ? '45 Min Slots' : '2, 4, 6, 8, 12 Hours'}
+                            //               </Text>
+                            //             </View>
+                            //           </TouchableOpacity>
 
 
 
-                                    </View>
+                            //         </View>
 
 
-                                  </View>
-                                </View>
-                              </View>
-                            </>
+                            //       </View>
+                            //     </View>
+                            //   </View>
+                            // </>
                         }
 
 

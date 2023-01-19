@@ -24,6 +24,7 @@ import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { AppointmentBox } from '../Components'
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import AppointmentItem from '../Components/AppointmentItem';
 
 const tabheadings = [
   {
@@ -97,13 +98,13 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
 
   // Call on tab bar tap
-  tapOnTabNavigator = (pageName) => {
+  const tapOnTabNavigator = (pageName) => {
     console.log('pageName addListener:: ', pageName);
     // get_Services_reload_tabpress(pageName)
     get_Services(1)
   }
 
-  get_Services_reload_tabpress = async (pageName) => {
+  const get_Services_reload_tabpress = async (pageName) => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
@@ -162,17 +163,15 @@ export default Appointment = ({ navigation, route, pageName }) => {
         return false;
       }
     }).catch((error) => {
-      //console.log("-------- error ------- ", error)
-
     });
 
   }
 
-  reloadList = () => {
+  const reloadList = () => {
     get_Services(1)
   }
 
-  check_date = (item, index) => {
+  const check_date = (item, index) => {
     let data = state.date_array;
     console.log('new data', data)
 
@@ -194,7 +193,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
   }
 
-  get_day = () => {
+  const get_day = () => {
     var today = new Date();
     var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 28);
     let datenew_show = today.getDate()
@@ -261,7 +260,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
     )
   };
 
-  get_Services = async (page) => {
+  const get_Services = async (page) => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
@@ -279,7 +278,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
       apiname = "api-provider-past-appointment-list"
     }
 
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
+    let apishow = apiname 
 
     let url = config.baseURL + apishow;
     //console.log("url", url)
@@ -323,7 +322,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
   }
 
-  submit_btn = async () => {
+  const submit_btn = async () => {
 
     if (state.time_take_data.length <= 0) {
       MessageFunctions.toast(MessageTexts.EmptyTime[config.language], 'center')
@@ -378,7 +377,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
   }
 
-  showConfirmDialogReject = (acceptance_status) => {
+  const showConfirmDialogReject = (acceptance_status) => {
     return Alert.alert(
       "Are your sure?",
       "Are you sure you want to reject this appointment?",
@@ -390,8 +389,6 @@ export default Appointment = ({ navigation, route, pageName }) => {
             updateProviderAppointmentStatus(acceptance_status)
           },
         },
-        // The "No" button
-        // Does nothing but dismiss the dialog when tapped
         {
           text: "No",
         },
@@ -399,13 +396,12 @@ export default Appointment = ({ navigation, route, pageName }) => {
     );
   };
 
-  updateProviderAppointmentStatus = async (acceptance_status) => {
+  const updateProviderAppointmentStatus = async (acceptance_status) => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let url = config.baseURL + "api-update-provider-appointment-status";
-    console.log("url", url)
-    // {id:126,service_type:nurse,'acceptance_status':Accept}
+    
     var data = new FormData();
     data.append('id', state.id)
     data.append('service_type', user_type)
@@ -437,7 +433,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
   }
 
-  get_all_notification = async () => {
+  const get_all_notification = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
     // console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
@@ -468,7 +464,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
   }
 
-  get_time_date = async () => {
+  const get_time_date = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
 
@@ -646,7 +642,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
   }
 
-  time_tick = (item, index) => {
+  const time_tick = (item, index) => {
     let data = state.time_Arr;
     console.log('new data', data)
     // if(data[index].time_status==true)
@@ -699,7 +695,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
                   if (state.appoinment_detetails != '' && state.appoinment_detetails != null) {
                     return (
                       <>
-                        <AppointmentBox
+                        <AppointmentItem
                           item={item}
                           index={index}
                           onPressViewDetails={() => {
@@ -752,8 +748,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
                       </>
                     );
                   }
-                }
-                }
+                }}
               /> :
               <View style={{
                 justifyContent: 'center',
@@ -925,24 +920,17 @@ export default Appointment = ({ navigation, route, pageName }) => {
                                     alignSelf: 'center',
                                     fontSize: mobileW * 3.6 / 100,
                                     fontFamily: Font.Regular,
-
                                     color: '#000',
-
-
                                   }}>
                                   {item.name}
                                 </Text>
                                 <Text
                                   style={{
-
                                     width: '30%',
-
                                     fontSize: mobileW * 3.6 / 100,
                                     fontFamily: Font.Regular,
                                     color: '#000',
-
                                     textAlign: 'right',
-
                                   }}>
                                   {item.price}
                                 </Text>
@@ -968,22 +956,17 @@ export default Appointment = ({ navigation, route, pageName }) => {
                               marginTop: mobileW * 2 / 100,
                               borderColor: '#0168B3',
                               borderWidth: 2,
-
                               width: mobileW * 30 / 100, backgroundColor: '#fff',
                             }}>
                               <View
                                 style={{
                                   backgroundColor: '#0168B3',
-
                                   borderTopLeftRadius: (mobileW * 1.2) / 100,
                                   borderTopRightRadius: (mobileW * 1.2) / 100,
                                   width: '100%'
-
                                 }}>
                                 <Text
                                   style={{
-                                    // backgroundColor:'red',
-                                    // paddingHorizontal: (mobileW * 5) / 100,
                                     paddingVertical: (mobileW * 1.5) / 100,
                                     color: Colors.white_color,
                                     fontFamily: Font.Medium,
@@ -996,8 +979,6 @@ export default Appointment = ({ navigation, route, pageName }) => {
                               </View>
                               <Text
                                 style={{
-
-
                                   paddingVertical: (mobileW * 2) / 100,
                                   fontFamily: Font.Medium,
                                   textAlign: 'center',

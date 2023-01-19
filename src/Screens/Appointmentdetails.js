@@ -5,7 +5,7 @@ import {
   StyleSheet, SafeAreaView, Image, TouchableOpacity,
   Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar
 } from 'react-native';
-import { Cameragallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings, } from '../Helpers/Utils';
+import { Cameragallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings, } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -24,6 +24,9 @@ import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { s, vs } from 'react-native-size-matters';
+import { SvgXml } from 'react-native-svg';
+import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
 
 export default class AppointmentDetails extends Component {
 
@@ -223,9 +226,9 @@ export default class AppointmentDetails extends Component {
     data.append('service_type', user_type)
 
 
-    
+
     API.post(url, data, page).then((obj) => {
-      
+
 
       if (obj.status == true) {
 
@@ -305,9 +308,9 @@ export default class AppointmentDetails extends Component {
     data.append('service_type', this.state.status_pass)
 
 
-    
+
     API.post(url, data).then((obj) => {
-      
+
 
       if (obj.status == true) {
 
@@ -724,9 +727,9 @@ export default class AppointmentDetails extends Component {
     data.append('service_type', user_type)
     data.append('acceptance_status', acceptance_status)
 
-    
+
     API.post(url, data).then((obj) => {
-      
+
       if (obj.status == true) {
         console.log('obj.result', obj.result)
         // let appoinment_detetails = [...this.state.appoinment_detetails];
@@ -763,9 +766,9 @@ export default class AppointmentDetails extends Component {
     data.append('service_type', user_type)
     data.append('otp', this.state.ennterOTP)
 
-    
+
     API.post(url, data).then((obj) => {
-      
+
       if (obj.status == true) {
         console.log('obj.result', obj.result)
         // let appoinment_detetails = [...this.state.appoinment_detetails];
@@ -801,7 +804,7 @@ export default class AppointmentDetails extends Component {
       // data.append('report', this.state.reportsArr)
       console.log('this.state.reportsArr::: ', this.state.reportsArr)
       for (var i = 0; i < this.state.reportsArr.length; i++) {
-        
+
         let dataObj = {
           uri: this.state.reportsArr[i].path,
           type: this.state.reportsArr[i].mime, //'image/jpg',
@@ -818,7 +821,7 @@ export default class AppointmentDetails extends Component {
     console.log('data::: ', data)
 
     API.post(url, data).then((obj) => {
-      
+
       if (obj.status == true) {
         this.setState({
           reportModalVisible: false,
@@ -851,7 +854,7 @@ export default class AppointmentDetails extends Component {
     this.setState({
       reportModalVisible: (this.state.isFromReportModal == true) ? true : false
     }, () => {
-      
+
     })
   }
 
@@ -981,10 +984,10 @@ export default class AppointmentDetails extends Component {
         name: (Platform.OS == 'ios') ? this.state.provider_prescription.filename : 'image',
       })
     }
-    
+
 
     API.post(url, data).then((obj) => {
-      
+
       console.log('obj mess', obj.message)
       if (obj.status == true) {
         // var user_details = obj.user_details;
@@ -998,14 +1001,7 @@ export default class AppointmentDetails extends Component {
         }, 500);
 
       } else {
-        // if (obj.active_status == 0 || obj.msg == MessageHeadings.user_not_exist[config.language]) {
-        //   setTimeout(() => {
-        //     MessageFunctions.alert(MessageHeadings.information[config.language], obj.msg[config.language], false);
-        //   }, 200)
-        //   config.checkUserDeactivate(this.props.navigation)
-        // } else {
         setTimeout(() => {
-          // this.setState({ error_msg: obj.message, status_new: obj.status, modalVisible3: true })
           MessageFunctions.showError(obj.message)
         }, 200)
         // }
@@ -1149,7 +1145,7 @@ export default class AppointmentDetails extends Component {
   }
 
   render() {
-    
+
     const windowHeight = Math.round(Dimensions.get("window").height);
     const windowWidth = Math.round(Dimensions.get("window").width);
     const deviceHeight = Dimensions.get('screen').height;
@@ -1220,18 +1216,17 @@ export default class AppointmentDetails extends Component {
           <SafeAreaView style={{ flex: 1 }}></SafeAreaView>
 
           <ScreenHeader
-          onBackPress={() => {
-            this.props.navigation.goBack();
-          }}
-          leftIcon
-          rightIcon={false}
-          navigation={this.props.navigation}
-          title={LanguageConfiguration.AppointmentDetails[config.language]}
-          style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+            onBackPress={() => {
+              this.props.navigation.goBack();
+            }}
+            leftIcon
+            rightIcon={false}
+            navigation={this.props.navigation}
+            title={LanguageConfiguration.AppointmentDetails[config.language]}
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
           <Modal
             backdropOpacity={3}
-            //  style={{backgroundColor: Colors.dim_grey}}
             animationType="slide"
             transparent={true}
             visible={this.state.modalVisible}
@@ -1676,7 +1671,14 @@ export default class AppointmentDetails extends Component {
             contentContainerStyle={{ flexGrow: 1 }}
 
             showsVerticalScrollIndicator={false}  >
-            <KeyboardAwareScrollView>
+            <KeyboardAwareScrollView extraScrollHeight={50}
+              enableOnAndroid={true}
+              keyboardShouldPersistTaps='handled'
+              contentContainerStyle={{
+                justifyContent: 'center',
+                paddingBottom: vs(30),
+              }}
+              showsVerticalScrollIndicator={false}>
               <Modal
                 backdropOpacity={3}
                 //  style={{backgroundColor: Colors.dim_grey}}
@@ -1809,268 +1811,277 @@ export default class AppointmentDetails extends Component {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: Colors.white_color,
-                  marginTop: (mobileW * 2) / 100,
                   marginBottom: (mobileW * 40) / 100,
                   shadowOpacity: 0.3,
                   shadowColor: '#000',
                   shadowOffset: { width: 2, height: 2 },
                   elevation: 2,
+                  paddingVertical: vs(9),
+                  backgroundColor: Colors.White,
                 }}>
                 <View style={{}}>
-                  {/* booking heading */}
 
                   <View>
-                    {/* // heading */}
+
+                    {/* Order ID & Status */}
                     <View
                       style={{
-                        width: '90%',
-                        alignSelf: 'center',
+                        flexDirection: "row",
                         justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        borderBottomWidth: (mobileW * 0.3) / 100,
-                        borderColor: Colors.gainsboro,
-                        paddingVertical: (mobileW * 3) / 100,
+                        width: "100%",
+                        alignSelf: "center",
+                        borderBottomWidth: 1.5,
+                        borderBottomColor: Colors.backgroundcolor,
+                        paddingBottom: vs(5),
+                        paddingHorizontal: s(13),
 
                       }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.regulartext_size,
-                            color: Colors.darkgraytextheading,
-                          }}>{LanguageConfiguration.BookingID[config.language]}
 
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.regulartext_size,
-                            color: Colors.theme_color,
-                            marginLeft: mobileW * 2 / 100,
-                          }}>{item.order_id}
-                        </Text>
-                      </View>
-                      <View>
-                        <Text
-                          style={{
-                            color: '#FCFFFE',
-                            backgroundColor:
-                              item.acceptance_status == 'Rejected'
-                                ? '#FF4500' :
-                                item.acceptance_status == 'Pending'
-                                  ? Colors.gold
-                                  : Colors.buttoncolorhgreen,
-                            fontFamily: Font.Medium,
-                            fontSize: (mobileW * 3) / 100,
-                            padding: (mobileW * 2) / 100,
-                            textTransform: 'uppercase',
-                            paddingVertical: (mobileW * 0.6) / 100,
-                          }}>
-                          {item.acceptance_status}
-                        </Text>
-                      </View>
+                      <Text
+                        style={{
+                          fontSize: Font.small,
+                          fontFamily: Font.Medium,
+                          color: Colors.Theme
+                        }}
+                      >
+                        {item.order_id}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: Font.small,
+                          fontFamily: Font.Medium,
+                          color: item?.acceptance_status === 'Pending' ? Colors.Yellow : (item?.acceptance_status === 'Completed' || item?.acceptance_status === 'Accepted') ? Colors.Green : Colors.Red,
+                        }}
+                      >
+                        {item.acceptance_status}
+                      </Text>
+
                     </View>
 
+                    {/* Profile Image and Personal Details */}
                     <View
                       style={{
-                        flexDirection: 'row',
-                        padding: (mobileW * 5) / 100,
-                        alignItems: 'center',
-                        paddingVertical: (mobileW * 4) / 100,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        paddingVertical: vs(11),
+                        paddingHorizontal: s(13),
                       }}>
-
-
-                      <View style={{ width: '28%', alignSelf: 'center' }}>
-                        <Image
-                          source={item.provider_image == 'NA' || item.provider_image == null || item.provider_image == '' ? Icons.AccountFilled : { uri: config.img_url3 + item.provider_image }}
-
-                          style={{
-                            width: (mobileW * 21) / 100,
-                            height: (mobileW * 21) / 100,
-                            borderWidth: 1,
-                            borderColor: Colors.theme_color,
-                            borderRadius: (mobileW * 11.5) / 100,
-                          }}></Image>
+                      <View style={{ width: "28%", alignSelf: "center" }}>
+                        {
+                          (item.provider_image == "NA" || item.provider_image == null || item.provider_image == "") ?
+                            <SvgXml xml={dummyUser = ''} style={{
+                              alignSelf: "center",
+                              marginTop: vs(5)
+                            }} />
+                            :
+                            <Image
+                              source={{ uri: config.img_url3 + item.provider_image }}
+                              style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, bordercolor: Colors.Highlight }}
+                            />
+                        }
                       </View>
 
                       <View
                         style={{
-                          width: '60%',
+                          width: "60%",
                         }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Font.Medium,
+                              color: Colors.Theme,
+                              fontSize: Font.small,
+                              alignSelf: 'flex-start',
+                            }}>
+                            {item.service_type}
+                          </Text>
+                          {item.hospital_id != "" && (
+                            <Text
+                              style={{
+                                color: "#FCFFFE",
+                                backgroundColor: "#FFA800",
+                                fontFamily: Font.Medium,
+                                fontSize: Font.medium,
+                                padding: (windowWidth * 2) / 100,
+                                marginTop: -3,
+                                marginLeft: 10,
+                                paddingVertical: (windowWidth * 0.6) / 100,
+                              }}
+                            >
+                              {LanguageConfiguration.Hospital[config.language]}
+                            </Text>
+                          )}
+                        </View>
                         <Text
                           style={{
                             fontFamily: Font.Medium,
-                            color: Colors.theme_color,
-                            fontSize: mobileW * 3.6 / 100,
-                            textTransform: 'uppercase',
-                            textAlign: config.textRotate
-                          }}>
-                          {item.service_type}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: mobileW * 3.5 / 100,
-                            paddingVertical: (mobileW * 1.1) / 100,
-                            color: Colors.darkgraytextheading,
-                            textAlign: config.textRotate
-
-                          }}>
+                            fontSize: Font.medium,
+                            paddingVertical: (windowWidth * 1.1) / 100,
+                            color: Colors.DarkGrey,
+                            alignSelf: 'flex-start',
+                          }}
+                        >
                           {item.provider_name}
                         </Text>
                         <Text
                           style={{
                             fontFamily: Font.Regular,
-                            fontSize: mobileW * 3.5 / 100,
-                            color: Colors.cardlighgray,
-                            textAlign: config.textRotate
-                          }}>
+                            fontSize: Font.small,
+                            color: Colors.DarkGrey,
+                            alignSelf: 'flex-start',
+                          }}
+                        >
                           {item.speciality}
                         </Text>
-
                       </View>
                     </View>
-                    {/* appointment details */}
+
+                    {/* Appointment Schedule Section */}
                     <View
                       style={{
                         backgroundColor: Colors.appointmentdetaillightblue,
-                        padding: (mobileW * 5) / 100,
+                        paddingHorizontal: s(13),
+                        paddingVertical: vs(10)
                       }}>
-                      <View>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.headingfont_booking,
-                            color: Colors.theme_color,
-                            textAlign: config.textRotate,
-                            paddingBottom: (mobileW * 3) / 100,
-                          }}>{LanguageConfiguration.appointment_schedule[config.language]}
+                      <Text
+                        style={{
+                          fontFamily: Font.Medium,
+                          fontSize: Font.small,
+                          color: Colors.darkText,
+                          alignSelf: 'flex-start',
+                          paddingBottom: (windowWidth * 3) / 100,
+                        }}
+                      >
+                        {LanguageConfiguration.appointment_schedule[config.language]}
+                      </Text>
 
-                        </Text>
-                      </View>
-                      <View style={{}}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}>
+
                         <View
                           style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-
+                            flex: 1,
+                            marginTop: (windowWidth * 1) / 100,
                           }}>
-                          {/* image and store name */}
-
-                          <View
+                          <Text
                             style={{
-                              width: '50%',
-                              marginTop: mobileW * 1 / 100
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: Font.Medium,
-                                color: Colors.theme_color,
-                                fontSize: Font.regulartext_size,
-                                textAlign: config.textRotate,
-                              }}>
-                              {LanguageConfiguration.AppointmentDate[config.language]}
-                            </Text>
-                            <Text
-                              style={{
-                                fontFamily: Font.Medium,
-                                fontSize: Font.ssubtext,
-                                color: Colors.darkgraytextheading,
-                                textAlign: config.textRotate,
-                                paddingTop: (mobileW * 1) / 100,
-                              }}>
-                              {item.app_date}
-                            </Text>
-
-                            <View
-                              style={{
-                                marginTop: mobileW * 3 / 100,
-                                borderRadius: (mobileW * 1) / 100,
-                                borderWidth: 1,
-                                width: '80%',
-                                paddingVertical: mobileW * 1 / 100,
-                                backgroundColor: '#fff',
-                                borderColor: Colors.theme_color
-                              }}>
-                              <Text
-                                style={{
-                                  fontFamily: Font.Medium,
-                                  fontSize: mobileW * 3 / 100,
-                                  color: Colors.theme_color,
-                                  textAlign: 'center'
-                                }}>
-                                {item.task_type}
-                              </Text>
-                            </View>
-                          </View>
-
-                          <View
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
+                            }}
+                          >
+                            {LanguageConfiguration.Date[config.language]}
+                          </Text>
+                          <Text
                             style={{
-                              width: '50%',
-                              alignItems: 'flex-end'
+                              fontFamily: Font.Medium,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
+                              marginTop: vs(5)
+                            }} >
+                            {item.app_date}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1.35,
+                            marginTop: (windowWidth * 1) / 100,
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
+                            }}
+                          >
+                            {LanguageConfiguration.Time[config.language]}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: Font.Medium,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
+                              marginTop: vs(5)
+                            }} >
+                            {item.app_time}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 0.65,
+                            marginTop: (windowWidth * 1) / 100,
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
+                            }}
+                          >
+                            {'Type'}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: Font.Medium,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
+                              textAlign: 'left',
+                              marginTop: vs(5)
+                            }} >
+                            {item?.task_type}
+                          </Text>
+                        </View>
+
+                      </View>
+
+                      <View
+                        style={{
+                          width: "100%",
+                          alignSelf: "center",
+                          borderTopWidth: 1.5,
+                          borderTopColor: '#D8D8D8',
+                          marginTop: vs(10),
+                          paddingTop: vs(8)
+                        }}>
+
+                        <View
+                          style={{
+                            width: "42%",
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                            alignItems: 'center'
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.DarkGrey,
                             }}>
-                            <View>
-                              <Text
-                                style={{
-
-                                  fontFamily: Font.Medium,
-                                  color: Colors.theme_color,
-                                  fontSize: Font.regulartext_size,
-                                  textAlign: config.textRotate,
-                                }}>{LanguageConfiguration.AppointmentTime[config.language]}
-
-                              </Text>
-                              <Text
-                                style={{
-                                  fontFamily: Font.Medium,
-                                  fontSize: Font.ssubtext, textAlign: config.textRotate,
-                                  color: Colors.darkgraytextheading,
-                                  paddingTop: (mobileW * 1) / 100,
-                                }}>
-                                {item.app_time}
-                              </Text>
-
-                              <View
-                                style={{
-                                  width: '100%',
-                                  flexDirection: 'row',
-                                  marginTop: mobileW * 3 / 100
-
-                                }}>
-                                {config.language == 0 ?
-                                  <Image
-                                    source={Icons.Clock}
-                                    style={{
-                                      tintColor: Colors.theme_color,
-                                      resizeMode: 'contain',
-                                      width: (mobileW * 4) / 100,
-                                      height: (mobileW * 4) / 100,
-                                    }}></Image> :
-                                  <Image
-                                    source={Icons.ClockRTLFilled}
-                                    style={{
-                                      tintColor: Colors.theme_color,
-                                      resizeMode: 'contain',
-                                      width: (mobileW * 4) / 100,
-                                      height: (mobileW * 4) / 100,
-                                    }}></Image>}
-
-                                <Text
-                                  style={{
-                                    color: Colors.theme_color,
-                                    fontFamily: Font.Medium,
-                                    textAlign: config.textRotate,
-                                    fontSize: (mobileW * 3.3) / 100,
-                                    marginLeft: mobileW * 2 / 100
-                                  }}>{item.task_time}
-                                </Text>
-                              </View>
-                            </View>
-                          </View>
+                            {LanguageConfiguration.BookingOn[config.language]}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: Font.Medium,
+                              fontSize: Font.small,
+                              color: Colors.DarkGrey,
+                              textTransform: "uppercase",
+                            }}>
+                            {item.booking_date}
+                          </Text>
                         </View>
                       </View>
                     </View>
@@ -2081,61 +2092,50 @@ export default class AppointmentDetails extends Component {
                         (item.symptom_recording != "" || item.symptom_text != "")) &&
                       <View
                         style={{
-                          width: '100%',
-                          alignSelf: 'center',
-                          // justifyContent: 'space-between',
-                          // flexDirection: 'row',
-                          backgroundColor: '#FDF7EB',
-                          // borderBottomWidth: (mobileW * 0.3) / 100,
-                          // borderColor: Colors.gainsboro,
-                          paddingVertical: (mobileW * 4.5) / 100,
+                          width: "100%",
+                          alignSelf: "center",
+                          backgroundColor: "#FDF7EB",
+                          paddingVertical: vs(9),
+                          paddingHorizontal: s(13)
                         }}>
-
-
-                        <View
-                          style={{
-                            width: '90%',
-                            alignSelf: 'center',
-                            // justifyContent: 'space-between',
-                            // flexDirection: 'row',
-                            // borderBottomWidth: (mobileW * 0.3) / 100,
-                            // borderColor: Colors.gainsboro,
-                            // paddingVertical: (mobileW * 4.5) / 100,
-                          }}>
-                          <Text style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.headingfont_booking,
-                            color: Colors.theme_color,
-                            textAlign: config.textRotate,
-                            paddingBottom: (mobileW * 2) / 100,
-                          }}>
-                            Patient Symptom
-                          </Text>
-                        </View>
+                        <Text style={{
+                          fontFamily: Font.Medium,
+                          fontSize: Font.small,
+                          color: Colors.Theme,
+                          alignSelf: 'flex-start',
+                        }}>
+                          Patient Symptom
+                        </Text>
                         {
                           (item.symptom_recording != "") &&
                           <View
                             style={{
-                              width: '90%',
-                              alignSelf: 'center',
-                              // justifyContent: 'space-between',
-                              // flexDirection: 'row',
-                              borderBottomWidth: (item.symptom_text != "") ?
-                                (mobileW * 0.3) / 100 : 0,
+                              width: "100%",
+                              alignSelf: "center",
+                              justifyContent: 'space-between',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              borderBottomWidth: 1.5,
                               borderColor: Colors.gainsboro,
-                              paddingVertical: (mobileW * 4.5) / 100,
+                              paddingVertical: vs(5)
                             }}>
-                            {/* <TouchableOpacity onPress={() => {
-                              this.onStartPlay(true)
-                            }}>
-                              <Text>Start -- {this.state.duration}</Text>
-                            </TouchableOpacity> */}
+
+                            <Text
+                              style={{
+                                width: '30%',
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                textAlign: 'left',
+                              }}
+                            >
+                              {'Voice Recording'}
+                            </Text>
                             <View style={{
-                              // marginVertical: 15, 
-                              // marginHorizontal: 15, 
-                              flexDirection: 'row'
+                              width: '70%',
+                              flexDirection: "row",
+                              alignItems: 'center'
                             }}>
-                              {/* <Text style={{ color: 'black', alignSelf: 'center' }}>{currentTimeString}</Text> */}
                               <TouchableOpacity onPress={() => {
                                 (this.state.playState == 'paused') ?
                                   this.onStartPlay(true) : this.pause()
@@ -2145,31 +2145,25 @@ export default class AppointmentDetails extends Component {
                                     Icons.Play : Icons.Pause}
 
                                   style={{
-                                    width: (mobileW * 10) / 100,
-                                    height: (mobileW * 10) / 100,
-                                    // borderWidth: 1,
-                                    // borderColor: Colors.gainsboro,
-                                    // borderRadius: 15, //(mobileW * 11.5) / 100,
+                                    width: (mobileW * 8) / 100,
+                                    height: (mobileW * 8) / 100,
+
                                   }}></Image>
                               </TouchableOpacity>
                               <Slider
                                 onTouchStart={this.onSliderEditStart}
-                                // onTouchMove={() => console.log('onTouchMove')}
                                 onTouchEnd={this.onSliderEditEnd}
-                                // onTouchEndCapture={() => console.log('onTouchEndCapture')}
-                                // onTouchCancel={() => console.log('onTouchCancel')}
                                 onValueChange={this.onSliderEditing}
                                 value={this.state.playSeconds}
                                 maximumValue={this.state.duration}
                                 maximumTrackTintColor='gray'
                                 minimumTrackTintColor={Colors.theme_color}
-                                // thumbTintColor={Colors.theme_color}
-                                // thumbStyle={{width: 10, height: 10}}
                                 thumbImage={this.state.sliderIcon}
                                 style={{
-                                  flex: 1, alignSelf: 'center',
+                                  flex: 1,
+                                  alignSelf: "center",
                                   marginHorizontal: Platform.select({ ios: 5 }),
-                                  // transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+                                  height: (windowWidth * 10) / 100,
                                 }} />
                               <Text style={{ color: 'black', alignSelf: 'center' }}>{durationString}</Text>
                             </View>
@@ -2179,30 +2173,24 @@ export default class AppointmentDetails extends Component {
                           (item.symptom_text != "") &&
                           <View
                             style={{
-                              width: '90%',
-                              alignSelf: 'center',
-                              // justifyContent: 'space-between',
-                              // flexDirection: 'row',
-                              // borderTopWidth: (mobileW * 0.3) / 100,
-                              // borderColor: Colors.gainsboro,
-                              paddingVertical: (mobileW * 3.5) / 100,
+                              borderBottomWidth: 1.5,
+                              borderColor: Colors.gainsboro,
+                              paddingVertical: vs(9)
                             }}>
                             <Text style={{
                               fontFamily: Font.Medium,
-                              fontSize: Font.headingfont_booking,
-                              color: Colors.darkgraytextheading,
-                              textAlign: config.textRotate,
-                              marginTop: (mobileW * 3) / 100,
-                              marginBottom: (mobileW * 3.5) / 100,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
+                              marginBottom: (windowWidth * 3.5) / 100,
                             }}>
                               Symptom description
                             </Text>
                             <Text style={{
                               fontFamily: Font.Regular,
-                              fontSize: Font.sregulartext_size,
-                              color: Colors.darkgraytextheading,
-                              textAlign: config.textRotate,
-                              // paddingBottom: (mobileW * 4) / 100,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                              alignSelf: 'flex-start',
                             }}>
                               {item.symptom_text}
                             </Text>
@@ -2211,23 +2199,27 @@ export default class AppointmentDetails extends Component {
                         {item.patient_prescription != "" && (
                           <View
                             style={{
-                              width: "90%",
+                              width: "100%",
                               justifyContent: 'space-between',
                               flexDirection: "row",
+                              alignItems: 'center',
                               alignSelf: "center",
+                              paddingTop: vs(9)
                             }}
                           >
                             <View style={{
-                              width: '8%',
+                              width: "90%",
+                              flexDirection: "row",
+                              alignItems: 'center',
                             }}>
                               <Image
                                 resizeMode="contain"
                                 source={Icons.FileAttachment}
                                 style={{
-                                  width: 15,
+                                  width: "5%",
                                   height: 15,
-                                  // marginRight: (mobileW * 3) / 100,
-                                  borderColor: Colors.theme_color,
+                                  marginRight: (windowWidth * 2) / 100,
+                                  borderColor: Colors.Theme,
                                 }}
                               />
                             </View>
@@ -2239,17 +2231,19 @@ export default class AppointmentDetails extends Component {
                                 lineBreakMode='tail'
                                 style={{
                                   fontFamily: Font.Regular,
-                                  fontSize: (mobileW * 3) / 100,
-                                  textAlign: 'left',
-                                  alignItems: "baseline",
-                                  marginTop: (mobileW * 0.5) / 100,
+                                  fontSize: Font.small,
+                                  color: Colors.detailTitles,
+                                  textAlign: "auto",
                                 }}
                               >
                                 {item.patient_prescription}
                               </Text>
                             </View>
+
                             <View style={{
-                              width: '18%',
+                              width: "10%",
+                              flexDirection: "row",
+                              justifyContent: 'flex-end',
                             }}>
                               <Text
                                 onPress={() => {
@@ -2258,12 +2252,9 @@ export default class AppointmentDetails extends Component {
                                   });
                                 }}
                                 style={{
-                                  fontFamily: Font.SemiBold,
-                                  fontSize: Font.regulartext_size,
-                                  color: Colors.theme_color,
-                                  // marginLeft: (mobileW * 7) / 100,
-                                  textAlign: 'right',
-                                  marginTop: (mobileW * 0.3) / 100,
+                                  fontFamily: Font.Medium,
+                                  fontSize: Font.small,
+                                  color: Colors.Theme,
                                 }}
                               >
                                 View
@@ -2273,7 +2264,6 @@ export default class AppointmentDetails extends Component {
                         )}
                         <Modal
                           backdropOpacity={3}
-                          //  style={{backgroundColor: Colors.dim_grey}}
                           animationType="fade"
                           transparent={true}
                           visible={this.state.modalPatientPrescription}
@@ -2342,96 +2332,97 @@ export default class AppointmentDetails extends Component {
                         item.service_type == "Doctor") &&
                       <View
                         style={{
-                          width: '90%',
-                          alignSelf: 'center',
-                          // justifyContent: 'space-between',
-                          // flexDirection: 'row',
-                          borderBottomWidth: (mobileW * 0.3) / 100,
-                          borderColor: Colors.gainsboro,
-                          paddingVertical: (mobileW * 4.5) / 100,
+                          width: "100%",
+                          alignSelf: "center",
+                          paddingVertical: vs(10),
+                          paddingHorizontal: s(13),
                         }}>
                         <Text style={{
                           fontFamily: Font.Medium,
-                          fontSize: Font.headerfont,
-                          color: Colors.theme_color,
-                          textAlign: config.textRotate,
-                          paddingBottom: (mobileW * 4) / 100,
+                          fontSize: Font.small,
+                          color: Colors.Theme,
+                          alignSelf: 'flex-start',
+                          paddingBottom: (windowWidth * 4) / 100,
                         }}>
                           Prescription
                         </Text>
                         <View style={{
-                          flexDirection: 'row',
-                          width: '100%'
+                          flexDirection: "row",
+                          width: "100%",
+                          paddingVertical: vs(10),
+                          borderBottomWidth: 1,
+                          borderBottomColor: Colors.Border
                         }}>
                           <View style={{
-                            width: '25%',
-                            // backgroundColor: 'red'
+                            width: '17%',
                           }}>
                             <Image
-                              // source={item.provider_prescription == 'NA' ||
-                              //   item.provider_prescription == null ||
-                              //   item.provider_prescription == '' ? Icons.Prescription :
-                              //   { uri: config.img_url3 + item.provider_prescription }}
                               defaultSource={Icons.Prescription}
                               source={Icons.Prescription}
                               style={{
-                                width: (mobileW * 20.5) / 100,
-                                height: (mobileW * 17.2) / 100,
-                                // borderWidth: 1,
-                                // borderColor: Colors.gainsboro,
-                                // borderRadius: 15, //(mobileW * 11.5) / 100,
-                              }}></Image>
+                                width: vs(40),
+                                height: s(40)
+                              }} />
                           </View>
                           <View style={{
-                            width: '75%',
-                            // backgroundColor: 'blue'
+                            width: "83%",
                           }}>
-                            <Text
-                              numberOfLines={1}
-                              style={{
-                                fontFamily: Font.Medium,
-                                fontSize: Font.smallheadingfont,
-                                color: Colors.darkgraytextheading,
-                                textAlign: config.textRotate,
-                                marginTop: (mobileW * 2) / 100,
-                                marginBottom: (mobileW * 2) / 100,
-                              }}>{item.provider_prescription}</Text>
+
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                              <Text
+                                numberOfLines={1}
+                                style={{
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.small,
+                                  color: Colors.detailTitles,
+                                  alignSelf: 'flex-start',
+                                  width: '50%'
+                                }}>{item.provider_prescription}</Text>
+
+
+
+                              <TouchableOpacity style={{
+                                width: '25%'
+                              }} onPress={() => {
+                                if (item.provider_prescription != "") {
+                                  this.downloadPrescription(config.img_url3 + item.provider_prescription, item.provider_prescription)
+                                }
+
+                              }}>
+                                <Text style={{
+                                  textAlign: "right",
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.xsmall,
+                                  color: Colors.Theme,
+                                }}>Download</Text>
+                              </TouchableOpacity>
+
+                              <TouchableOpacity style={{
+                                width: '25%'
+                              }} onPress={() => {
+                                this.setState({
+                                  imageType: 'provider_prescription',
+                                  mediamodal: true
+                                }, () => {
+
+                                })
+                              }}>
+                                <Text style={{
+                                  textAlign: "right",
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.xsmall,
+                                  color: Colors.orange,
+                                }}>Re-Upload</Text>
+                              </TouchableOpacity>
+                            </View>
+
                             <Text style={{
-                              fontFamily: Font.Medium,
-                              fontSize: Font.ssubtext,
-                              color: Colors.theme_color,
-                              textAlign: config.textRotate,
-                              marginBottom: (mobileW * 1) / 100,
+                              fontFamily: Font.Regular,
+                              fontSize: Font.xsmall,
+                              color: Colors.lightGrey,
+                              alignSelf: 'flex-start',
+                              marginTop: vs(3)
                             }}>{item.provider_upd}</Text>
-                            <TouchableOpacity onPress={() => {
-                              if (item.provider_prescription != "") {
-                                this.downloadPrescription(config.img_url3 + item.provider_prescription, item.provider_prescription)
-                              }
-
-                            }}>
-                              <Text style={{
-                                textAlign: 'right',
-                                fontFamily: Font.Medium,
-                                fontSize: Font.tabtextsize,
-                                color: Colors.theme_color,
-                                marginBottom: (mobileW * 2) / 100,
-                              }}>Download</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {
-                              this.setState({
-                                imageType: 'provider_prescription',
-                                mediamodal: true
-                              }, () => {
-
-                              })
-                            }}>
-                              <Text style={{
-                                textAlign: 'right',
-                                fontFamily: Font.Medium,
-                                fontSize: Font.tabtextsize,
-                                color: Colors.orange,
-                              }}>Re-Upload</Text>
-                            </TouchableOpacity>
                           </View>
                         </View>
                       </View>
@@ -2442,20 +2433,19 @@ export default class AppointmentDetails extends Component {
                         item.service_type == "Lab") &&
                       <View
                         style={{
-                          width: '90%',
-                          alignSelf: 'center',
-                          // justifyContent: 'space-between',
-                          // flexDirection: 'row',
-                          borderBottomWidth: (mobileW * 0.3) / 100,
+                          width: "100%",
+                          alignSelf: "center",
+                          paddingHorizontal: s(13),
+                          borderBottomWidth: (windowWidth * 0.3) / 100,
                           borderColor: Colors.gainsboro,
-                          paddingVertical: (mobileW * 4.5) / 100,
+                          paddingVertical: (windowWidth * 2.5) / 100,
                         }}>
                         <Text style={{
                           fontFamily: Font.Medium,
-                          fontSize: Font.headerfont,
-                          color: Colors.theme_color,
-                          textAlign: config.textRotate,
-                          paddingBottom: (mobileW * 4) / 100,
+                          fontSize: Font.regulartext_size,
+                          color: Colors.Theme,
+                          alignSelf: 'flex-start',
+                          paddingBottom: (windowWidth * 4) / 100,
                         }}>
                           Report Attachment
                         </Text>
@@ -2476,18 +2466,11 @@ export default class AppointmentDetails extends Component {
                                   // backgroundColor: 'red'
                                 }}>
                                   <Image
-                                    // source={rItem.report == 'NA' ||
-                                    //   rItem.report == null ||
-                                    //   rItem.report == '' ? Icons.Prescription :
-                                    //   { uri: config.img_url3 + rItem.report }}
                                     defaultSource={Icons.Report}
                                     source={Icons.Report}
                                     style={{
                                       width: (mobileW * 14) / 100,
                                       height: (mobileW * 16) / 100,
-                                      // borderWidth: 1,
-                                      // borderColor: Colors.gainsboro,
-                                      // borderRadius: 15, //(mobileW * 11.5) / 100,
                                     }}></Image>
                                 </View>
                                 <View style={{
@@ -2853,69 +2836,27 @@ export default class AppointmentDetails extends Component {
 
                       </View>
                     }
-                    {/* // heading */}
-                    <View
-                      style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        borderBottomWidth: (mobileW * 0.3) / 100,
-                        borderColor: Colors.gainsboro,
-                        paddingVertical: (mobileW * 4.5) / 100,
-                      }}>
-                      <View
-                        style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.regulartext_size,
-                            color: Colors.darkgraytextheading,
-                          }}>{LanguageConfiguration.BookingOn[config.language]}
-
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: mobileW * 3.2 / 100,
-                            color: Colors.lightgraytext,
-                            textTransform: 'uppercase',
-                            marginLeft: mobileW * 2 / 100,
-                          }}>
-
-                          {item.booking_date}
-                        </Text>
-                      </View>
-                    </View>
-
-                    {/* Prescription */}
-
 
                     {/* patient details */}
                     <View style={{
-                      width: '90%',
-                      alignSelf: 'center',
-                      // paddingTop: (mobileW * 3) / 100, 
-                      paddingBottom: mobileW * 3 / 100
+                      width: "100%",
+                      alignSelf: "center",
+                      paddingVertical: (windowWidth * 3) / 100,
                     }}>
                       <View style={{
-                        width: '100%',
-                        // backgroundColor: 'red',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
+                        width: "100%",
+                        paddingHorizontal: s(13),
+                        flexDirection: "row",
+                        alignItems: 'center',
+                        justifyContent: "space-between",
                       }}>
                         <Text
                           style={{
                             fontFamily: Font.Medium,
-                            fontSize: Font.headingfont_booking,
-                            color: Colors.theme_color,
-                            textAlign: config.textRotate,
-                            paddingBottom: 15, paddingTop: 15
+                            fontSize: Font.small,
+                            color: Colors.darkText,
+                            alignSelf: 'center',
+
                           }}>{LanguageConfiguration.patient_details[config.language]}</Text>
                         <TouchableOpacity onPress={() => {
                           this.setState({
@@ -2924,8 +2865,8 @@ export default class AppointmentDetails extends Component {
                         }}>
                           <View style={{
                             padding: 15,
-                            backgroundColor: Colors.appointmentdetaillightgray,
-                            justifyContent: 'center'
+                            backgroundColor: Colors.backgroundcolor,
+                            justifyContent: "center",
                           }}>
                             <Image
                               style={{
@@ -2938,15 +2879,18 @@ export default class AppointmentDetails extends Component {
                       </View>
                       {
                         (this.state.showPDetails) &&
-                        <>
+                        <View style={{
+                          width: "100%",
+                          paddingHorizontal: s(13),
+                        }}>
                           <Text
                             style={{
-                              color: Colors.lightgraytext,
+                              color: Colors.DarkGrey,
                               fontFamily: Font.Medium,
-                              fontSize: Font.regulartext_size,
+                              fontSize: Font.small,
                               textAlign: config.textalign,
-                              textAlign: config.textRotate,
-                              marginTop: mobileW * 1 / 100,
+                              alignSelf: 'flex-start',
+                              marginTop: (windowWidth * 1) / 100,
 
                             }}>
                             {item.patient_name}
@@ -2954,28 +2898,28 @@ export default class AppointmentDetails extends Component {
 
                           <View
                             style={{
-                              flexDirection: 'row',
-                              marginTop: mobileW * 1.5 / 100,
-                              width: '100%'
+                              flexDirection: "row",
+                              marginTop: (windowWidth * 1.5) / 100,
+                              width: "100%",
                             }}>
                             <Image
                               source={Icons.Location}
                               style={{
-                                marginTop: (mobileW * 1) / 100,
-                                width: (mobileW * 3.5) / 100,
-                                height: (mobileW * 3.5) / 100,
-                                resizeMode: 'contain',
-                                tintColor: Colors.theme_color,
+                                marginTop: (windowWidth * 1) / 100,
+                                width: (windowWidth * 3.5) / 100,
+                                height: (windowWidth * 3.5) / 100,
+                                resizeMode: "contain",
+                                tintColor: Colors.Theme,
                               }}></Image>
 
                             <Text
                               style={{
-                                color: Colors.lightgraytext,
-                                fontFamily: Font.Medium,
-                                fontSize: Font.sregulartext_size,
-                                textAlign: config.textRotate,
-                                marginLeft: mobileW * 3 / 100,
-                                width: '96%'
+                                color: Colors.DarkGrey,
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                                alignSelf: 'flex-start',
+                                marginLeft: (windowWidth * 3) / 100,
+                                width: "96%",
 
                               }}>
                               {item.patient_address}
@@ -2986,7 +2930,7 @@ export default class AppointmentDetails extends Component {
 
                           <View>
                             <TouchableOpacity onPress={() => {
-                              console.log({item});
+                              console.log({ item });
                               this.handleGetDirections(item?.patient_lat, item?.patient_long, item?.patient_address)
                             }}>
                               <Text
@@ -3056,7 +3000,7 @@ export default class AppointmentDetails extends Component {
                             </TouchableOpacity>
 
                           </View>
-                        </>
+                        </View>
                       }
                     </View>
                     {(item.acceptance_status == 'Accepted' && (item.service_type != "Doctor" && item.service_type != "Lab")) ?
@@ -3136,39 +3080,56 @@ export default class AppointmentDetails extends Component {
 
                     }
                     {(item.acceptance_status == 'Completed' && (item.service_type != "Doctor" && item.service_type != "Lab")) &&
-                      <View style={{ width: '90%', alignSelf: 'center', paddingVertical: mobileW * 2 / 100, flexDirection: 'row', borderTopWidth: 1, borderTopColor: Colors.bordercolor }}>
-                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.buttoncolorhgreen, width: '75%', textAlign: config.textRotate, fontFamily: Font.Regular }}>{LanguageConfiguration.appointment_closed_otp_text[config.language]}</Text>
-                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.buttoncolorhgreen, width: '25%', textAlign: 'right', fontFamily: Font.Regular }}>{item.OTP}</Text>
+                      <View style={{
+                        width: "100%",
+                        alignSelf: "center",
+                        paddingVertical: (windowWidth * 2) / 100,
+                        flexDirection: "row",
+                        borderTopWidth: 1,
+                        borderTopColor: Colors.backgroundcolor,
+                        paddingHorizontal: s(13)
+                      }}>
+                        <Text style={{
+                          fontSize: Font.small,
+                          color: Colors.Green,
+                          width: "75%",
+                          alignSelf: 'flex-start',
+                          fontFamily: Font.Regular,
+                        }}>{LanguageConfiguration.appointment_closed_otp_text[config.language]}</Text>
+                        <Text style={{ fontSize: Font.small, color: Colors.buttoncolorhgreen, width: '25%', textAlign: 'right', fontFamily: Font.Regular }}>{item.OTP}</Text>
                       </View>
                     }
                     {/* payment details */}
-                    <View style={{ backgroundColor: Colors.appointmentdetaillightgray, width: '100%' }}>
+                    <View style={{
+                      backgroundColor: Colors.appointmentdetaillightgray,
+                      width: "100%",
+                      paddingHorizontal: s(13),
+                      paddingVertical: vs(9)
+                    }}>
+
                       <View
                         style={{
-                          paddingTop: (mobileW * 3) / 100,
-                          width: '91%',
-                          alignSelf: 'center',
+                          width: "100%",
+                          alignSelf: "center",
 
 
                         }}>
-                        <View>
-                          <Text
-                            style={{
-                              fontFamily: Font.Medium,
-                              fontSize: Font.headingfont_booking,
-                              textAlign: config.textRotate,
-                              color: Colors.theme_color,
-                            }}>{LanguageConfiguration.Payment[config.language]}
+                        <Text
+                          style={{
+                            fontFamily: Font.Medium,
+                            fontSize: Font.small,
+                            alignSelf: 'flex-start',
+                            color: Colors.darkText,
+                          }}>{LanguageConfiguration.Payment[config.language]}
 
-                          </Text>
-                        </View>
+                        </Text>
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingVertical: (mobileW * 2) / 100,
-                            borderBottomWidth: (mobileW * 0.3) / 100,
-                            borderColor: Colors.bordercolor,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            paddingVertical: (windowWidth * 2) / 100,
+                            borderBottomWidth: 1.5,
+                            borderColor: '#CCCCCC',
                           }}>
                           <FlatList
                             data={item.task_details}
@@ -3177,42 +3138,30 @@ export default class AppointmentDetails extends Component {
                             renderItem={({ item, index }) => {
                               if (item.task_details != '') {
                                 return (
-                                  <TouchableOpacity activeOpacity={0.9} onPress={() => { this.check_all(item, index) }}
+                                  <TouchableOpacity activeOpacity={0.9}
+                                    // onPress={() => { this.check_all(item, index) }}
                                     style={{
-                                      alignItems: 'center', width: '100%',
-                                      alignSelf: 'center',
-                                      backgroundColor: '#F8F8F8',
-                                      paddingVertical: (mobileW * 1.7) / 100,
-                                      flexDirection: 'row',
-
-
+                                      alignItems: "center",
+                                      width: "100%",
+                                      paddingVertical: (windowWidth * 1.7) / 100,
+                                      flexDirection: "row",
+                                      justifyContent: 'space-between'
                                     }}>
 
                                     <Text
                                       style={{
-                                        width: '70%',
-                                        textAlign: config.textRotate,
-                                        alignSelf: 'center',
-                                        fontSize: mobileW * 3.6 / 100,
+                                        alignSelf: "center",
+                                        fontSize: Font.small,
                                         fontFamily: Font.Regular,
-
-                                        color: '#000',
-
-
+                                        color: Colors.DarkGrey,
                                       }}>
                                       {item.name}
                                     </Text>
                                     <Text
                                       style={{
-
-                                        width: '30%',
-
-                                        fontSize: mobileW * 3.6 / 100,
+                                        fontSize: Font.small,
                                         fontFamily: Font.Regular,
-                                        color: '#000',
-
-                                        textAlign: 'right',
-
+                                        color: Colors.DarkGrey,
                                       }}>
                                       {item.price}
                                     </Text>
@@ -3226,25 +3175,25 @@ export default class AppointmentDetails extends Component {
                           (item.appointment_type != "Online") &&
                           <View
                             style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              paddingVertical: (mobileW * 2) / 100,
-                              // borderBottomWidth: (mobileW * 0.3) / 100,
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              paddingVertical: (windowWidth * 2) / 100,
+                              // borderBottomWidth: (windowWidth * 0.3) / 100,
                               borderColor: Colors.bordercolor,
                             }}>
                             <Text
                               style={{
                                 fontFamily: Font.Regular,
-                                fontSize: mobileW * 3.6 / 100,
-                                color: '#000',
+                                fontSize: Font.small,
+                                color: Colors.DarkGrey,
                               }}>{LanguageConfiguration.distanceFare[config.language]}
 
                             </Text>
                             <Text
                               style={{
                                 fontFamily: Font.Regular,
-                                fontSize: mobileW * 3.6 / 100,
-                                color: '#000',
+                                fontSize: Font.small,
+                                color: Colors.DarkGrey,
                               }}>{item.distance_fee}
 
                             </Text>
@@ -3253,25 +3202,26 @@ export default class AppointmentDetails extends Component {
 
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingVertical: (mobileW * 1) / 100,
-                            // borderBottomWidth: (mobileW * 0.3) / 100,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            paddingVertical: (windowWidth * 1) / 100,
                             borderColor: Colors.bordercolor,
+                            marginTop: (windowWidth * 1) / 100,
+                            marginBottom: (windowWidth * 3) / 100,
                           }}>
                           <Text
                             style={{
                               fontFamily: Font.Regular,
-                              fontSize: mobileW * 3.6 / 100,
-                              color: '#000',
+                              fontSize: Font.small,
+                              color: Colors.DarkGrey,
                             }}>{item.vat_percent}
 
                           </Text>
                           <Text
                             style={{
                               fontFamily: Font.Regular,
-                              fontSize: mobileW * 3.6 / 100,
-                              color: '#000',
+                              fontSize: Font.small,
+                              color: Colors.DarkGrey,
                             }}>{item.vat}
 
                           </Text>
@@ -3279,20 +3229,25 @@ export default class AppointmentDetails extends Component {
 
                         <View
                           style={{
-
-                            paddingVertical: (mobileW * 3) / 100,
-                            borderTopWidth: (mobileW * 0.3) / 100,
-                            borderColor: Colors.bordercolor,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            paddingVertical: (windowWidth * 2) / 100,
                           }}>
-
                           <Text
                             style={{
                               fontFamily: Font.Medium,
-                              fontSize: Font.regulartext_size,
-                              color: Colors.theme_color,
-                              textAlign: 'right'
-                            }}>{item.price}
-
+                              fontSize: Font.small,
+                              color: Colors.darkText,
+                            }}>
+                            {'Subtotal'}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: Font.Medium,
+                              fontSize: Font.small,
+                              color: Colors.darkText,
+                            }}>
+                            {item.price}
                           </Text>
                         </View>
                       </View>
@@ -3363,7 +3318,33 @@ export default class AppointmentDetails extends Component {
 
                               style={{
                                 backgroundColor: Colors.buttoncolorhgreen,
-                                width: mobileW * 26 / 100,
+                                width: '40%',
+                                borderRadius: (mobileW * 1) / 100,
+                                paddingVertical: (mobileW * 2) / 100,
+                                justifyContent: 'center',
+                                marginHorizontal: '4%'
+                              }}>
+                              <Text
+                                style={{
+                                  textAlign: 'center',
+                                  color: Colors.white_color,
+                                  textTransform: 'uppercase',
+                                  fontFamily: Font.SemiBold,
+                                  fontSize: mobileW * 3 / 100,
+                                }}>Accept</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                  id: item.id,
+                                }, () => {
+                                  this.showConfirmDialogReject("Reject")
+                                })
+                              }}
+
+                              style={{
+                                backgroundColor: '#FF4500',
+                                width: '40%',
                                 borderRadius: (mobileW * 1) / 100,
                                 paddingVertical: (mobileW * 2) / 100,
                                 justifyContent: 'center',
@@ -3375,31 +3356,7 @@ export default class AppointmentDetails extends Component {
                                   textTransform: 'uppercase',
                                   fontFamily: Font.SemiBold,
                                   fontSize: mobileW * 3 / 100,
-                                }}>Accept</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              onPress={() => {
-                                this.setState({
-                                  id: item.id,
-                                }, () => {
-                                  this.showConfirmDialogReject("Reject")
-                                })
-                              }}
-                              style={{
-                                // width: '10%',
-                                // alignSelf: 'center',
-                                flexDirection: 'row',
-                                justifyContent: 'flex-end',
-                                alignItems: 'center',
-                                marginLeft: 10
-                              }}>
-                              <Image
-                                source={Icons.Cross}
-                                style={{
-                                  width: mobileW * 6 / 100,
-                                  height: mobileW * 6 / 100,
-                                }}
-                              />
+                                }}>Reject</Text>
                             </TouchableOpacity>
                           </>
                         }
@@ -3536,22 +3493,6 @@ export default class AppointmentDetails extends Component {
                                   textAlign: 'right',
                                 }}>{'Not Rated Yet'}</Text>
                               </>
-                              // <TouchableOpacity onPress={() => { this.setState({ modalVisiblerating: true, set_order: item.order_id }) }} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: mobileW * 2 / 100, paddingHorizontal: mobileW * 2 / 100, backgroundColor: '#FFA800', borderRadius: mobileW * 2 / 100 }}>
-                              //   <Image
-                              //     source={require('./Assets/Icons/unfillstar.png')}
-                              //     style={{
-                              //       resizeMode: 'contain',
-                              //       width: (mobileW * 4.5) / 100,
-                              //       height: (mobileW * 4.5) / 100,
-                              //       tintColor: '#fff',
-                              //       alignSelf: 'center'
-                              //     }}></Image>
-
-                              //   <Text style={{ fontFamily: Font.SemiBold, 
-                              //     color: '#fff', fontSize: mobileW * 4 / 100,
-                              //      marginLeft: mobileW * 1 / 100
-                              //       }}>{LanguageConfiguration.rate_appointment[config.language]}</Text>
-                              // </TouchableOpacity>
                             }
                           </View>
                         }
@@ -3559,7 +3500,6 @@ export default class AppointmentDetails extends Component {
                           <View
 
                             style={{
-                              backgroundColor: '#FF4500',
                               width: mobileW * 24 / 100,
                               borderRadius: 1,
                               paddingVertical: (mobileW * 1) / 100,
@@ -3569,23 +3509,16 @@ export default class AppointmentDetails extends Component {
                             <Text
                               style={{
                                 textAlign: 'center',
-                                color: Colors.white_color,
+                                color: '#FF4500',
                                 textTransform: 'uppercase',
                                 fontFamily: Font.SemiBold,
-                                fontSize: mobileW * 2.5 / 100,
+                                fontSize: Font.medium,
                               }}>{LanguageConfiguration.Refunde[config.language]}
 
                             </Text>
                           </View>}
                       </View>
                     </View>
-                    {/* <View style={{ width: '90%', paddingBottom: mobileW * 2 / 100, alignSelf: 'center', alignItems: 'flex-start' }}>
-                      <HTMLView
-                        value={item.rf_text}
-
-                        stylesheet={HTMLstyles}
-                      />
-                    </View> */}
                   </View>
 
                 </View>

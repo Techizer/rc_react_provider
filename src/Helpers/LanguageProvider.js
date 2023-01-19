@@ -141,7 +141,7 @@ class LanguageProvider {
 
   DoctorAppointment = ['Doctor Appointment', 'موعد طبيب  '];
   MyAppointments = ['My Appointments', 'واعيدي  '];
-  MyAppointmentsSub = ['Pending, Upcoming, Ongoing & Past', 'واعيدي  '];
+  MyAppointmentsSub = ['\Upcoming, Ongoing & Past', 'واعيدي  '];
   CartItem = ['Cart Item', 'عربة التسوق  '];
   BOOKNOW = ['BOOK NOW', 'احجز الآن'];
   Nurse = ['Nurse', 'ممرضة    '];
