@@ -1,7 +1,7 @@
 import { Alert, ToastAndroid, I18nManager, Platform } from "react-native";
 import { localStorage } from '../Provider/localStorageProvider';
 import AsyncStorage from "@react-native-community/async-storage";
-import { config } from "../Provider/configProvider";
+import { Configurations } from "../Provider/configProvider";
 import RNRestart from 'react-native-restart';
 global.language_key = 1;
 class LanguageProvider {
@@ -10,10 +10,10 @@ class LanguageProvider {
     var item = await AsyncStorage.getItem('language');
     console.log('check launguage option', item)
     if (item != null) {
-      console.log('kya bat h vikas bhai', config.language)
-      config.language = item;
+      console.log('kya bat h vikas bhai', Configurations.language)
+      Configurations.language = item;
     }
-    console.log('language_key123', config.language)
+    console.log('language_key123', Configurations.language)
   }
 
   language_set = async (languagem) => {
@@ -24,46 +24,46 @@ class LanguageProvider {
 
       I18nManager.forceRTL(false);
       I18nManager.allowRTL(false);
-      config.textalign = 'left';
+      Configurations.textalign = 'left';
       localStorage.setItemObject('language', 0)
       localStorage.setItemObject('languagecathc', 0)
-      config.language = 0
+      Configurations.language = 0
     }
     else {
 
       I18nManager.forceRTL(true);
       I18nManager.allowRTL(true);
-      config.textalign = 'right';
+      Configurations.textalign = 'right';
       localStorage.setItemObject('language', 1)
       localStorage.removeItem('languagecathc')
       localStorage.removeItem('languagesetenglish');
-      config.language = 1
+      Configurations.language = 1
     }
     // if(I18nManager.isRTL){
     //    console.log('HI Vikas')
     //    I18nManager.forceRTL(false);
     //      I18nManager.allowRTL(false);f
-    //      config.textalign='left';
+    //      Configurations.textalign='left';
     //      localStorage.setItemObject('language',0)
     //      localStorage.setItemObject('languagecathc',0)
-    //      config.language = 0
+    //      Configurations.language = 0
     //  }else if(!I18nManager.isRTL){
     //   console.log('HI Vaishali')
 
     //    I18nManager.forceRTL(true);
     //    I18nManager.allowRTL(true);
-    //    config.textalign='right';
+    //    Configurations.textalign='right';
     //    localStorage.setItemObject('language',1)
     //    localStorage.removeItem('languagecathc')
     //    localStorage.removeItem('languagesetenglish');
-    //    config.language = 1
+    //    Configurations.language = 1
     //  }
     setTimeout(() => {
       RNRestart.Restart()
     }, 500);
 
     //// I18nManager.forceRTL(false);
-    // config.language = value;
+    // Configurations.language = value;
 
   }
   //----------------------------------------------by gunjan

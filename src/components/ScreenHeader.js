@@ -3,7 +3,6 @@ import {
     Text,
     View,
     Image,
-    TouchableOpacity,
     TouchableHighlight,
     Platform,
     Dimensions,
@@ -12,13 +11,7 @@ import {
 import {
     Colors,
     Font,
-    config,
-    mobileH,
-    mobileW,
-    localStorage,
-    
-    LanguageConfiguration,
-    API,
+    Configurations,
 } from "../Helpers/Utils";
 
 import { Icons } from '../Assets/Icons/IReferences'
@@ -27,12 +20,6 @@ import { leftArrow, rightArrow, Notification, dummyUser } from "../Assets/Icons/
 import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
-
-
-// console.log(headerHeight + '   ' + Platform.OS);
-// console.log(deviceHeight + '   ' + Platform.OS);
-// console.log(windowHeight + '   ' + Platform.OS);
-// console.log('Status Bar Height', StatusbarHeight + '   ' + Platform.OS);
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const windowWidth = Math.round(Dimensions.get("window").width);
@@ -48,8 +35,6 @@ const ScreenHeader = ({
     navigation,
     rightIcon,
     leftIcon,
-    addressOld,
-    addressShow,
     notiCount,
     style = {}
 }) => {
@@ -90,7 +75,7 @@ const ScreenHeader = ({
                             }}
                         >
                             <SvgXml xml={
-                                config.textalign == "right"
+                                Configurations.textalign == "right"
                                     ? rightArrow : leftArrow
                             } height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
 

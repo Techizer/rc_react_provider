@@ -1,6 +1,6 @@
 import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking } from 'react-native'
-import React, { Component, useEffect, useState } from 'react'
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
+import React, { useEffect, useState } from 'react'
+import { Colors, Font, Configurations, mobileW, localStorage, LanguageConfiguration, API } from '../Helpers/Utils';
 global.add_location = 'NA';
 global.amount_total = 0;
 global.username = 'NA'
@@ -47,9 +47,9 @@ export default Splash = ({navigation, route}) => {
       console.log('textaligntextalign::if ', textalign);
       if (textalign == 1) {
 
-        config.textalign = 'right';
-        // config.textalign = 'left';
-        config.language = 1
+        Configurations.textalign = 'right';
+        // Configurations.textalign = 'left';
+        Configurations.language = 1
         setState(prev => ({
           ...prev,
           loanguage: 1
@@ -57,8 +57,8 @@ export default Splash = ({navigation, route}) => {
       } else {
         localStorage.setItemObject('languagesetenglish', 3);
         localStorage.setItemObject('languagecathc', 0)
-        config.textalign = 'left';
-        config.language = 0
+        Configurations.textalign = 'left';
+        Configurations.language = 0
         setState(prev => ({
           ...prev,
           loanguage: 0
@@ -67,12 +67,12 @@ export default Splash = ({navigation, route}) => {
     }
     else {
       console.log('textaligntextalign::else ', textalign);
-      // config.textalign = 'right';
-      // config.language = 1
+      // Configurations.textalign = 'right';
+      // Configurations.language = 1
       // localStorage.setItemObject('language', 1)
       // setState({ loanguage: 1 })
-      config.textalign = 'left';
-      config.language = 0
+      Configurations.textalign = 'left';
+      Configurations.language = 0
       localStorage.setItemObject('languagesetenglish', 3);
       localStorage.setItemObject('languagecathc', 0)
 
@@ -90,8 +90,8 @@ export default Splash = ({navigation, route}) => {
 
   const apiIosPatientUpdate = async () => {
     let lang = (state?.loanguage == 1) ? "ENG" : "ENG"
-    let url = config.baseURL + "api-ios-provider-update" + "?divice_lang=" + lang;
-    console.log("url", url, config.language)
+    let url = Configurations.baseURL + "api-ios-provider-update" + "?divice_lang=" + lang;
+    console.log("url", url, Configurations.language)
     API.get(url, 1).then((obj) => {
       
       if (obj.status == true) {
@@ -141,18 +141,18 @@ export default Splash = ({navigation, route}) => {
     let password = logindetail.password
     let user_type = result.user_type
     var device_lang
-    if (config.language == 0) {
+    if (Configurations.language == 0) {
       device_lang = 'ENG'
     }
     else {
       device_lang = 'AR'
     }
-    let url = config.baseURL + "api-service-provider-login";
+    let url = Configurations.baseURL + "api-service-provider-login";
     var data = new FormData();
 
     data.append('email', email)
     data.append('password', password)
-    data.append('device_type', config.device_type)
+    data.append('device_type', Configurations.device_type)
     data.append('device_lang', device_lang)
     data.append('fcm_token', fcmtoken)
     data.append('user_type', user_type)
@@ -179,7 +179,7 @@ export default Splash = ({navigation, route}) => {
   const checkLogout = async (result, logindetail) => {
 
     let user_id = result.user_id;
-    let url = config.baseURL + "api-check-login";
+    let url = Configurations.baseURL + "api-check-login";
     var data = new FormData();
     data.append("user_id", user_id);
     data.append("fcm_token", fcmtoken);
@@ -394,7 +394,7 @@ export default Splash = ({navigation, route}) => {
                     fontFamily: Font.Regular,
                     fontSize: mobileW * 3.8 / 100,
                     color: Colors.white_color, alignSelf: 'center'
-                  }}>{LanguageConfiguration.Update[config.language]}</Text>
+                  }}>{LanguageConfiguration.Update[Configurations.language]}</Text>
                 </TouchableOpacity>
               </View>
               {
@@ -416,7 +416,7 @@ export default Splash = ({navigation, route}) => {
                     fontSize: mobileW * 3.5 / 100,
                     color: Colors.placeholder_border,
                   }}>
-                    {LanguageConfiguration.Help[config.language]}
+                    {LanguageConfiguration.Help[Configurations.language]}
                   </Text>
                   <Text style={{
                     fontFamily: Font.SemiBold,

@@ -5,7 +5,7 @@ class MediaProvider {
    ShareImage = async (file_url, message1, subject) => {
       let dirs = RNFetchBlob.fs.dirs
       let imagePath = null;
-      RNFetchBlob.config({
+      RNFetchBlob.Configurations({
          fileCache: true
       })
          .fetch("GET", file_url)

@@ -6,7 +6,7 @@ import {
   mobileH,
   MessageFunctions,
   MessageTexts,
-  config,
+  Configurations,
   mobileW,
   localStorage,
   
@@ -81,7 +81,7 @@ export default Appointments = ({ navigation }) => {
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-notification-count";
+    let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', user_id)
@@ -131,13 +131,13 @@ export default Appointments = ({ navigation }) => {
   const renderScene = ({ route, jumpTo }) => {
     switch (route.key) {
       case 'ongoing':
-        return <AppointmentContainer ref={child => { this.child = child }} pageName={"ongoing"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AppointmentContainer pageName={"ongoing"} jumpTo={jumpTo} {...{ navigation }} />;
       // case 'pending':
       //   return <AppointmentContainer ref={child1 => { this.child1 = child1 }} pageName={"pending"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
       case 'upcoming':
-        return <AppointmentContainer ref={child2 => { this.child2 = child2 }} pageName={"upcoming"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AppointmentContainer pageName={"upcoming"} jumpTo={jumpTo} {...{ navigation }} />;
       case 'past':
-        return <AppointmentContainer ref={child3 => { this.child3 = child3 }} pageName={"past"} jumpTo={jumpTo} {...props} {...{ navigation }} />;
+        return <AppointmentContainer pageName={"past"} jumpTo={jumpTo} {...{ navigation }} />;
     }
   };
 
@@ -165,7 +165,7 @@ export default Appointments = ({ navigation }) => {
             rightIcon={true}
             notiCount={noticount}
             navigation={navigation}
-            title={LanguageConfiguration.MyAppointments[config.language]}
+            title={LanguageConfiguration.MyAppointments[Configurations.language]}
             style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
           {/* tabheadings */}

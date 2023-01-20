@@ -1,12 +1,7 @@
-import React, { Component } from 'react';
-import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, Dimensions, StatusBar } from 'react-native';
-import {
-  Colors,
-  Font,
-  mobileW,
-} from '../Helpers/Utils';
-
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import React from 'react';
+import { useWindowDimensions, Text, View, Dimensions, StatusBar } from 'react-native';
+import { Colors, Font, mobileW } from '../Helpers/Utils';
+import { TabView, TabBar } from 'react-native-tab-view';
 import TransactionContainer from '../Containers/Transaction';
 import Withdrawal from './Withdrawal';
 import ScreenHeader from '../Components/ScreenHeader';
@@ -50,6 +45,26 @@ const renderTabBar = props => (
   />
 );
 
+const routes = [
+  {
+    id: 1,
+    name: 'Ongoing',
+    arbic_name: 'الجميع ',
+    pass_status: 'all',
+    status: true,
+    key: 'transaction', title: 'Transaction'
+  },
+  {
+    id: 2,
+    name: 'Pending',
+    arbic_name: 'ممرضة  ',
+    pass_status: 'nurse',
+    status: false,
+    key: 'withdrawal', title: 'Withdrawal'
+  },
+
+]
+
 const windowHeight = Math.round(Dimensions.get("window").height);
 const windowWidth = Math.round(Dimensions.get("window").width);
 const deviceHeight = Dimensions.get('screen').height;
@@ -61,25 +76,6 @@ export default Transaction = ({ navigation }) => {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {
-      id: 1,
-      name: 'Ongoing',
-      arbic_name: 'الجميع ',
-      pass_status: 'all',
-      status: true,
-      key: 'transaction', title: 'Transaction'
-    },
-    {
-      id: 2,
-      name: 'Pending',
-      arbic_name: 'ممرضة  ',
-      pass_status: 'nurse',
-      status: false,
-      key: 'withdrawal', title: 'Withdrawal'
-    },
-
-  ]);
 
   const renderScene = ({ route, jumpTo }) => {
     switch (route.key) {

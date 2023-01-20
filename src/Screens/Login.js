@@ -1,14 +1,9 @@
-import { TouchableWithoutFeedback, Pressable, Modal, Text, Dimensions, View, PermissionsAndroid, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, keyboardType, Keyboard } from 'react-native';
-import React, { Component, useEffect, useState } from 'react';
+import { Modal, Text, Dimensions, View, PermissionsAndroid, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, Keyboard } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Geolocation from '@react-native-community/geolocation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {
-  Colors, Font, mobileH, config, mobileW,
-  LanguageConfiguration, API, MessageTexts, MessageHeadings,  MessageFunctions,
-  localStorage
-} from '../Helpers/Utils';
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
-import AntDesign from "react-native-vector-icons/AntDesign";
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts,  MessageFunctions, localStorage } from '../Helpers/Utils';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import { Icons } from '../Assets/Icons/IReferences'
@@ -21,7 +16,6 @@ global.myLatitude = 'NA';
 global.myLongitude = 'NA';
 
 export default Login = ({ navigation, route }) => {
-  const screens = 'Login';
 
   const [state, setState] = useState({
     isSecurePassword: true,
@@ -116,35 +110,6 @@ export default Login = ({ navigation, route }) => {
 
   }
 
-  const checkPermission = async () => {
-    const enabled = await firebase.messaging().hasPermission();
-    if (enabled) {
-      getFcmToken();
-
-    } else {
-
-      requestPermission();
-    }
-  }
-
-  const showAlert = (title, message) => {
-    Alert.alert(
-      title,
-      message,
-      [
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ],
-      { cancelable: false },
-    );
-  }
-
-  const requestPermission = async () => {
-    try {
-      await firebase.messaging().requestPermission();
-    } catch (error) {
-    }
-  }
-
   const getlatlong = async () => {
 
     let permission = await localStorage.getItemString('permission')
@@ -163,7 +128,7 @@ export default Login = ({ navigation, route }) => {
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
               that.callLocation(that);
             } else {
-              let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.latitude } }
+              let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.latitude } }
               that.getalldata(position)
               localStorage.setItemString('permission', 'denied')
 
@@ -173,7 +138,7 @@ export default Login = ({ navigation, route }) => {
         requestLocationPermission();
       }
     } else {
-      let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.longitude } }
+      let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
       getalldata(position)
     }
   }
@@ -197,7 +162,7 @@ export default Login = ({ navigation, route }) => {
             pointcheck1 = 1
           },
           (error) => {
-            let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.longitude } }
+            let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
 
             getalldata(position)
           },
@@ -223,7 +188,7 @@ export default Login = ({ navigation, route }) => {
           },
           (
             error) => {
-            let position = { 'coords': { 'latitude': config.latitude, 'longitude': config.longitude } }
+            let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
 
             getalldata(position)
           },
@@ -262,7 +227,7 @@ export default Login = ({ navigation, route }) => {
 
   const getadddressfromlatlong = (event) => {
 
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + config.mapkey + '&language=' + config.maplanguage)
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + Configurations.mapkey + '&language=' + Configurations.maplanguage)
 
       .then((response) => response.json())
       .then((resp) => {
@@ -307,16 +272,15 @@ export default Login = ({ navigation, route }) => {
 
   }
 
-
   const handleBackPress = () => {
     Alert.alert(
-      LanguageConfiguration.titleexitapp[config.language],
-      LanguageConfiguration.exitappmessage[config.language], [{
-        text: LanguageConfiguration.no_txt[config.language],
+      LanguageConfiguration.titleexitapp[Configurations.language],
+      LanguageConfiguration.exitappmessage[Configurations.language], [{
+        text: LanguageConfiguration.no_txt[Configurations.language],
         onPress: () => console.log('Cancel Pressed'),
-        style: LanguageConfiguration.no_txt[config.language],
+        style: LanguageConfiguration.no_txt[Configurations.language],
       }, {
-        text: LanguageConfiguration.yes_txt[config.language],
+        text: LanguageConfiguration.yes_txt[Configurations.language],
         onPress: () => BackHandler.exitApp()
       }], {
       cancelable: false
@@ -324,15 +288,6 @@ export default Login = ({ navigation, route }) => {
     ); // works best when the goBack is async 
     return true;
   };
-
-  const launguage_setbtn = (language) => {
-    LanguageConfiguration.language_set(language)
-    setState(prev => ({
-      ...prev,
-      engbtn: !state?.engbtn,
-      engbtn_ar: !state?.engbtn_ar
-    }))
-  }
 
   const get_rem_data = async () => {
     let remeberdata_arr = await localStorage.getItemObject('remeberdata');
@@ -377,37 +332,37 @@ export default Login = ({ navigation, route }) => {
     var email = state?.email.trim()
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (state?.selectuserType == -1) {
-      MessageFunctions.showError(MessageTexts.emptyUsertype[config.language])
+      MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
       return false;
     }
 
     if (email.length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
     }
 
     if (regemail.test(email) !== true) {
-      MessageFunctions.showError(MessageTexts.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
       return false
     }
 
     if (state?.password.length <= 0 || state?.password.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyPassword[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPassword[Configurations.language])
       return false
     }
     var device_lang
-    if (config.language == 0) {
+    if (Configurations.language == 0) {
       device_lang = 'ENG'
     }
     else {
       device_lang = 'AR'
     }
 
-    let url = config.baseURL + "api-service-provider-login";
+    let url = Configurations.baseURL + "api-service-provider-login";
     var data = new FormData();
     data.append('email', state?.email)
     data.append('password', state?.password)
-    data.append('device_type', config.device_type)
+    data.append('device_type', Configurations.device_type)
     data.append('device_lang', device_lang)
     data.append('fcm_token', await FBPushNotifications.getFcmToken())
     data.append('user_type', state?.userType[state?.selectuserType].value)
@@ -485,7 +440,7 @@ export default Login = ({ navigation, route }) => {
 
     <GestureRecognizer
       onSwipeLeft={(state) => onSwipeLeft(state)}
-      config={config4}
+      Configurations={config4}
       style={{
         flex: 1,
         backgroundColor: state?.backgroundColor
@@ -552,23 +507,15 @@ export default Login = ({ navigation, route }) => {
                   marginTop: (mobileW * 3) / 100,
                 }
                 ]}>
-                {/* <Text
-                style={[{
-                  fontSize:mobileW*4.5/100,
-                 fontFamily: Font.blackheadingfontfamily,
-                 
-                  color: Colors.textblack,
-                },Platform.OS=='ios'?{textAlign:config.textalign}:{textAlign:config.textalign}]}>
-                {LanguageConfiguration.Login[config.language]}
-              </Text> */}
+                  
                 <Text
                   style={{
                     fontSize: mobileW * 4.5 / 100,
                     fontFamily: Font.blackheadingfontfamily,
-                    textAlign: config.textRotate,
+                    textAlign: Configurations.textRotate,
                     color: Colors.textblack,
                   }}>
-                  {LanguageConfiguration.Login[config.language]}
+                  {LanguageConfiguration.Login[Configurations.language]}
                 </Text>
               </View>
 
@@ -584,9 +531,9 @@ export default Login = ({ navigation, route }) => {
                     fontSize: Font.headinggray,
                     fontFamily: Font.headingfontfamily,
                     color: '#515C6F',
-                    textAlign: config.textRotate,
+                    textAlign: Configurations.textRotate,
                   }}>
-                  {LanguageConfiguration.Logintext[config.language]}
+                  {LanguageConfiguration.Logintext[Configurations.language]}
                 </Text>
               </View>
               <View
@@ -596,7 +543,7 @@ export default Login = ({ navigation, route }) => {
                   marginTop: (mobileW * 4) / 100,
                 }}>
                 <DropDownboxSec
-                  lableText={(state?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[config.language] : state?.userType[state?.selectuserType].title}
+                  lableText={(state?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : state?.userType[state?.selectuserType].title}
                   boxPressAction={() => { showUsertypeModal(true) }}
                 />
 
@@ -645,7 +592,7 @@ export default Login = ({ navigation, route }) => {
                             color: Colors.white_color,
                             fontSize: 15,
                             fontFamily: Font.headingfontfamily,
-                          }}>{LanguageConfiguration.UserTypeText[config.language]}</Text>
+                          }}>{LanguageConfiguration.UserTypeText[Configurations.language]}</Text>
                         </View>
 
                         {
@@ -697,7 +644,7 @@ export default Login = ({ navigation, route }) => {
                     width: '100%',
                   }}
                   // icon={layer9_icon}
-                  lableText={LanguageConfiguration.Mobileno[config.language]}
+                  lableText={LanguageConfiguration.Mobileno[Configurations.language]}
                   inputRef={(ref) => {
                     emailInput = ref;
                   }}
@@ -726,16 +673,13 @@ export default Login = ({ navigation, route }) => {
                   alignSelf: 'center',
                   marginTop: (mobileW * 2) / 100,
                   flexDirection: 'row',
-                  // borderColor: state?.passwordfocus == true ? Colors.placholderactive : Colors.placeholder_border,
-                  // borderWidth: mobileW * 0.3 / 100,
-                  // borderRadius: (mobileW * 1) / 100,
                 }}>
                 <AuthInputBoxSec
                   mainContainer={{
                     width: '100%',
                   }}
                   // icon={layer9_icon}
-                  lableText={LanguageConfiguration.password[config.language]}
+                  lableText={LanguageConfiguration.password[Configurations.language]}
                   inputRef={(ref) => {
                     passwordInput = ref;
                   }}
@@ -777,7 +721,7 @@ export default Login = ({ navigation, route }) => {
                         fontFamily: Font.Regular,
                         fontSize: Font.Remember,
                       }}>
-                      {LanguageConfiguration.Remember[config.language]}
+                      {LanguageConfiguration.Remember[Configurations.language]}
                     </Text>
                   </View>
                 </TouchableOpacity>}
@@ -794,7 +738,7 @@ export default Login = ({ navigation, route }) => {
                           fontFamily: Font.Regular,
                           fontSize: Font.Remember,
                         }}>
-                        {LanguageConfiguration.Remember[config.language]}
+                        {LanguageConfiguration.Remember[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -813,15 +757,15 @@ export default Login = ({ navigation, route }) => {
                       fontFamily: Font.Regular,
                       fontSize: Font.Forgot,
                       alignSelf: 'flex-end',
-                      textAlign: config.textalign,
+                      textAlign: Configurations.textalign,
                     }}>
-                    {LanguageConfiguration.Forgotpassword[config.language]}
+                    {LanguageConfiguration.Forgotpassword[Configurations.language]}
                   </Text>
                 </View>
               </View>
 
               <Button
-                text={LanguageConfiguration.Contiunebtn[config.language]}
+                text={LanguageConfiguration.Contiunebtn[Configurations.language]}
                 customStyles={
                   {
 
@@ -849,25 +793,18 @@ export default Login = ({ navigation, route }) => {
                 }}>
                 <Text
                   style={{
-                    textAlign: config.textalign,
+                    textAlign: Configurations.textalign,
                     fontFamily: Font.Regular,
                     fontSize: Font.Forgot,
                     alignSelf: 'center',
                     color: Colors.regulartextcolor,
                   }}>
-                  {LanguageConfiguration.donot[config.language]}
-                  {/* {LanguageConfiguration.donot[config.language]} */}
+                  {LanguageConfiguration.donot[Configurations.language]}
                 </Text>
               </View>
 
               <Button
-                text={LanguageConfiguration.createnewaccountbtn[config.language]}
-                // onLoading={state?.loading}
-                customStyles={
-                  {
-                    // mainContainer: styles.butonContainer
-                  }
-                }
+                text={LanguageConfiguration.createnewaccountbtn[Configurations.language]}
                 onPress={() => navigation.navigate(ScreenReferences.Signup)}
                 isBlank={true}
               />
@@ -881,13 +818,13 @@ export default Login = ({ navigation, route }) => {
                 }}>
                 <Text
                   style={{
-                    textAlign: config.textalign,
+                    textAlign: Configurations.textalign,
                     fontFamily: Font.Regular,
                     fontSize: Font.Forgot,
                     alignSelf: 'center',
                     color: Colors.regulartextcolor,
                   }}>
-                  {LanguageConfiguration.swipe_text[config.language]}
+                  {LanguageConfiguration.swipe_text[Configurations.language]}
                 </Text>
               </View>
             </View>

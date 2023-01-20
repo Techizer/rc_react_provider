@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } from "react-native";
-// import Spinner from "react-native-spinkit";
-// import { Colors } from "react-native/Libraries/NewAppScreen";
-// import { color } from "react-native-reanimated";
-// import { Color, Fonts } from "../utils";
-// import { RF } from "../utils/responsive";
-import { Colors, Font, config } from '../Helpers/Utils';
+
+import { Colors, Font, Configurations } from '../Helpers/Utils';
 
 const windowWidth = Dimensions.get('window').width
 
@@ -63,14 +59,14 @@ Button.defaultProps = { customStyles: {} };
 //     color: Colors.textwhite,
 //     fontFamily: Font.Medium,
 //     fontSize: Font.buttontextsize,
-//     textAlign: config.textalign,
+//     textAlign: Configurations.textalign,
 //     alignSelf: 'center',
 //   },
 //   buttonText1: {
 //     color: Colors.textblue,
 //     fontFamily: Font.Medium,
 //     fontSize: Font.buttontextsize,
-//     textAlign: config.textalign,
+//     textAlign: Configurations.textalign,
 //     alignSelf: 'center',
 //   },
 //   img: {
@@ -109,14 +105,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: Font.Medium,
     fontSize: Font.buttontext_size,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
     fontFamily: Font.Medium,
     fontSize: Font.buttontext_size,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     alignSelf: 'center',
   }
 });

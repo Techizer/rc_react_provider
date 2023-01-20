@@ -1,6 +1,6 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from '../Assets/Icons/IReferences';
@@ -41,7 +41,7 @@ export default AddBankInformation = ({ navigation, route }) => {
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-patient-need-help-topic";
+    let url = Configurations.baseURL + "api-patient-need-help-topic";
     console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', user_id)
@@ -55,7 +55,7 @@ export default AddBankInformation = ({ navigation, route }) => {
         setState({ Select_arr: obj.result })
       }
       else {
-        MessageFunctions.alert(MessageHeadings.information[config.language], obj.message[config.language], false);
+        MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
 
         return false;
       }
@@ -100,7 +100,7 @@ export default AddBankInformation = ({ navigation, route }) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
-    let url = config.baseURL + "api-update-bank-details";
+    let url = Configurations.baseURL + "api-update-bank-details";
     console.log("url", url)
     var data = new FormData();
     // {"id":"23", "user_id":"39", "bank_name":"State Bank of India",
@@ -185,13 +185,13 @@ export default AddBankInformation = ({ navigation, route }) => {
                 style={{ width: '45%', paddingVertical: (mobileW * 3) / 100 }}>
                 <Text
                   style={{
-                    textAlign: config.textalign,
+                    textAlign: Configurations.textalign,
                     fontFamily: Font.Regular,
                     fontSize: (mobileW * 4) / 100,
                     alignSelf: 'center',
                     color: Colors.textwhite,
                   }}>
-                  {LanguageConfiguration.select_topic_text[config.language]}
+                  {LanguageConfiguration.select_topic_text[Configurations.language]}
                 </Text>
               </View>
             </View>
@@ -216,7 +216,7 @@ export default AddBankInformation = ({ navigation, route }) => {
                             <Text
                               style={{
                                 color: Colors.textblack,
-                                textAlign: config.textRotate,
+                                textAlign: Configurations.textRotate,
                                 fontSize: (mobileW * 4) / 100,
                                 paddingLeft: mobileW * 2 / 100,
 
@@ -242,23 +242,23 @@ export default AddBankInformation = ({ navigation, route }) => {
 
         <TouchableOpacity activeOpacity={0.9} onPress={() => { setState({ successmodel: false }) }} style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: '#00000080', width: '100%', }}>
           <View style={{ width: '100%', backgroundColor: 'white', borderRadius: mobileW * 4 / 100, position: 'absolute', bottom: 0, alignItems: 'center', justifyContent: 'center', paddingBottom: mobileW * 5 / 100, alignSelf: 'center' }}>
-            {config.language == 0 ?
+            {Configurations.language == 0 ?
               <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
                 source={Icons.GreenTick}></Image>
               :
               <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
                 source={require('../Assets/Icons/ryt_opp.png')}></Image>
             }
-            <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: config.textalign, }}>{LanguageConfiguration.thank[config.language]}
+            <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, }}>{LanguageConfiguration.thank[Configurations.language]}
 
 
             </Text>
-            <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: config.textalign }}>{LanguageConfiguration.success[config.language]}
+            <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign }}>{LanguageConfiguration.success[Configurations.language]}
 
 
             </Text>
 
-            <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.Medium, textAlign: config.textalign, color: Colors.textgray }}>{LanguageConfiguration.text_of_modal[config.language]}
+            <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, color: Colors.textgray }}>{LanguageConfiguration.text_of_modal[Configurations.language]}
 
 
             </Text>
@@ -268,7 +268,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             }}
 
               style={{ width: '15%', alignSelf: 'center', borderColor: Colors.bordercolorblue, borderWidth: 1, paddingVertical: mobileW * 2 / 100, marginTop: mobileW * 5 / 100, borderRadius: mobileW * 3 / 100 }}>
-              <Text style={{ fontSize: mobileW * 3 / 100, alignSelf: 'center', fontFamily: Font.Medium, textAlign: config.textalign, alignSelf: 'center', color: Colors.terms_text_color_blue, }}>{LanguageConfiguration.close_txt[config.language]}</Text>
+              <Text style={{ fontSize: mobileW * 3 / 100, alignSelf: 'center', fontFamily: Font.Medium, textAlign: Configurations.textalign, alignSelf: 'center', color: Colors.terms_text_color_blue, }}>{LanguageConfiguration.close_txt[Configurations.language]}</Text>
 
 
             </TouchableOpacity>
@@ -302,11 +302,11 @@ export default AddBankInformation = ({ navigation, route }) => {
             }}
               style={{ width: '100%', }}>
               <Image style={{ width: mobileW * 8 / 100, height: mobileW * 8 / 100, alignSelf: 'center' }}
-                source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}></Image>
+                source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}></Image>
             </TouchableOpacity>
           </View>
           <View style={{ width: '95%', alignSelf: 'center', }}>
-            <Text style={{ textAlign: config.textalign, fontSize: mobileW * 4.5 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, alignSelf: 'center' }}>{LanguageConfiguration.supporttext[config.language]} </Text>
+            <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 4.5 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, alignSelf: 'center' }}>{LanguageConfiguration.supporttext[Configurations.language]} </Text>
           </View>
         </View>
       </View>
@@ -592,7 +592,7 @@ export default AddBankInformation = ({ navigation, route }) => {
                     color: Colors.regulartextcolor,
                     fontFamily: Font.Regular,
                     // paddingLeft:mobileW*2/100,
-                    // textAlign: config.textalign,
+                    // textAlign: Configurations.textalign,
                     fontSize: Font.Remember,
                   }}>
                   By adding an account, you agree on all the information provided are correct & genuine.
@@ -602,7 +602,7 @@ export default AddBankInformation = ({ navigation, route }) => {
           </View>
 
           <Button
-            text={LanguageConfiguration.submitbtntext[config.language]}
+            text={LanguageConfiguration.submitbtntext[Configurations.language]}
             // onLoading={classStateData.loading}
             customStyles={
               {

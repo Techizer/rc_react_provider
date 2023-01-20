@@ -1,14 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Text, TouchableOpacity, View, Image, StyleSheet, ActivityIndicator, TouchableHighlight, Keyboard, FlatList, Alert, Platform, } from "react-native";
+import { Text, TouchableOpacity, View, Image, StyleSheet, ActivityIndicator, TouchableHighlight, Keyboard, Platform } from "react-native";
 import Modal from "react-native-modal";
-import { TextInput } from "react-native-paper";
 import { Colors, Font } from "../Provider/Colorsfont";
-import {
-    windowWidth, deviceHeight, config,
-    localStorage,  API, MessageFunctions, windowHeight,
-} from "../Helpers/Utils";
-
-import { Add, Address, Cross, dummyUser, Edit, Menu, roundCheck } from "../Assets/Icons/SvgIcons/Index";
+import { windowWidth, Configurations, localStorage, API, MessageFunctions, windowHeight } from "../Helpers/Utils";
+import { Cross } from "../Assets/Icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import AuthInputBoxSec from "./AuthInputBoxSec";
@@ -16,13 +11,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Button from "./Button";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 
-const AddressInputPopup = ({
-    visible,
-    onRequestClose,
-    type,
-    editedAddress = () => { },
+const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () => { },
     navigation,
-
     addressIDParam = -1,
     addressTitleParam = '',
     googleAddressParam = '',
@@ -44,8 +34,6 @@ const AddressInputPopup = ({
     const [isDelete, setIsDelete] = useState(false)
 
     const scrollRef = useRef()
-    const titleRef = useRef()
-    const addressRef = useRef()
     const landmarkRef = useRef()
     const buildingRef = useRef()
 
@@ -68,18 +56,6 @@ const AddressInputPopup = ({
 
     }, [addressIDParam, addressTitleParam, googleAddressParam, nearestLandmarkParam, buildingNameParam, isDefaultParam, longitudeParam, latitudeParam, shouldShowEditParam])
 
-    const resetState = () => {
-        setTitle('')
-        setGoogleAddress('')
-        setNearest('')
-        setBuilding('')
-        setDefaultAddress('1')
-    }
-
-    const _scrollToInput = (reactNode) => {
-        scrollRef.props.scrollToFocusedInput(reactNode)
-    }
-
     const addEditAddress = async () => {
         var user_details = await localStorage.getItemObject("user_arr");
         let user_id = user_details["user_id"];
@@ -93,7 +69,7 @@ const AddressInputPopup = ({
             endpoint = "api-provider-insert-address"
         }
 
-        let url = config.baseURL + endpoint;
+        let url = Configurations.baseURL + endpoint;
 
         if (title == '') {
             MessageFunctions.showError("Please add address title");
@@ -177,7 +153,6 @@ const AddressInputPopup = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: 'rgba(0,0,0,0.3)',
-                        // opacity: 0.8,
                         width: windowWidth,
                         height: windowHeight - 200,
                         borderRadius: 25,
@@ -191,7 +166,6 @@ const AddressInputPopup = ({
                 <TouchableHighlight
                     onPress={() => {
                         onRequestClose()
-                        // resetState()
                     }}
                     underlayColor={Colors.Highlight}
                     style={styles.closeContainer}
@@ -203,7 +177,7 @@ const AddressInputPopup = ({
                     style={{
                         fontSize: Font.large,
                         fontFamily: Font.SemiBold,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                         color: Colors.darkText
 
                     }}>{(type === 'editAddress') ? 'Edit Address' : 'Add Address'}</Text>
@@ -229,7 +203,6 @@ const AddressInputPopup = ({
                                     mainContainer={{ width: '100%' }}
                                     inputFieldStyle={{ height: vs(35) }}
                                     lableText={'Address Title'}
-                                    //inputRef={titleRef}
                                     onChangeText={(val) => setTitle(val)}
                                     value={title}
                                     keyboardType="default"
@@ -238,9 +211,6 @@ const AddressInputPopup = ({
                                     onSubmitEditing={() => {
                                         landmarkRef.current.focus();
                                     }}
-                                    // onFocus={(event: Event) => {
-                                    //     _scrollToInput(event.target)
-                                    // }}
                                     blurOnSubmit={Platform.OS === 'ios' ? true : false}
                                     editable
                                 />

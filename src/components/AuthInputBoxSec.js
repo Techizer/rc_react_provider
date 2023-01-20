@@ -1,29 +1,7 @@
 import React from "react";
-import {
-  // TextInput,
-  View,
-  Image,
-  StyleSheet,
-  Dimensions,
-  Text,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
-import {
-  TextInput,
-  HelperText,
-  useTheme,
-  MD2Colors,
-  MD3Colors,
-  List,
-} from 'react-native-paper';
-import Icon from "react-native-vector-icons/MaterialIcons";
-// import { hp, wp } from "../utils/responsive";
-// import { RF } from "../utils/responsive";
-// import Fonts, { fonts, fontSizes } from "../utils/Fonts";
-// import { Color } from "../utils";
-// const { height, width } = Dimensions.get("window");
-import { Colors, Font, config } from '../Helpers/Utils';
+import { View, StyleSheet } from "react-native";
+import { TextInput } from 'react-native-paper';
+import { Colors, Font, Configurations } from '../Helpers/Utils';
 
 const AuthInputBoxSec = (props) => {
   const {
@@ -50,7 +28,6 @@ const AuthInputBoxSec = (props) => {
     secureTextEntry
 
   } = props
-  //console.log(props.onSubmitEditing)
   return (
     <>
       <View style={[styles.mainContainer, mainContainer]}>
@@ -126,12 +103,6 @@ const styles = StyleSheet.create({
     width: "90%",
     justifyContent: 'flex-start',
     height: 'auto'
-    //paddingLeft: 10,
-    //paddingRight: 10,
-    // borderBottomWidth: 0.5,
-    // borderBottomColor: "lightgrey",
-    //paddingVertical: 5,
-    // marginBottom: 10,
   },
   imgView: {
     width: "15%",
@@ -143,15 +114,13 @@ const styles = StyleSheet.create({
   },
   inputLayout: {
     width: "100%",
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
   },
   inputFieldStyle: {
     width: '100%',
     height: 48,
     color: Colors.Black,
     fontSize: Font.medium,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     //height: (mobileW * 12) / 100,
     fontFamily: Font.Regular,
     // borderRadius: (mobileW * 1) / 100,
@@ -161,7 +130,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     lineHeight: 48,
     textAlignVertical: 'top'
-    // borderColor: 'red', //Colors.placeholder_border
   },
   errorLayout: {
     backgroundColor: "red",

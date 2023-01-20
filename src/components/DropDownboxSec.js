@@ -1,29 +1,12 @@
 import React from "react";
 import {
-  // TextInput,
   View,
   Image,
   StyleSheet,
-  Dimensions,
   Text,
-  ActivityIndicator,
-  TouchableOpacity, Platform
+  TouchableOpacity
 } from "react-native";
-import {
-  TextInput,
-  HelperText,
-  useTheme,
-  MD2Colors,
-  MD3Colors,
-  List,
-} from 'react-native-paper';
-import Icon from "react-native-vector-icons/MaterialIcons";
-// import { hp, wp } from "../utils/responsive";
-// import { RF } from "../utils/responsive";
-// import Fonts, { fonts, fontSizes } from "../utils/Fonts";
-// import { Color } from "../utils";
-// const { height, width } = Dimensions.get("window");
-import { Colors, Font, config, mobileW } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW } from '../Helpers/Utils';
 import { Icons } from "../Assets/Icons/IReferences";
 
 const DropDownboxSec = ({
@@ -119,7 +102,7 @@ const styles = StyleSheet.create({
     width: '100%',
     color: Colors.placeholder_text_color,
     fontSize: Font.placeholdersize,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     justifyContent: 'center',
     // alignItems: 'center',
     textAlignVertical: 'center',

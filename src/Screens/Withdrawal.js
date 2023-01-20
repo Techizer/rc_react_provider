@@ -1,104 +1,11 @@
-import React, { Component, useEffect, useState } from 'react';
-import {
-  TextInput, Switch, Text, View, ScrollView, Alert,
-  StyleSheet, SafeAreaView, Image, TouchableOpacity,
-  ImageBackground, Modal, FlatList
-} from 'react-native';
-
-import {
-  Colors,
-  Font,
-  mobileH,
-  MessageFunctions,
-  MessageTexts,
-  config,
-  mobileW,
-  localStorage,
-
-
-  handleback,
-  LanguageConfiguration,
-  API,
-  MessageHeadings,
-} from '../Helpers/Utils';
-
-import Styles from '../Styles';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
+import React, { useEffect, useState } from 'react';
+import { Text, View, Alert, Image, TouchableOpacity, FlatList } from 'react-native';
+import { Colors, Font, MessageFunctions, Configurations, mobileW, localStorage, API } from '../Helpers/Utils';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 
-const taskArr = [
-  {
-    id: 1,
-    value: 'Injection / Home IV therapy',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Post surgical care',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Bladder wash',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Enema',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Muscle Injection',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Ear Piercing',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Wound Care',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Enema',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Muscle Injection',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Ear Piercing',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: 'Wound Care',
-    symbol: 'km',
-    status: true,
-  },
-]
-
 export default Withdrawal = ({ navigation, route }) => {
+  
   const [classStateData, setClassStateData] = useState({
     abal: '',
     content: null,
@@ -131,7 +38,7 @@ export default Withdrawal = ({ navigation, route }) => {
 
     let apishow = apiname
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
@@ -194,7 +101,7 @@ export default Withdrawal = ({ navigation, route }) => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    let url = config.baseURL + "api-provider-delete-bank-details";
+    let url = Configurations.baseURL + "api-provider-delete-bank-details";
     console.log("url", url)
     var data = new FormData();
     data.append('user_id', user_id)
@@ -265,7 +172,7 @@ export default Withdrawal = ({ navigation, route }) => {
                   <Text
                     style={{
                       // marginLeft: mobileW * 1.5 / 100,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.buttoncolorhgreen,
                       fontFamily: Font.Regular,
                       fontSize: mobileW * 3.6 / 100,
@@ -311,8 +218,7 @@ export default Withdrawal = ({ navigation, route }) => {
                           flexDirection: 'row',
                           alignItems: 'center',
                           width: '100%',
-                          backgroundColor: '#FBFBFB', //Colors.tab_background_color, //'#E5E5E5',
-                          // backgroundColor: (index == taskArr.length - 1) ? '#E5E5E5' : '#FBFBFB',
+                          backgroundColor: '#FBFBFB', 
                           height: (mobileW * 12) / 100,
                           paddingLeft: 15,
                           paddingRight: 15,
@@ -324,15 +230,13 @@ export default Withdrawal = ({ navigation, route }) => {
                               width: '100%',
                               alignSelf: 'center',
                               flexDirection: 'row',
-                              // backgroundColor: 'red'
                             }}>
                             <View style={{
                               width: '50%',
                             }}>
                               <Text
                                 style={{
-                                  // marginLeft: mobileW * 1.5 / 100,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   color: Colors.placeholdertextcolor,
                                   fontFamily: Font.Regular,
                                   fontSize: mobileW * 3.3 / 100,
@@ -341,8 +245,7 @@ export default Withdrawal = ({ navigation, route }) => {
                               </Text>
                               <Text
                                 style={{
-                                  // marginLeft: mobileW * 1.5 / 100,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   color: Colors.splashtextcolor,
                                   fontFamily: Font.Regular,
                                   fontSize: mobileW * 2.5 / 100,
@@ -356,7 +259,6 @@ export default Withdrawal = ({ navigation, route }) => {
                             <View
                               style={{
                                 width: '50%',
-                                // backgroundColor: 'yellow'
                               }}>
                               <Text
                                 style={{
@@ -421,7 +323,7 @@ export default Withdrawal = ({ navigation, route }) => {
                   <Text
                     style={{
                       // marginLeft: mobileW * 1.5 / 100,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.textblue,
                       fontFamily: Font.Regular,
                       fontSize: mobileW * 3.6 / 100,
@@ -458,7 +360,7 @@ export default Withdrawal = ({ navigation, route }) => {
                   <Text
                     style={{
                       // marginLeft: mobileW * 1.5 / 100,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.placeholder_border,
                       fontFamily: Font.Regular,
                       fontSize: mobileW * 3.6 / 100,
@@ -507,7 +409,7 @@ export default Withdrawal = ({ navigation, route }) => {
                       <Text
                         style={{
                           // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.textblue,
                           fontFamily: Font.Regular,
                           fontSize: mobileW * 3.6 / 100,
@@ -579,7 +481,7 @@ export default Withdrawal = ({ navigation, route }) => {
                       <Text
                         style={{
                           // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.textblue,
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 2.5 / 100,
@@ -587,7 +489,7 @@ export default Withdrawal = ({ navigation, route }) => {
                       <Text
                         style={{
                           // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.placeholdertextcolor,
                           fontFamily: Font.Regular,
                           fontSize: mobileW * 3.3 / 100,
@@ -601,14 +503,14 @@ export default Withdrawal = ({ navigation, route }) => {
                     }}>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.textblue,
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 2.5 / 100,
                         }}>A/C Name:</Text>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.placeholdertextcolor,
                           fontFamily: Font.Regular,
                           fontSize: mobileW * 3.3 / 100,
@@ -622,14 +524,14 @@ export default Withdrawal = ({ navigation, route }) => {
                     }}>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.textblue,
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 2.5 / 100,
                         }}>A/C No:</Text>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.placeholdertextcolor,
                           fontFamily: Font.Regular,
                           fontSize: mobileW * 3.3 / 100,
@@ -667,14 +569,14 @@ export default Withdrawal = ({ navigation, route }) => {
                     }}>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.textblue,
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 2.5 / 100,
                         }}>Address:</Text>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.placeholder_border,
                           fontFamily: Font.Regular,
                           fontSize: mobileW * 3.6 / 100,
@@ -713,7 +615,7 @@ export default Withdrawal = ({ navigation, route }) => {
                   }}>
                     <Text
                       style={{
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                         fontFamily: Font.Regular,
                         fontSize: mobileW * 3.6 / 100,
                       }}>

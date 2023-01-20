@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, StatusBar, Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { DrawerSubMenu } from '../Components'
 import Styles from '../Styles';
 import { DrawerActions } from '@react-navigation/native';
@@ -44,7 +44,7 @@ export default Drawer = ({ navigation, route }) => {
   const getPercentage = async () => {
     var user_details = await localStorage.getItemObject("user_arr");
     let { user_id, user_type } = user_details;
-    let url = config.baseURL + "api-provider-profile-complete";
+    let url = Configurations.baseURL + "api-provider-profile-complete";
 
     var data = new FormData();
     console.log({ user_id, user_type });
@@ -84,7 +84,7 @@ export default Drawer = ({ navigation, route }) => {
     })
     if (user_details.image != null) {
       setState({
-        profile_img: config.img_url3 + user_details['image'],
+        profile_img: Configurations.img_url3 + user_details['image'],
       })
     }
 
@@ -105,7 +105,7 @@ export default Drawer = ({ navigation, route }) => {
   const logoutApi = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
     let user_id = user_details['user_id']
-    let url = config.baseURL + "api-logout";
+    let url = Configurations.baseURL + "api-logout";
     var data = new FormData();
     data.append('user_id', user_id)
 
@@ -176,7 +176,7 @@ export default Drawer = ({ navigation, route }) => {
                       color: Colors.Black,
                       fontFamily: Font.Medium,
                       fontSize: Font.xxxlarge,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
 
                     }}>
                     {classStateData.name}
@@ -185,7 +185,7 @@ export default Drawer = ({ navigation, route }) => {
 
                 <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
                   <SvgXml xml={
-                    config.textalign == "right"
+                    Configurations.textalign == "right"
                       ? leftArrow : rightArrow
                   } height={vs(11.98)} width={s(6.42)} />
                 </View>
@@ -206,11 +206,11 @@ export default Drawer = ({ navigation, route }) => {
                       color: Colors.Theme,
                       fontFamily: Font.Medium,
                       fontSize: Font.medium,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       marginTop: vs(5)
 
                     }}>
-                    {config.language == 0 ? 'View & edit profile' : 'عرض وتحرير الملف الشخصي'}
+                    {Configurations.language == 0 ? 'View & edit profile' : 'عرض وتحرير الملف الشخصي'}
                   </Text>
                 </TouchableOpacity>
 
@@ -221,10 +221,10 @@ export default Drawer = ({ navigation, route }) => {
                       color: Colors.DarkGrey,
                       fontFamily: Font.Regular,
                       fontSize: Font.small,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       marginTop: vs(4)
                     }}>
-                    {config.language == 0 ? `${classStateData.totalCompletionPercentage}% Completed` : `${classStateData.totalCompletionPercentage}٪ اكتمل`}
+                    {Configurations.language == 0 ? `${classStateData.totalCompletionPercentage}% Completed` : `${classStateData.totalCompletionPercentage}٪ اكتمل`}
                   </Text>
                 }
 
@@ -244,7 +244,7 @@ export default Drawer = ({ navigation, route }) => {
                   color: Colors.Black,
                   fontFamily: Font.Medium,
                   fontSize: 14,
-                  textAlign: config.textRotate,
+                  textAlign: Configurations.textRotate,
                 }}>
                 {'Appointment'}
               </Text>
@@ -252,7 +252,7 @@ export default Drawer = ({ navigation, route }) => {
 
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.MyAppointment}
@@ -262,8 +262,8 @@ export default Drawer = ({ navigation, route }) => {
                   navigation.navigate(ScreenReferences.AppointmentTabStack)
               }}
 
-              title={LanguageConfiguration.MyAppointments[config.language]}
-              subtitle={LanguageConfiguration.MyAppointmentsSub[config.language]}
+              title={LanguageConfiguration.MyAppointments[Configurations.language]}
+              subtitle={LanguageConfiguration.MyAppointmentsSub[Configurations.language]}
 
             />
 
@@ -278,7 +278,7 @@ export default Drawer = ({ navigation, route }) => {
                   color: Colors.Black,
                   fontFamily: Font.Medium,
                   fontSize: 14,
-                  textAlign: config.textRotate,
+                  textAlign: Configurations.textRotate,
                 }}>
                 {'Booking Preferences'}
               </Text>
@@ -286,7 +286,7 @@ export default Drawer = ({ navigation, route }) => {
 
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.ScheduleAvailability}
@@ -296,14 +296,14 @@ export default Drawer = ({ navigation, route }) => {
                 navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
               }}
 
-              title={LanguageConfiguration.scheduleavailability_heading[config.language]}
-              subtitle={LanguageConfiguration.scheduleavailabilitysub_heading[config.language]}
+              title={LanguageConfiguration.scheduleavailability_heading[Configurations.language]}
+              subtitle={LanguageConfiguration.scheduleavailabilitysub_heading[Configurations.language]}
 
             />
 
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.PriceList}
@@ -313,14 +313,14 @@ export default Drawer = ({ navigation, route }) => {
                 navigation.navigate(ScreenReferences.PriceListTabStack)
               }}
 
-              title={LanguageConfiguration.pricelist_heading[config.language]}
-              subtitle={LanguageConfiguration.pricelistsub_heading[config.language]}
+              title={LanguageConfiguration.pricelist_heading[Configurations.language]}
+              subtitle={LanguageConfiguration.pricelistsub_heading[Configurations.language]}
 
             />
 
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.ServiceAddress}
@@ -344,7 +344,7 @@ export default Drawer = ({ navigation, route }) => {
                   color: Colors.Black,
                   fontFamily: Font.Medium,
                   fontSize: 14,
-                  textAlign: config.textRotate,
+                  textAlign: Configurations.textRotate,
                 }}>
                 {'Account & More'}
               </Text>
@@ -352,7 +352,7 @@ export default Drawer = ({ navigation, route }) => {
 
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.ProfileSettings}
@@ -368,7 +368,7 @@ export default Drawer = ({ navigation, route }) => {
 
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.TransactionsAndMore}
@@ -382,7 +382,7 @@ export default Drawer = ({ navigation, route }) => {
 
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.ReviewAndRating}
@@ -395,7 +395,7 @@ export default Drawer = ({ navigation, route }) => {
             />
             <DrawerItemContainer
               rightIcon={
-                config.textalign == "right"
+                Configurations.textalign == "right"
                   ? leftArrow : rightArrow
               }
               leftIcon={DrawerIcons.SupportAndMore}
@@ -416,7 +416,7 @@ export default Drawer = ({ navigation, route }) => {
                 setState({ modalVisible: false })
                 confirm_click()
               }}
-              title={LanguageConfiguration.Logout[config.language]}
+              title={LanguageConfiguration.Logout[Configurations.language]}
               titleStyle={{
                 color: 'grey'
               }}
@@ -497,7 +497,7 @@ export default Drawer = ({ navigation, route }) => {
                           alignSelf: "center",
                         }}
                       >
-                        {LanguageConfiguration.Logout[config.language]}
+                        {LanguageConfiguration.Logout[Configurations.language]}
                       </Text>
                     </TouchableOpacity>
                   </View>

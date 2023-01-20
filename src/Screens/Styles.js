@@ -3,7 +3,7 @@ import {
   Colors,
   Font,
   MessageTexts,
-  config,
+  Configurations,
   mobileW,
   localStorage,
   
@@ -47,7 +47,7 @@ export default Styles = StyleSheet.create({
   },
   headingtext: {
     // color: Colors.whiteColor,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     fontFamily: Font.Medium,
     fontSize: mobileW * 3.7 / 100
   },
@@ -62,12 +62,12 @@ export default Styles = StyleSheet.create({
     color: Colors.splashtextcolor
   },
   cardtitle: {
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     fontFamily: Font.Medium,
     fontSize: (mobileW * 3.3) / 100,
   },
   details: {
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     fontSize: (mobileW * 2.7) / 100,
     fontFamily: Font.Regular,
     color: Colors.placeholder_text,
@@ -89,7 +89,7 @@ export default Styles = StyleSheet.create({
     width: '100%',
     color: Colors.textblack,
     fontSize: Font.placeholdersize,
-    textAlign: config.textRotate,
+    textAlign: Configurations.textRotate,
     height: (mobileW * 12) / 100,
     fontFamily: Font.placeholderfontfamily,
     paddingLeft: mobileW * 2.5 / 100,

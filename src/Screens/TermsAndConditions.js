@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
-import { Text, View, Image, FlatList, StyleSheet, ScrollView, TouchableOpacity, Dimensions, StatusBar, SafeAreaView, Platform } from 'react-native'
-import { color } from 'react-native-reanimated';
+import React from 'react'
+import { View, StyleSheet, Dimensions, StatusBar, Platform } from 'react-native'
 import { WebView } from 'react-native-webview';
-import { Colors, Font, mobileH, mobileW, config, LanguageConfiguration } from '../Helpers/Utils'
+import { Colors, mobileW, Configurations, LanguageConfiguration } from '../Helpers/Utils'
 import ScreenHeader from '../Components/ScreenHeader';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -29,13 +28,13 @@ export default TermsAndConditions = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={(() => {
-          if (pageName == 0) return LanguageConfiguration.AboutRootscare[config.language]
-          if (pageName == 2) return LanguageConfiguration.TermsandConditions[config.language]
-          if (pageName == 1) return LanguageConfiguration.PrivacyPolicy[config.language]
+          if (pageName == 0) return LanguageConfiguration.AboutRootscare[Configurations.language]
+          if (pageName == 2) return LanguageConfiguration.TermsandConditions[Configurations.language]
+          if (pageName == 1) return LanguageConfiguration.PrivacyPolicy[Configurations.language]
         })()}
         style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-      {config.language == 1 ?
+      {Configurations.language == 1 ?
         <WebView
           style={styles.webview}
           source={{ uri: contentArray }}

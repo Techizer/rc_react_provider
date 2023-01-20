@@ -1,11 +1,10 @@
 import Button from './Button';
 import DrawerSubMenu from './DrawerSubMenu';
 import DashBoardBox from './DashBoardBox';
-import AppointmentBox from './AppointmentBox';
 import AuthInputBoxSec from './AuthInputBoxSec';
 import DropDownboxSec from './DropDownboxSec';
-import SearchPlaceScreen from './SearchPlace';
+import SearchPlaceScreen from '../Screens/SearchPlace';
 export {
     AuthInputBoxSec, DropDownboxSec, Button,
-    DrawerSubMenu, DashBoardBox, AppointmentBox, SearchPlaceScreen
+    DrawerSubMenu, DashBoardBox, SearchPlaceScreen
 }

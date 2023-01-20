@@ -1,15 +1,7 @@
-import React, { Component, useEffect, useState } from 'react';
-import { TextInput, Switch, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import {
-  Colors,
-  Font,
-  config,
-  mobileW,
-  localStorage,
-  LanguageConfiguration,
-  API,
-} from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, localStorage, API } from '../Helpers/Utils';
 
 import { Icons } from '../Assets/Icons/IReferences';
 
@@ -43,18 +35,14 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
     let apiname = "api-provider-transactions-history"
 
 
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
+    let apishow = apiname
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
-    // data.append('lgoin_user_id', user_id)
     data.append('user_id', user_id)
     data.append('service_type', user_type)
-
-
-
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
@@ -64,10 +52,6 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
           content: obj.result.content,
           message: obj.message
         })
-        console.log('obj.result', obj.result, obj.result.paymentdetails[0])
-
-
-
       } else {
 
         setState({
@@ -128,7 +112,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                 }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
                       fontSize: mobileW * 3.6 / 100,
@@ -143,7 +127,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
                       fontSize: mobileW * 3.6 / 100,
@@ -160,7 +144,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
                       fontSize: mobileW * 3.6 / 100,
@@ -169,7 +153,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   </Text>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.textblue,
                       fontFamily: Font.Regular,
                       fontSize: mobileW * 2.5 / 100,
@@ -186,7 +170,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
                       fontSize: mobileW * 3.6 / 100,
@@ -195,7 +179,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   </Text>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       color: Colors.textblue,
                       fontFamily: Font.Regular,
                       fontSize: mobileW * 2.5 / 100,
@@ -256,7 +240,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                         }}>
                           <Text
                             style={{
-                              textAlign: config.textRotate,
+                              textAlign: Configurations.textRotate,
                               color: Colors.textblue,
                               fontFamily: Font.Regular,
                               fontSize: mobileW * 2.5 / 100,
@@ -271,7 +255,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                           }}>
                           <Text
                             style={{
-                              textAlign: config.textRotate,
+                              textAlign: Configurations.textRotate,
                               color: Colors.placeholder_text_color,
                               fontFamily: Font.Regular,
                               fontSize: mobileW * 3 / 100,
@@ -369,7 +353,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   <View style={{ width: '50%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text
                       style={{
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                         color: Colors.textblue,
                         fontFamily: Font.Regular,
                         fontSize: mobileW * 3.6 / 100,
@@ -434,8 +418,6 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <HTMLView
                       value={classStateData.content?.content}
-
-                    //stylesheet={HTMLstyles}
                     />
                   </View>
 

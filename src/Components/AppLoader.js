@@ -4,8 +4,7 @@ import {
     Modal,
     StyleSheet,
     TouchableOpacity,
-    ActivityIndicator,
-    Image, Platform
+    Platform
 } from "react-native"
 import Spinner from 'react-native-spinkit';
 
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#0168B3', //'black',
+        backgroundColor: '#0168B3', 
         borderRadius: 6,
         justifyContent: "space-around",
         alignItems: "center",

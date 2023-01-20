@@ -91,7 +91,7 @@ class configProvider {
 		console.log(email);
 		console.log(rememberme);
 		console.log(language);
-		config.login = 0
+		Configurations.login = 0
 		if (userdata != null) {
 			if (userdata.login_type == 0) {
 				localStorage.clear();
@@ -132,9 +132,7 @@ class configProvider {
 	}
 
 };
-//--------------------------- Config Provider End -----------------------
-
-export const config = new configProvider();
+export const Configurations = new configProvider();
 
 
 

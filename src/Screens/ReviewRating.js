@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from 'react';
-import { Text, View, FlatList, ScrollView, StyleSheet, SafeAreaView, Image, Modal, TouchableOpacity, ImageBackground, TextInput, StatusBar, Dimensions, Platform } from 'react-native';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings, } from '../Helpers/Utils';
+import React, { useEffect, useState } from 'react';
+import { Text, View, FlatList, SafeAreaView, Image, Modal, TouchableOpacity, StatusBar, Dimensions, Platform } from 'react-native';
+import { Colors, Font, Configurations, mobileW, localStorage, handleback, LanguageConfiguration, API } from '../Helpers/Utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
@@ -33,7 +33,7 @@ export default ReviewRating = ({ navigation, route }) => {
     let user_type = user_details['user_type']
     let apishow = "api-all-provider-review"
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
@@ -104,7 +104,7 @@ export default ReviewRating = ({ navigation, route }) => {
 
               <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingBottom: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
                 <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={Icons.Logo}></Image>
-                <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.Notification[config.language]}</Text>
+                <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.Notification[Configurations.language]}</Text>
               </View>
               <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
 
@@ -119,7 +119,7 @@ export default ReviewRating = ({ navigation, route }) => {
               <TouchableOpacity onPress={() => { setState({ modalVisible3: false }) }}
                 activeOpacity={0.8}
                 style={{ width: mobileW * 20 / 100, justifyContent: 'flex-end', alignSelf: 'flex-end', marginTop: mobileW * 3 / 100 }}>
-                <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{LanguageConfiguration.OK[config.language]}</Text>
+                <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{LanguageConfiguration.OK[Configurations.language]}</Text>
               </TouchableOpacity>
 
 
@@ -196,7 +196,7 @@ export default ReviewRating = ({ navigation, route }) => {
                         || item.image == '' ?
                         Icons.AccountFilled :
                         {
-                          uri: config.img_url3 + item.image
+                          uri: Configurations.img_url3 + item.image
                         }}
 
                       style={{
@@ -225,7 +225,7 @@ export default ReviewRating = ({ navigation, route }) => {
                           fontFamily: Font.Regular,
                           fontSize: Font.sregulartext_size,
                           lineHeight: (mobileW * 4.2) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.lightgraytext,
                           paddingBottom: (mobileW * 2.1) / 100,
                         }}>{item?.review}</Text>

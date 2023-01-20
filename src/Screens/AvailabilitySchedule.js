@@ -1,24 +1,7 @@
-import React, { Component, useEffect } from 'react';
-import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, Dimensions, StatusBar } from 'react-native';
-import {
-  Colors,
-  Font,
-  mobileH,
-  MessageFunctions,
-  MessageTexts,
-  config,
-  mobileW,
-  localStorage,
-  
-  
-  handleback,
-  LanguageConfiguration,
-  API,
-  MessageHeadings,
-} from '../Helpers/Utils';
-
-import Styles from '../Styles';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import React, { useEffect } from 'react';
+import { useWindowDimensions, Text, View, Dimensions, StatusBar } from 'react-native';
+import { Colors, Font, Configurations, mobileW, localStorage, LanguageConfiguration } from '../Helpers/Utils';
+import { TabView, TabBar } from 'react-native-tab-view';
 import AvailabilityScheduleContainer from '../Containers/AvailabilitySchedule';
 import ScreenHeader from '../Components/ScreenHeader';
 
@@ -28,9 +11,6 @@ const renderTabBar = props => (
     indicatorStyle={{
       backgroundColor: Colors.Theme,
       height: 0
-      // height: (mobileW * 0.75) / 100,
-      // borderTopRightRadius: 10,
-      // borderTopLeftRadius: 10
     }}
     activeColor={Colors.Theme}
     inactiveColor={'#354052'}
@@ -111,8 +91,6 @@ export default AvailabilitySchedule = ({ navigation }) => {
       ])
     } else if (user_type == "physiotherapy") {
       setRoutes([
-        // { key: 'first', title: 'First' },
-        // { key: 'second', title: 'Second' },
         {
           id: 1,
           name: 'Ongoing',
@@ -175,18 +153,16 @@ export default AvailabilitySchedule = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <ScreenHeader onBackPress={() => {
         navigation.goBack();
-      }} leftIcon navigation={navigation} title={LanguageConfiguration.scheduleavailability_heading[config.language]} 
+      }} leftIcon navigation={navigation} title={LanguageConfiguration.scheduleavailability_heading[Configurations.language]} 
       style={{paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight}}/>
       <View
         style={{
           flex: 1,
-          // paddingBottom: (mobileW * 2) / 100 
         }}
 
       >
         <View style={{
           flex: 1,
-          // marginBottom: (mobileW * 2) / 100 
         }}>
           
           {

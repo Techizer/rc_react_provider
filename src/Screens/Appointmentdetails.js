@@ -1,32 +1,23 @@
 import React, { Component } from 'react';
 import HTMLView from 'react-native-htmlview';
-import {
-  Alert, Text, TextInput, View, ScrollView, Linking,
-  StyleSheet, SafeAreaView, Image, TouchableOpacity,
-  Modal, ImageBackground, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar
-} from 'react-native';
-import { Cameragallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings, } from '../Helpers/Utils';
+import { Alert, Text, TextInput, View, ScrollView, Linking, StyleSheet, SafeAreaView, Image, TouchableOpacity,  Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar } from 'react-native';
+import { CameraGallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, LanguageConfiguration, API } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Entypo from 'react-native-vector-icons/Entypo';
-
-import DeviceInfo from 'react-native-device-info';
 import getDirections from 'react-native-google-maps-directions'
 import Slider from '@react-native-community/slider';
-// import Sound from 'react-native-sound';
 var Sound = require('react-native-sound');
 import moment from 'moment-timezone';
 import RNFetchBlob from "rn-fetch-blob";
-import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
+import { Button } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { s, vs } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
-import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
 
 export default class AppointmentDetails extends Component {
 
@@ -109,7 +100,7 @@ export default class AppointmentDetails extends Component {
 
     } else {
 
-      let recordingUrl = config.img_url3 + this.state.appoinment_detetails.symptom_recording;
+      let recordingUrl = Configurations.img_url3 + this.state.appoinment_detetails.symptom_recording;
       console.log('onStartPlay', recordingUrl);
 
       this.sound = new Sound(recordingUrl, '', (error) => {
@@ -217,7 +208,7 @@ export default class AppointmentDetails extends Component {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    let url = config.baseURL + "api-provider-appointment-details" //"api-patient-appointment-details";  
+    let url = Configurations.baseURL + "api-provider-appointment-details" //"api-patient-appointment-details";  
     console.log("url", url)
 
     var data = new FormData();
@@ -257,39 +248,11 @@ export default class AppointmentDetails extends Component {
 
   handleGetDirections = (lat, long, address) => {
     const data = {
-      // source: {
-      //   latitude: -33.8356372,
-      //   longitude: 18.6947617
-      // },
       destination: {
         latitude: lat, //-33.8600024,
         longitude: long, //18.697459
         address: address
       },
-      // params: [
-      //   {
-      //     key: "travelmode",
-      //     value: "driving"        // may be "walking", "bicycling" or "transit" as well
-      //   },
-      //   {
-      //     key: "dir_action",
-      //     value: "navigate"       // this instantly initializes navigation using the given travel mode
-      //   }
-      // ],
-      // waypoints: [
-      //   {
-      //     latitude: -33.8600025,
-      //     longitude: 18.697452
-      //   },
-      //   {
-      //     latitude: -33.8600026,
-      //     longitude: 18.697453
-      //   },
-      //   {
-      //     latitude: -33.8600036,
-      //     longitude: 18.697493
-      //   }
-      // ]
     }
 
     getDirections(data)
@@ -299,7 +262,7 @@ export default class AppointmentDetails extends Component {
   rescdule_click = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
-    let url = config.baseURL + "api-patient-reschedule-appointment";
+    let url = Configurations.baseURL + "api-patient-reschedule-appointment";
     console.log("url", url)
 
     var data = new FormData();
@@ -366,7 +329,7 @@ export default class AppointmentDetails extends Component {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-patient-next-date-time";
+    let url = Configurations.baseURL + "api-patient-next-date-time";
     console.log("url", url)
 
     var data = new FormData();
@@ -609,7 +572,7 @@ export default class AppointmentDetails extends Component {
   submit_btn = async () => {
 
     if (this.state.time_take_data.length <= 0) {
-      MessageFunctions.toast(MessageTexts.EmptyTime[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.EmptyTime[Configurations.language], 'center')
       return false;
     }
 
@@ -618,7 +581,7 @@ export default class AppointmentDetails extends Component {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-patient-update-reschedule-appointment";
+    let url = Configurations.baseURL + "api-patient-update-reschedule-appointment";
     console.log('url', url)
     var data = new FormData();
     console.log('data', data)
@@ -637,9 +600,6 @@ export default class AppointmentDetails extends Component {
           this.get_all_details(1)
         }, 700);
       } else {
-        // if (obj.active_status == MessageHeadings.deactivate[config.language] || obj.msg[config.language] == MessageHeadings.usererr[config.language]) {
-        //   usernotfound.loginFirst(this.props, obj.msg[config.language])
-        // } else {
         setTimeout(() => {
           MessageFunctions.alert('', obj.message, false);
         }, 700);
@@ -657,7 +617,7 @@ export default class AppointmentDetails extends Component {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details.user_id
 
-    let url = config.baseURL + "api-patient-insert-review";
+    let url = Configurations.baseURL + "api-patient-insert-review";
     console.log('url', url)
     var data = new FormData();
     console.log('data', data)
@@ -677,10 +637,6 @@ export default class AppointmentDetails extends Component {
           this.get_all_details(1)
         }, 700);
       } else {
-        // if (obj.active_status == MessageHeadings.deactivate[config.language] || obj.msg[config.language] == MessageHeadings.usererr[config.language]) {
-        //   usernotfound.loginFirst(this.props, obj.msg[config.language])
-        // } else {
-
         setTimeout(() => {
           MessageFunctions.alert('', obj.message, false);
         }, 700);
@@ -694,20 +650,17 @@ export default class AppointmentDetails extends Component {
 
   }
 
-  showConfirmDialogReject = (acceptance_status) => {
+  showConfirmDialogReject = (acceptanceStatus, appointmentID) => {
     return Alert.alert(
       "Are your sure?",
       "Are you sure you want to reject this appointment?",
       [
-        // The "Yes" button
         {
           text: "Yes",
           onPress: () => {
-            this.updateProviderAppointmentStatus(acceptance_status)
+            this.updateProviderAppointmentStatus(acceptanceStatus, appointmentID)
           },
         },
-        // The "No" button
-        // Does nothing but dismiss the dialog when tapped
         {
           text: "No",
         },
@@ -715,26 +668,21 @@ export default class AppointmentDetails extends Component {
     );
   };
 
-  updateProviderAppointmentStatus = async (acceptance_status) => {
+  updateProviderAppointmentStatus = async (acceptanceStatus, appointmentID) => {
     let user_details = await localStorage.getItemObject('user_arr');
-    let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    let url = config.baseURL + "api-update-provider-appointment-status";
-    console.log("url", url)
-    // {id:126,service_type:nurse,'acceptance_status':Accept}
+    let url = Configurations.baseURL + "api-update-provider-appointment-status";
+    
     var data = new FormData();
-    data.append('id', this.state.id)
+    data.append('id', appointmentID)
     data.append('service_type', user_type)
-    data.append('acceptance_status', acceptance_status)
+    data.append('acceptance_status', acceptanceStatus)
 
 
     API.post(url, data).then((obj) => {
 
       if (obj.status == true) {
         console.log('obj.result', obj.result)
-        // let appoinment_detetails = [...this.state.appoinment_detetails];
-        // appoinment_detetails[this.state.index] = { ...appoinment_detetails[this.state.index], key: obj.result[0] };
-        // this.setState({ appoinment_detetails });
         this.props.route.params.reloadList()
         this.get_all_details(0)
         MessageFunctions.showSuccess(obj.message)
@@ -758,7 +706,7 @@ export default class AppointmentDetails extends Component {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    let url = config.baseURL + "api-complete-provider-appointment-status";
+    let url = Configurations.baseURL + "api-complete-provider-appointment-status";
     console.log("url", url)
     // {id:126,service_type:nurse,'acceptance_status':Accept}
     var data = new FormData();
@@ -790,7 +738,7 @@ export default class AppointmentDetails extends Component {
   upload_report_click = async () => {
     // Keyboard.dismiss()
 
-    let url = config.baseURL + "api-upload-lab-report";
+    let url = Configurations.baseURL + "api-upload-lab-report";
     console.log("url", url)
     var data = new FormData();
 
@@ -970,7 +918,7 @@ export default class AppointmentDetails extends Component {
   upload_prescription_click = async () => {
     // Keyboard.dismiss()
 
-    let url = config.baseURL + "api-doctor-upload-prescription";
+    let url = Configurations.baseURL + "api-doctor-upload-prescription";
     console.log("url", url)
     var data = new FormData();
 
@@ -1018,7 +966,7 @@ export default class AppointmentDetails extends Component {
     // global.props.showLoader();
     if (Platform.OS == 'android') {
       this.permissionFunc(imgUrl, filename)
-      // RNFetchBlob.config({
+      // RNFetchBlob.Configurations({
       //   fileCache: true,
       //   appendExt: 'png',
       //   indicator: true,
@@ -1036,7 +984,7 @@ export default class AppointmentDetails extends Component {
       // });
     } else {
       console.log("imgUrlimgUrl:: ", imgUrl);
-      // RNFetchBlob.config({
+      // RNFetchBlob.Configurations({
       //   fileCache: true,
       //   // appendExt: 'png',
       //   indicator: true,
@@ -1113,7 +1061,7 @@ export default class AppointmentDetails extends Component {
 
     console.log('The file saved to 23233', configfb, dirs);
 
-    RNFetchBlob.config(configOptions)
+    RNFetchBlob.Configurations(configOptions)
       .fetch('GET', imgUrl, {})
       .then((res) => {
         if (Platform.OS === "ios") {
@@ -1222,7 +1170,7 @@ export default class AppointmentDetails extends Component {
             leftIcon
             rightIcon={false}
             navigation={this.props.navigation}
-            title={LanguageConfiguration.AppointmentDetails[config.language]}
+            title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
             style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
           <Modal
@@ -1274,7 +1222,7 @@ export default class AppointmentDetails extends Component {
                         style={{
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 4 / 100,
-                        }}>{LanguageConfiguration.Reschedule[config.language]}
+                        }}>{LanguageConfiguration.Reschedule[Configurations.language]}
 
                       </Text>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -1324,7 +1272,7 @@ export default class AppointmentDetails extends Component {
                             fontFamily: Font.Medium,
                             fontSize: mobileW * 3.9 / 100,
                             color: Colors.theme_color,
-                            textAlign: config.textRotate,
+                            textAlign: Configurations.textRotate,
                             paddingBottom: mobileW * 1.5 / 100
                           }}>{this.state.new_task_type}
 
@@ -1362,7 +1310,7 @@ export default class AppointmentDetails extends Component {
                                     <Text
                                       style={{
                                         width: '70%',
-                                        textAlign: config.textRotate,
+                                        textAlign: Configurations.textRotate,
                                         alignSelf: 'center',
                                         fontSize: mobileW * 3.6 / 100,
                                         fontFamily: Font.Regular,
@@ -1461,8 +1409,8 @@ export default class AppointmentDetails extends Component {
                             fontFamily: Font.Medium,
                             fontSize: Font.name,
 
-                            textAlign: config.textRotate
-                          }}>{LanguageConfiguration.Appoinmentschedule[config.language]}
+                            textAlign: Configurations.textRotate
+                          }}>{LanguageConfiguration.Appoinmentschedule[Configurations.language]}
 
                         </Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -1507,9 +1455,9 @@ export default class AppointmentDetails extends Component {
                         <Text
                           style={{
                             fontFamily: Font.Regular,
-                            fontSize: Font.subtext, textAlign: config.textRotate,
+                            fontSize: Font.subtext, textAlign: Configurations.textRotate,
                             color: '#000'
-                          }}>{LanguageConfiguration.SelectDate[config.language]}
+                          }}>{LanguageConfiguration.SelectDate[Configurations.language]}
 
                         </Text>
 
@@ -1565,8 +1513,8 @@ export default class AppointmentDetails extends Component {
                           style={{
                             fontFamily: Font.Regular,
                             fontSize: Font.subtext,
-                            textAlign: config.textRotate,
-                          }}>{LanguageConfiguration.Select_start_time[config.language]}
+                            textAlign: Configurations.textRotate,
+                          }}>{LanguageConfiguration.Select_start_time[Configurations.language]}
 
 
                         </Text>
@@ -1630,7 +1578,7 @@ export default class AppointmentDetails extends Component {
                                 </View>
                               </View>
                               :
-                              <Text style={{ fontFamily: Font.MediumItalic, fontSize: mobileW * 4 / 100, alignSelf: 'center', marginTop: mobileW * 3 / 100, textAlign: 'center', marginLeft: mobileW * 32 / 100 }}>{LanguageConfiguration.no_data_Found[config.language]}</Text>}
+                              <Text style={{ fontFamily: Font.MediumItalic, fontSize: mobileW * 4 / 100, alignSelf: 'center', marginTop: mobileW * 3 / 100, textAlign: 'center', marginLeft: mobileW * 32 / 100 }}>{LanguageConfiguration.no_data_Found[Configurations.language]}</Text>}
                           </View>
                         </ScrollView>
                       </View>
@@ -1651,9 +1599,9 @@ export default class AppointmentDetails extends Component {
                             fontFamily: Font.Medium,
                             fontSize: Font.subtext,
                             alignSelf: 'flex-end',
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             alignSelf: 'center',
-                          }}>{LanguageConfiguration.SAVECHANGERESCHEDULE[config.language]}
+                          }}>{LanguageConfiguration.SAVECHANGERESCHEDULE[Configurations.language]}
 
                         </Text>
                       </TouchableOpacity>
@@ -1713,7 +1661,7 @@ export default class AppointmentDetails extends Component {
                     {/* task booking section */}
 
                     <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
-                      <Text style={{ fontSize: mobileW * 4.5 / 100, fontFamily: Font.Regular, color: '#000', textAlign: config.textRotate, }}>{LanguageConfiguration.rate_appointment[config.language]}</Text>
+                      <Text style={{ fontSize: mobileW * 4.5 / 100, fontFamily: Font.Regular, color: '#000', textAlign: Configurations.textRotate, }}>{LanguageConfiguration.rate_appointment[Configurations.language]}</Text>
                       <View style={{ width: '65%', alignSelf: 'center', marginTop: mobileW * 5 / 100, justifyContent: 'center' }}>
                         <StarRating
                           disabled={false}
@@ -1742,7 +1690,7 @@ export default class AppointmentDetails extends Component {
                               width: '100%',
                               color: Colors.textblack,
                               fontSize: Font.placeholdersize,
-                              textAlign: config.textalign,
+                              textAlign: Configurations.textalign,
                               height: (mobileW * 12) / 100,
                               paddingLeft: mobileW * 3 / 100,
                               fontFamily: Font.placeholderfontfamily,
@@ -1751,7 +1699,7 @@ export default class AppointmentDetails extends Component {
                             maxLength={200}
                             placeholder={
                               this.state.emailfocus != true
-                                ? LanguageConfiguration.Write_review[config.language]
+                                ? LanguageConfiguration.Write_review[Configurations.language]
                                 : null
                             }
                             placeholderTextColor={Colors.placeholder_text}
@@ -1783,8 +1731,8 @@ export default class AppointmentDetails extends Component {
                               top: (-mobileW * 2) / 100,
                               paddingHorizontal: (mobileW * 1) / 100,
                             }}>
-                            <Text style={{ color: '#0057A5', textAlign: config.textalign }}>
-                              {LanguageConfiguration.Write_review[config.language]}
+                            <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>
+                              {LanguageConfiguration.Write_review[Configurations.language]}
                             </Text>
                           </View>
                         )}
@@ -1795,10 +1743,10 @@ export default class AppointmentDetails extends Component {
                       }
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: mobileW * 7 / 100 }}>
                         <TouchableOpacity onPress={() => { this.setState({ modalVisiblerating: false, emailfocus: false }) }} style={{ width: '45%', paddingVertical: mobileW * 2 / 100, alignItems: 'center', borderWidth: 1, borderRadius: mobileW * 1.5 / 100, borderColor: '#515C6F' }}>
-                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: Colors.theme_color, textTransform: 'uppercase' }}>{LanguageConfiguration.cancelmedia[config.language]}</Text>
+                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: Colors.theme_color, textTransform: 'uppercase' }}>{LanguageConfiguration.cancelmedia[Configurations.language]}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { this.rating_btn() }} style={{ width: '45%', paddingVertical: mobileW * 2 / 100, alignItems: 'center', borderRadius: mobileW * 1.5 / 100, backgroundColor: Colors.theme_color }}>
-                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: '#fff', textTransform: 'uppercase' }}>{LanguageConfiguration.submitbtntext[config.language]}</Text>
+                          <Text style={{ fontSize: mobileW * 4 / 100, fontFamily: Font.Medium, color: '#fff', textTransform: 'uppercase' }}>{LanguageConfiguration.submitbtntext[Configurations.language]}</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -1875,7 +1823,7 @@ export default class AppointmentDetails extends Component {
                             }} />
                             :
                             <Image
-                              source={{ uri: config.img_url3 + item.provider_image }}
+                              source={{ uri: Configurations.img_url3 + item.provider_image }}
                               style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, bordercolor: Colors.Highlight }}
                             />
                         }
@@ -1911,7 +1859,7 @@ export default class AppointmentDetails extends Component {
                                 paddingVertical: (windowWidth * 0.6) / 100,
                               }}
                             >
-                              {LanguageConfiguration.Hospital[config.language]}
+                              {LanguageConfiguration.Hospital[Configurations.language]}
                             </Text>
                           )}
                         </View>
@@ -1955,7 +1903,7 @@ export default class AppointmentDetails extends Component {
                           paddingBottom: (windowWidth * 3) / 100,
                         }}
                       >
-                        {LanguageConfiguration.appointment_schedule[config.language]}
+                        {LanguageConfiguration.appointment_schedule[Configurations.language]}
                       </Text>
 
                       <View
@@ -1977,7 +1925,7 @@ export default class AppointmentDetails extends Component {
                               alignSelf: 'flex-start',
                             }}
                           >
-                            {LanguageConfiguration.Date[config.language]}
+                            {LanguageConfiguration.Date[Configurations.language]}
                           </Text>
                           <Text
                             style={{
@@ -2004,7 +1952,7 @@ export default class AppointmentDetails extends Component {
                               alignSelf: 'flex-start',
                             }}
                           >
-                            {LanguageConfiguration.Time[config.language]}
+                            {LanguageConfiguration.Time[Configurations.language]}
                           </Text>
                           <Text
                             style={{
@@ -2071,7 +2019,7 @@ export default class AppointmentDetails extends Component {
                               fontSize: Font.small,
                               color: Colors.DarkGrey,
                             }}>
-                            {LanguageConfiguration.BookingOn[config.language]}
+                            {LanguageConfiguration.BookingOn[Configurations.language]}
                           </Text>
                           <Text
                             style={{
@@ -2314,7 +2262,7 @@ export default class AppointmentDetails extends Component {
                               />
                             </TouchableOpacity>
                             <Image
-                              source={{ uri: config.img_url3 + item.patient_prescription }}
+                              source={{ uri: Configurations.img_url3 + item.patient_prescription }}
                               style={{
                                 resizeMode: "cover",
                                 width: "100%",
@@ -2385,7 +2333,7 @@ export default class AppointmentDetails extends Component {
                                 width: '25%'
                               }} onPress={() => {
                                 if (item.provider_prescription != "") {
-                                  this.downloadPrescription(config.img_url3 + item.provider_prescription, item.provider_prescription)
+                                  this.downloadPrescription(Configurations.img_url3 + item.provider_prescription, item.provider_prescription)
                                 }
 
                               }}>
@@ -2483,7 +2431,7 @@ export default class AppointmentDetails extends Component {
                                       fontFamily: Font.Medium,
                                       fontSize: Font.smallheadingfont,
                                       color: Colors.darkgraytextheading,
-                                      textAlign: config.textRotate,
+                                      textAlign: Configurations.textRotate,
                                       marginTop: (mobileW * 1) / 100,
                                       marginBottom: (mobileW * 2) / 100,
                                     }}>{rItem.report}</Text>
@@ -2491,12 +2439,12 @@ export default class AppointmentDetails extends Component {
                                     fontFamily: Font.Medium,
                                     fontSize: Font.ssubtext,
                                     color: Colors.gray4,
-                                    textAlign: config.textRotate,
+                                    textAlign: Configurations.textRotate,
                                     marginBottom: (mobileW * 1) / 100,
                                   }}>{rItem.upload_date}</Text>
                                   <TouchableOpacity onPress={() => {
                                     if (item.provider_prescription != "") {
-                                      this.downloadPrescription(config.img_url3 + rItem.report, rItem.report)
+                                      this.downloadPrescription(Configurations.img_url3 + rItem.report, rItem.report)
                                     }
 
                                   }}>
@@ -2692,7 +2640,7 @@ export default class AppointmentDetails extends Component {
                                                       // source={rItem.report == 'NA' ||
                                                       //   rItem.report == null ||
                                                       //   rItem.report == '' ? Icons.Prescription :
-                                                      //   { uri: config.img_url3 + rItem.report }}
+                                                      //   { uri: Configurations.img_url3 + rItem.report }}
                                                       defaultSource={Icons.Report}
                                                       source={Icons.Report}
                                                       style={{
@@ -2722,7 +2670,7 @@ export default class AppointmentDetails extends Component {
                                                           fontFamily: Font.Medium,
                                                           fontSize: Font.headinggray,
                                                           color: Colors.darkgraytextheading,
-                                                          textAlign: config.textRotate,
+                                                          textAlign: Configurations.textRotate,
                                                           marginTop: (mobileW * 2) / 100,
                                                           marginBottom: (mobileW * 2) / 100,
                                                         }}>{file.filename}</Text>
@@ -2857,7 +2805,7 @@ export default class AppointmentDetails extends Component {
                             color: Colors.darkText,
                             alignSelf: 'center',
 
-                          }}>{LanguageConfiguration.patient_details[config.language]}</Text>
+                          }}>{LanguageConfiguration.patient_details[Configurations.language]}</Text>
                         <TouchableOpacity onPress={() => {
                           this.setState({
                             showPDetails: !this.state.showPDetails
@@ -2888,7 +2836,7 @@ export default class AppointmentDetails extends Component {
                               color: Colors.DarkGrey,
                               fontFamily: Font.Medium,
                               fontSize: Font.small,
-                              textAlign: config.textalign,
+                              textAlign: Configurations.textalign,
                               alignSelf: 'flex-start',
                               marginTop: (windowWidth * 1) / 100,
 
@@ -2938,7 +2886,7 @@ export default class AppointmentDetails extends Component {
                                   color: Colors.textblue,
                                   fontFamily: Font.Medium,
                                   fontSize: Font.sregulartext_size,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   marginLeft: mobileW * 6.5 / 100,
                                   marginTop: mobileW * 2 / 100,
                                   width: '96%'
@@ -2955,7 +2903,7 @@ export default class AppointmentDetails extends Component {
                               alignItems: 'center',
                               marginTop: mobileW * 2 / 100
                             }}>
-                            {config.language == 0 ?
+                            {Configurations.language == 0 ?
                               <Image
                                 source={Icons.PhoneSettings}
                                 style={{
@@ -2977,7 +2925,7 @@ export default class AppointmentDetails extends Component {
                                 color: Colors.lightgraytext,
                                 fontFamily: Font.Medium,
                                 fontSize: Font.sregulartext_size,
-                                textAlign: config.textalign,
+                                textAlign: Configurations.textalign,
                                 marginHorizontal: (mobileW * 3) / 100,
                               }}>
                               {item.patient_contact}
@@ -2990,7 +2938,7 @@ export default class AppointmentDetails extends Component {
                                   color: Colors.textblue,
                                   fontFamily: Font.Medium,
                                   fontSize: Font.sregulartext_size,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   marginLeft: mobileW * 2 / 100,
                                   width: '96%'
 
@@ -3017,7 +2965,7 @@ export default class AppointmentDetails extends Component {
                               // backgroundColor: '#F7F8FA'
                               width: '60%'
                             }}>
-                              <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: config.textRotate, fontFamily: Font.Medium }}>Enter OTP to complete</Text>
+                              <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>Enter OTP to complete</Text>
                             </View>
                             <View style={{
                               backgroundColor: '#F7F8FA',
@@ -3072,7 +3020,7 @@ export default class AppointmentDetails extends Component {
                         </> :
                         <>
                           <View style={{ width: '90%', alignSelf: 'center', paddingVertical: mobileW * 2 / 100, flexDirection: 'row', borderTopWidth: 1, borderTopColor: Colors.bordercolor }}>
-                            <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: config.textRotate, fontFamily: Font.Medium }}>{LanguageConfiguration.appointment_closed_otp_text[config.language]}</Text>
+                            <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
                             <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '25%', textAlign: 'right', fontFamily: Font.Medium }}>{item.OTP}</Text>
                           </View>
                         </> : null
@@ -3095,7 +3043,7 @@ export default class AppointmentDetails extends Component {
                           width: "75%",
                           alignSelf: 'flex-start',
                           fontFamily: Font.Regular,
-                        }}>{LanguageConfiguration.appointment_closed_otp_text[config.language]}</Text>
+                        }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
                         <Text style={{ fontSize: Font.small, color: Colors.buttoncolorhgreen, width: '25%', textAlign: 'right', fontFamily: Font.Regular }}>{item.OTP}</Text>
                       </View>
                     }
@@ -3120,7 +3068,7 @@ export default class AppointmentDetails extends Component {
                             fontSize: Font.small,
                             alignSelf: 'flex-start',
                             color: Colors.darkText,
-                          }}>{LanguageConfiguration.Payment[config.language]}
+                          }}>{LanguageConfiguration.Payment[Configurations.language]}
 
                         </Text>
                         <View
@@ -3186,7 +3134,7 @@ export default class AppointmentDetails extends Component {
                                 fontFamily: Font.Regular,
                                 fontSize: Font.small,
                                 color: Colors.DarkGrey,
-                              }}>{LanguageConfiguration.distanceFare[config.language]}
+                              }}>{LanguageConfiguration.distanceFare[Configurations.language]}
 
                             </Text>
                             <Text
@@ -3273,7 +3221,7 @@ export default class AppointmentDetails extends Component {
                           flexDirection: 'row',
                           width: '40%'
                         }}>
-                        {config.language == 0 ?
+                        {Configurations.language == 0 ?
                           <Image
                             source={Icons.Wallet}
                             style={{
@@ -3309,11 +3257,7 @@ export default class AppointmentDetails extends Component {
                         {item.acceptance_status == 'Pending' &&
                           <>
                             <TouchableOpacity onPress={() => {
-                              this.setState({
-                                id: item.id,
-                              }, () => {
-                                this.updateProviderAppointmentStatus("Accept")
-                              })
+                              this.updateProviderAppointmentStatus("Accept", item.id)
                             }}
 
                               style={{
@@ -3335,11 +3279,7 @@ export default class AppointmentDetails extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => {
-                                this.setState({
-                                  id: item.id,
-                                }, () => {
-                                  this.showConfirmDialogReject("Reject")
-                                })
+                                this.showConfirmDialogReject("Reject", item.id)
                               }}
 
                               style={{
@@ -3360,7 +3300,7 @@ export default class AppointmentDetails extends Component {
                             </TouchableOpacity>
                           </>
                         }
-                        <Cameragallery mediamodal={this.state.mediamodal}
+                        <CameraGallery mediamodal={this.state.mediamodal}
                           isCamera={false}
                           isGallery={true}
                           isDocument={true}
@@ -3380,11 +3320,6 @@ export default class AppointmentDetails extends Component {
                           item.booking_type === 'online_task' &&
                           <>
                             <TouchableOpacity onPress={() => {
-                              // this.setState({
-                              //   id: item.id,
-                              // }, () => {
-                              //   this.updateProviderAppointmentStatus("Accept")
-                              // })
                               this.props.navigation.navigate(ScreenReferences.VideoCall, {
                                 item: item
                               });
@@ -3473,7 +3408,7 @@ export default class AppointmentDetails extends Component {
                           <View style={{ alignItems: 'flex-end' }}>
                             {item.avg_rating != '' && item.avg_rating != 0 ?
                               <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: '2%' }}>
-                                <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{LanguageConfiguration.rated[config.language]}</Text>
+                                <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{LanguageConfiguration.rated[Configurations.language]}</Text>
                                 <StarRating
                                   disabled={false}
                                   fullStar={Icons.YellowStar}
@@ -3513,7 +3448,7 @@ export default class AppointmentDetails extends Component {
                                 textTransform: 'uppercase',
                                 fontFamily: Font.SemiBold,
                                 fontSize: Font.medium,
-                              }}>{LanguageConfiguration.Refunde[config.language]}
+                              }}>{LanguageConfiguration.Refunde[Configurations.language]}
 
                             </Text>
                           </View>}

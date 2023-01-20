@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react"
 import { SafeAreaView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
-import { Colors, Font, Media, MessageFunctions, MessageTexts, config, localStorage } from '../Helpers/Utils';
+import { Colors, Font, Media, MessageFunctions, MessageTexts, Configurations, localStorage } from '../Helpers/Utils';
 import AppLoader from '../Components/AppLoader'
 import * as Animatable from 'react-native-animatable';
 import NetInfo from '@react-native-community/netinfo';
@@ -78,7 +78,7 @@ export const ApplicationContainerWrapper = ({ navigation, route, children }) => 
         {screens != ScreenReferences.Splash &&
           <View>
             {!classStateData.isConnected && <View style={{ position: 'absolute', bottom: 5, width: '100%' }}>
-              <Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 14, color: Colors.internettextcolor }} onPress={MessageFunctions.toast(MessageTexts.NoInternet[config.language], 'bottom')}></Text>
+              <Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 14, color: Colors.internettextcolor }} onPress={MessageFunctions.toast(MessageTexts.NoInternet[Configurations.language], 'bottom')}></Text>
             </View>}
           </View>}
       </View>

@@ -2,7 +2,7 @@ import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpaci
 import React, { Component, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, localStorage, API, MessageFunctions, MessageTexts, MessageHeadings, Cameragallery, Media } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, localStorage, API, MessageFunctions, MessageTexts, MessageHeadings, CameraGallery, Media } from '../Helpers/Utils';
 import Styles from '../Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from 'react-native-date-picker'
@@ -383,7 +383,7 @@ export default EditProfile = ({navigation, route}) => {
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-notification-count";
+    let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', user_id)
@@ -414,7 +414,7 @@ export default EditProfile = ({navigation, route}) => {
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-getnationality";
+    let url = Configurations.baseURL + "api-getnationality";
     console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', user_id)
@@ -491,7 +491,7 @@ export default EditProfile = ({navigation, route}) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
-    let url = config.baseURL + "api-get-provider-profile";
+    let url = Configurations.baseURL + "api-get-provider-profile";
     console.log("url", url)
     var data = new FormData();
     // data.append('user_id', user_id)
@@ -630,7 +630,7 @@ export default EditProfile = ({navigation, route}) => {
 
         if (result.image != null) {
           setState({
-            profile_img: config.img_url3 + result['image'],
+            profile_img: Configurations.img_url3 + result['image'],
           })
         }
 
@@ -638,7 +638,7 @@ export default EditProfile = ({navigation, route}) => {
       else {
 
 
-        MessageFunctions.alert(MessageHeadings.information[config.language], obj.message[config.language], false);
+        MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
 
         return false;
       }
@@ -651,7 +651,7 @@ export default EditProfile = ({navigation, route}) => {
   medical_click = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
-    let url = config.baseURL + "api-edit-patient-profile-medical";
+    let url = Configurations.baseURL + "api-edit-patient-profile-medical";
     console.log("url", url)
 
     var data = new FormData();
@@ -729,28 +729,28 @@ export default EditProfile = ({navigation, route}) => {
 
 
     if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyName[config.language])
+      MessageFunctions.showError(MessageTexts.emptyName[Configurations.language])
       return false;
     }
 
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (classStateData.email.length <= 0 || classStateData.email.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
     }
 
     if (regemail.test(classStateData.email) !== true) {
-      MessageFunctions.showError(MessageTexts.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
       return false
     }
 
     if (classStateData.country_code.length <= 0 || classStateData.country_code.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyCountrycode[config.language])
+      MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
       return false;
     }
 
     if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptymobileNumber[config.language])
+      MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
       return false;
     }
 
@@ -776,7 +776,7 @@ export default EditProfile = ({navigation, route}) => {
       }
     }
     // if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-    //   MessageFunctions.toast(MessageTexts.emptymobileNumber[config.language], 'center')
+    //   MessageFunctions.toast(MessageTexts.emptymobileNumber[Configurations.language], 'center')
     //   return false;
     // }
 
@@ -838,7 +838,7 @@ export default EditProfile = ({navigation, route}) => {
       }
     }
 
-    let url = config.baseURL + "api-sp-edit-profile";
+    let url = Configurations.baseURL + "api-sp-edit-profile";
     console.log("url", url)
     var phone_number_send = classStateData.country_code + classStateData.mobile
     var data = new FormData();
@@ -953,34 +953,34 @@ export default EditProfile = ({navigation, route}) => {
 
 
     if (classStateData.smoking.length <= 0) {
-      MessageFunctions.toast(MessageTexts.smoking_msg[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.smoking_msg[Configurations.language], 'center')
       return false;
     }
     if (classStateData.alcohol.length <= 0) {
-      MessageFunctions.toast(MessageTexts.alcohal_msg[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.alcohal_msg[Configurations.language], 'center')
       return false;
     }
     if (classStateData.blood_group.length <= 0) {
-      MessageFunctions.toast(MessageTexts.bloodgrp_msg[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.bloodgrp_msg[Configurations.language], 'center')
       return false;
     }
     if (classStateData.activity_level.length <= 0) {
-      MessageFunctions.toast(MessageTexts.activity_level[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.activity_level[Configurations.language], 'center')
       return false;
     }
     if (classStateData.food.length <= 0) {
-      MessageFunctions.toast(MessageTexts.food_preferance[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.food_preferance[Configurations.language], 'center')
       return false;
     }
     if (classStateData.occupation.length <= 0) {
-      MessageFunctions.toast(MessageTexts.occuation[config.language], 'center')
+      MessageFunctions.toast(MessageTexts.occuation[Configurations.language], 'center')
       return false;
     }
 
 
 
 
-    let url = config.baseURL + "api-edit-patient-profile-style";
+    let url = Configurations.baseURL + "api-edit-patient-profile-style";
     console.log("url", url)
 
     var data = new FormData();
@@ -1020,7 +1020,7 @@ export default EditProfile = ({navigation, route}) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
-    let url = config.baseURL + "api-provider-get-speciality";
+    let url = Configurations.baseURL + "api-provider-get-speciality";
     console.log("url", url)
     var data = new FormData();
     data.append('service_type', user_type)
@@ -1053,7 +1053,7 @@ export default EditProfile = ({navigation, route}) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1134,7 +1134,7 @@ export default EditProfile = ({navigation, route}) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Photocopy of ID
@@ -1157,7 +1157,7 @@ export default EditProfile = ({navigation, route}) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }}>
               {(classStateData.id_image != undefined) ? classStateData.id_image.filename.trim() : 'No Attachment'}
             </Text>
@@ -1178,7 +1178,7 @@ export default EditProfile = ({navigation, route}) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1397,7 +1397,7 @@ export default EditProfile = ({navigation, route}) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Certificate
@@ -1418,7 +1418,7 @@ export default EditProfile = ({navigation, route}) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }} numberOfLines={1}>
               {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
             </Text>
@@ -1543,7 +1543,7 @@ export default EditProfile = ({navigation, route}) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Photocopy of Reg. ID
@@ -1566,7 +1566,7 @@ export default EditProfile = ({navigation, route}) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }} numberOfLines={1}>
               {(classStateData.scfhs_image != undefined) ? classStateData.scfhs_image.filename.trim() : 'No Attachment'}
             </Text>
@@ -1587,7 +1587,7 @@ export default EditProfile = ({navigation, route}) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1665,7 +1665,7 @@ export default EditProfile = ({navigation, route}) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Certificate
@@ -1687,7 +1687,7 @@ export default EditProfile = ({navigation, route}) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }} numberOfLines={1}>
               {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
             </Text>
@@ -1757,7 +1757,7 @@ export default EditProfile = ({navigation, route}) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1838,7 +1838,7 @@ export default EditProfile = ({navigation, route}) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Photocopy of ID
@@ -1861,7 +1861,7 @@ export default EditProfile = ({navigation, route}) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }}>
               {(classStateData.moh_lic_image != undefined) ? classStateData.moh_lic_image.filename.trim() : 'No Attachment'}
             </Text>
@@ -1882,7 +1882,7 @@ export default EditProfile = ({navigation, route}) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1963,7 +1963,7 @@ export default EditProfile = ({navigation, route}) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Certificate
@@ -1987,7 +1987,7 @@ export default EditProfile = ({navigation, route}) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }}>
               {(classStateData.hosp_reg_image != undefined) ? classStateData.hosp_reg_image.filename.trim() : 'No Attachment'}
             </Text>
@@ -2078,15 +2078,15 @@ export default EditProfile = ({navigation, route}) => {
                 style={{ width: '55%', paddingVertical: (mobileW * 3) / 100 }}>
                 <Text
                   style={{
-                    textAlign: config.textRotate,
+                    textAlign: Configurations.textRotate,
                     fontFamily: Font.Regular,
                     fontSize: (mobileW * 4) / 100,
                     alignSelf: 'center',
                     color: Colors.textwhite,
                   }}>
                   {classStateData.smoking_btn == true
-                    ? LanguageConfiguration.smoking[config.language]
-                    : LanguageConfiguration.Alcohol[config.language]}
+                    ? LanguageConfiguration.smoking[Configurations.language]
+                    : LanguageConfiguration.Alcohol[Configurations.language]}
                 </Text>
               </View>
             </View>
@@ -2113,9 +2113,9 @@ export default EditProfile = ({navigation, route}) => {
                     style={{
                       color: Colors.textblack,
                       fontSize: (mobileW * 4) / 100,
-                      textAlign: config.textRotate
+                      textAlign: Configurations.textRotate
                     }}>
-                    {LanguageConfiguration.yes_txt_new[config.language]}
+                    {LanguageConfiguration.yes_txt_new[Configurations.language]}
                   </Text>
 
                 </View>
@@ -2143,9 +2143,9 @@ export default EditProfile = ({navigation, route}) => {
                       style={{
                         color: Colors.textblack,
                         fontSize: (mobileW * 4) / 100,
-                        textAlign: config.textRotate
+                        textAlign: Configurations.textRotate
                       }}>
-                      {LanguageConfiguration.no_txt_new[config.language]}
+                      {LanguageConfiguration.no_txt_new[Configurations.language]}
                     </Text>
                   </View>
                 </View>
@@ -2196,13 +2196,13 @@ export default EditProfile = ({navigation, route}) => {
                   style={{ width: '35%', paddingVertical: (mobileW * 3) / 100 }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       fontFamily: Font.Regular,
                       fontSize: (mobileW * 4) / 100,
                       alignSelf: 'center',
                       color: Colors.textwhite,
                     }}>
-                    {LanguageConfiguration.nationality[config.language]}
+                    {LanguageConfiguration.nationality[Configurations.language]}
                   </Text>
                 </View>
               </View>
@@ -2228,7 +2228,7 @@ export default EditProfile = ({navigation, route}) => {
                               style={{
                                 color: Colors.textblack,
                                 fontSize: (mobileW * 4) / 100,
-                                textAlign: config.textRotate
+                                textAlign: Configurations.textRotate
                               }}>
                               {item.name}
                             </Text>
@@ -2277,13 +2277,13 @@ export default EditProfile = ({navigation, route}) => {
                 style={{ marginLeft: mobileW * 5 / 100, width: '65%', paddingVertical: (mobileW * 3) / 100 }}>
                 <Text
                   style={{
-                    textAlign: config.textRotate,
+                    textAlign: Configurations.textRotate,
                     fontFamily: Font.Regular,
                     fontSize: (mobileW * 4) / 100,
 
                     color: Colors.textwhite,
                   }}>
-                  {classStateData.occ_food_activity == 'activity' ? LanguageConfiguration.ActivityLevel[config.language] : classStateData.occ_food_activity == 'food' ? LanguageConfiguration.FoodPreference[config.language] : LanguageConfiguration.Occupation[config.language]}
+                  {classStateData.occ_food_activity == 'activity' ? LanguageConfiguration.ActivityLevel[Configurations.language] : classStateData.occ_food_activity == 'food' ? LanguageConfiguration.FoodPreference[Configurations.language] : LanguageConfiguration.Occupation[Configurations.language]}
                 </Text>
               </View>
             </View>
@@ -2312,7 +2312,7 @@ export default EditProfile = ({navigation, route}) => {
                         <View style={{ width: '100%', backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'flex-end' }}>
 
                           <View style={[{ width: '95%', borderBottomWidth: 1, paddingVertical: mobileW * 2.5 / 100, marginLeft: mobileW * 5 / 100 }, item.line == 0 ? { borderBottomColor: '#0000001F' } : { borderBottomColor: '#fff' }]}>
-                            <Text style={{ color: Colors.textblack, fontSize: mobileW * 4 / 100, textAlign: config.textRotate }}>{item.name}</Text>
+                            <Text style={{ color: Colors.textblack, fontSize: mobileW * 4 / 100, textAlign: Configurations.textRotate }}>{item.name}</Text>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -2342,7 +2342,7 @@ export default EditProfile = ({navigation, route}) => {
           <View style={{ width: '70%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
             <View style={{ width: '100%', backgroundColor: Colors.backgroundcolorblue, paddingVertical: mobileW * 2 / 100 }}>
 
-              <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: config.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{LanguageConfiguration.blood[config.language]}</Text>
+              <Text style={{ paddingLeft: mobileW * 4.5 / 100, paddingRight: mobileW * 4.5 / 100, textAlign: Configurations.textRotate, fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.textwhite }}>{LanguageConfiguration.blood[Configurations.language]}</Text>
 
             </View>
 
@@ -2358,7 +2358,7 @@ export default EditProfile = ({navigation, route}) => {
                     >
                       <View style={{ width: '100%', backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'flex-end' }}>
                         <View style={[{ width: '95%', borderBottomWidth: 1, paddingVertical: mobileW * 2 / 100, marginLeft: mobileW * 5 / 100 }, item.line == 0 ? { borderBottomColor: '#0000001F' } : { borderBottomColor: '#fff' }]}>
-                          <Text style={{ color: Colors.textblack, fontSize: mobileW * 4 / 100, paddingLeft: mobileW * 2 / 100, textAlign: config.textRotate }}>{item.blood}</Text>
+                          <Text style={{ color: Colors.textblack, fontSize: mobileW * 4 / 100, paddingLeft: mobileW * 2 / 100, textAlign: Configurations.textRotate }}>{item.blood}</Text>
                         </View>
                       </View>
                     </TouchableOpacity>)
@@ -2389,7 +2389,7 @@ export default EditProfile = ({navigation, route}) => {
           rightIcon={true}
           navigation={navigation}
           notiCount={classStateData.notification_count > 0 ? classStateData.notification_count : false}
-          title={LanguageConfiguration.EditProfile[config.language]}
+          title={LanguageConfiguration.EditProfile[Configurations.language]}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
         <ScrollView
           style={{ backgroundColor: 'white', marginTop: 10 }}
@@ -2397,7 +2397,7 @@ export default EditProfile = ({navigation, route}) => {
           showsVerticalScrollIndicator={false}>
           <KeyboardAwareScrollView>
             {/* //----------------------------------------------------------------------------tab */}
-            <Cameragallery mediamodal={classStateData.mediamodal}
+            <CameraGallery mediamodal={classStateData.mediamodal}
               isCamera={true}
               isGallery={true}
               isDocument={false}
@@ -2427,7 +2427,7 @@ export default EditProfile = ({navigation, route}) => {
 
                             fontFamily: Font.blackheadingfontfamily,
                             fontSize: Font.tabtextsize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             alignSelf: 'center',
                             paddingVertical: (mobileW * 3) / 100,
                           }
@@ -2435,11 +2435,11 @@ export default EditProfile = ({navigation, route}) => {
                             color: Colors.tablightcolo,
                             fontFamily: Font.blackheadingfontfamily,
                             fontSize: Font.tabtextsize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             alignSelf: 'center',
                           }
                       }>
-                      {LanguageConfiguration.tabnameprofile[config.language]}
+                      {LanguageConfiguration.tabnameprofile[Configurations.language]}
                     </Text>
 
 
@@ -2464,7 +2464,7 @@ export default EditProfile = ({navigation, route}) => {
 
                             fontFamily: Font.blackheadingfontfamily,
                             fontSize: Font.tabtextsize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             alignSelf: 'center',
                             paddingVertical: (mobileW * 3) / 100,
                           }
@@ -2472,11 +2472,11 @@ export default EditProfile = ({navigation, route}) => {
                             color: Colors.tablightcolo,
                             fontFamily: Font.blackheadingfontfamily,
                             fontSize: Font.tabtextsize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             alignSelf: 'center',
                           }
                       }>
-                      {LanguageConfiguration.tabnamemedical[config.language]}
+                      {LanguageConfiguration.tabnamemedical[Configurations.language]}
                     </Text>
                     <View style={classStateData.mbtn == true ? { width: mobileW * 28 / 100, alignSelf: 'center', borderWidth: 2.2, borderColor: Colors.bordercolorblue, borderTopLeftRadius: mobileW * 2 / 100, borderTopRightRadius: mobileW * 2 / 100, backgroundColor: Colors.bordercolorblue, alignSelf: 'center' } : { width: mobileW * 30 / 100, alignSelf: 'center', borderColor: Colors.tab_background_color, borderWidth: 2.5 }}></View>
 
@@ -2501,7 +2501,7 @@ export default EditProfile = ({navigation, route}) => {
 
                             fontFamily: Font.blackheadingfontfamily,
                             fontSize: Font.tabtextsize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             alignSelf: 'center',
                             paddingVertical: (mobileW * 3) / 100,
                           }
@@ -2509,11 +2509,11 @@ export default EditProfile = ({navigation, route}) => {
                             color: Colors.tablightcolo,
                             fontFamily: Font.blackheadingfontfamily,
                             fontSize: Font.tabtextsize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             alignSelf: 'center',
                           }
                       }>
-                      {LanguageConfiguration.tabnamelifestyle[config.language]}
+                      {LanguageConfiguration.tabnamelifestyle[Configurations.language]}
                     </Text>
                   </View>
 
@@ -2567,7 +2567,7 @@ export default EditProfile = ({navigation, route}) => {
                         // fontFamily: Font.blackheadingfontfamily, 
                         // fontSize: Font.tabtextsize, 
                         fontFamily: Font.Medium, fontSize: 18,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                       }}>{classStateData.name}</Text>
                     </View>
 
@@ -2577,7 +2577,7 @@ export default EditProfile = ({navigation, route}) => {
                           color: Colors.placeholder_textcolorlight,
                           fontFamily: Font.Regular,
                           fontSize: 14, //(mobileW * 3) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                         }}>{classStateData.email}
                       </Text>
                     </View>
@@ -2702,7 +2702,7 @@ export default EditProfile = ({navigation, route}) => {
                       width: '100%',
                     }}
                     // icon={layer9_icon}
-                    lableText={LanguageConfiguration.textinputname[config.language]}
+                    lableText={LanguageConfiguration.textinputname[Configurations.language]}
                     inputRef={(ref) => {
                       nameInput = ref;
                     }}
@@ -2723,14 +2723,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.namefocus != true ? LanguageConfiguration.textinputname[config.language] : null}
+                        placeholder={classStateData.namefocus != true ? LanguageConfiguration.textinputname[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ name: txt }) }}
                         value={classStateData.name}
@@ -2741,7 +2741,7 @@ export default EditProfile = ({navigation, route}) => {
                         returnKeyType='done'
                       /> */}
                   {/* {classStateData.namefocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign, }}>{LanguageConfiguration.textinputname[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign, }}>{LanguageConfiguration.textinputname[Configurations.language]}</Text>
                     </View>} */}
 
                 </View>
@@ -2755,17 +2755,17 @@ export default EditProfile = ({navigation, route}) => {
                   }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       fontSize: Font.headinggray,
                       fontFamily: Font.headingfontfamily,
                       color: Colors.placeholder_text,
                     }}>
-                    {LanguageConfiguration.selectcountrytitle[config.language]}
+                    {LanguageConfiguration.selectcountrytitle[Configurations.language]}
                   </Text>
                 </View>
 
                 <DropDownboxSec
-                  lableText={classStateData.work_area.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.work_area}
+                  lableText={classStateData.work_area.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.work_area}
                   boxPressAction={() => {
                     // setState({ bloodModal: true });
                   }}
@@ -2791,7 +2791,7 @@ export default EditProfile = ({navigation, route}) => {
                         marginBottom: (mobileW * 4) / 100,
                       }}
                       // icon={layer9_icon}
-                      lableText={LanguageConfiguration.CC_code[config.language]}
+                      lableText={LanguageConfiguration.CC_code[Configurations.language]}
                       inputRef={(ref) => {
                         country_codeInput = ref;
                       }}
@@ -2822,7 +2822,7 @@ export default EditProfile = ({navigation, route}) => {
                         editable={false}
                         placeholder={
                           classStateData.country_codefocus != true
-                            ? LanguageConfiguration.CC_code[config.language]
+                            ? LanguageConfiguration.CC_code[Configurations.language]
                             : null
                         }
                         placeholderTextColor={Colors.placeholder_text}
@@ -2856,7 +2856,7 @@ export default EditProfile = ({navigation, route}) => {
                             paddingHorizontal: (mobileW * 1) / 100,
                           }}>
                           <Text style={{ color: '#0057A5' }}>
-                            {LanguageConfiguration.CC_code[config.language]}
+                            {LanguageConfiguration.CC_code[Configurations.language]}
                           </Text>
                         </View>
                       } */}
@@ -2873,7 +2873,7 @@ export default EditProfile = ({navigation, route}) => {
                         width: '100%',
                       }}
                       // icon={layer9_icon}
-                      lableText={LanguageConfiguration.textinputnumber[config.language]}
+                      lableText={LanguageConfiguration.textinputnumber[Configurations.language]}
                       inputRef={(ref) => {
                         mobileInput = ref;
                       }}
@@ -2898,12 +2898,12 @@ export default EditProfile = ({navigation, route}) => {
                       }}>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           fontSize: Font.textsize,
                           fontFamily: Font.headingfontfamily,
                           color: Colors.textgray,
                         }}>
-                        {LanguageConfiguration.mobletexttitle[config.language]}
+                        {LanguageConfiguration.mobletexttitle[Configurations.language]}
                       </Text>
                     </View>
 
@@ -2921,7 +2921,7 @@ export default EditProfile = ({navigation, route}) => {
                       width: '100%',
                     }}
                     // icon={layer9_icon}
-                    lableText={LanguageConfiguration.Mobileno[config.language]}
+                    lableText={LanguageConfiguration.Mobileno[Configurations.language]}
                     inputRef={(ref) => {
                       emailInput = ref;
                     }}
@@ -2944,14 +2944,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={100}
-                        placeholder={classStateData.emailfocus != true ? LanguageConfiguration.textinputemails[config.language] : null}
+                        placeholder={classStateData.emailfocus != true ? LanguageConfiguration.textinputemails[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ email: txt }) }}
                         value={classStateData.email}
@@ -2964,7 +2964,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.emailfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputemails[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputemails[Configurations.language]}</Text>
                     </View>} */}
 
                 </View>
@@ -2979,12 +2979,12 @@ export default EditProfile = ({navigation, route}) => {
                   }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       fontSize: Font.headinggray,
                       fontFamily: Font.headingfontfamily,
                       color: Colors.placeholder_text,
                     }}>
-                    {(classStateData?.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[config.language]}
+                    {(classStateData?.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}
                   </Text>
                 </View>
                 <View style={{
@@ -3002,11 +3002,11 @@ export default EditProfile = ({navigation, route}) => {
                       marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row'
                     }}>
                       <Text style={{
-                        width: '78%', textAlign: config.textRotate,
+                        width: '78%', textAlign: Configurations.textRotate,
                         color: Colors.placeholder_text,
                         fontFamily: Font.Regular,
                         fontSize: Font.placeholdersize,
-                      }}>{classStateData.dob_date.length <= 0 ? (classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[config.language] : classStateData.dob_date}</Text>
+                      }}>{classStateData.dob_date.length <= 0 ? (classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language] : classStateData.dob_date}</Text>
                       <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
                         <Image source={Icons.DatePicker}
@@ -3023,8 +3023,8 @@ export default EditProfile = ({navigation, route}) => {
                       color: classStateData.dob_date.length <= 0 ? '#0057A5' : Colors.gray4,
                       fontSize: Font.sregulartext_size,
                       fontFamily: Font.placeholderfontfamily,
-                      textAlign: config.textalign
-                    }}>{(classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[config.language]}</Text>
+                      textAlign: Configurations.textalign
+                    }}>{(classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}</Text>
                   </View>}
 
                 </View>
@@ -3037,7 +3037,7 @@ export default EditProfile = ({navigation, route}) => {
                       <View style={{ width: '1%' }}>
                       </View>
                       <View style={{ width: '100%', height: Font.placeholder_height, marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row' }}>
-                        <Text style={{ width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[config.language] : classStateData.dob_date}</Text>
+                        <Text style={{ width: '78%', textAlign: Configurations.textRotate, color: Colors.placeholder_text }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[Configurations.language] : classStateData.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
                           <Image source={Icons.DatePicker}
@@ -3050,7 +3050,7 @@ export default EditProfile = ({navigation, route}) => {
                     </TouchableOpacity>
 
                     {classStateData.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.dob[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.dob[Configurations.language]}</Text>
                     </View>}
 
                   </View> */}
@@ -3066,7 +3066,7 @@ export default EditProfile = ({navigation, route}) => {
                         width: '100%',
                       }}
                       // icon={layer9_icon}
-                      lableText={LanguageConfiguration.textinputaddress[config.language]}
+                      lableText={LanguageConfiguration.textinputaddress[Configurations.language]}
                       inputRef={(ref) => {
                         addressInput = ref;
                       }}
@@ -3106,9 +3106,9 @@ export default EditProfile = ({navigation, route}) => {
                           color: Colors.placeholder_text,
                           fontFamily: Font.Regular,
                           fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                         }}>
-                        {LanguageConfiguration.Gender[config.language]}
+                        {LanguageConfiguration.Gender[Configurations.language]}
                       </Text>
                     </View>
 
@@ -3140,12 +3140,12 @@ export default EditProfile = ({navigation, route}) => {
                               <Text
                                 style={{
                                   marginLeft: mobileW * 1.5 / 100,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   color: Colors.placeholder_text,
                                   fontFamily: Font.Regular,
                                   fontSize: Font.placeholdersize,
                                 }}>
-                                {LanguageConfiguration.male[config.language]}
+                                {LanguageConfiguration.male[Configurations.language]}
                               </Text>
                             </View>
                           </TouchableOpacity>
@@ -3181,14 +3181,14 @@ export default EditProfile = ({navigation, route}) => {
 
                             <Text
                               style={{
-                                textAlign: config.textRotate,
+                                textAlign: Configurations.textRotate,
                                 marginLeft: mobileW * 1.5 / 100,
                                 color: Colors.placeholder_text,
                                 fontFamily: Font.Regular,
                                 fontSize: Font.placeholdersize,
                                 // alignSelf: 'center',
                               }}>
-                              {LanguageConfiguration.female[config.language]}
+                              {LanguageConfiguration.female[Configurations.language]}
                             </Text>
 
                           </TouchableOpacity>
@@ -3218,9 +3218,9 @@ export default EditProfile = ({navigation, route}) => {
                           color: Colors.textGender,
                           fontFamily: Font.placeholderfontfamily,
                           fontSize: (mobileW * 4.1) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                         }}>
-                        {LanguageConfiguration.Gender[config.language]}
+                        {LanguageConfiguration.Gender[Configurations.language]}
                       </Text>
                     </View>
 
@@ -3255,10 +3255,10 @@ export default EditProfile = ({navigation, route}) => {
                                     fontSize: mobileW * 4.1 / 100,
                                     fontFamily: Font.placeholderfontfamily,
                                     marginLeft: mobileW * 1.5 / 100,
-                                    textAlign: config.textRotate
+                                    textAlign: Configurations.textRotate
 
                                   }}>
-                                  {LanguageConfiguration.male[config.language]}
+                                  {LanguageConfiguration.male[Configurations.language]}
                                 </Text>
                               </View>
                             </TouchableOpacity>}
@@ -3282,10 +3282,10 @@ export default EditProfile = ({navigation, route}) => {
                                     fontSize: mobileW * 4.1 / 100,
                                     fontFamily: Font.placeholderfontfamily,
                                     marginLeft: mobileW * 1.5 / 100,
-                                    textAlign: config.textRotate
+                                    textAlign: Configurations.textRotate
 
                                   }}>
-                                  {LanguageConfiguration.male[config.language]}
+                                  {LanguageConfiguration.male[Configurations.language]}
                                 </Text>
                               </View>
                             </View>}
@@ -3321,13 +3321,13 @@ export default EditProfile = ({navigation, route}) => {
                               <Text
                                 style={{
                                   color: Colors.textGender,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   fontSize: mobileW * 4.1 / 100,
                                   fontFamily: Font.placeholderfontfamily,
                                   marginLeft: mobileW * 1.5 / 100
                                   // alignSelf: 'center',
                                 }}>
-                                {LanguageConfiguration.female[config.language]}
+                                {LanguageConfiguration.female[Configurations.language]}
                               </Text>
 
                             </TouchableOpacity>}
@@ -3348,13 +3348,13 @@ export default EditProfile = ({navigation, route}) => {
                               <Text
                                 style={{
                                   color: Colors.textGender,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   fontSize: mobileW * 4.1 / 100,
                                   fontFamily: Font.placeholderfontfamily,
                                   marginLeft: mobileW * 1.5 / 100
                                   // alignSelf: 'center',
                                 }}>
-                                {LanguageConfiguration.female[config.language]}
+                                {LanguageConfiguration.female[Configurations.language]}
                               </Text>
 
                             </View>}
@@ -3382,7 +3382,7 @@ export default EditProfile = ({navigation, route}) => {
                         <View style={{ width: '1%' }}>
 
                         </View>
-                        <Text style={{ width: '77%', alignSelf: 'center', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: config.textRotate, fontFamily: Font.placeholderfontfamily }}>{classStateData.nationality.length <= 0 ? LanguageConfiguration.nationality[config.language] : classStateData.nationality}</Text>
+                        <Text style={{ width: '77%', alignSelf: 'center', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: Configurations.textRotate, fontFamily: Font.placeholderfontfamily }}>{classStateData.nationality.length <= 0 ? LanguageConfiguration.nationality[Configurations.language] : classStateData.nationality}</Text>
                         <View style={{ width: '20%', alignSelf: 'center', alignItems: 'flex-end' }}>
                           <Image source={Icons.DownArrow} style={{ height: 16, width: 16 }}>
                           </Image>
@@ -3391,7 +3391,7 @@ export default EditProfile = ({navigation, route}) => {
                     </TouchableOpacity>
 
                     {classStateData.nationalityfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textRotate }}>{LanguageConfiguration.nationality[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textRotate }}>{LanguageConfiguration.nationality[Configurations.language]}</Text>
                     </View>}
                   </View> */}
 
@@ -3409,14 +3409,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.addressfocus != true ? LanguageConfiguration.textinputaddress[config.language] : null}
+                        placeholder={classStateData.addressfocus != true ? LanguageConfiguration.textinputaddress[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ address: txt }) }}
                         value={classStateData.address}
@@ -3428,7 +3428,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.addressfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputaddress[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputaddress[Configurations.language]}</Text>
                     </View>}
 
                   </View> */}
@@ -3444,14 +3444,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={15}
-                        placeholder={classStateData.identityfocus != true ? LanguageConfiguration.textinputidentity[config.language] : null}
+                        placeholder={classStateData.identityfocus != true ? LanguageConfiguration.textinputidentity[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ identity: txt }) }}
                         value={classStateData.identity}
@@ -3463,7 +3463,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.identityfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputidentity[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputidentity[Configurations.language]}</Text>
                     </View>}
 
                   </View> */}
@@ -3514,7 +3514,7 @@ export default EditProfile = ({navigation, route}) => {
                       height: mobileW * 30 / 100,
                       color: Colors.textblack,
                       fontSize: Font.placeholdersize,
-                      textAlign: config.textalign,
+                      textAlign: Configurations.textalign,
                       fontFamily: Font.placeholderfontfamily,
                       textAlignVertical: 'top',
                       alignSelf: 'flex-start'
@@ -3543,7 +3543,7 @@ export default EditProfile = ({navigation, route}) => {
 
                 {/* ==========================================person btn================================ */}
                 <Button
-                  text={LanguageConfiguration.submitbtntext[config.language]}
+                  text={LanguageConfiguration.submitbtntext[Configurations.language]}
                   // onLoading={classStateData.loading}
                   customStyles={
                     {
@@ -3580,10 +3580,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: Colors.allergic_heading_color,
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate,
-                        // textAlign:config.textalign,
+                        textAlign: Configurations.textRotate,
+                        // textAlign:Configurations.textalign,
                       }}>
-                      {LanguageConfiguration.allergies[config.language]}
+                      {LanguageConfiguration.allergies[Configurations.language]}
                     </Text>
                   </View>
                 </View>
@@ -3594,12 +3594,12 @@ export default EditProfile = ({navigation, route}) => {
                       color: Colors.textgray_que,
                       fontFamily: Font.allergies_heading_fontfamily,
                       fontSize: Font.quessize,
-                      textAlign: config.textRotate,
-                      // textAlign:config.textalign,
+                      textAlign: Configurations.textRotate,
+                      // textAlign:Configurations.textalign,
 
 
                     }}>
-                    {LanguageConfiguration.q1[config.language]}
+                    {LanguageConfiguration.q1[Configurations.language]}
                   </Text>
                 </View>
 
@@ -3643,7 +3643,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {LanguageConfiguration.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3678,7 +3678,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {LanguageConfiguration.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3704,14 +3704,14 @@ export default EditProfile = ({navigation, route}) => {
                             width: '100%',
                             color: Colors.textblack,
                             fontSize: Font.placeholdersize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             height: (mobileW * 12) / 100,
                             fontFamily: Font.placeholderfontfamily,
                             borderRadius: (mobileW * 1) / 100,
 
                           }}
                           maxLength={70}
-                          placeholder={classStateData.allergiesfocus != true ? LanguageConfiguration.textinputallierdies[config.language] : null}
+                          placeholder={classStateData.allergiesfocus != true ? LanguageConfiguration.textinputallierdies[Configurations.language] : null}
                           placeholderTextColor={Colors.placeholder_text}
                           onChangeText={(txt) => { setState({ allergies_data: txt }) }}
                           value={classStateData.allergies_data}
@@ -3731,7 +3731,7 @@ export default EditProfile = ({navigation, route}) => {
                             top: (-mobileW * 2) / 100,
                             paddingHorizontal: (mobileW * 1) / 100,
                           }}>
-                          <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputallierdies[config.language]}</Text>
+                          <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputallierdies[Configurations.language]}</Text>
                         </View>
                       )}
 
@@ -3757,10 +3757,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: Colors.allergic_heading_color,
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
 
                       }}>
-                      {LanguageConfiguration.current[config.language]}
+                      {LanguageConfiguration.current[Configurations.language]}
                     </Text>
                   </View>
                 </View>
@@ -3776,10 +3776,10 @@ export default EditProfile = ({navigation, route}) => {
                       color: Colors.textgray_que,
                       fontFamily: Font.allergies_heading_fontfamily,
                       fontSize: Font.quessize,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
 
                     }}>
-                    {LanguageConfiguration.q2[config.language]}
+                    {LanguageConfiguration.q2[Configurations.language]}
                   </Text>
                 </View>
 
@@ -3826,7 +3826,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {LanguageConfiguration.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3865,7 +3865,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {LanguageConfiguration.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -3892,14 +3892,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.currentfocus != true ? LanguageConfiguration.textinputcurrent[config.language] : null}
+                        placeholder={classStateData.currentfocus != true ? LanguageConfiguration.textinputcurrent[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ current_medication_data: txt }) }}
                         value={classStateData.current_medication_data}
@@ -3911,7 +3911,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.currentfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputcurrent[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputcurrent[Configurations.language]}</Text>
                     </View>}
 
 
@@ -3938,10 +3938,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: Colors.allergic_heading_color,
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
 
                       }}>
-                      {LanguageConfiguration.pastmedication[config.language]}
+                      {LanguageConfiguration.pastmedication[Configurations.language]}
                     </Text>
                   </View>
                 </View>
@@ -3957,10 +3957,10 @@ export default EditProfile = ({navigation, route}) => {
                       color: Colors.textgray_que,
                       fontFamily: Font.allergies_heading_fontfamily,
                       fontSize: Font.quessize,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
 
                     }}>
-                    {LanguageConfiguration.q3[config.language]}
+                    {LanguageConfiguration.q3[Configurations.language]}
                   </Text>
                 </View>
 
@@ -4005,7 +4005,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {LanguageConfiguration.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4044,7 +4044,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {LanguageConfiguration.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4071,14 +4071,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.pastfocus != true ? LanguageConfiguration.textinputpastmedication[config.language] : null}
+                        placeholder={classStateData.pastfocus != true ? LanguageConfiguration.textinputpastmedication[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ past_medication_data: txt }) }}
                         value={classStateData.past_medication_data}
@@ -4090,7 +4090,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.pastfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputpastmedication[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputpastmedication[Configurations.language]}</Text>
                     </View>}
 
 
@@ -4117,10 +4117,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: Colors.allergic_heading_color,
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
 
                       }}>
-                      {LanguageConfiguration.injuries[config.language]}
+                      {LanguageConfiguration.injuries[Configurations.language]}
                     </Text>
                   </View>
                 </View>
@@ -4136,10 +4136,10 @@ export default EditProfile = ({navigation, route}) => {
                       color: Colors.textgray_que,
                       fontFamily: Font.allergies_heading_fontfamily,
                       fontSize: Font.quessize,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
 
                     }}>
-                    {LanguageConfiguration.q4[config.language]}
+                    {LanguageConfiguration.q4[Configurations.language]}
                   </Text>
                 </View>
 
@@ -4186,7 +4186,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {LanguageConfiguration.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4223,7 +4223,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {LanguageConfiguration.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4250,14 +4250,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.injuriesfocus != true ? LanguageConfiguration.textinputinjuries[config.language] : null}
+                        placeholder={classStateData.injuriesfocus != true ? LanguageConfiguration.textinputinjuries[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ injuries_data: txt }) }}
                         value={classStateData.injuries_data}
@@ -4269,7 +4269,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.injuriesfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputinjuries[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputinjuries[Configurations.language]}</Text>
                     </View>}
 
 
@@ -4296,10 +4296,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: Colors.allergic_heading_color,
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
 
                       }}>
-                      {LanguageConfiguration.surgeries[config.language]}
+                      {LanguageConfiguration.surgeries[Configurations.language]}
                     </Text>
                   </View>
                 </View>
@@ -4315,10 +4315,10 @@ export default EditProfile = ({navigation, route}) => {
                       color: Colors.textgray_que,
                       fontFamily: Font.allergies_heading_fontfamily,
                       fontSize: Font.quessize,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
 
                     }}>
-                    {LanguageConfiguration.q5[config.language]}
+                    {LanguageConfiguration.q5[Configurations.language]}
                   </Text>
                 </View>
 
@@ -4365,7 +4365,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center',
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                        {LanguageConfiguration.yes_txt[config.language]}
+                        {LanguageConfiguration.yes_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4404,7 +4404,7 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           alignSelf: 'center',
                         }}>
-                        {LanguageConfiguration.no_txt[config.language]}
+                        {LanguageConfiguration.no_txt[Configurations.language]}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -4431,14 +4431,14 @@ export default EditProfile = ({navigation, route}) => {
                           width: '100%',
                           color: Colors.textblack,
                           fontSize: Font.placeholdersize,
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           height: (mobileW * 12) / 100,
                           fontFamily: Font.placeholderfontfamily,
                           borderRadius: (mobileW * 1) / 100,
 
                         }}
                         maxLength={50}
-                        placeholder={classStateData.sugeriesfocus != true ? LanguageConfiguration.textinputsurgeries[config.language] : null}
+                        placeholder={classStateData.sugeriesfocus != true ? LanguageConfiguration.textinputsurgeries[Configurations.language] : null}
                         placeholderTextColor={Colors.placeholder_text}
                         onChangeText={(txt) => { setState({ surgeries_data: txt }) }}
                         value={classStateData.surgeries_data}
@@ -4450,7 +4450,7 @@ export default EditProfile = ({navigation, route}) => {
                       />
                     </View>
                     {classStateData.sugeriesfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputsurgeries[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputsurgeries[Configurations.language]}</Text>
                     </View>}
 
 
@@ -4478,10 +4478,10 @@ export default EditProfile = ({navigation, route}) => {
                           color: Colors.allergic_heading_color,
                           fontFamily: Font.allergies_heading_fontfamily,
                           fontSize: Font.allergies_txt_size_edit,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
 
                         }}>
-                        {LanguageConfiguration.chronic[config.language]}
+                        {LanguageConfiguration.chronic[Configurations.language]}
                       </Text>
                     </View>
                   </View>
@@ -4497,10 +4497,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: Colors.textgray_que,
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.quessize,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
 
                       }}>
-                      {LanguageConfiguration.q6[config.language]}
+                      {LanguageConfiguration.q6[Configurations.language]}
                     </Text>
                   </View>
 
@@ -4543,7 +4543,7 @@ export default EditProfile = ({navigation, route}) => {
                           alignSelf: 'center', fontSize: Font.text_height,
                           fontFamily: Font.allergies_heading_fontfamily
                         }}>
-                          {LanguageConfiguration.yes_txt[config.language]}
+                          {LanguageConfiguration.yes_txt[Configurations.language]}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -4580,7 +4580,7 @@ export default EditProfile = ({navigation, route}) => {
                             fontFamily: Font.allergies_heading_fontfamily,
                             alignSelf: 'center',
                           }}>
-                          {LanguageConfiguration.no_txt[config.language]}
+                          {LanguageConfiguration.no_txt[Configurations.language]}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -4607,14 +4607,14 @@ export default EditProfile = ({navigation, route}) => {
                             width: '100%',
                             color: Colors.textblack,
                             fontSize: Font.placeholdersize,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             height: (mobileW * 12) / 100,
                             fontFamily: Font.placeholderfontfamily,
                             borderRadius: (mobileW * 1) / 100,
 
                           }}
                           maxLength={50}
-                          placeholder={classStateData.chronicfocus != true ? LanguageConfiguration.textinputchronic[config.language] : null}
+                          placeholder={classStateData.chronicfocus != true ? LanguageConfiguration.textinputchronic[Configurations.language] : null}
                           placeholderTextColor={Colors.placeholder_text}
                           onChangeText={(txt) => { setState({ chronic_diseases_data: txt }) }}
                           value={classStateData.chronic_diseases_data}
@@ -4626,7 +4626,7 @@ export default EditProfile = ({navigation, route}) => {
                         />
                       </View>
                       {classStateData.chronicfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                        <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.textinputchronic[config.language]}</Text>
+                        <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.textinputchronic[Configurations.language]}</Text>
                       </View>}
 
 
@@ -4662,7 +4662,7 @@ export default EditProfile = ({navigation, route}) => {
 
                         alignSelf: 'center',
                       }}>
-                      {LanguageConfiguration.savebtntext[config.language]}
+                      {LanguageConfiguration.savebtntext[Configurations.language]}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -4700,10 +4700,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: 'black',
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate
+                        textAlign: Configurations.textRotate
 
                       }}>
-                      {LanguageConfiguration.smoking[config.language]}
+                      {LanguageConfiguration.smoking[Configurations.language]}
                     </Text>
                   </View>
 
@@ -4730,8 +4730,8 @@ export default EditProfile = ({navigation, route}) => {
                           justifyContent: 'space-between'
                         }}>
                         {/* <View style={{width: '80%'}}> */}
-                        <Text style={{ fontSize: (mobileW * 3.7) / 100, fontFamily: Font.Regular, textAlign: config.textRotate }}>
-                          {classStateData.smoking.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.smoking}
+                        <Text style={{ fontSize: (mobileW * 3.7) / 100, fontFamily: Font.Regular, textAlign: Configurations.textRotate }}>
+                          {classStateData.smoking.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.smoking}
                         </Text>
                         {/* </View> */}
 
@@ -4766,10 +4766,10 @@ export default EditProfile = ({navigation, route}) => {
                         color: 'black',
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate
+                        textAlign: Configurations.textRotate
 
                       }}>
-                      {LanguageConfiguration.Alcohol[config.language]}
+                      {LanguageConfiguration.Alcohol[Configurations.language]}
                     </Text>
                   </View>
 
@@ -4797,7 +4797,7 @@ export default EditProfile = ({navigation, route}) => {
                         }}>
                         {/* <View style={{width: '80%'}}> */}
                         <Text style={{ fontSize: (mobileW * 3.7) / 100 }}>
-                          {classStateData.alcohol.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.alcohol}
+                          {classStateData.alcohol.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.alcohol}
                         </Text>
                         {/* </View> */}
 
@@ -4833,9 +4833,9 @@ export default EditProfile = ({navigation, route}) => {
                         color: 'black',
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate
+                        textAlign: Configurations.textRotate
                       }}>
-                      {LanguageConfiguration.blood[config.language]}
+                      {LanguageConfiguration.blood[Configurations.language]}
                     </Text>
                   </View>
 
@@ -4864,7 +4864,7 @@ export default EditProfile = ({navigation, route}) => {
                           justifyContent: 'space-between'
                         }}>
                         {/* <View style={{width: '80%'}}> */}
-                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>{classStateData.blood_group.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.blood_group}</Text>
+                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: Configurations.textRotate }}>{classStateData.blood_group.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.blood_group}</Text>
                         {/* </View> */}
 
                         <View style={{ width: '20%', alignSelf: 'center' }}>
@@ -4898,9 +4898,9 @@ export default EditProfile = ({navigation, route}) => {
                         color: 'black',
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate
+                        textAlign: Configurations.textRotate
                       }}>
-                      {LanguageConfiguration.activity[config.language]}
+                      {LanguageConfiguration.activity[Configurations.language]}
                     </Text>
                   </View>
 
@@ -4927,8 +4927,8 @@ export default EditProfile = ({navigation, route}) => {
                           justifyContent: 'space-between'
                         }}>
                         {/* <View style={{width: '80%'}}> */}
-                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>
-                          {classStateData.activity_level.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.activity_level}
+                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: Configurations.textRotate }}>
+                          {classStateData.activity_level.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.activity_level}
                         </Text>
                         {/* </View> */}
 
@@ -4963,9 +4963,9 @@ export default EditProfile = ({navigation, route}) => {
                         color: 'black',
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate
+                        textAlign: Configurations.textRotate
                       }}>
-                      {LanguageConfiguration.food[config.language]}
+                      {LanguageConfiguration.food[Configurations.language]}
                     </Text>
                   </View>
 
@@ -4992,8 +4992,8 @@ export default EditProfile = ({navigation, route}) => {
                           justifyContent: 'space-between'
                         }}>
                         {/* <View style={{width: '80%'}}> */}
-                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>
-                          {classStateData.food.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.food}
+                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: Configurations.textRotate }}>
+                          {classStateData.food.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.food}
                         </Text>
                         {/* </View> */}
 
@@ -5028,9 +5028,9 @@ export default EditProfile = ({navigation, route}) => {
                         color: 'black',
                         fontFamily: Font.allergies_heading_fontfamily,
                         fontSize: Font.allergies_txt_size_edit,
-                        textAlign: config.textRotate
+                        textAlign: Configurations.textRotate
                       }}>
-                      {LanguageConfiguration.occupation[config.language]}
+                      {LanguageConfiguration.occupation[Configurations.language]}
                     </Text>
                   </View>
 
@@ -5057,8 +5057,8 @@ export default EditProfile = ({navigation, route}) => {
                           justifyContent: 'space-between'
                         }}>
                         {/* <View style={{width: '80%'}}> */}
-                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: config.textRotate }}>
-                          {classStateData.occupation.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.occupation}
+                        <Text style={{ fontSize: (mobileW * 3.7) / 100, textAlign: Configurations.textRotate }}>
+                          {classStateData.occupation.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.occupation}
                         </Text>
                         {/* </View> */}
 
@@ -5096,10 +5096,10 @@ export default EditProfile = ({navigation, route}) => {
                           fontFamily: Font.allergies_heading_fontfamily,
                           fontSize: Font.allergies_txt_size_edit,
                           alignSelf: 'flex-end',
-                          textAlign: config.textalign,
+                          textAlign: Configurations.textalign,
                           alignSelf: 'center',
                         }}>
-                        {LanguageConfiguration.savebtntext[config.language]}
+                        {LanguageConfiguration.savebtntext[Configurations.language]}
                       </Text>
                     </TouchableOpacity>
                   </View>

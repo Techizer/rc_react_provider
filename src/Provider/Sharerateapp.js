@@ -2,7 +2,7 @@ import React from 'react';
 import Share from 'react-native-share'
 import {Linking} from 'react-native';
 
-import { config } from './configProvider';
+import { Configurations } from './configProvider';
 class ShareappPro {
 	//----------------- message buttons
       sharefunction(link)

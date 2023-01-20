@@ -4,7 +4,7 @@ import {
   Alert, ScrollView, PermissionsAndroid, StyleSheet, Image, TouchableOpacity,
   ImageBackground, Platform, BackHandler
 } from 'react-native';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from '../Styles';
 import messaging from '@react-native-firebase/messaging';
@@ -204,7 +204,7 @@ export default Home = ({ navigation, route }) => {
   const getPercentage = async () => {
     var user_details = await localStorage.getItemObject("user_arr");
     let { user_id, user_type } = user_details;
-    let url = config.baseURL + "api-provider-profile-complete";
+    let url = Configurations.baseURL + "api-provider-profile-complete";
 
     var data = new FormData();
     data.append("login_user_id", user_id);
@@ -321,7 +321,7 @@ export default Home = ({ navigation, route }) => {
     let user_details = await localStorage.getItemObject("user_arr");
     let user_id = user_details["user_id"];
     let apiName = "api-get-video-access-token-with-push-notification";
-    let url = config.baseURL + apiName;
+    let url = Configurations.baseURL + apiName;
 
     var data = new FormData();
     data.append("fromUserId", user_id);
@@ -352,7 +352,7 @@ export default Home = ({ navigation, route }) => {
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-notification-count";
+    let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', user_id)
@@ -403,7 +403,7 @@ export default Home = ({ navigation, route }) => {
     if (user_details.image != null) {
       setState(prev => ({
         ...prev,
-        profile_img: config.img_url3 + user_details['image'],
+        profile_img: Configurations.img_url3 + user_details['image'],
       }))
     }
 
@@ -451,13 +451,13 @@ export default Home = ({ navigation, route }) => {
 
               <View style={{ width: '95%', alignSelf: 'center' }}>
                 <Text style={{
-                  textAlign: config.textalign,
+                  textAlign: Configurations.textalign,
                   fontSize: mobileW * 4.5 / 100,
                   color: Colors.textblack,
                   fontFamily: Font.Medium,
                   alignSelf: 'center'
                 }}>
-                  {LanguageConfiguration.dashboardtext[config.language]}
+                  {LanguageConfiguration.dashboardtext[Configurations.language]}
                 </Text>
               </View>
             </View>
@@ -702,12 +702,12 @@ export default Home = ({ navigation, route }) => {
                         navigation.navigate(item?.goTo,
                           {
                             contantpage: 0,
-                            content: config.about_url_eng,
-                            content_ar: config.about_url_ar
+                            content: Configurations.about_url_eng,
+                            content_ar: Configurations.about_url_ar
                           })
                       } else if (item?.title == 'My Appointment') {
                         navigation.navigate(item?.goTo)
-                        // { title: LanguageConfiguration.upcoming_heading[config.language], api_status: 0 })
+                        // { title: LanguageConfiguration.upcoming_heading[Configurations.language], api_status: 0 })
                       } else {
                         navigation.navigate(item?.goTo);
                       }

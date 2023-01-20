@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ApplicationContainerWrapper, AppConsumer } from './src/Containers/ApplicationContainerWrapper';
 import Stacknav from './src/Stacks/Routenavigation';
 import { FBPushNotifications } from './src/Helpers/FirebasePushNotifications';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, config, mobileW, localStorage } from './src/Helpers/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage } from './src/Helpers/Utils';
 import FlashMessage from "react-native-flash-message";
 import RNRestart from 'react-native-restart';
 import moment from 'moment-timezone';
@@ -70,7 +70,7 @@ class App extends Component {
 
 
     //// I18nManager.forceRTL(false);
-    // config.language = value;
+    // Configurations.language = value;
 
   }
   render() {

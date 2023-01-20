@@ -1,7 +1,7 @@
 import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Cameragallery, Colors, Font, mobileH, localStorage, config, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Helpers/Utils';
+import { CameraGallery, Colors, Font, mobileH, localStorage, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -103,43 +103,43 @@ export default Signup = ({ navigation, route }) => {
     var realDigits = digits.map(Number)
 
     if (classStateData.selectuserType == -1) {
-      MessageFunctions.showError(MessageTexts.emptyUsertype[config.language])
+      MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
       return false;
     }
     if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyName[config.language])
+      MessageFunctions.showError(MessageTexts.emptyName[Configurations.language])
       return false;
     }
 
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (email <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
     }
 
     if (regemail.test(email) !== true) {
-      MessageFunctions.showError(MessageTexts.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
       return false
     }
     if (classStateData.country_code.length <= 0 || classStateData.country_code.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyCountrycode[config.language])
+      MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
       return false;
     }
 
     if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptymobileNumber[config.language])
+      MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
       return false;
     }
     
     if (classStateData.country_short_code == 'UAE') {
       if (realDigits[0] == 0 || realDigits[0] == 1 || realDigits[0] == 2 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 8 || realDigits[0] == 9) {
-        MessageFunctions.showError(MessageTexts.validIDnumberUAE[config.language])
+        MessageFunctions.showError(MessageTexts.validIDnumberUAE[Configurations.language])
         return false
       }
     }
     else {
       if (realDigits[0] == 0 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 7 || realDigits[0] == 8 || realDigits[0] == 9) {
-        MessageFunctions.showError(MessageTexts.validIDnumber[config.language])
+        MessageFunctions.showError(MessageTexts.validIDnumber[Configurations.language])
         return false
       }
     }
@@ -157,25 +157,25 @@ export default Signup = ({ navigation, route }) => {
 
     let password = classStateData.password;
     if (password.length <= 0) {
-      MessageFunctions.showError(MessageTexts.validataionnewpass[config.language])
+      MessageFunctions.showError(MessageTexts.validataionnewpass[Configurations.language])
       return false;
     }
     if (password.length <= 7) {
-      MessageFunctions.showError(MessageTexts.emptyPasswordValid[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
       return false;
     }
     let confirmpass = classStateData.confirm;
     if (confirmpass.length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyconfirmPassword[config.language])
+      MessageFunctions.showError(MessageTexts.emptyconfirmPassword[Configurations.language])
       return false;
     }
     if (confirmpass.length <= 7) {
-      MessageFunctions.showError(MessageTexts.emptyPasswordValid[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
       return false;
     }
 
     if (confirmpass != password) {
-      MessageFunctions.showError(MessageTexts.Password_notmatch[config.language])
+      MessageFunctions.showError(MessageTexts.Password_notmatch[Configurations.language])
       return false;
     }
 
@@ -267,7 +267,7 @@ export default Signup = ({ navigation, route }) => {
       }
     }
 
-    let url = config.baseURL + "api-service-provider-registration";
+    let url = Configurations.baseURL + "api-service-provider-registration";
     console.log("url", url)
     var phone_number_send = classStateData.country_code + classStateData.mobile
     var data = new FormData();
@@ -283,7 +283,7 @@ export default Signup = ({ navigation, route }) => {
     data.append('gender', classStateData.gender)
     data.append('password', classStateData.password)
     data.append('confirm_password', classStateData.confirm)
-    data.append('device_type', config.device_type)
+    data.append('device_type', Configurations.device_type)
     data.append('device_lang', classStateData.device_lang)
     data.append('fcm_token', classStateData.fcm_token)
 
@@ -479,7 +479,7 @@ export default Signup = ({ navigation, route }) => {
 
   const get_speciality = async () => {
 
-    let url = config.baseURL + "api-provider-get-speciality";
+    let url = Configurations.baseURL + "api-provider-get-speciality";
     console.log("url", url)
     var data = new FormData();
     data.append('service_type', classStateData.userType[classStateData.selectuserType].value)
@@ -502,7 +502,7 @@ export default Signup = ({ navigation, route }) => {
   }
 
   const get_all_count = async () => {
-    let url = config.baseURL + "api-medical-service-area";
+    let url = Configurations.baseURL + "api-medical-service-area";
     console.log("url", url)
     // var data = new FormData();
     // data.append('login_user_id',user_id)
@@ -562,7 +562,7 @@ export default Signup = ({ navigation, route }) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -642,7 +642,7 @@ export default Signup = ({ navigation, route }) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Photocopy of ID
@@ -664,7 +664,7 @@ export default Signup = ({ navigation, route }) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }}>
               {(classStateData.id_image != undefined) ? classStateData.id_image.filename.trim() : 'No Attachment'}
             </Text>
@@ -685,7 +685,7 @@ export default Signup = ({ navigation, route }) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -881,7 +881,7 @@ export default Signup = ({ navigation, route }) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }} numberOfLines={1}>
               {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
             </Text>
@@ -997,7 +997,7 @@ export default Signup = ({ navigation, route }) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }} numberOfLines={1}>
               {(classStateData.scfhs_image != undefined) ? classStateData.scfhs_image.filename.trim() : 'No Attachment'}
             </Text>
@@ -1018,7 +1018,7 @@ export default Signup = ({ navigation, route }) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1103,7 +1103,7 @@ export default Signup = ({ navigation, route }) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }} numberOfLines={1}>
               {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
             </Text>
@@ -1173,7 +1173,7 @@ export default Signup = ({ navigation, route }) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1241,7 +1241,7 @@ export default Signup = ({ navigation, route }) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Photocopy of ID
@@ -1260,7 +1260,7 @@ export default Signup = ({ navigation, route }) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }}>
               {(classStateData.id_image != undefined) ? classStateData.id_image.filename.trim() : 'No Attachment'}
             </Text>
@@ -1281,7 +1281,7 @@ export default Signup = ({ navigation, route }) => {
           }}>
           <Text
             style={{
-              textAlign: config.textRotate,
+              textAlign: Configurations.textRotate,
               fontSize: Font.buttontextsize,
               fontFamily: Font.Bold,
               color: Colors.textblack,
@@ -1361,7 +1361,7 @@ export default Signup = ({ navigation, route }) => {
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
-                  // textAlign: config.textalign,
+                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Certificate
@@ -1380,7 +1380,7 @@ export default Signup = ({ navigation, route }) => {
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
               }}>
               {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
             </Text>
@@ -1409,7 +1409,7 @@ export default Signup = ({ navigation, route }) => {
             translucent={false}
             networkActivityIndicatorVisible={true}
           />
-          <Cameragallery mediamodal={classStateData.mediamodal}
+          <CameraGallery mediamodal={classStateData.mediamodal}
             isCamera={false}
             isGallery={true}
             isDocument={true}
@@ -1442,7 +1442,7 @@ export default Signup = ({ navigation, route }) => {
                     color: Colors.white_color,
                     fontSize: 15,
                     fontFamily: Font.headingfontfamily,
-                  }}>{LanguageConfiguration.Country_code[config.language]}</Text>
+                  }}>{LanguageConfiguration.Country_code[Configurations.language]}</Text>
 
                 </View>
 
@@ -1459,7 +1459,7 @@ export default Signup = ({ navigation, route }) => {
                           // >
                           //   <View style={{ width: '100%', backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'flex-end' }}>
                           //     <View style={[{ width: '95%', borderBottomWidth: 1, paddingVertical: mobileW * 2 / 100, marginLeft: mobileW * 5 / 100, borderBottomColor: '#0000001F' }]}>
-                          //       <Text style={{ color: Colors.textblack, fontSize: mobileW * 4 / 100, paddingLeft: mobileW * 2 / 100, textAlign: config.textRotate }}>{item.name}</Text>
+                          //       <Text style={{ color: Colors.textblack, fontSize: mobileW * 4 / 100, paddingLeft: mobileW * 2 / 100, textAlign: Configurations.textRotate }}>{item.name}</Text>
                           //     </View>
                           //   </View>
                           // </TouchableOpacity>
@@ -1550,7 +1550,7 @@ export default Signup = ({ navigation, route }) => {
             >
               <Image
                 style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
+                source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
               </Image>
 
             </TouchableHighlight>
@@ -1567,9 +1567,9 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   fontSize: Font.headingblack,
                   fontFamily: Font.blackheadingfontfamily,
-                  textAlign: config.textRotate
+                  textAlign: Configurations.textRotate
                 }}>
-                {LanguageConfiguration.Signup[config.language]}
+                {LanguageConfiguration.Signup[Configurations.language]}
               </Text>
             </View>
 
@@ -1581,17 +1581,17 @@ export default Signup = ({ navigation, route }) => {
               }}>
               <Text
                 style={{
-                  textAlign: config.textRotate,
+                  textAlign: Configurations.textRotate,
                   fontSize: Font.headinggray,
                   fontFamily: Font.headingfontfamily,
                   color: Colors.placeholder_text,
                 }}>
-                {LanguageConfiguration.Signuptext1[config.language]}
+                {LanguageConfiguration.Signuptext1[Configurations.language]}
               </Text>
             </View>
 
             <DropDownboxSec
-              lableText={(classStateData.selectuserType == -1) ? LanguageConfiguration.UserTypeText[config.language] : classStateData.userType[classStateData.selectuserType].title}
+              lableText={(classStateData.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : classStateData.userType[classStateData.selectuserType].title}
               boxPressAction={() => { showUsertypeModal(true) }}
             />
 
@@ -1697,7 +1697,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={(classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType].value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[config.language]}
+                lableText={(classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType].value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[Configurations.language]}
                 inputRef={(ref) => {
                   nameInput = ref;
                 }}
@@ -1726,7 +1726,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={LanguageConfiguration.Mobileno[config.language]}
+                lableText={LanguageConfiguration.Mobileno[Configurations.language]}
                 inputRef={(ref) => {
                   emailInput = ref;
                 }}
@@ -1752,17 +1752,17 @@ export default Signup = ({ navigation, route }) => {
               }}>
               <Text
                 style={{
-                  textAlign: config.textRotate,
+                  textAlign: Configurations.textRotate,
                   fontSize: Font.headinggray,
                   fontFamily: Font.headingfontfamily,
                   color: Colors.placeholder_text,
                 }}>
-                {LanguageConfiguration.selectcountrytitle[config.language]}
+                {LanguageConfiguration.selectcountrytitle[Configurations.language]}
               </Text>
             </View>
 
             <DropDownboxSec
-              lableText={classStateData.country_name.length <= 0 ? LanguageConfiguration.select[config.language] : classStateData.country_name}
+              lableText={classStateData.country_name.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.country_name}
               boxPressAction={() => { setState({ bloodModal: true }); }}
             />
 
@@ -1782,7 +1782,7 @@ export default Signup = ({ navigation, route }) => {
                     marginBottom: (mobileW * 4) / 100,
                   }}
                   // icon={layer9_icon}
-                  lableText={LanguageConfiguration.CC_code[config.language]}
+                  lableText={LanguageConfiguration.CC_code[Configurations.language]}
                   inputRef={(ref) => {
                     country_codeInput = ref;
                   }}
@@ -1812,7 +1812,7 @@ export default Signup = ({ navigation, route }) => {
                     width: '100%',
                   }}
                   // icon={layer9_icon}
-                  lableText={LanguageConfiguration.textinputnumber[config.language]}
+                  lableText={LanguageConfiguration.textinputnumber[Configurations.language]}
                   inputRef={(ref) => {
                     mobileInput = ref;
                   }}
@@ -1835,12 +1835,12 @@ export default Signup = ({ navigation, route }) => {
                   }}>
                   <Text
                     style={{
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       fontSize: Font.textsize,
                       fontFamily: Font.headingfontfamily,
                       color: Colors.textgray,
                     }}>
-                    {LanguageConfiguration.mobletexttitle[config.language]}
+                    {LanguageConfiguration.mobletexttitle[Configurations.language]}
                   </Text>
                 </View>
               </View>
@@ -1860,10 +1860,10 @@ export default Signup = ({ navigation, route }) => {
                       </View>
                       <View style={{ width: '100%', height: Font.placeholder_height, marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row' }}>
                         <Text style={{
-                          width: '78%', textAlign: config.textRotate, color: Colors.placeholder_text,
+                          width: '78%', textAlign: Configurations.textRotate, color: Colors.placeholder_text,
                           fontFamily: Font.Regular,
                           fontSize: Font.placeholdersize,
-                        }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[config.language] : classStateData.dob_date}</Text>
+                        }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[Configurations.language] : classStateData.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
                           <Image source={Icons.DatePicker}
@@ -1876,7 +1876,7 @@ export default Signup = ({ navigation, route }) => {
                     </TouchableOpacity>
 
                     {classStateData.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                      <Text style={{ color: '#0057A5', textAlign: config.textalign }}>{LanguageConfiguration.dob[config.language]}</Text>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.dob[Configurations.language]}</Text>
                     </View>}
 
                   </View>
@@ -1911,9 +1911,9 @@ export default Signup = ({ navigation, route }) => {
                           color: Colors.placeholder_text,
                           fontFamily: Font.Regular,
                           fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                         }}>
-                        {LanguageConfiguration.Gender[config.language]}
+                        {LanguageConfiguration.Gender[Configurations.language]}
                       </Text>
                     </View>
 
@@ -1945,12 +1945,12 @@ export default Signup = ({ navigation, route }) => {
                               <Text
                                 style={{
                                   marginLeft: mobileW * 1.5 / 100,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   color: Colors.placeholder_text,
                                   fontFamily: Font.Regular,
                                   fontSize: Font.placeholdersize,
                                 }}>
-                                {LanguageConfiguration.male[config.language]}
+                                {LanguageConfiguration.male[Configurations.language]}
                               </Text>
                             </View>
                           </TouchableOpacity>
@@ -1986,14 +1986,14 @@ export default Signup = ({ navigation, route }) => {
 
                             <Text
                               style={{
-                                textAlign: config.textRotate,
+                                textAlign: Configurations.textRotate,
                                 marginLeft: mobileW * 1.5 / 100,
                                 color: Colors.placeholder_text,
                                 fontFamily: Font.Regular,
                                 fontSize: Font.placeholdersize,
                                 // alignSelf: 'center',
                               }}>
-                              {LanguageConfiguration.female[config.language]}
+                              {LanguageConfiguration.female[Configurations.language]}
                             </Text>
 
                           </TouchableOpacity>
@@ -2020,7 +2020,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={LanguageConfiguration.password[config.language]}
+                lableText={LanguageConfiguration.password[Configurations.language]}
                 inputRef={(ref) => {
                   passwordInput = ref;
                 }}
@@ -2055,12 +2055,12 @@ export default Signup = ({ navigation, route }) => {
               }}>
               <Text
                 style={{
-                  textAlign: config.textRotate,
+                  textAlign: Configurations.textRotate,
                   fontSize: Font.textsize,
                   fontFamily: Font.headingfontfamily,
                   color: Colors.textgray,
                 }}>
-                {LanguageConfiguration.Signuptext3[config.language]}
+                {LanguageConfiguration.Signuptext3[Configurations.language]}
               </Text>
             </View>
 
@@ -2079,7 +2079,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={LanguageConfiguration.confirmpassword1[config.language]}
+                lableText={LanguageConfiguration.confirmpassword1[Configurations.language]}
                 inputRef={(ref) => {
                   confirmInput = ref;
                 }}
@@ -2114,12 +2114,12 @@ export default Signup = ({ navigation, route }) => {
               }}>
               <Text
                 style={{
-                  textAlign: config.textRotate,
+                  textAlign: Configurations.textRotate,
                   fontSize: Font.textsize,
                   fontFamily: Font.headingfontfamily,
                   color: Colors.textgray,
                 }}>
-                {LanguageConfiguration.Signuptext4[config.language]}
+                {LanguageConfiguration.Signuptext4[Configurations.language]}
               </Text>
             </View>
 
@@ -2150,7 +2150,7 @@ export default Signup = ({ navigation, route }) => {
             }
 
             <Button
-              text={LanguageConfiguration.btntext[config.language]}
+              text={LanguageConfiguration.btntext[Configurations.language]}
               // onLoading={classStateData.loading}
               customStyles={
                 {
@@ -2175,56 +2175,56 @@ export default Signup = ({ navigation, route }) => {
                 }}>
                 <Text
                   style={{
-                    textAlign: config.textalign,
+                    textAlign: Configurations.textalign,
                     fontSize: (mobileW * 3.5) / 100,
                     fontFamily: Font.headingfontfamily,
                     color: Colors.placeholder_text,
                     textAlign: 'center', alignSelf: 'center'
                   }}>
-                  {LanguageConfiguration.termsandconditiontext1[config.language]}
+                  {LanguageConfiguration.termsandconditiontext1[Configurations.language]}
                 </Text>
                 <Text
                   onPress={() => {
                     navigation.navigate(ScreenReferences.TermsAndConditions, {
                       contantpage: 2,
-                      content: config.term_url_eng,
-                      content_ar: config.term_url_ar
+                      content: Configurations.term_url_eng,
+                      content_ar: Configurations.term_url_ar
 
                     });
                   }}
                   style={{
-                    textAlign: config.textalign,
+                    textAlign: Configurations.textalign,
                     fontSize: (mobileW * 3.5) / 100,
                     fontFamily: Font.terms_text_font_family,
                     color: Colors.terms_text_color_blue, flexDirection: 'row', width: '100%', textAlign: 'center'
 
                   }}>
-                  {LanguageConfiguration.termsandconditiontext2[config.language]}
+                  {LanguageConfiguration.termsandconditiontext2[Configurations.language]}
                   <Text
                     style={{
-                      textAlign: config.textalign,
+                      textAlign: Configurations.textalign,
                       fontSize: (mobileW * 3.5) / 100,
                       fontFamily: Font.headingfontfamily,
                       color: Colors.placeholder_text,
                       textAlign: 'center', alignSelf: 'center'
                     }}>
-                    {LanguageConfiguration.termsandconditiontext3[config.language]}
+                    {LanguageConfiguration.termsandconditiontext3[Configurations.language]}
                   </Text>
                   <Text
                     onPress={() => {
                       navigation.navigate(ScreenReferences.TermsAndConditions, {
                         contantpage: 1,
-                        content: config.privacy_url_eng, content_ar: config.privacy_url_ar
+                        content: Configurations.privacy_url_eng, content_ar: Configurations.privacy_url_ar
                       });
                     }}
                     style={{
-                      textAlign: config.textalign,
+                      textAlign: Configurations.textalign,
                       fontSize: (mobileW * 3.6) / 100,
                       fontFamily: Font.SemiBold,
                       color: Colors.terms_text_color_blue,
 
                     }}>
-                    {LanguageConfiguration.termsandconditiontext4[config.language]}
+                    {LanguageConfiguration.termsandconditiontext4[Configurations.language]}
                   </Text>
                 </Text>
 
@@ -2253,12 +2253,12 @@ export default Signup = ({ navigation, route }) => {
 
               <Text
                 style={{
-                  textAlign: config.textalign,
+                  textAlign: Configurations.textalign,
                   fontSize: (mobileW * 3.8) / 100,
                   fontFamily: Font.Medium,
                   color: Colors.placeholder_text,
                 }}>
-                {LanguageConfiguration.allreadyhaveaccounttext[config.language]}
+                {LanguageConfiguration.allreadyhaveaccounttext[Configurations.language]}
               </Text>
 
               <TouchableOpacity
@@ -2268,14 +2268,14 @@ export default Signup = ({ navigation, route }) => {
               >
                 <Text
                   style={{
-                    textAlign: config.textalign,
+                    textAlign: Configurations.textalign,
                     fontSize: (mobileW * 3.5) / 100,
                     fontFamily: Font.terms_text_font_family,
                     color: Colors.textblue,
                     alignSelf: 'flex-end',
 
                   }}>
-                  {LanguageConfiguration.loginheretext[config.language]}
+                  {LanguageConfiguration.loginheretext[Configurations.language]}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -2295,7 +2295,7 @@ export default Signup = ({ navigation, route }) => {
 
                   <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
                     <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={Icons.Logo}></Image>
-                    <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.registration[config.language]}</Text>
+                    <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.registration[Configurations.language]}</Text>
                   </View>
 
                   <View style={{ alignSelf: 'flex-start', paddingLeft: mobileW * 4 / 100, width: '90%', marginTop: mobileW * 1.5 / 100 }}>
@@ -2317,7 +2317,7 @@ export default Signup = ({ navigation, route }) => {
                       }
                     }}
                       style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                      <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.theme_color, alignSelf: 'center', textAlign: config.textalign }}>{LanguageConfiguration.OK[config.language]}</Text>
+                      <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.theme_color, alignSelf: 'center', textAlign: Configurations.textalign }}>{LanguageConfiguration.OK[Configurations.language]}</Text>
                     </TouchableOpacity>
 
 

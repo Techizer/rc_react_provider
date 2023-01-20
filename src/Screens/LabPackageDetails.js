@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, TextInput, Image, Text, TouchableOpacity, ScrollView } from "react-native";
 import { View } from "react-native-animatable";
 import HTMLView from "react-native-htmlview";
-import { config } from "../Provider/configProvider";
+import { Configurations } from "../Provider/configProvider";
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import {
   API,
@@ -32,7 +32,7 @@ const LabPackageDetails = ({ navigation, route }) => {
     let user_id = user_details["user_id"];
     let currency_symbol = user_details['currency_symbol']
     setCurrency(currency_symbol)
-    let url = config.baseURL + "api-get-lab-package-details";
+    let url = Configurations.baseURL + "api-get-lab-package-details";
     console.log("url", url);
 
     var data = new FormData();
@@ -84,7 +84,7 @@ const LabPackageDetails = ({ navigation, route }) => {
 
     let apishow = apiname 
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
@@ -154,7 +154,7 @@ const LabPackageDetails = ({ navigation, route }) => {
               >
                 <Image
                   source={
-                    config.textalign == "right"
+                    Configurations.textalign == "right"
                       ? Icons.BackRTL
                       : Icons.LeftArrow
                   }
@@ -179,7 +179,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                   fontSize: (mobileW * 4) / 100,
                 }}
               >
-                {LanguageConfiguration.PackageDetails[config.language]}
+                {LanguageConfiguration.PackageDetails[Configurations.language]}
               </Text>
             </View>
           </View>
@@ -264,7 +264,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                           style={{
                             paddingVertical: (mobileW * 2) / 100,
                             paddingHorizontal: (mobileW * 2) / 100,
-                            textAlign: config.textalign,
+                            textAlign: Configurations.textalign,
                             fontFamily: Font.Medium,
                             fontSize: (mobileW * 3.5) / 100,
                             color: Colors.tablightcolo,
@@ -301,7 +301,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                         >
                           <Text
                             style={{
-                              textAlign: config.textalign,
+                              textAlign: Configurations.textalign,
                               fontFamily: Font.Medium,
                               fontSize: (mobileW * 4) / 100,
                             }}
@@ -333,7 +333,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                             marginTop: (mobileW * 2) / 100,
                             paddingHorizontal: (mobileW * 4) / 100,
                             fontSize: Font.buttontext_size,
-                            textAlign: config.textRotate,
+                            textAlign: Configurations.textRotate,
                             color: Colors.lightgraytext,
                           }}
                         >
@@ -368,7 +368,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                             color: Colors.precautionText,
                             paddingHorizontal: (mobileW * 4) / 100,
                             marginTop: (mobileW * 2) / 100,
-                            textAlign: config.textRotate,
+                            textAlign: Configurations.textRotate,
                           }}
                         >
                           {labDetailsData.task_sub_heading}
@@ -409,7 +409,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                       textAlign: "left",
                     }}
                   >
-                    {LanguageConfiguration.TestsIncluded[config.language]}
+                    {LanguageConfiguration.TestsIncluded[Configurations.language]}
                   </Text>
                   <FlatList
                     data={labDetailsData.task_name}

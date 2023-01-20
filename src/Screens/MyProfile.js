@@ -1,16 +1,13 @@
-import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform, Dimensions } from 'react-native';
-import React, { Component, useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, localStorage, API, MessageFunctions, MessageTexts, MessageHeadings, Cameragallery, Media } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, localStorage, API, MessageFunctions, MessageHeadings } from '../Helpers/Utils';
 import Styles from '../Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
-import DatePicker from 'react-native-date-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { AuthInputBoxSec, DropDownboxSec, DashBoardBox } from '../Components'
+import { DashBoardBox } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
@@ -88,7 +85,7 @@ export default MyProfile = ({ navigation, route }) => {
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
-    let url = config.baseURL + "api-notification-count";
+    let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', user_id)
@@ -143,7 +140,7 @@ export default MyProfile = ({ navigation, route }) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
-    let url = config.baseURL + "api-get-provider-profile";
+    let url = Configurations.baseURL + "api-get-provider-profile";
     console.log("url", url)
     var data = new FormData();
     data.append('id', user_id)
@@ -274,13 +271,13 @@ export default MyProfile = ({ navigation, route }) => {
 
         if (result.image != null) {
           setState({
-            profile_img: config.img_url3 + result['image'],
+            profile_img: Configurations.img_url3 + result['image'],
           })
         }
 
       }
       else {
-        MessageFunctions.alert(MessageHeadings.information[config.language], obj.message[config.language], false);
+        MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
 
         return false;
       }
@@ -392,7 +389,7 @@ export default MyProfile = ({ navigation, route }) => {
                     <Text style={{
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium, fontSize: 18,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                     }}>{classStateData.name}</Text>
                     <TouchableOpacity
                       onPress={() => {
@@ -432,7 +429,7 @@ export default MyProfile = ({ navigation, route }) => {
                         color: Colors.textblue,
                         fontFamily: Font.Regular,
                         fontSize: 14, //(mobileW * 3) / 100,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                       }}>{classStateData.speciality}</Text>
                   </View>
 
@@ -457,7 +454,7 @@ export default MyProfile = ({ navigation, route }) => {
                           color: Colors.placeholder_textcolorlight,
                           fontFamily: Font.Regular,
                           fontSize: 12, //(mobileW * 3) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           paddingHorizontal: 8
 
                         }}>{classStateData.email}</Text>
@@ -478,7 +475,7 @@ export default MyProfile = ({ navigation, route }) => {
                           color: Colors.placeholder_textcolorlight,
                           fontFamily: Font.Regular,
                           fontSize: 12, //(mobileW * 3) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           paddingHorizontal: 8
                         }}>{classStateData.phone_number}</Text>
                     </View>
@@ -512,7 +509,7 @@ export default MyProfile = ({ navigation, route }) => {
                         color: Colors.placeholder_textcolorlight,
                         fontFamily: Font.Regular,
                         fontSize: 12, //(mobileW * 3) / 100,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                       }}>{(classStateData.user_type == "lab") ? 'Established' : 'Experience'}
                     </Text>
                     <Text
@@ -521,7 +518,7 @@ export default MyProfile = ({ navigation, route }) => {
                         color: Colors.lightgraytext,
                         fontFamily: Font.Medium,
                         fontSize: 16, //(mobileW * 3) / 100,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                       }}>{classStateData.experience} {(classStateData.user_type == "lab") ? '' : 'YR'}
                     </Text>
                   </View>
@@ -538,7 +535,7 @@ export default MyProfile = ({ navigation, route }) => {
                         color: Colors.placeholder_textcolorlight,
                         fontFamily: Font.Regular,
                         fontSize: 12, //(mobileW * 3) / 100,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                       }}>{(classStateData.user_type == "lab") ? 'Lab Test' : 'Bookings'}
                     </Text>
                     <Text
@@ -547,7 +544,7 @@ export default MyProfile = ({ navigation, route }) => {
                         color: Colors.lightgraytext,
                         fontFamily: Font.Medium,
                         fontSize: 16, //(mobileW * 3) / 100,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                       }}>{(classStateData.user_type == "lab") ? classStateData.lab_test_count : classStateData.booking_count}
                     </Text>
                   </View>
@@ -562,7 +559,7 @@ export default MyProfile = ({ navigation, route }) => {
                         color: Colors.placeholder_textcolorlight,
                         fontFamily: Font.Regular,
                         fontSize: 12, //(mobileW * 3) / 100,
-                        textAlign: config.textRotate,
+                        textAlign: Configurations.textRotate,
                       }}>Rating
                     </Text>
                     <View style={{
@@ -583,7 +580,7 @@ export default MyProfile = ({ navigation, route }) => {
                           color: Colors.lightgraytext,
                           fontFamily: Font.Medium,
                           fontSize: 16, //(mobileW * 3) / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                         }}>{classStateData.avg_rating}.0
                       </Text>
                     </View>
@@ -809,7 +806,7 @@ export default MyProfile = ({ navigation, route }) => {
                           source={classStateData.moh_lic_image == 'NA' ||
                             classStateData.moh_lic_image == null ||
                             classStateData.moh_lic_image == '' ? Icons.Prescription :
-                            { uri: config.img_url3 + classStateData.moh_lic_image.filename }}
+                            { uri: Configurations.img_url3 + classStateData.moh_lic_image.filename }}
                         ></Image>
                         <Text>{classStateData.hosp_moh_lic_no}</Text>
                       </View>
@@ -835,7 +832,7 @@ export default MyProfile = ({ navigation, route }) => {
                           source={classStateData.hosp_reg_image == 'NA' ||
                             classStateData.hosp_reg_image == null ||
                             classStateData.hosp_reg_image == '' ? Icons.Prescription :
-                            { uri: config.img_url3 + classStateData.hosp_reg_image.filename }}
+                            { uri: Configurations.img_url3 + classStateData.hosp_reg_image.filename }}
                         ></Image>
                         <Text>{classStateData.hosp_reg_no}</Text>
                       </View>
@@ -861,7 +858,7 @@ export default MyProfile = ({ navigation, route }) => {
                           source={classStateData.id_image == 'NA' ||
                             classStateData.id_image == null ||
                             classStateData.id_image == '' ? Icons.Prescription :
-                            { uri: config.img_url3 + classStateData.id_image.filename }}
+                            { uri: Configurations.img_url3 + classStateData.id_image.filename }}
                         ></Image>
                         <Text>{classStateData.id_number}</Text>
                       </View>
@@ -887,7 +884,7 @@ export default MyProfile = ({ navigation, route }) => {
                           source={classStateData.certificate == 'NA' ||
                             classStateData.certificate == null ||
                             classStateData.certificate == '' ? Icons.Prescription :
-                            { uri: config.img_url3 + classStateData.certificate.filename }}
+                            { uri: Configurations.img_url3 + classStateData.certificate.filename }}
                         ></Image>
                         <Text>{classStateData.qualification}</Text>
                       </View>
@@ -913,7 +910,7 @@ export default MyProfile = ({ navigation, route }) => {
                           source={classStateData.scfhs_image == 'NA' ||
                             classStateData.scfhs_image == null ||
                             classStateData.scfhs_image == '' ? Icons.Prescription :
-                            { uri: config.img_url3 + classStateData.scfhs_image.filename }}
+                            { uri: Configurations.img_url3 + classStateData.scfhs_image.filename }}
                         ></Image>
                         <Text>{classStateData.scfhs_number}</Text>
                       </View>

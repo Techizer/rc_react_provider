@@ -5,7 +5,7 @@ import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
-import { config, LanguageConfiguration, mobileH, } from "../Helpers/Utils";
+import { Configurations, LanguageConfiguration, mobileH, } from "../Helpers/Utils";
 import { Cross } from "../Assets/Icons/SvgIcons/Index";
 
 
@@ -58,7 +58,7 @@ const ListBottomSheet = ({
                         style={{
                             fontSize: Font.large,
                             fontFamily: Font.bold_font_family,
-                            textAlign: config.textRotate,
+                            textAlign: Configurations.textRotate,
                             color: Colors.textblack
 
                         }}>{`Select ${flag ? 'start' : 'end'} time for ${Days[currentIndex]}`}</Text>
@@ -91,7 +91,7 @@ const ListBottomSheet = ({
                                             <Text
                                                 style={{
                                                     color: Colors.textblack_new,
-                                                    textAlign: config.textRotate,
+                                                    textAlign: Configurations.textRotate,
                                                     fontSize: Font.large
                                                 }} >
                                                 {item.value}

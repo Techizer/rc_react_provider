@@ -10,7 +10,7 @@ import {
   mobileH,
   MessageFunctions,
   MessageTexts,
-  config,
+  Configurations,
   mobileW,
   localStorage,
 
@@ -58,7 +58,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
 
     let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
@@ -156,7 +156,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
 
     let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
@@ -269,7 +269,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                       <Text
                         style={{
                           // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.placeholder_text,
                           fontFamily: Font.Regular,
                           fontSize: mobileW * 3.6 / 100,
@@ -311,7 +311,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                             color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                           <Text
                             style={{
-                              textAlign: config.textRotate,
+                              textAlign: Configurations.textRotate,
                               marginLeft: mobileW * 1.5 / 100,
                               color: Colors.placeholder_text,
                               fontFamily: Font.Regular,
@@ -336,7 +336,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                               color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                             <Text
                               style={{
-                                textAlign: config.textRotate,
+                                textAlign: Configurations.textRotate,
                                 marginLeft: mobileW * 1.5 / 100,
                                 color: Colors.placeholder_text,
                                 fontFamily: Font.Regular,
@@ -361,7 +361,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                 color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                               <Text
                                 style={{
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   marginLeft: mobileW * 1.5 / 100,
                                   color: Colors.placeholder_text,
                                   fontFamily: Font.Regular,
@@ -386,7 +386,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                   color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                                 <Text
                                   style={{
-                                    textAlign: config.textRotate,
+                                    textAlign: Configurations.textRotate,
                                     marginLeft: mobileW * 1.5 / 100,
                                     color: Colors.placeholder_text,
                                     fontFamily: Font.Regular,
@@ -448,7 +448,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                       <Text
                         style={{
                           // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.placeholder_text_color,
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 3.6 / 100,
@@ -476,7 +476,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                     }}>
                       <Text
                         style={{
-                          textAlign: config.textRotate,
+                          textAlign: Configurations.textRotate,
                           color: Colors.placeholder_text_color,
                           fontFamily: Font.Medium,
                           fontSize: mobileW * 3.6 / 100,

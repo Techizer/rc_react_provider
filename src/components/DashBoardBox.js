@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-// import Spinner from "react-native-spinkit";
-// import { Colors } from "react-native/Libraries/NewAppScreen";
-// import { color } from "react-native-reanimated";
-// import { Color, Fonts } from "../utils";
-// import { RF } from "../utils/responsive";
-import { Colors, Font, config, mobileW } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW } from '../Helpers/Utils';
 const DashBoardBox = ({
   textInfo, textTitle,
   customStyles,
@@ -146,15 +141,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     width: '100%',
     height: 190,
-    // alignSelf: 'center',
-    // borderRadius: (mobileW * 2) / 100,
     backgroundColor: Colors.white_color,
-    // paddingVertical: (mobileW * 4) / 100,
-    marginTop: 10, //(mobileW * 1) / 100,
-    // shadowColor: '#171717',
-    // shadowOffset: { width: -2, height: 4 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 3,
+    marginTop: 10
 
   },
   mainContainer1: {
@@ -172,19 +160,17 @@ const styles = StyleSheet.create({
     color: Colors.textwhite,
     fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
     fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   img: {
-    // width: 130,
-    // height: 106,
     width: (mobileW * 33) / 100,
     height: (mobileW * 33) / 100,
     // marginRight: 10,

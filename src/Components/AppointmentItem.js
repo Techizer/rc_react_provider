@@ -16,7 +16,7 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { s, vs } from "react-native-size-matters";
 import { Colors, Font } from "../Provider/Colorsfont";
 import { LanguageConfiguration } from "../Helpers/LanguageProvider";
-import { config } from "../Provider/configProvider";
+import { Configurations } from "../Provider/configProvider";
 import { mobileW, windowHeight, windowWidth } from "../Helpers/Utils";
 
 const AppointmentItem = ({
@@ -230,7 +230,7 @@ const AppointmentItem = ({
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
-                            >{LanguageConfiguration.Patient[config.language]}</Text>
+                            >{LanguageConfiguration.Patient[Configurations.language]}</Text>
                             <Text
                                 style={{
                                     fontSize: Font.medium,
@@ -250,7 +250,7 @@ const AppointmentItem = ({
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
-                            >{LanguageConfiguration.Booked[config.language]}</Text>
+                            >{LanguageConfiguration.Booked[Configurations.language]}</Text>
                             <Text
                                 style={{
                                     fontSize: Font.medium,
@@ -281,7 +281,7 @@ const AppointmentItem = ({
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
-                            >{LanguageConfiguration.AppointmentDate[config.language]}</Text>
+                            >{LanguageConfiguration.AppointmentDate[Configurations.language]}</Text>
                             <Text
                                 style={{
                                     fontSize: Font.medium,
@@ -301,7 +301,7 @@ const AppointmentItem = ({
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
-                            >{LanguageConfiguration.Time[config.language]}</Text>
+                            >{LanguageConfiguration.Time[Configurations.language]}</Text>
                             <Text
                                 style={{
                                     fontSize: Font.medium,

@@ -5,7 +5,7 @@ import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 // import { color } from "react-native-reanimated";
 // import { Color, Fonts } from "../utils";
 // import { RF } from "../utils/responsive";
-import { Colors, Font, config, mobileW } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW } from '../Helpers/Utils';
 import { Icons } from "../Assets/Icons/IReferences";
 const DrawerSubMenu = ({
   menuTitle,
@@ -53,7 +53,7 @@ const DrawerSubMenu = ({
                       color: Colors.white_color,
                       fontFamily: Font.Medium,
                       fontSize: Font.headingfont_booking,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                     }}>
                     {menuTitle}
                   </Text>
@@ -67,7 +67,7 @@ const DrawerSubMenu = ({
                       width: (mobileW * 3.5) / 100,
                       height: (mobileW * 3.5) / 100,
                     }}
-                    source={config.textalign == 'right' ? Icons.NextRTL : Icons.RightArrow}></Image>
+                    source={Configurations.textalign == 'right' ? Icons.NextRTL : Icons.RightArrow}></Image>
                 </View>
               </View>
             </TouchableOpacity>
@@ -99,7 +99,7 @@ const DrawerSubMenu = ({
                       color: Colors.white_color,
                       fontFamily: Font.Medium,
                       fontSize: Font.headingfont_booking,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                     }}>
                     {menuTitle}
                   </Text>
@@ -108,7 +108,7 @@ const DrawerSubMenu = ({
                       color: Colors.gainsboro,
                       fontFamily: Font.Regular,
                       fontSize: (mobileW * 2.9) / 100, //</View>Font.textsize,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                       marginVertical: (mobileW * 1) / 100,
                       marginBottom: (mobileW * 4) / 100,
                     }}>
@@ -125,7 +125,7 @@ const DrawerSubMenu = ({
                       height: (mobileW * 3.5) / 100,
                       marginBottom: (mobileW * 2) / 100,
                     }}
-                    source={config.textalign == 'right' ? Icons.NextRTL : Icons.RightArrow}></Image>
+                    source={Configurations.textalign == 'right' ? Icons.NextRTL : Icons.RightArrow}></Image>
                 </View>
               </View>
             </TouchableOpacity>
@@ -164,14 +164,14 @@ const styles = StyleSheet.create({
     color: Colors.textwhite,
     fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
     fontFamily: Font.Medium,
     fontSize: Font.buttontextsize,
-    textAlign: config.textalign,
+    textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   img: {

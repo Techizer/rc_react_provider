@@ -5,7 +5,7 @@ import { SvgXml } from 'react-native-svg';
 
 import { Colors } from "../Provider/Colorsfont";
 import { Font } from "../Provider/Colorsfont";
-import { config } from "../Provider/configProvider";
+import { Configurations } from "../Provider/configProvider";
 import { localStorage } from "../Provider/localStorageProvider";
 
 const deviceWidth = Dimensions.get('window').width
@@ -44,14 +44,14 @@ const DrawerItemContainer = ({
             color: Colors.Black,
             fontFamily: Font.Medium,
             fontSize: 14,
-            textAlign: config.textRotate,
+            textAlign: Configurations.textRotate,
             opacity: (isGuest === 'true' && disable == true) ? 0.3 : 1
         },
         desc: {
             color: Colors.DarkGrey,
             fontFamily: Font.Regular,
             fontSize: 12,
-            textAlign: config.textRotate,
+            textAlign: Configurations.textRotate,
             marginTop: vs(4),
             opacity: (isGuest === 'true' && disable == true) ? 0.3 : 1
         }

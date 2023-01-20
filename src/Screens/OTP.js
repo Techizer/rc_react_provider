@@ -2,7 +2,7 @@ import { Text, View, StatusBar, BackHandler, Alert, SafeAreaView, KeyboardAwareS
 import React, { Component, useEffect, useState } from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
-import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, API, localStorage, MessageFunctions, MessageTexts, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, localStorage, MessageFunctions, MessageTexts, MessageHeadings } from '../Helpers/Utils';
 import { Icons } from '../Assets/Icons/IReferences';
 
 export default OTP = ({ navigation, route }) => {
@@ -53,21 +53,18 @@ export default OTP = ({ navigation, route }) => {
   };
 
   const sendagain = async () => {
-
-
-
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (classStateData.email.length <= 0 || classStateData.email.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
     }
 
     if (regemail.test(classStateData.email) !== true) {
-      MessageFunctions.showError(MessageTexts.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
       return false
     }
     let email_new = classStateData.email
-    let url = config.baseURL + "api-forgot-password-email";
+    let url = Configurations.baseURL + "api-forgot-password-email";
 
 
     var data = new FormData();
@@ -101,15 +98,15 @@ export default OTP = ({ navigation, route }) => {
 
 
     if (classStateData.password.length <= 0 || classStateData.password.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyPasswordblank[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPasswordblank[Configurations.language])
       return false
     }
     if (classStateData.password.length < 8) {
-      MessageFunctions.showError(MessageTexts.emptyPasswordValid[config.language])
+      MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
       return false
     }
 
-    let url = config.baseURL + "api-forgot-change-password";
+    let url = Configurations.baseURL + "api-forgot-change-password";
 
     var data = new FormData();
 
@@ -169,7 +166,7 @@ export default OTP = ({ navigation, route }) => {
                 style={{ width: '100%' }}>
                 <Image
                   style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                  source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
+                  source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
 
 
                 </Image>
@@ -195,9 +192,9 @@ export default OTP = ({ navigation, route }) => {
               style={{
                 fontSize: Font.headingblack,
                 fontFamily: Font.SemiBold,
-                textAlign: config.textRotate
+                textAlign: Configurations.textRotate
               }}>
-              {LanguageConfiguration.opt[config.language]}
+              {LanguageConfiguration.opt[Configurations.language]}
             </Text>
           </View>
 
@@ -214,9 +211,9 @@ export default OTP = ({ navigation, route }) => {
                   fontSize: Font.headinggray,
                   fontFamily: Font.headingfontfamily,
                   color: Colors.placeholder_text,
-                  textAlign: config.textRotate
+                  textAlign: Configurations.textRotate
                 }}>
-                {LanguageConfiguration.opttext_forget[config.language]}
+                {LanguageConfiguration.opttext_forget[Configurations.language]}
               </Text>
             </View>
           </View>
@@ -268,7 +265,7 @@ export default OTP = ({ navigation, route }) => {
                 width: '100%',
               }}
               // icon={layer9_icon}
-              lableText={LanguageConfiguration.create_new_pass[config.language]}
+              lableText={LanguageConfiguration.create_new_pass[Configurations.language]}
               inputRef={(ref) => {
                 passwordInput = ref;
               }}
@@ -299,12 +296,12 @@ export default OTP = ({ navigation, route }) => {
             }}>
             <Text
               style={{
-                textAlign: config.textRotate,
+                textAlign: Configurations.textRotate,
                 fontSize: Font.textsize,
                 fontFamily: Font.headingfontfamily,
                 color: Colors.textgray,
               }}>
-              {LanguageConfiguration.Signuptext3[config.language]}
+              {LanguageConfiguration.Signuptext3[Configurations.language]}
             </Text>
           </View>
 
@@ -331,10 +328,10 @@ export default OTP = ({ navigation, route }) => {
                 fontFamily: Font.Medium,
                 fontSize: Font.buttontextsize,
                 alignSelf: 'flex-end',
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
                 alignSelf: 'center',
               }}>
-              {LanguageConfiguration.submitbtntext[config.language]}
+              {LanguageConfiguration.submitbtntext[Configurations.language]}
             </Text>
           </TouchableOpacity>
 
@@ -350,23 +347,23 @@ export default OTP = ({ navigation, route }) => {
             <Text
               style={{
 
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
                 fontSize: mobileW * 4 / 100,
                 fontFamily: Font.headingfontfamily,
                 color: Colors.textgray,
               }}>
-              {LanguageConfiguration.notrectext[config.language]}
+              {LanguageConfiguration.notrectext[Configurations.language]}
             </Text>
             <Text onPress={() => { sendagain() }}
               style={{
 
-                textAlign: config.textalign,
+                textAlign: Configurations.textalign,
                 fontSize: mobileW * 4 / 100,
                 fontFamily: Font.SemiBold,
                 color: Colors.theme_color,
 
               }}>
-              {LanguageConfiguration.sendagaintext[config.language]}
+              {LanguageConfiguration.sendagaintext[Configurations.language]}
             </Text>
           </View>
 

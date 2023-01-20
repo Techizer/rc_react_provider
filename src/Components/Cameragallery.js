@@ -1,82 +1,52 @@
-import React, { Component } from "react"
-import {
-    View, Dimensions,
-    Modal,
-    StyleSheet,
-    TouchableOpacity,
-    ActivityIndicator,
-    Image,
-    Text,
-} from "react-native"
-import { Colors, Font, config, LanguageConfiguration } from '../Helpers/Utils';
+import React, { Component, useState } from "react"
+import { View, Dimensions, Modal, TouchableOpacity, Text } from "react-native"
+import { Colors, Font, Configurations, LanguageConfiguration } from '../Helpers/Utils';
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 
+export default CameraGallery = ({ navigation, route, mediamodal, Canclemedia, isCamera, Camerapopen, isGallery, Galleryopen, isDocument, DocumentGalleryopen }) => {
 
-export default class Cameragallery extends Component {
-    render() {
-        return (
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={this.props.mediamodal}
-                onRequestClose={() => {
-                    this.setState({ modalVisible: false })
-                }}>
-                <TouchableOpacity activeOpacity={0.9} onPress={() => { this.props.Canclemedia() }} style={{ flex: 1, backgroundColor: '#00000030', alignItems: 'center', justifyContent: 'center' }}>
-                    <View style={{ width: screenWidth, }}>
-                        <View style={{ width: '94%', backgroundColor: Colors.mediabackground, borderRadius: 5, paddingVertical: screenWidth * 4 / 100, alignSelf: 'center', marginTop: '3%' }}>
-                            <View style={{ width: '85%', alignSelf: 'center' }}>
-                                <Text style={{ fontFamily: Font.Medium, textAlign: config.textRotate, fontSize: screenWidth * 5 / 100, color: '#000' }}>{LanguageConfiguration.select_option[config.language]}</Text>
-                                {
-                                    (this.props.isCamera) &&
-                                    <TouchableOpacity style={{ marginTop: '7%' }} activeOpacity={0.9} onPress={() => { this.props.Camerapopen() }}>
-                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.MediaCamera[config.language]}</Text>
-                                    </TouchableOpacity>
-                                }
-                                {
-                                    (this.props.isGallery) &&
-                                    <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { this.props.Galleryopen() }}>
-                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.Mediagallery[config.language]}</Text>
-                                    </TouchableOpacity>
-                                }
-                                {
-                                    (this.props.isDocument) &&
-                                    <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { this.props.DocumentGalleryopen() }}>
-                                        <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.Documentgallery[config.language]}</Text>
-                                    </TouchableOpacity>
-                                }
-                                <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { this.props.Canclemedia() }}>
-                                    <Text style={{ fontFamily: Font.Regular, textAlign: config.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.cancelmedia[config.language]}</Text>
+    const [modalVisible, setModalVisible] = useState()
+
+    return (
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={mediamodal}
+            onRequestClose={() => {
+                setModalVisible(false)
+            }}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => { Canclemedia() }} style={{ flex: 1, backgroundColor: '#00000030', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ width: screenWidth, }}>
+                    <View style={{ width: '94%', backgroundColor: Colors.mediabackground, borderRadius: 5, paddingVertical: screenWidth * 4 / 100, alignSelf: 'center', marginTop: '3%' }}>
+                        <View style={{ width: '85%', alignSelf: 'center' }}>
+                            <Text style={{ fontFamily: Font.Medium, textAlign: Configurations.textRotate, fontSize: screenWidth * 5 / 100, color: '#000' }}>{LanguageConfiguration.select_option[Configurations.language]}</Text>
+                            {
+                                (isCamera) &&
+                                <TouchableOpacity style={{ marginTop: '7%' }} activeOpacity={0.9} onPress={() => { Camerapopen() }}>
+                                    <Text style={{ fontFamily: Font.Regular, textAlign: Configurations.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.MediaCamera[Configurations.language]}</Text>
                                 </TouchableOpacity>
-                            </View>
+                            }
+                            {
+                                (isGallery) &&
+                                <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { Galleryopen() }}>
+                                    <Text style={{ fontFamily: Font.Regular, textAlign: Configurations.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.Mediagallery[Configurations.language]}</Text>
+                                </TouchableOpacity>
+                            }
+                            {
+                                (isDocument) &&
+                                <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { DocumentGalleryopen() }}>
+                                    <Text style={{ fontFamily: Font.Regular, textAlign: Configurations.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.Documentgallery[Configurations.language]}</Text>
+                                </TouchableOpacity>
+                            }
+                            <TouchableOpacity style={{ marginTop: '7%' }} onPress={() => { Canclemedia() }}>
+                                <Text style={{ fontFamily: Font.Regular, textAlign: Configurations.textalign, fontSize: screenWidth * 4.5 / 100, color: '#000' }}>{LanguageConfiguration.cancelmedia[Configurations.language]}</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </TouchableOpacity>
-            </Modal>
-        )
-    }
-}
-const styles = StyleSheet.create({
-    container: {
-        position: "absolute",
-        justifyContent: "center",
-        backgroundColor: '#00000040',
-        top: 0, left: 0, bottom: 0, right: 0
-    },
+                </View>
+            </TouchableOpacity>
+        </Modal>
+    )
 
-    activityIndicatorWrapper: {
-        height: 80,
-        width: 80,
-        borderRadius: 10,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'black',
-        borderRadius: 6,
-        justifyContent: "space-around",
-        alignItems: "center",
-        alignSelf: "center",
-    }
-})
+}

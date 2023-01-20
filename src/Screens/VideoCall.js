@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import {
-  config, localStorage, API,
+  Configurations, localStorage, API,
 } from '../Helpers/Utils';
 
 import {
@@ -31,7 +31,7 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 var countTimeInterval
 var timerId
 
-const VideoCall = (props, { navigation }) => {
+const VideoCall = (props) => {
   var ctc = 0
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
@@ -53,7 +53,6 @@ const VideoCall = (props, { navigation }) => {
       get_call_token('doctor_to_patient_video_call')
     }
 
-    console.log(props);
     return () => {
       console.log('countTimeInterval', countTimeInterval, 'timerId', timerId);
       clearInterval(countTimeInterval)
@@ -124,7 +123,7 @@ const VideoCall = (props, { navigation }) => {
 
     let apishow = apiname
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
@@ -163,7 +162,7 @@ const VideoCall = (props, { navigation }) => {
 
     let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
 
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apishow;
     console.log("url", url)
 
     var data = new FormData();
@@ -273,9 +272,6 @@ const VideoCall = (props, { navigation }) => {
     console.log("Participant", participant, "isLocalUser", isLocalUser, "quality", quality);
     if (isLocalUser == false && localtrackVideo == false) {
       setlocaltrackVideo(true)
-      // setTimeout(() => {
-      //   setlocaltrackVideo(true)
-      // }, 3000);
     }
   };
 

@@ -1,4 +1,4 @@
-import {config} from '../Provider/configProvider';
+import {Configurations} from '../Provider/configProvider';
 import {Dimensions, Platform, StatusBar} from 'react-native';
 import {localStorage} from '../Provider/localStorageProvider';
 import {LanguageConfiguration} from './LanguageProvider';
@@ -7,7 +7,7 @@ import {
   MessageHeadings,
   MessageTexts
 } from './Message';
-import Cameragallery from '../Components/Cameragallery';
+import CameraGallery from '../Components/CameraGallery';
 import {Media} from './MediaProvider';
 import {API} from './API';
 import {Colors, Font} from '../Provider/Colorsfont';
@@ -22,7 +22,7 @@ const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : Status
 
 
 export {
-  config,
+  Configurations,
   
   API,
   Colors,
@@ -30,7 +30,7 @@ export {
   mobileH,
   mobileW,
   Media,
-  Cameragallery,
+  CameraGallery,
   localStorage,
   LanguageConfiguration,
   MessageFunctions,

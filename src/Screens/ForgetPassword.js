@@ -1,6 +1,6 @@
-import { Text, View, ScrollView, Platform, SafeAreaView, StatusBar, Image, TouchableHighlight, Keyboard } from 'react-native'
+import { Text, View, ScrollView, SafeAreaView, StatusBar, Image, TouchableHighlight, Keyboard } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Colors, Font, mobileH, config, mobileW, LanguageConfiguration, localStorage, MessageFunctions, MessageTexts, API, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, MessageFunctions, MessageTexts, API } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { AuthInputBoxSec, Button } from '../Components'
@@ -28,16 +28,16 @@ export default ForgetPassword = ({ navigation, route }) => {
     var email = classStateData.email.trim()
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (email.length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyEmail[config.language])
+      MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
     }
 
     if (regemail.test(email) !== true) {
-      MessageFunctions.showError(MessageTexts.validEmail[config.language])
+      MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
       return false
     }
     let email_new = classStateData.email
-    let url = config.baseURL + "api-forgot-password-email";
+    let url = Configurations.baseURL + "api-forgot-password-email";
     console.log("url", url)
 
     var data = new FormData();
@@ -116,7 +116,7 @@ export default ForgetPassword = ({ navigation, route }) => {
             >
               <Image
                 style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                source={config.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
+                source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
               </Image>
 
             </TouchableHighlight>
@@ -127,20 +127,20 @@ export default ForgetPassword = ({ navigation, route }) => {
             <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 10 / 100 }}>
               <Text style={{
                 color: Colors.textblack,
-                textAlign: config.textRotate,
+                textAlign: Configurations.textRotate,
                 fontSize: Font.headingblack,
                 fontFamily: Font.blackheadingfontfamily,
-              }}>{LanguageConfiguration.Forgot[config.language]} </Text>
+              }}>{LanguageConfiguration.Forgot[Configurations.language]} </Text>
             </View>
 
 
             <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 1 / 100 }}>
               <Text style={{
-                textAlign: config.textRotate,
+                textAlign: Configurations.textRotate,
                 fontSize: Font.headinggray,
                 fontFamily: Font.headingfontfamily,
                 color: Colors.placeholder_text,
-              }}>{LanguageConfiguration.Forgottext[config.language]}</Text>
+              }}>{LanguageConfiguration.Forgottext[Configurations.language]}</Text>
             </View>
 
 
@@ -151,7 +151,7 @@ export default ForgetPassword = ({ navigation, route }) => {
                   marginTop: mobileW * 6 / 100,
                 }}
                 // icon={layer9_icon}
-                lableText={LanguageConfiguration.textinputregistered[config.language]}
+                lableText={LanguageConfiguration.textinputregistered[Configurations.language]}
                 inputRef={(ref) => {
                   emailInput = ref;
                 }}
@@ -169,7 +169,7 @@ export default ForgetPassword = ({ navigation, route }) => {
               />
 
             <Button
-              text={LanguageConfiguration.Contiunebtn[config.language]}
+              text={LanguageConfiguration.Contiunebtn[Configurations.language]}
               // onLoading={classStateData.loading}
               customStyles={
                 {

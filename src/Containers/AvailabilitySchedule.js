@@ -1,25 +1,12 @@
-import React, { Component, useEffect, useRef, useState } from 'react';
-import { Switch, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Switch, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 
-import {
-  Colors,
-  Font,
-  MessageFunctions,
-  config,
-  mobileW,
-  localStorage,
-
-  
-  LanguageConfiguration,
-  API,
-} from '../Helpers/Utils';
-import Moment from "moment-timezone";
+import { Colors, Font, MessageFunctions, Configurations, mobileW, localStorage, API } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { SearchPlaceScreen, Button } from '../Components'
-import { Dropdown } from 'react-native-material-dropdown-v2';
+import { Button } from '../Components'
 import ListBottomSheet from '../Components/ListBottomSheet';
 import { Arrow } from '../Assets/Icons/SvgIcons/Index';
+
 const radiusArr = [
   {
     id: 1,
@@ -71,82 +58,63 @@ const radiusArr = [
   },
 ]
 
+const timeArray = [
+  { value: '00:00 AM' },
+  { value: '00:30 AM' },
+  { value: '01:00 AM' },
+  { value: '01:30 AM' },
+  { value: '02:00 AM' },
+  { value: '02:30 AM' },
+  { value: '03:00 AM' },
+  { value: '03:30 AM' },
+  { value: '04:00 AM' },
+  { value: '04:30 AM' },
+  { value: '05:00 AM' },
+  { value: '05:30 AM' },
+  { value: '06:00 AM' },
+  { value: '06:30 AM' },
+  { value: '07:00 AM' },
+  { value: '07:30 AM' },
+  { value: '08:00 AM' },
+  { value: '08:30 AM' },
+  { value: '09:00 AM' },
+  { value: '09:30 AM' },
+  { value: '10:00 AM' },
+  { value: '10:30 AM' },
+  { value: '11:00 AM' },
+  { value: '11:30 AM' },
+  { value: '12:00 PM' },
+  { value: '12:30 PM' },
+  { value: '01:00 PM' },
+  { value: '01:30 PM' },
+  { value: '02:00 PM' },
+  { value: '02:30 PM' },
+  { value: '03:00 PM' },
+  { value: '03:30 PM' },
+  { value: '04:00 PM' },
+  { value: '04:30 PM' },
+  { value: '05:00 PM' },
+  { value: '05:30 PM' },
+  { value: '06:00 PM' },
+  { value: '06:30 PM' },
+  { value: '07:00 PM' },
+  { value: '07:30 PM' },
+  { value: '08:00 PM' },
+  { value: '08:30 PM' },
+  { value: '09:00 PM' },
+  { value: '09:30 PM' },
+  { value: '10:00 PM' },
+  { value: '10:30 PM' },
+  { value: '11:00 PM' },
+  { value: '11:30 PM' }
+]
+
 export default AvailabilitySchedule = ({ navigation, route, page }) => {
   const [state, setState] = useState({
-    title: LanguageConfiguration.MyAppointments[config.language],
     modalVisible: false,
-    All: true,
-
-    Nurse: false,
-    Babysitter: false,
-    Listenquiries: false,
-    Physiotherapist: false,
-    service_status: "",
-    manageTab: 'All',
-    appoinment_detetails: '',
-    pass_status: 'all',
-    time_take_data: '',
-    rescdule_data: '',
-    notification_count: '',
-    date_array: '',
-    send_id: '',
     message: '',
-    api_status: 3,
     searchPlaceVisible: false,
-    // tabheadings: tabheadings,
-    task_details: "",
-    isEnabled: false,
     flag: true,
-    timeArray: [
-      { value: '00:00 AM' },
-      { value: '00:30 AM' },
-      { value: '01:00 AM' },
-      { value: '01:30 AM' },
-      { value: '02:00 AM' },
-      { value: '02:30 AM' },
-      { value: '03:00 AM' },
-      { value: '03:30 AM' },
-      { value: '04:00 AM' },
-      { value: '04:30 AM' },
-      { value: '05:00 AM' },
-      { value: '05:30 AM' },
-      { value: '06:00 AM' },
-      { value: '06:30 AM' },
-      { value: '07:00 AM' },
-      { value: '07:30 AM' },
-      { value: '08:00 AM' },
-      { value: '08:30 AM' },
-      { value: '09:00 AM' },
-      { value: '09:30 AM' },
-      { value: '10:00 AM' },
-      { value: '10:30 AM' },
-      { value: '11:00 AM' },
-      { value: '11:30 AM' },
-      { value: '12:00 PM' },
-      { value: '12:30 PM' },
-      { value: '01:00 PM' },
-      { value: '01:30 PM' },
-      { value: '02:00 PM' },
-      { value: '02:30 PM' },
-      { value: '03:00 PM' },
-      { value: '03:30 PM' },
-      { value: '04:00 PM' },
-      { value: '04:30 PM' },
-      { value: '05:00 PM' },
-      { value: '05:30 PM' },
-      { value: '06:00 PM' },
-      { value: '06:30 PM' },
-      { value: '07:00 PM' },
-      { value: '07:30 PM' },
-      { value: '08:00 PM' },
-      { value: '08:30 PM' },
-      { value: '09:00 PM' },
-      { value: '09:30 PM' },
-      { value: '10:00 PM' },
-      { value: '10:30 PM' },
-      { value: '11:00 PM' },
-      { value: '11:30 PM' }
-    ],
     accept: true,
     hide: false,
     accept_booking: '0',
@@ -154,7 +122,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     service_lat: "",
     service_long: "",
     service_radius: "",
-    radiusArr: radiusArr,
     shouldShow: false,
     currentIndex: 0,
     currentItem: { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
@@ -169,14 +136,11 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
       { "slot_day": "SUN", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }]
   })
 
-  const firstDropdown = useRef()
-  const secondDropdown = useRef()
-
   useEffect(() => {
-    get_Services()
+    getAvailabilityScheduleData()
   }, [])
 
-  const get_Services = async () => {
+  const getAvailabilityScheduleData = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
@@ -190,24 +154,18 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     } else {
       task_type = "provider-nurse-hour-base-time-slot"
     }
-    let apiname = task_type //"provider-nurse-task-base-time-slot"
+    let apiname = task_type
 
-
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
-
-    let url = config.baseURL + apishow;
+    let url = Configurations.baseURL + apiname;
     var data = new FormData();
     data.append('user_id', user_id)
     data.append('service_type', user_type)
-
-
-
     
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
 
         if (obj.result.service_radius != null) {
-          let arr = [...state.radiusArr]
+          let arr = [...radiusArr]
           arr.map((v, i) => {
             if (obj.result.service_radius == v.value) {
               v.status = true
@@ -216,7 +174,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
             }
           });
         } else {
-          let arr = [...state.radiusArr]
+          let arr = [...radiusArr]
           var r = 0
           arr.map((v, i) => {
             if (i == 0) {
@@ -249,8 +207,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
         return false;
       }
     }).catch((error) => {
-      console.log("-------- error ------- ", error)
-
     });
 
   }
@@ -280,18 +236,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
       if (isError) {
         MessageFunctions.showError("End time should be greater than Start time")
       } else {
-        // if (state.service_address == "") {
-        //   MessageFunctions.showError("Please select service location to continue")
-        // }
-        // // else if (state.service_radius == "" || state.service_radius == undefined) {
-        // //   MessageFunctions.showError("Please select booking eligibility radius to continue")
-        // // } 
-        // else {
-        //   insertUpdatePriceList()
-        // }
-
         insertUpdatePriceList()
-
       }
     }
 
@@ -300,45 +245,21 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
   const insertUpdatePriceList = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
-    console.log({ user_details });
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-
-    console.log({ user_details });
-
-
+    
     let apiname = (page == "onlinehomeschedule") ?
       "api-doctor-add-preferable-time" : "insert-preferable-time"
 
-
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
-
-    let url = config.baseURL + apishow;
-
-    let task_type = ""
-    if (page == "onlinehomeschedule") {
-      task_type = "doctorslot"
-    } else if (page == "taskschedule") {
-      task_type = "task_base"
-    } else if (page == "labschedule") {
-      task_type = "task_base"
-    } else {
-      task_type = "hour_base"
-    }
+    let url = Configurations.baseURL + apiname;
 
     var myData = JSON.stringify({
       accept_booking: state.accept_booking,
       user_id: user_id,
-      slot_type: task_type,
       service_type: user_type,
       slots: state.slotArr,
-      // Remove these
-      // service_address: state.service_address,
-      // service_lat: state.service_lat,
-      // service_long: state.service_long,
-      // service_radius: state.service_radius,
     });
-    console.log('-------------------------------');
+    
     API.postRaw(url, myData).then((obj) => {
       if (obj.status == true) {
         MessageFunctions.showSuccess(obj.message)
@@ -363,37 +284,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
   const GetMinutes = (d) => {
     return parseInt(d.split(':')[1].split(' ')[0]);
   }
-
-  const openGooglePlace = () => {
-    setState(
-      prev => ({
-        ...prev,
-        searchPlaceVisible: true,
-      })
-    )
-  };
-
-  const closeGooglePlace = () => {
-    setState(
-      prev => ({
-        ...prev,
-        
-      searchPlaceVisible: false,
-      })
-    )
-  };
-
-  const selectGooglePlace = (info) => {
-    setState(
-      prev => ({
-        ...prev,
-        searchPlaceVisible: false,
-        service_lat: info?.latitude,
-        service_long: info?.longitude,
-        service_address: info?.data?.description,
-      })
-    );
-  };
 
   const validationTime = (strStartTime, strEndTime, isStart, index) => {
     var isError = false;
@@ -432,9 +322,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     }
   }
 
-  const { modalVisible } = state;
-  var rescdule = state.rescdule_data
-
   return (
 
     <>
@@ -444,7 +331,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
           //  backgroundColor: 'white',
         }}>
           <ListBottomSheet
-            data={state.timeArray}
+            data={timeArray}
             onRequestClose={() => { 
               setState(
                 prev => ({
@@ -559,16 +446,11 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                 borderColor: (state.accept == false) ? 'grey' : Colors.textblue
                               }} />
 
-                              {/* <Icon style={{ alignSelf: 'center' }}
-                              name={(state.accept == false) ? "circle-thin" : "dot-circle-o"}
-                              size={22}
-                              color={(state.accept == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
-
                               <View style={{ width: '70%', alignSelf: 'center' }}>
                                 <Text
                                   style={{
                                     marginLeft: mobileW * 1.5 / 100,
-                                    textAlign: config.textRotate,
+                                    textAlign: Configurations.textRotate,
                                     color: (state.accept == false) ? Colors.placeholder_text : 'black',
                                     fontFamily: (state.accept == false) ? Font.Regular : Font.Regular,
                                     fontSize: Font.placeholdersize + 1,
@@ -577,12 +459,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                 </Text>
                               </View>
                             </TouchableOpacity>
-
-
-
                           </View>
-
-
                         </View>
 
                         <View
@@ -594,7 +471,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                             // justifyContent:'space-between'
                           }}>
                           <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
-                            {/* {state.fbtn == false && */}
                             <TouchableOpacity onPress={() => {
                               setState(
                                 prev => ({
@@ -618,15 +494,10 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                 borderWidth: (state.hide == false) ? 1 : 6,
                                 borderColor: (state.hide == false) ? 'grey' : Colors.textblue
                               }} />
-                              {/* <Icon style={{ alignSelf: 'center' }}
-                              name={(state.hide == false) ? "circle-thin" : "dot-circle-o"}
-                              size={22}
-                              color={(state.hide == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
-
                               <Text
                                 style={{
                                   marginLeft: mobileW * 1.5 / 100,
-                                  textAlign: config.textRotate,
+                                  textAlign: Configurations.textRotate,
                                   color: (state.hide == false) ? Colors.placeholder_text : 'black',
                                   fontFamily: (state.hide == false) ? Font.Regular : Font.Regular,
                                   fontSize: Font.placeholdersize + 1,
@@ -656,210 +527,138 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                         paddingRight: 15
                       }}>
                         {
-                          (page == "onlinehomeschedule") ?
-                            <>
-                              <View style={{
-                                width: '100%',
-                                flexDirection: 'row'
-                              }}>
+                          (page == "onlinehomeschedule") &&
+                          <View style={{
+                            width: '100%',
+                            flexDirection: 'row'
+                          }}>
 
-                                <View style={{
-                                  width: '50%'
+                            <View style={{
+                              width: '50%'
+                            }}>
+                              <Text style={Styles.textheading}>Online Consultation</Text>
+                              <View
+                                style={{
+                                  width: '100%',
+                                  alignSelf: 'center',
+                                  marginTop: (mobileW * 3) / 100,
+                                  marginBottom: (mobileW * 2 / 100),
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
                                 }}>
-                                  <Text style={Styles.textheading}>Online Consultation</Text>
-                                  <View
-                                    style={{
-                                      width: '100%',
-                                      alignSelf: 'center',
-                                      marginTop: (mobileW * 3) / 100,
-                                      marginBottom: (mobileW * 2 / 100),
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                    }}>
-                                    <View
-                                      style={{
-                                        width: '100%',
-                                        alignSelf: 'center',
-                                        flexDirection: 'row',
-                                        // backgroundColor: 'red'
-                                      }}>
-                                      <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                          {/* {state.mabtn == false && */}
-                                          <TouchableOpacity
-                                            onPress={() => {
-                                            }}
+                                <View
+                                  style={{
+                                    width: '100%',
+                                    alignSelf: 'center',
+                                    flexDirection: 'row',
+                                  }}>
+                                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                      <TouchableOpacity
+                                        onPress={() => {
+                                        }}
+                                        style={{
+                                          width: '100%',
+                                          alignSelf: 'center',
+                                          flexDirection: 'row',
+                                        }}>
+
+                                        <View style={{
+                                          width: 22,
+                                          height: 22,
+                                          borderRadius: 22,
+                                          borderWidth: (state.mabtn == false) ? 1 : 6,
+                                          borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
+                                        }} />
+                                        <View style={{ width: '70%', alignSelf: 'center' }}>
+                                          <Text
                                             style={{
-                                              width: '100%',
-                                              alignSelf: 'center',
-                                              flexDirection: 'row',
+                                              marginLeft: mobileW * 1.5 / 100,
+                                              textAlign: Configurations.textRotate,
+                                              fontFamily: Font.Regular,
+                                              color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
+                                              fontSize: Font.placeholdersize + 1,
                                             }}>
-
-                                            <View style={{
-                                              width: 22,
-                                              height: 22,
-                                              borderRadius: 22,
-                                              borderWidth: (state.mabtn == false) ? 1 : 6,
-                                              borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
-                                            }} />
-                                            {/* <Icon style={{ alignSelf: 'center' }}
-                                            name={(state.mabtn == false) ? "circle-thin" : "dot-circle-o"}
-                                            size={22}
-                                            color={(state.mabtn == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
-
-                                            <View style={{ width: '70%', alignSelf: 'center' }}>
-                                              <Text
-                                                style={{
-                                                  marginLeft: mobileW * 1.5 / 100,
-                                                  textAlign: config.textRotate,
-                                                  fontFamily: Font.Regular,
-                                                  color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
-                                                  fontSize: Font.placeholdersize + 1,
-                                                }}>
-                                                15 Min Slots
-                                              </Text>
-                                            </View>
-                                          </TouchableOpacity>
-
-
-
+                                            15 Min Slots
+                                          </Text>
                                         </View>
+                                      </TouchableOpacity>
 
 
-                                      </View>
+
                                     </View>
+
+
                                   </View>
                                 </View>
-
-                                <View style={{
-                                  width: '50%'
-                                }}>
-                                  <Text style={Styles.textheading}>Home Visit Consultation</Text>
-                                  <View
-                                    style={{
-                                      width: '100%',
-                                      alignSelf: 'center',
-                                      marginTop: (mobileW * 3) / 100,
-                                      marginBottom: (mobileW * 2 / 100),
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                    }}>
-                                    <View
-                                      style={{
-                                        width: '100%',
-                                        alignSelf: 'center',
-                                        flexDirection: 'row',
-                                        // backgroundColor: 'red'
-                                      }}>
-                                      <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                          {/* {state.mabtn == false && */}
-                                          <TouchableOpacity
-                                            onPress={() => {
-                                            }}
-                                            style={{
-                                              width: '100%',
-                                              alignSelf: 'center',
-                                              flexDirection: 'row',
-                                            }}>
-
-                                            <View style={{
-                                              width: 22,
-                                              height: 22,
-                                              borderRadius: 22,
-                                              borderWidth: (state.mabtn == false) ? 1 : 6,
-                                              borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
-                                            }} />
-                                            {/* <Icon style={{ alignSelf: 'center' }}
-                                            name={(state.mabtn == false) ? "circle-thin" : "dot-circle-o"}
-                                            size={22}
-                                            color={(state.mabtn == false) ? '#8F98A7' : Colors.textblue}></Icon> */}
-
-                                            <View style={{ width: '70%', alignSelf: 'center' }}>
-                                              <Text
-                                                style={{
-                                                  marginLeft: mobileW * 1.5 / 100,
-                                                  textAlign: config.textRotate,
-                                                  fontFamily: Font.Regular,
-                                                  color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
-                                                  fontSize: Font.placeholdersize + 1,
-                                                }}>
-                                                45 Min Slots
-                                              </Text>
-                                            </View>
-                                          </TouchableOpacity>
-
-
-
-                                        </View>
-
-
-                                      </View>
-                                    </View>
-                                  </View>
-                                </View>
-
                               </View>
-                            </> :
-                            <></>
-                            // <>
-                            //   <Text style={Styles.textheading}>Bookings Preferences:</Text>
-                            //   <View
-                            //     style={{
-                            //       width: '100%',
-                            //       alignSelf: 'center',
-                            //       marginTop: (mobileW * 3) / 100,
-                            //       marginBottom: (mobileW * 2 / 100),
-                            //       flexDirection: 'row',
-                            //       alignItems: 'center',
-                            //     }}>
-                            //     <View
-                            //       style={{
-                            //         width: '100%',
-                            //         alignSelf: 'center',
-                            //         flexDirection: 'row',
-                            //       }}>
-                            //       <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            //         <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                      
-                            //           <TouchableOpacity
-                            //             onPress={() => {
-                            //             }}
-                            //             style={{
-                            //               width: '100%',
-                            //               alignSelf: 'center',
-                            //               flexDirection: 'row',
-                            //             }}>
-                            //             <View style={{
-                            //               width: 22,
-                            //               height: 22,
-                            //               borderRadius: 22,
-                            //               borderWidth: (state.mabtn == false) ? 1 : 6,
-                            //               borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
-                            //             }} />
-                            //             <View style={{ width: '70%', alignSelf: 'center' }}>
-                            //               <Text
-                            //                 style={{
-                            //                   marginLeft: mobileW * 1.5 / 100,
-                            //                   textAlign: config.textRotate,
-                            //                   fontFamily: Font.Regular,
-                            //                   color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
-                            //                   fontSize: Font.placeholdersize + 1,
-                            //                 }}>
-                            //                 {(page == 'taskschedule') ? '30 Min Slots' : (page == 'labschedule') ? '45 Min Slots' : '2, 4, 6, 8, 12 Hours'}
-                            //               </Text>
-                            //             </View>
-                            //           </TouchableOpacity>
+                            </View>
+
+                            <View style={{
+                              width: '50%'
+                            }}>
+                              <Text style={Styles.textheading}>Home Visit Consultation</Text>
+                              <View
+                                style={{
+                                  width: '100%',
+                                  alignSelf: 'center',
+                                  marginTop: (mobileW * 3) / 100,
+                                  marginBottom: (mobileW * 2 / 100),
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                }}>
+                                <View
+                                  style={{
+                                    width: '100%',
+                                    alignSelf: 'center',
+                                    flexDirection: 'row',
+                                    // backgroundColor: 'red'
+                                  }}>
+                                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                      {/* {state.mabtn == false && */}
+                                      <TouchableOpacity
+                                        onPress={() => {
+                                        }}
+                                        style={{
+                                          width: '100%',
+                                          alignSelf: 'center',
+                                          flexDirection: 'row',
+                                        }}>
+
+                                        <View style={{
+                                          width: 22,
+                                          height: 22,
+                                          borderRadius: 22,
+                                          borderWidth: (state.mabtn == false) ? 1 : 6,
+                                          borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
+                                        }} />
+
+                                        <View style={{ width: '70%', alignSelf: 'center' }}>
+                                          <Text
+                                            style={{
+                                              marginLeft: mobileW * 1.5 / 100,
+                                              textAlign: Configurations.textRotate,
+                                              fontFamily: Font.Regular,
+                                              color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
+                                              fontSize: Font.placeholdersize + 1,
+                                            }}>
+                                            45 Min Slots
+                                          </Text>
+                                        </View>
+                                      </TouchableOpacity>
 
 
 
-                            //         </View>
+                                    </View>
 
 
-                            //       </View>
-                            //     </View>
-                            //   </View>
-                            // </>
+                                  </View>
+                                </View>
+                              </View>
+                            </View>
+
+                          </View>
                         }
 
 
@@ -913,8 +712,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                         <Switch
                                           thumbColor={(item?.slot_day_enable == "1") ? Colors.white_color : "#767577"}
                                           trackColor={{ false: "#767577", true: Colors.textblue }}
-                                          // thumbColor={state.isEnabled ? "#f5dd4b" : "#f4f3f4"}
-                                          // ios_backgroundColor={Colors.textblue}
                                           style={{
                                             transform: [{ scaleX: .7 }, { scaleY: .7 }],
                                             marginLeft: -8.5,

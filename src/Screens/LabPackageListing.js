@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Switch, FlatList, Image, Text, TouchableOpacity } from "react-native";
 import { View } from "react-native-animatable";
-import { config } from "../Provider/configProvider";
+import { Configurations } from "../Provider/configProvider";
 import {
   API,
   Colors,
@@ -37,7 +37,7 @@ const LabPackageListing = (props) => {
     let user_details = await localStorage.getItemObject("user_arr");
     let user_id = user_details["user_id"];
     let user_type = user_details['user_type']
-    let url = config.baseURL + "api-get-lab-task";
+    let url = Configurations.baseURL + "api-get-lab-task";
     console.log("url", url);
 
     var data = new FormData();
@@ -68,7 +68,7 @@ const LabPackageListing = (props) => {
     let user_details = await localStorage.getItemObject("user_arr");
     let user_id = user_details["user_id"];
     let user_type = user_details['user_type']
-    let url = config.baseURL + "api-lab-package-disable";
+    let url = Configurations.baseURL + "api-lab-package-disable";
     console.log("url", url);
 
     var data = new FormData();
@@ -245,7 +245,7 @@ const LabPackageListing = (props) => {
                       fontFamily: Font.Regular,
                       fontSize: Font.sregulartext_size,
                       color: Colors.theme_color,
-                      textAlign: config.textRotate,
+                      textAlign: Configurations.textRotate,
                     }}
                   >
                     {item.task_details}
@@ -279,7 +279,7 @@ const LabPackageListing = (props) => {
                         >
                           <Text
                             style={{
-                              textAlign: config.textalign,
+                              textAlign: Configurations.textalign,
                               fontFamily: Font.Medium,
                               fontSize: (mobileW * 4) / 100,
                             }}
@@ -338,7 +338,7 @@ const LabPackageListing = (props) => {
                         >
                           <Text
                             style={{
-                              textAlign: config.textalign,
+                              textAlign: Configurations.textalign,
                               fontFamily: Font.Medium,
                               fontSize: (mobileW * 4) / 100,
                             }}
