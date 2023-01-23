@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import HTMLView from 'react-native-htmlview';
-import { Alert, Text, TextInput, View, ScrollView, Linking, StyleSheet, SafeAreaView, Image, TouchableOpacity,  Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar } from 'react-native';
+import { Alert, Text, TextInput, View, ScrollView, Linking, SafeAreaView, Image, TouchableOpacity,  Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar } from 'react-native';
 import { CameraGallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, LanguageConfiguration, API } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -9,7 +8,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import getDirections from 'react-native-google-maps-directions'
 import Slider from '@react-native-community/slider';
-var Sound = require('react-native-sound');
 import moment from 'moment-timezone';
 import RNFetchBlob from "rn-fetch-blob";
 import { Button } from '../Components'
@@ -18,6 +16,8 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { s, vs } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
+
+var Sound = require('react-native-sound');
 
 export default class AppointmentDetails extends Component {
 
@@ -49,10 +49,10 @@ export default class AppointmentDetails extends Component {
       modalPatientPrescription: false
     };
     this.sliderEditing = false;
-    console.log(this.props);
     Sound.setCategory('Playback', true); // true = mixWithOthers
     this.sound = null
   }
+
   componentDidMount() {
     console.log("DeviceInfo.getTimezone():: ", global.deviceTimezone);
     FontAwesome.getImageSource('circle', 20, Colors.theme_color).then(source =>
@@ -67,11 +67,12 @@ export default class AppointmentDetails extends Component {
   onSliderEditStart = () => {
     this.sliderEditing = true;
   }
+
   onSliderEditEnd = () => {
     this.sliderEditing = false;
   }
+
   onSliderEditing = value => {
-    console.log('valuevalue:: ', value, this.sliderEditing);
     if (Platform.OS == "android") {
       if (this.sound && this.state.playState == 'pause' && !this.sliderEditing) {
         this.sound.setCurrentTime(value);
@@ -189,9 +190,7 @@ export default class AppointmentDetails extends Component {
 
     this.setState({ playState: 'paused' });
   }
-
-  jumpPrev15Seconds = () => { this.jumpSeconds(-15); }
-  jumpNext15Seconds = () => { this.jumpSeconds(15); }
+  
   jumpSeconds = (secsDelta) => {
     if (sound) {
       sound.getCurrentTime((secs, isPlaying) => {
@@ -257,7 +256,6 @@ export default class AppointmentDetails extends Component {
 
     getDirections(data)
   }
-
 
   rescdule_click = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
@@ -962,79 +960,20 @@ export default class AppointmentDetails extends Component {
 
   }
 
-  downloadPrescription = (imgUrl, filename) => {
-    // global.props.showLoader();
-    if (Platform.OS == 'android') {
-      this.permissionFunc(imgUrl, filename)
-      // RNFetchBlob.Configurations({
-      //   fileCache: true,
-      //   appendExt: 'png',
-      //   indicator: true,
-      //   IOSBackgroundTask: true,
-      //   path: path,
-      //   addAndroidDownloads: {
-      //     useDownloadManager: true,
-      //     notification: true,
-      //     path: path,
-      //     description: 'Image'
-      //   },
-
-      // }).fetch("GET", imgUrl).then(res => {
-      //   console.log(res, 'end downloaded')
-      // });
-    } else {
-      console.log("imgUrlimgUrl:: ", imgUrl);
-      // RNFetchBlob.Configurations({
-      //   fileCache: true,
-      //   // appendExt: 'png',
-      //   indicator: true,
-      //   IOSBackgroundTask: true,
-      //   // path: path,
-      //   // addAndroidDownloads: {
-      //   //   useDownloadManager: true,
-      //   //   notification: true,
-      //   //   path: path,
-      //   //   description: 'Image'
-      //   // },
-
-      // }).fetch("GET", imgUrl).then(res => {
-      //   console.log(res, 'end downloaded')
-      // });
-
-      // CameraRoll.save(imgUrl)
-      //   .then(() => {
-      //     MessageFunctions.showSuccess("Prescription download successfully")
-      //   })
-      //   .catch(err => {
-      //     console.log('err:', err)
-      //     MessageFunctions.showError(err)
-      //   })
-      this.permissionFunc(imgUrl, filename)
-    }
-  }
-
-  permissionFunc = async (imgUrl, filename) => {
+  downloadPrescription = async (imgUrl, filename) => {
     if (Platform.OS == 'ios') {
       this.actualDownload(imgUrl, filename);
     } else {
-      // if (downloaded) {
       try {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           this.actualDownload(imgUrl, filename);
         } else {
-          // global.props.hideLoader();
           MessageFunctions.showError('You need to give storage permission to download the file');
         }
       } catch (err) {
-        // global.props.hideLoader();
         console.warn(err);
       }
-      // }
-      // else {
-      //   // global.props.hideLoader();
-      //   MessageFunctions.showSuccess('File is already downloaded.');
-      // }
     }
   }
 
@@ -1061,7 +1000,7 @@ export default class AppointmentDetails extends Component {
 
     console.log('The file saved to 23233', configfb, dirs);
 
-    RNFetchBlob.Configurations(configOptions)
+    RNFetchBlob.config(configOptions)
       .fetch('GET', imgUrl, {})
       .then((res) => {
         if (Platform.OS === "ios") {
@@ -1084,7 +1023,6 @@ export default class AppointmentDetails extends Component {
   }
 
   getAudioTimeString(seconds) {
-    // console.log('seconds:: ', seconds);
     const h = parseInt(seconds / (60 * 60));
     const m = parseInt(seconds % (60 * 60) / 60);
     const s = parseInt(seconds % 60);
@@ -1106,22 +1044,13 @@ export default class AppointmentDetails extends Component {
 
     if (this.state.appoinment_detetails != '' && this.state.appoinment_detetails != null) {
 
-      /* check video call button enable or not */
       var VideoCallBtn = false
       var UploadprecriptionBtn = false
       var UploadReportBtn = false
-      // var appointmentDate = moment(item.appointment_date).format(
-      //   "YYYY-MM-DD"
-      // );
+
       var CurrentDate = moment().unix();
       var MyDate = moment(item.appointment_date + " " + item.from_time, 'YYYY-MM-DD hh:mm A').unix();
       var MyEndDate = moment(item.appointment_date + " 11:59 PM", 'YYYY-MM-DD hh:mm A').unix();
-      // console.log('CurrentDate:: ', CurrentDate,
-      //   'MyDate:: ', MyDate,
-      //   'MyEndDate::', MyEndDate,
-      //   '-- ', CurrentDate - MyDate,
-      //   CurrentDate - MyEndDate
-      // );
 
 
       if (CurrentDate > MyDate) {
@@ -1132,32 +1061,19 @@ export default class AppointmentDetails extends Component {
           UploadReportBtn = false
         }
       }
-
-      // console.log('CurrentDate < MyDate:: ', CurrentDate < MyDate);
-      // console.log('CurrentDate > MyDate:: ', CurrentDate > MyDate);
-      // console.log('CurrentDate > MyEndDate:: ', CurrentDate > MyEndDate);
+      
       if (CurrentDate < MyDate) {
-        let diff = (MyDate - CurrentDate) / 60 //mins
-        // console.log('CurrentDate < MyDate:: ', diff);
+        let diff = (MyDate - CurrentDate) / 60
         if (diff <= 10) {
           VideoCallBtn = true
         }
       }
       else if (CurrentDate > MyDate) {
-        // let diff = (CurrentDate - MyDate) / 60 //mins
-        // console.log('CurrentDate > MyDate:: ', diff);
-        // if (diff < 16) {
-        //   VideoCallBtn = true
-        // }
         VideoCallBtn = true
       }
-      // if (MyEndDate > MyDate) {
-      //   VideoCallBtn = true
-      // }
       if (CurrentDate > MyEndDate) {
         VideoCallBtn = false
       }
-      /* check video call button enable or not */
 
       return (
         <View style={{ flex: 1 }}>
@@ -2637,18 +2553,11 @@ export default class AppointmentDetails extends Component {
                                                     // backgroundColor: 'red'
                                                   }}>
                                                     <Image
-                                                      // source={rItem.report == 'NA' ||
-                                                      //   rItem.report == null ||
-                                                      //   rItem.report == '' ? Icons.Prescription :
-                                                      //   { uri: Configurations.img_url3 + rItem.report }}
                                                       defaultSource={Icons.Report}
                                                       source={Icons.Report}
                                                       style={{
                                                         width: (mobileW * 12) / 100,
                                                         height: (mobileW * 16) / 100,
-                                                        // borderWidth: 1,
-                                                        // borderColor: Colors.gainsboro,
-                                                        // borderRadius: 15, //(mobileW * 11.5) / 100,
                                                       }}></Image>
                                                   </View>
                                                   <View style={{
@@ -3472,10 +3381,3 @@ export default class AppointmentDetails extends Component {
     }
   }
 }
-const HTMLstyles = StyleSheet.create({
-  font: {
-    color: '#FF0000',
-
-  },
-
-});

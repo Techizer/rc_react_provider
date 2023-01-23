@@ -70,7 +70,7 @@ export default MyProfile = ({ navigation, route }) => {
     navigation.addListener('focus', () => {
       getProfile()
 
-      getNationalities()
+      // getNationalities()
       getNotifications()
 
     });
