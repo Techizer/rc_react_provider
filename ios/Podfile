@@ -19,6 +19,8 @@ target 'rootscare' do
 
   #use_modular_headers!
 
+  pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
+
   target 'rootscareTests' do
     inherit! :complete
     # Pods for testing

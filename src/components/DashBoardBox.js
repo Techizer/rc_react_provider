@@ -74,6 +74,7 @@ const DashBoardBox = ({
               justifyContent: 'center',
               alignItems: 'flex-start',
               paddingLeft: (mobileW * 5) / 100,
+              // backgroundColor: 'pink'
             }}>
               <Text style={{
                 fontFamily: Font.Medium,
@@ -83,20 +84,20 @@ const DashBoardBox = ({
             </View>
 
             <View style={{
-              // backgroundColor: 'yellow',
               width: '38%',
               justifyContent: 'center',
               alignItems: 'flex-start',
               paddingHorizontal: (mobileW * 3) / 100,
               alignSelf: 'center',
+              // backgroundColor: 'red'
             }}>
               <View style={{
                 justifyContent: 'center',
-                alignItems: 'flex-start',
                 paddingHorizontal: (mobileW * 3) / 100,
                 backgroundColor: actionColor,
-                borderRadius: 12,
-                paddingVertical: 6
+                borderRadius: (mobileW * 2.5 ) / 100,
+                marginVertical: 2,
+                paddingVertical: 4
               }}>
 
                 <Text style={{

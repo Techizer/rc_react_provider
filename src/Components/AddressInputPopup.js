@@ -255,6 +255,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
                                     }}
                                     blurOnSubmit={Platform.OS === 'ios' ? true : false}
                                     editable
+                                    inputRef={landmarkRef}
                                 />
 
                                 <AuthInputBoxSec
@@ -272,6 +273,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
                                     }}
                                     blurOnSubmit={Platform.OS === 'ios' ? true : false}
                                     editable
+                                    inputRef={buildingRef}
                                 />
 
                                 <View

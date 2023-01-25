@@ -280,7 +280,7 @@ export default OTP = ({ navigation, route }) => {
               returnKeyType="done"
               secureTextEntry={classStateData.isSecurePassword}
               disableImg={true}
-              iconName={classStateData.isSecurePassword ? 'eye' : 'eye-off'}
+              iconName={classStateData.isSecurePassword ? 'eye-off' : 'eye'}
               iconPressAction={changePwdType}
               onSubmitEditing={() => {
                 loginbtn();

@@ -11,6 +11,19 @@ import FlashMessage from "react-native-flash-message";
 import RNRestart from 'react-native-restart';
 import moment from 'moment-timezone';
 import { ScreenReferences } from './src/Stacks/ScreenReferences';
+
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({ 
+  dsn: 'https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192', 
+  enableNative: false,
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      tracingOrigins: ["localhost", Configurations.baseURL, /^\//],
+    }),
+  ],
+});
+
 global.MapAddress = 'NA';
 global.screens = ScreenReferences.Splash;
 global.fcmtoken = '123456'
@@ -101,4 +114,6 @@ class App extends Component {
   }
 }
 
-export default App;
+console.log({DEV: __DEV__});
+
+export default Sentry.wrap(App);

@@ -52,9 +52,7 @@ const AuthInputBoxSec = (props) => {
                 textAlignVertical: 'top'
               }]}
               onChangeText={onChangeText}
-              ref={(r) => {
-                inputRef && inputRef(r);
-              }}
+              ref={inputRef}
               label={lableText}
               editable={editable}
               mode='outlined'

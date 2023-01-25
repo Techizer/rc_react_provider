@@ -1090,16 +1090,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // qualificationInput.focus()
             }}
           />
 
@@ -1212,121 +1203,9 @@ export default EditProfile = ({navigation, route}) => {
             returnKeyLabel="next"
             returnKeyType="next"
             editable={false}
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // experienceInput.focus()
             }}
           />
-          {/* <DropDownboxSec
-            lableText={(classStateData.speciality == '') ? 'Speciality' : classStateData.speciality}
-            boxPressAction={() => {
-              setState({
-                showSpeciality: true
-              })
-            }}
-          />
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={classStateData.showSpeciality}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              //setModalVisible(!modalVisible);
-            }}
-          >
-            <TouchableOpacity activeOpacity={0.9} onPress={() => {
-              setState({
-                showSpeciality: false
-              })
-            }} style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: '#00000080', width: '100%' }}>
-              <View style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                //marginTop: 22
-              }}>
-                <View style={{
-                  maxHeight: mobileH - 250,
-                  width: mobileW / 1.3,
-                  backgroundColor: "white",
-                  borderRadius: 5,
-                  //padding: 35,
-                  alignItems: "center",
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 2
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5
-                }}>
-                  <View style={{
-                    backgroundColor: Colors.textblue,
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5,
-                    paddingTop: 14,
-                    paddingBottom: 14,
-                    width: '100%'
-                  }}>
-                    <Text style={{
-                      paddingLeft: 15,
-                      color: Colors.white_color,
-                      fontSize: 15,
-                      fontFamily: Font.headingfontfamily,
-                    }}>Speciality</Text>
-                  </View>
-                  <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    scrollEnabled={(classStateData.specialityArr.length > 10) ? true : false}
-                    style={{
-                      width: '100%',
-                    }}>
-                    {
-                      classStateData.specialityArr.map((data, index) => {
-                        return (
-                          <TouchableOpacity style={{
-                            width: '100%',
-                          }} onPress={() => {
-                            setState({
-                              speciality: data.name,
-                              showSpeciality: false
-                            })
-                          }}>
-                            <View style={{
-                              width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                              marginLeft: 15,
-                              borderBottomColor: Colors.gray6,
-                              borderBottomWidth: (index == (classStateData.userType.length - 1)) ? 0 : 1,
-                            }}>
-                              <Text style={{
-                                color: '#041A27',
-                                fontSize: 15,
-                                fontFamily: Font.headingfontfamily,
-                                // marginLeft: 15,
-                                paddingTop: 15,
-                                paddingBottom: 15,
-                                width: '94.5%',
-
-                                // backgroundColor: 'red'
-                              }}>{data.name}</Text>
-                            </View>
-                          </TouchableOpacity>
-                        )
-                      })
-                    }
-                  </ScrollView>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </Modal> */}
         </View>
         <View
           style={{
@@ -1334,9 +1213,6 @@ export default EditProfile = ({navigation, route}) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -1355,16 +1231,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // experienceInput.focus()
             }}
           />
 
@@ -1376,34 +1243,6 @@ export default EditProfile = ({navigation, route}) => {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          {/* <TouchableOpacity activeOpacity={0.9}
-            style={{
-              width: '45%', flexDirection: 'row',
-              paddingLeft: mobileW * 1 / 100
-            }}
-            onPress={() => {
-              // setState({
-              //   imageType: 'certificate',
-              //   mediamodal: true
-              // }, () => {
-              //   //Galleryopen()
-              // });
-            }}
-          >
-            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-              <Text
-                style={{
-                  color: Colors.textblue,
-                  fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: Configurations.textalign,
-                  fontSize: Font.Remember,
-                }}>
-                Upload Certificate
-              </Text>
-            </View>
-          </TouchableOpacity> */}
 
           <View style={{ width: '45%', alignSelf: 'center', }}>
 
@@ -1437,9 +1276,6 @@ export default EditProfile = ({navigation, route}) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -1458,16 +1294,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // scfhs_numberInput.focus()
             }}
           />
 
@@ -1478,9 +1305,6 @@ export default EditProfile = ({navigation, route}) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -1501,16 +1325,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="done"
             returnKeyType="done"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // signup_click()
             }}
           />
 
@@ -1623,16 +1438,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // experienceInput.focus()
             }}
           />
 
@@ -1727,16 +1533,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // scfhs_numberInput.focus()
             }}
           />
 
@@ -1794,16 +1591,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // qualificationInput.focus()
             }}
           />
 
@@ -1919,16 +1707,7 @@ export default EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
-              // qualificationInput.focus()
             }}
           />
 

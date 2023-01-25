@@ -18,10 +18,10 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
   }
 
   useEffect(() => {
-    getServices()
+    getTransactions()
   }, [])
 
-  const getServices = async () => {
+  const getTransactions = async () => {
     let user_details = await localStorage.getItemObject('user_arr');
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
@@ -115,22 +115,22 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
-                      fontSize: mobileW * 3.6 / 100,
+                      fontSize: mobileW * 3.4 / 100,
                     }}>
-                    Id
+                    ID
                   </Text>
                 </View>
 
                 <View
                   style={{
-                    width: '20%',
+                    width: '18%',
                   }}>
                   <Text
                     style={{
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
-                      fontSize: mobileW * 3.6 / 100,
+                      fontSize: mobileW * 3.4 / 100,
                     }}>
                     Date
                   </Text>
@@ -138,16 +138,16 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                 <View
                   style={{
-                    width: '20%',
-                    paddingRight: '4%',
-                    alignItems: 'center'
+                    width: '21%',
+                    paddingRight: '2.5%',
+                    alignItems: 'center',
                   }}>
                   <Text
                     style={{
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
-                      fontSize: mobileW * 3.6 / 100,
+                      fontSize: mobileW * 3.4 / 100,
                     }}>
                     Provider
                   </Text>
@@ -164,8 +164,8 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                 <View
                   style={{
-                    width: '18%',
-                    paddingRight: '4%',
+                    width: '19%',
+                    paddingRight: '2.5%',
                     alignItems: 'center'
                   }}>
                   <Text
@@ -173,7 +173,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
-                      fontSize: mobileW * 3.6 / 100,
+                      fontSize: mobileW * 3.4 / 100,
                     }}>
                     Admin
                   </Text>
@@ -197,7 +197,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                       textAlign: 'center',
                       color: Colors.placeholder_text_color,
                       fontFamily: Font.Medium,
-                      fontSize: mobileW * 3.6 / 100,
+                      fontSize: mobileW * 3.4 / 100,
                     }}>
                     Status
                   </Text>
@@ -251,7 +251,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                         <View
                           style={{
-                            width: '20%',
+                            width: '18%',
                           }}>
                           <Text
                             style={{
@@ -266,7 +266,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                         <View
                           style={{
-                            width: '20%',
+                            width: '21%',
                             paddingRight: '4%'
                           }}>
 
@@ -283,7 +283,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
                         <View
                           style={{
-                            width: '18%',
+                            width: '19%',
                             paddingRight: '4%'
                           }}>
 

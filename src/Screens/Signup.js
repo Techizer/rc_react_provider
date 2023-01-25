@@ -10,7 +10,7 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { vs, s } from 'react-native-size-matters';
 
 export default Signup = ({ navigation, route }) => {
-  
+
   const [classStateData, setClassStateData] = useState({
     isSecurePassword: true,
     isSecurePassword1: true,
@@ -43,6 +43,7 @@ export default Signup = ({ navigation, route }) => {
     country_short_code: '',
     showUsertype: false,
     showSpeciality: false,
+    imageType: '',
     userType: [{
       title: "Nurse",
       value: "nurse"
@@ -81,7 +82,22 @@ export default Signup = ({ navigation, route }) => {
     specialityArr: [],
     mediamodal: false,
     hosp_moh_lic_no: '',
-    hosp_reg_no: ''
+    hosp_reg_no: '',
+    id_image: {
+      path: '',
+      mime: '',
+      filename: '',
+    },
+    certificate: {
+      path: '',
+      mime: '',
+      filename: '',
+    }, 
+    scfhs_image: {
+      path: '',
+      mime: '',
+      filename: '',
+    }, 
   })
 
   useEffect(() => {
@@ -90,8 +106,11 @@ export default Signup = ({ navigation, route }) => {
     });
   }, [])
 
-  const setState = payload => {
+  const setState = (payload, resolver) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
+    if (resolver) {
+      resolver()
+    }
   }
 
   const signup_click = async () => {
@@ -130,7 +149,7 @@ export default Signup = ({ navigation, route }) => {
       MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
       return false;
     }
-    
+
     if (classStateData.country_short_code == 'UAE') {
       if (realDigits[0] == 0 || realDigits[0] == 1 || realDigits[0] == 2 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 8 || realDigits[0] == 9) {
         MessageFunctions.showError(MessageTexts.validIDnumberUAE[Configurations.language])
@@ -205,7 +224,7 @@ export default Signup = ({ navigation, route }) => {
       }
     }
 
-    if (classStateData.id_image == undefined) {
+    if (classStateData.id_image.path == '') {
       MessageFunctions.showError("Please upload ID image")
       return false;
     }
@@ -239,7 +258,7 @@ export default Signup = ({ navigation, route }) => {
       }
     }
 
-    if (classStateData.certificate == undefined) {
+    if (classStateData.certificate.path == '') {
       MessageFunctions.showError("Please upload cerificate image")
       return false;
     }
@@ -260,7 +279,7 @@ export default Signup = ({ navigation, route }) => {
           MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
           return false;
         }
-        if (classStateData.scfhs_image == undefined) {
+        if (classStateData.scfhs_image.path == '') {
           MessageFunctions.showError("Please upload SCFHS file")
           return false;
         }
@@ -271,7 +290,7 @@ export default Signup = ({ navigation, route }) => {
     console.log("url", url)
     var phone_number_send = classStateData.country_code + classStateData.mobile
     var data = new FormData();
-    
+
     data.append('service_type', classStateData.userType[classStateData.selectuserType].value)
     data.append('name', classStateData.name)
     data.append('email', classStateData.email)
@@ -294,12 +313,8 @@ export default Signup = ({ navigation, route }) => {
     data.append('scfhs_number', classStateData.scfhs_number)
     data.append('hosp_moh_lic_no', classStateData.hosp_moh_lic_no)
     data.append('hosp_reg_no', classStateData.hosp_reg_no)
-    // data.append('player_id', player_id_me1)
-    // console.log('player_id_me1',player_id_me1)
-    console.log('classStateData.id_image', classStateData.id_image)
-    console.log('classStateData.certificate', classStateData.certificate)
-    console.log('classStateData.scfhs_image', classStateData.scfhs_image)
-    if (classStateData.id_image.path != undefined) {
+
+    if (classStateData.id_image.path != '') {
 
       data.append('id_image', {
         uri: classStateData.id_image.path,
@@ -307,7 +322,7 @@ export default Signup = ({ navigation, route }) => {
         name: (Platform.OS == 'ios') ? classStateData.id_image.filename : 'image',
       })
     }
-    if (classStateData.certificate.path != undefined) {
+    if (classStateData.certificate.path != '') {
 
       data.append('certificate', {
         uri: classStateData.certificate.path,
@@ -316,7 +331,7 @@ export default Signup = ({ navigation, route }) => {
       })
     }
     if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
-      if (classStateData.scfhs_image.path != undefined) {
+      if (classStateData.scfhs_image.path != '') {
 
         data.append('scfhs_image', {
           uri: classStateData.scfhs_image.path,
@@ -327,8 +342,6 @@ export default Signup = ({ navigation, route }) => {
     } else {
       data.append('scfhs_image', "")
     }
-
-
 
     API.post(url, data).then((obj) => {
 
@@ -349,145 +362,85 @@ export default Signup = ({ navigation, route }) => {
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-      setState({ loading: false });
     });
 
   }
 
   const Galleryopen = () => {
-    console.log('Galleryopen');
-    const { imageType } = classStateData;
+    
     Media.launchGellery(true).then((obj) => {
-      console.log(obj);
-      console.log(obj.path);
-      setState({
-        [imageType]: obj,
-        mediamodal: false
-      })
-      // editImage(obj.path);
-      // if (classStateData.img_type == 0) {
-      //   setState({ cover_img: obj.path, mediamodal: false })
-      // }
-      // else {
-      //   setState({ profile_img: obj.path, mediamodal: false, profile_image: obj.path })
-      // }
+      const pths = obj.path.split('/')
+      const source = {
+        filename: pths[pths.length-1],
+        mime: obj.mime,
+        path: obj.path,
+      };
+
+      console.log({source});
+  
+      if (classStateData.imageType === 'id_image') {
+        setState({
+          id_image: source,
+          mediamodal: false
+        });
+      } else if (classStateData.imageType === 'certificate') {
+        setState({
+          certificate: source,
+          mediamodal: false
+        });
+      } else if (classStateData.imageType === 'scfhs_image') {
+        setState({
+          scfhs_image: source,
+          mediamodal: false
+        });
+      }
     }).catch((error) => {
       setState({ mediamodal: false })
     })
   }
 
   const DocumentGalleryopen = async () => {
-    // Pick a single file
-    console.log('uploadVoiceFile');
-    const { imageType } = classStateData;
     Media.launchDocumentGellery(true).then((res) => {
-      console.log('resresresres', res);
-      console.log(
-        res.uri,
-        res.type, // mime type
-        res.name,
-        res.size
-      );
-
+      
       const source = {
-        filename: res.name, //"speech_file.mp3", //(response.fileName != undefined) ? response.fileName : response.uri.substr(response.uri.length - 40),
+        filename: res.name,
         mime: res.type,
         path: res.uri,
-        // serverFileName: "assignmentfile" //"upload_audio" //
-        //imageData: response.data
       };
+      
+      console.log({source});
 
-      console.log('source', source);
-      setState({
-        [imageType]: source,
-        mediamodal: false
-      }, () => {
-        //handleUploadFile();
-        console.log('classStateData.id_image:: ', classStateData.id_image);
-      });
-      // setState({
-      //   [imageType]: obj,
-      //   mediamodal: false
-      // })
-      // editImage(obj.path);
-      // if (classStateData.img_type == 0) {
-      //   setState({ cover_img: obj.path, mediamodal: false })
-      // }
-      // else {
-      //   setState({ profile_img: obj.path, mediamodal: false, profile_image: obj.path })
-      // }
+      if (classStateData.imageType === 'id_image') {
+        setState({
+          id_image: source,
+          mediamodal: false
+        });
+      } else if (classStateData.imageType === 'certificate') {
+        setState({
+          certificate: source,
+          mediamodal: false
+        });
+      } else if (classStateData.imageType === 'scfhs_image') {
+        setState({
+          scfhs_image: source,
+          mediamodal: false
+        });
+      }
+
+      
     }).catch((error) => {
       setState({ mediamodal: false })
     })
-
-    // try {
-    //   const res = await DocumentPicker.pick({
-    //     type: [
-    //       //DocumentPicker.types.images,
-    //       // DocumentPicker.types.audio
-    //       DocumentPicker.types.pdf
-    //     ],
-    //   });
-    //   console.log('resresresres', res);
-    //   console.log(
-    //     res.uri,
-    //     res.type, // mime type
-    //     res.name,
-    //     res.size
-    //   );
-
-    //   const source = {
-    //     fileName: res.name, //"speech_file.mp3", //(response.fileName != undefined) ? response.fileName : response.uri.substr(response.uri.length - 40),
-    //     type: res.type,
-    //     path: res.uri,
-    //     serverFileName: "assignmentfile" //"upload_audio" //
-    //     //imageData: response.data
-    //   };
-
-    //   console.log('source', source);
-    //   // setState({
-    //   //   [imageType]: obj,
-    //   //   mediamodal: false
-    //   // })
-
-    //   setState({
-    //     [imageType]: source,
-    //     mediamodal: false
-    //   }, () => {
-    //     //handleUploadFile();
-    //   });
-
-    // } catch (err) {
-    //   if (DocumentPicker.isCancel(err)) {
-    //     // User cancelled the picker, exit any dialogs or menus and move on
-    //     setState({
-    //       mediamodal: false
-    //     }, () => {
-    //       //handleUploadFile();
-    //     });
-    //   } else {
-    //     console.log('errerr', err);
-    //     setState({
-    //       mediamodal: false
-    //     }, () => {
-    //       //handleUploadFile();
-    //     });
-    //     throw err;
-    //   }
-    // }
   }
 
-  const get_speciality = async () => {
+  const get_speciality = async (i) => {
 
     let url = Configurations.baseURL + "api-provider-get-speciality";
-    console.log("url", url)
     var data = new FormData();
-    data.append('service_type', classStateData.userType[classStateData.selectuserType].value)
+    data.append('service_type', classStateData.userType[i].value)
 
 
     API.post(url, data, 1).then((obj) => {
-      //API.get(url, 1).then((obj) => {
-
       if (obj.status == true) {
         setState({
           specialityArr: obj.result,
@@ -504,9 +457,7 @@ export default Signup = ({ navigation, route }) => {
   const get_all_count = async () => {
     let url = Configurations.baseURL + "api-medical-service-area";
     console.log("url", url)
-    // var data = new FormData();
-    // data.append('login_user_id',user_id)
-    // 
+
     API.get(url, 1).then((obj) => {
 
       if (obj.status == true) {
@@ -576,9 +527,6 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -598,14 +546,6 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
               qualificationInput.focus()
             }}
@@ -641,8 +581,6 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: Configurations.textalign,
                   fontSize: Font.Remember,
                 }}>
                 Upload Photocopy of ID
@@ -655,9 +593,6 @@ export default Signup = ({ navigation, route }) => {
 
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
-              onPress={() => {
-                
-              }}
               numberOfLines={1}
               style={{
                 color: Colors.textgray,
@@ -850,8 +785,6 @@ export default Signup = ({ navigation, route }) => {
               setState({
                 imageType: 'certificate',
                 mediamodal: true
-              }, () => {
-                //Galleryopen()
               });
             }}
           >
@@ -868,15 +801,9 @@ export default Signup = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
 
-
-
-
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
-              onPress={() => {
-                
-              }}
-              style={{
+            style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
@@ -969,8 +896,6 @@ export default Signup = ({ navigation, route }) => {
               setState({
                 imageType: 'scfhs_image',
                 mediamodal: true
-              }, () => {
-                // Galleryopen()
               });
             }}
           >
@@ -990,7 +915,7 @@ export default Signup = ({ navigation, route }) => {
           <View style={{ width: '45%', alignSelf: 'center', }}>
             <Text
               onPress={() => {
-                
+
               }}
               style={{
                 color: Colors.textgray,
@@ -1096,7 +1021,7 @@ export default Signup = ({ navigation, route }) => {
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
               onPress={() => {
-                
+
               }}
               style={{
                 color: Colors.textgray,
@@ -1143,14 +1068,6 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
               scfhs_numberInput.focus()
             }}
@@ -1252,7 +1169,7 @@ export default Signup = ({ navigation, route }) => {
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
               onPress={() => {
-                
+
               }}
               numberOfLines={1}
               style={{
@@ -1317,14 +1234,6 @@ export default Signup = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            // secureTextEntry={classStateData.isSecurePassword1}
-            // disableImg={true}
-            // iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
-            // iconPressAction={() => {
-            //   setState({
-            //     isSecurePassword1: !classStateData.isSecurePassword1,
-            //   });
-            // }}
             onSubmitEditing={() => {
               // qualificationInput.focus()
             }}
@@ -1372,7 +1281,7 @@ export default Signup = ({ navigation, route }) => {
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
               onPress={() => {
-                
+
               }}
               numberOfLines={1}
               style={{
@@ -1448,42 +1357,15 @@ export default Signup = ({ navigation, route }) => {
 
                 <View style={{ width: '100%', alignSelf: 'center' }}>
                   <FlatList
-                    //contentContainerStyle={{ paddingBottom: mobileW * 2 / 100 }}
                     data={classStateData.Countryarr}
                     renderItem={({ item, index }) => {
                       if (classStateData.Countryarr != '' || classStateData.Countryarr != null) {
                         return (
-
-                          // <TouchableOpacity
-                          //   onPress={() => { setState({ bloodModal: false, country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code }); }}
-                          // >
-                          //   <View style={{ width: '100%', backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'flex-end' }}>
-                          //     <View style={[{ width: '95%', borderBottomWidth: 1, paddingVertical: mobileW * 2 / 100, marginLeft: mobileW * 5 / 100, borderBottomColor: '#0000001F' }]}>
-                          //       <Text style={{ color: Colors.textblack, fontSize: mobileW * 4 / 100, paddingLeft: mobileW * 2 / 100, textAlign: Configurations.textRotate }}>{item.name}</Text>
-                          //     </View>
-                          //   </View>
-                          // </TouchableOpacity>
                           <TouchableOpacity style={{
                             width: '100%',
                           }}
                             onPress={() => { setState({ bloodModal: false, country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code }); }}
                           >
-                            {/* <View style={{
-                                width: '100%',
-                              }}>
-                                <Text style={{
-                                  color: '#041A27',
-                                  fontSize: 15,
-                                  fontFamily: Font.headingfontfamily,
-                                  marginLeft: 15,
-                                  paddingTop: 15,
-                                  paddingBottom: 15,
-                                  width: '94.5%',
-                                  borderBottomColor: Colors.gray6,
-                                  borderBottomWidth: (index == (classStateData.Countryarr.length - 1)) ? 0 : 1,
-                                  // backgroundColor: 'red'
-                                }}>{item.name}</Text>
-                              </View> */}
                             <View style={{
                               width: (Platform.OS == "ios") ? '95%' : '94.5%',
                               marginLeft: 15,
@@ -1494,12 +1376,9 @@ export default Signup = ({ navigation, route }) => {
                                 color: '#041A27',
                                 fontSize: 15,
                                 fontFamily: Font.headingfontfamily,
-                                // marginLeft: 15,
                                 paddingTop: 15,
                                 paddingBottom: 15,
                                 width: '94.5%',
-
-                                // backgroundColor: 'red'
                               }}>{item.name}</Text>
                             </View>
                           </TouchableOpacity>
@@ -1521,40 +1400,40 @@ export default Signup = ({ navigation, route }) => {
 
           <View style={{ paddingBottom: (mobileW * 14) / 100 }}>
 
-          <View
-            style={{
-              width: "100%",
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: vs(16),
-            }}>
-            <View style={{ justifyContent: 'center' }}>
-              <Image
-                style={{
-                  width: (mobileW * 40) / 100,
-                  height: (mobileW * 40) / 100,
-                  alignSelf: 'center',
-                  resizeMode: 'contain',
+            <View
+              style={{
+                width: "100%",
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: vs(16),
+              }}>
+              <View style={{ justifyContent: 'center' }}>
+                <Image
+                  style={{
+                    width: (mobileW * 40) / 100,
+                    height: (mobileW * 40) / 100,
+                    alignSelf: 'center',
+                    resizeMode: 'contain',
+                  }}
+                  resizeMode='contain'
+                  source={Icons.LogoWithText} />
+              </View>
+
+              <TouchableHighlight
+                underlayColor={Colors.Highlight}
+                onPress={() => {
+                  navigation.pop();
                 }}
-                resizeMode='contain'
-                source={Icons.LogoWithText} />
+                style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
+              >
+                <Image
+                  style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
+                  source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
+                </Image>
+
+              </TouchableHighlight>
             </View>
-
-            <TouchableHighlight
-              underlayColor={Colors.Highlight}
-              onPress={() => {
-                navigation.pop();
-              }}
-              style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
-            >
-              <Image
-                style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
-              </Image>
-
-            </TouchableHighlight>
-          </View>
 
 
             <View
@@ -1609,14 +1488,11 @@ export default Signup = ({ navigation, route }) => {
                   flex: 1,
                   justifyContent: "center",
                   alignItems: "center",
-                  //marginTop: 22
                 }}>
                   <View style={{
-                    //margin: 20,
                     width: mobileW / 1.3,
                     backgroundColor: "white",
                     borderRadius: 5,
-                    //padding: 35,
                     alignItems: "center",
                     shadowColor: "#000",
                     shadowOffset: {
@@ -1650,14 +1526,13 @@ export default Signup = ({ navigation, route }) => {
                             width: '100%',
                           }} onPress={() => {
                             setState({
-                              selectuserType: index
-                            }, () => {
-                              showUsertypeModal(false)
-                              if (index == 0 || index == 3 || index == 4) {
-                                get_speciality()
-                              }
-
+                              selectuserType: index,
+                              showUsertype: false
                             })
+                            console.log({index});
+                            if (index == 0 || index == 3 || index == 4) {
+                              get_speciality(index)
+                            }
                           }}>
                             <View style={{
                               width: (Platform.OS == "ios") ? '95%' : '94.5%',
@@ -1669,12 +1544,9 @@ export default Signup = ({ navigation, route }) => {
                                 color: '#041A27',
                                 fontSize: 15,
                                 fontFamily: Font.headingfontfamily,
-                                // marginLeft: 15,
                                 paddingTop: 15,
                                 paddingBottom: 15,
                                 width: '94.5%',
-
-                                // backgroundColor: 'red'
                               }}>{data.title}</Text>
                             </View>
                           </TouchableOpacity>
@@ -1697,7 +1569,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={(classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType].value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[Configurations.language]}
+                lableText={(classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType]?.value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[Configurations.language]}
                 inputRef={(ref) => {
                   nameInput = ref;
                 }}
@@ -2034,7 +1906,7 @@ export default Signup = ({ navigation, route }) => {
                 returnKeyType="done"
                 secureTextEntry={classStateData.isSecurePassword}
                 disableImg={true}
-                iconName={classStateData.isSecurePassword ? 'eye' : 'eye-off'}
+                iconName={classStateData.isSecurePassword ? 'eye-off' : 'eye'}
                 iconPressAction={() => {
                   setState({
                     isSecurePassword: !classStateData.isSecurePassword,
@@ -2093,7 +1965,7 @@ export default Signup = ({ navigation, route }) => {
                 returnKeyType="next"
                 secureTextEntry={classStateData.isSecurePassword1}
                 disableImg={true}
-                iconName={classStateData.isSecurePassword1 ? 'eye' : 'eye-off'}
+                iconName={classStateData.isSecurePassword1 ? 'eye-off' : 'eye'}
                 iconPressAction={() => {
                   setState({
                     isSecurePassword1: !classStateData.isSecurePassword1,
@@ -2151,14 +2023,7 @@ export default Signup = ({ navigation, route }) => {
 
             <Button
               text={LanguageConfiguration.btntext[Configurations.language]}
-              // onLoading={classStateData.loading}
-              customStyles={
-                {
-                  // mainContainer: styles.butonContainer
-                }
-              }
               onPress={() => signup_click()}
-            // isBlank={false}
             />
 
             <View
@@ -2240,7 +2105,7 @@ export default Signup = ({ navigation, route }) => {
                 marginTop: (mobileW * 6) / 100,
               }}>
 
-              </View>
+            </View>
 
             <View
               style={{
