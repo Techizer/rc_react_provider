@@ -358,15 +358,11 @@ export default Home = ({ navigation, route }) => {
 
   const getProfile = async () => {
     let user_details = await localStorage.getItemObject('user_arr')
-    let address_arr = await localStorage.getItemObject('address_arr')
-    console.log('user_details user_details', user_details)
-    console.log('address_arr', address_arr)
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     console.log("user_typeuser_type:: ", user_type);
     setState(prev => ({
       ...prev,
-      address_show: address_arr,
       address_old: user_details.current_address,
       user_type: user_type
 

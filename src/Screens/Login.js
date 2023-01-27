@@ -2,12 +2,14 @@ import { Modal, Text, Dimensions, View, PermissionsAndroid, Platform, BackHandle
 import React, { useEffect, useState } from 'react';
 import Geolocation from '@react-native-community/geolocation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts,  MessageFunctions, localStorage } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions, localStorage } from '../Helpers/Utils';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import { Icons } from '../Assets/Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRememberedEmail, setRememberedPassword, setShouldAutoLogin, setUserFCMToken, setUserLoginData, setUserLoginType } from '../Redux/Actions/UserActions';
 
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
@@ -15,22 +17,14 @@ global.myLongitude = 'NA';
 
 export default Login = ({ navigation, route }) => {
 
-  const [state, setState] = useState({
+  const [classStateData, setClassStateData] = useState({
     isSecurePassword: true,
-    cheackbox: false,
-    emailfocus: false,
     email: '',
-    passwordfocus: false,
     password: '',
-    engbtn: false,
     device_lang: 'AR',
     langaugeme: 0,
-    remember_me: '',
+    isRememberChecked: false,
     fcm_token: 123456,
-    languagechange: false,
-    showlanguage: false,
-    engbtn_ar: false,
-    address_new: '',
     showUsertype: false,
     userType: [{
       title: "Nurse",
@@ -64,19 +58,47 @@ export default Login = ({ navigation, route }) => {
     selectuserType: -1
   })
 
+  const setState = (payload) => {
+    setClassStateData(prev => ({
+      ...prev,
+      ...payload
+    }))
+  }
+
+  const dispatch = useDispatch()
+
+  const {
+    userType,
+    shouldAutoLogin,
+    userEmail,
+    userPassword
+  } = useSelector(state => state.Auth)
+
+  useEffect(() => {
+    if (shouldAutoLogin) {
+      if (userEmail && userPassword) {
+        setState({
+          email: userEmail,
+          password: userPassword,
+          isRememberChecked: shouldAutoLogin,
+          selectuserType: classStateData.userType.findIndex(userType)
+        })
+      }
+    }
+  }, [])
+
   useEffect(() => {
     navigation.addListener(
       'focus',
       payload =>
         BackHandler.addEventListener('hardwareBackPress', handleBackPress),
     );
-    get_language()
+    getLanguage()
   }, [])
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      get_rem_data()
-      get_language()
+      getLanguage()
     });
     _willBlurSubscription = navigation.addListener(
       'blur',
@@ -88,45 +110,56 @@ export default Login = ({ navigation, route }) => {
     );
   }, [])
 
-  const get_language = async () => {
+  useEffect(() => {
+    const setFCM = async () => {
+      const fcm = await FBPushNotifications.getFcmToken()
+      if (fcm) {
+        setState({
+          fcm_token: fcm
+        })
+      }
+    }
+    setFCM()
+
+  }, [])
+
+
+
+  const getLanguage = async () => {
     let textalign = await localStorage.getItemObject('language');
     if (textalign != null) {
-      setState(prev => ({
-        ...prev,
+
+      setState({
         langaugeme: textalign
-      }))
+      })
 
     }
     let address_arr = await localStorage.getItemObject('address_arr')
-    setState(prev => ({
-      ...prev,
-      address_new: address_arr
-    }))
     if (address_arr == '' || address_arr == 'NA' || address_arr == null) {
-      getlatlong();
+      getLatitudeLongitude();
     }
 
   }
 
-  const getalldata = (position) => {
+  const getData = (position) => {
 
     let longitude = position.coords.longitude
     let latitude = position.coords.latitude
-    setState(prev => ({
-      ...prev,
+    setState({
       latitude: latitude,
       longitude: longitude,
       loading: false
-    }))
-    myLatitude = latitude,
-      myLongitude = longitude
-    current_lat_long = position
+    })
 
-    let event = { latitude: latitude, longitude: longitude, latitudeDelta: state?.latdelta, longitudeDelta: state?.longdelta }
-    getadddressfromlatlong(event)
+    global.current_lat_long = position;
+    global.myLatitude = latitude;
+    global.myLongitude = longitude;
+
+    let event = { latitude: latitude, longitude: longitude, latitudeDelta: classStateData?.latdelta, longitudeDelta: classStateData?.longdelta }
+    getAddressFromLatLong(event)
   }
 
-  const getadddressfromlatlong = (event) => {
+  const getAddressFromLatLong = (event) => {
 
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + Configurations.mapkey + '&language=' + Configurations.maplanguage)
 
@@ -156,15 +189,14 @@ export default Login = ({ navigation, route }) => {
         add_location = data2
 
         GooglePlacesRef && GooglePlacesRef.setAddressText(details.formatted_address)
-        setState(prev => ({
-          ...prev,
+        setState({
           latdelta: event.latitudeDelta,
           longdelta: event.longitudeDelta,
           latitude: event.latitude,
           longitude: event.longitude,
           addressselected: details.formatted_address,
           add_my_location: data2
-        }))
+        })
 
         localStorage.setItemObject('address_arr', add_location.address);
       })
@@ -173,7 +205,7 @@ export default Login = ({ navigation, route }) => {
 
   }
 
-  const getlatlong = async () => {
+  const getLatitudeLongitude = async () => {
 
     let permission = await localStorage.getItemString('permission')
     if (permission != 'denied') {
@@ -191,7 +223,7 @@ export default Login = ({ navigation, route }) => {
               callLocation();
             } else {
               let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.latitude } }
-              getalldata(position)
+              getData(position)
               localStorage.setItemString('permission', 'denied')
 
             }
@@ -201,32 +233,31 @@ export default Login = ({ navigation, route }) => {
       }
     } else {
       let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
-      getalldata(position)
+      getData(position)
     }
   }
 
   const callLocation = async () => {
-    setState(prev => ({
-      ...prev,
+    setState({
       loading: true
-    }))
+    })
     localStorage.getItemObject('position').then((position) => {
       // console.log('position', position)
       if (position != null) {
         var pointcheck1 = 0
-        getalldata(position)
+        getData(position)
         Geolocation.getCurrentPosition(
           //Will give you the current location
           (position) => {
 
             localStorage.setItemObject('position', position)
-            getalldata(position);
+            getData(position);
             pointcheck1 = 1
           },
           (error) => {
             let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
 
-            getalldata(position)
+            getData(position)
           },
           { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
         );
@@ -234,7 +265,7 @@ export default Login = ({ navigation, route }) => {
 
           if (pointcheck1 != 1) {
             localStorage.setItemObject('position', position)
-            getalldata(position)
+            getData(position)
           }
 
         });
@@ -245,14 +276,14 @@ export default Login = ({ navigation, route }) => {
         Geolocation.getCurrentPosition(
           (position) => {
             localStorage.setItemObject('position', position)
-            getalldata(position)
+            getData(position)
             pointcheck = 1
           },
           (
             error) => {
             let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
 
-            getalldata(position)
+            getData(position)
           },
           { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
         );
@@ -261,7 +292,7 @@ export default Login = ({ navigation, route }) => {
           if (pointcheck != 1) {
 
             localStorage.setItemObject('position', position)
-            getalldata(position)
+            getData(position)
           }
 
         });
@@ -286,49 +317,12 @@ export default Login = ({ navigation, route }) => {
     return true;
   };
 
-  const get_rem_data = async () => {
-    let remeberdata_arr = await localStorage.getItemObject('remeberdata');
-
-    if (remeberdata_arr != null) {
-      setState(prev => ({
-        ...prev,
-        email: remeberdata_arr.email,
-        password: remeberdata_arr.password,
-        remember_me: true
-      }))
-    }
-
-  }
-
-  const remember_me_fun = async () => {
-
-    if (state?.remember_me == false) {
-      let data = { 'email': state?.email, 'password': state?.password }
-      localStorage.setItemObject('remeberdata', data)
-    }
-    else {
-      localStorage.setItemObject('remeberdata', null)
-    }
-    setState(prev => ({
-      ...prev,
-      remember_me: true
-    }))
-  }
-
-  const remove_remember_me_fun = async () => {
-    await localStorage.removeItem('remeberdata');
-    setState(prev => ({
-      ...prev,
-      remember_me: false
-    }))
-  }
-
-  const loginbtn = async () => {
+  const onLogin = async () => {
 
     Keyboard.dismiss()
-    var email = state?.email.trim()
+    var email = classStateData?.email.trim()
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    if (state?.selectuserType == -1) {
+    if (classStateData?.selectuserType == -1) {
       MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
       return false;
     }
@@ -343,7 +337,7 @@ export default Login = ({ navigation, route }) => {
       return false
     }
 
-    if (state?.password.length <= 0 || state?.password.trim().length <= 0) {
+    if (classStateData?.password.length <= 0 || classStateData?.password.trim().length <= 0) {
       MessageFunctions.showError(MessageTexts.emptyPassword[Configurations.language])
       return false
     }
@@ -357,40 +351,45 @@ export default Login = ({ navigation, route }) => {
 
     let url = Configurations.baseURL + "api-service-provider-login";
     var data = new FormData();
-    data.append('email', state?.email)
-    data.append('password', state?.password)
+    data.append('email', classStateData?.email)
+    data.append('password', classStateData?.password)
     data.append('device_type', Configurations.device_type)
     data.append('device_lang', device_lang)
-    data.append('fcm_token', await FBPushNotifications.getFcmToken())
-    data.append('user_type', state?.userType[state?.selectuserType].value)
+    data.append('fcm_token', classStateData.fcm_token)
+    data.append('user_type', classStateData?.userType[classStateData?.selectuserType].value)
 
     console.log('loginData', data)
 
     API.post(url, data).then((obj) => {
-      
+
       console.log("obj", obj.status)
       if (obj.status == true) {
 
         var user_details = obj.result;
 
-        setState(prev => ({
-          ...prev,
-          emailfocus: false,
-          passwordfocus: false
-        }))
+        setState(classStateData)
 
         console.log('user_details', user_details);
         const uservalue = {
-          email_phone: state?.email, email: state?.email,
-          password: state?.password
+          email_phone: classStateData?.email, email: classStateData?.email,
+          password: classStateData?.password
         };
         localStorage.setItemObject('user_login', uservalue);
         localStorage.setItemObject('user_arr', user_details);
+
+        dispatch(setUserLoginData(obj?.result))
+        dispatch(setUserFCMToken(classStateData?.fcm_token))
+        dispatch(setUserLoginType(classStateData?.userType[classStateData?.selectuserType].value))
+        dispatch(setShouldAutoLogin(classStateData?.isRememberChecked))
+        
+        if (classStateData?.isRememberChecked == true) {
+          dispatch(setRememberedEmail(classStateData?.email))
+          dispatch(setRememberedPassword(classStateData?.password))
+        }
+
         setTimeout(() => {
           navigation.navigate('Home');
         }, 700);
-
-
 
       } else {
         setTimeout(() => {
@@ -400,47 +399,37 @@ export default Login = ({ navigation, route }) => {
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-      setState(prev => ({
-        ...prev,
+      setState({
         loading: false
-      }))
+      })
     });
 
   }
 
   const showUsertypeModal = (status) => {
-    setState(prev => ({
-      ...prev,
+    setState({
       showUsertype: status
-    }))
+    })
   }
 
   const onSwipeLeft = (gestureState) => {
     navigation.navigate(ScreenReferences.Signup)
   }
 
-  const changePwdType = () => {
-    setState(prev => ({
-      ...prev,
-      isSecurePassword: !state?.isSecurePassword,
-    }))
-  };
-
-  const config4 = {
+  const GestureConfigurations = {
     velocityThreshold: 1,
     directionalOffsetThreshold: mobileW,
-    // gestureIsClickThreshold:1
   };
 
 
   return (
 
     <GestureRecognizer
-      onSwipeLeft={(state) => onSwipeLeft(state)}
-      Configurations={config4}
+      onSwipeLeft={(classStateData) => onSwipeLeft(classStateData)}
+      Configurations={GestureConfigurations}
       style={{
         flex: 1,
-        backgroundColor: state?.backgroundColor
+        backgroundColor: classStateData?.backgroundColor
       }}
     >
       <ScrollView
@@ -504,7 +493,7 @@ export default Login = ({ navigation, route }) => {
                   marginTop: (mobileW * 3) / 100,
                 }
                 ]}>
-                  
+
                 <Text
                   style={{
                     fontSize: mobileW * 4.5 / 100,
@@ -540,7 +529,7 @@ export default Login = ({ navigation, route }) => {
                   marginTop: (mobileW * 4) / 100,
                 }}>
                 <DropDownboxSec
-                  lableText={(state?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : state?.userType[state?.selectuserType].title}
+                  lableText={(classStateData?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : classStateData?.userType[classStateData?.selectuserType].title}
                   boxPressAction={() => { showUsertypeModal(true) }}
                 />
 
@@ -548,7 +537,7 @@ export default Login = ({ navigation, route }) => {
                 <Modal
                   animationType="fade"
                   transparent={true}
-                  visible={state?.showUsertype}
+                  visible={classStateData?.showUsertype}
                   onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
                   }}
@@ -593,22 +582,21 @@ export default Login = ({ navigation, route }) => {
                         </View>
 
                         {
-                          state?.userType.map((data, index) => {
+                          classStateData?.userType.map((data, index) => {
                             return (
                               <TouchableOpacity style={{
                                 width: '100%',
                               }} onPress={() => {
-                                setState(prev => ({
-                                  ...prev,
+                                setState({
                                   selectuserType: index
-                                }))
+                                })
                                 showUsertypeModal(false)
                               }}>
                                 <View style={{
                                   width: (Platform.OS == "ios") ? '95%' : '94.5%',
                                   marginLeft: 15,
                                   borderBottomColor: Colors.gray6,
-                                  borderBottomWidth: (index == (state?.userType.length - 1)) ? 0 : 1,
+                                  borderBottomWidth: (index == (classStateData?.userType.length - 1)) ? 0 : 1,
                                 }}>
                                   <Text style={{
                                     color: '#041A27',
@@ -646,12 +634,11 @@ export default Login = ({ navigation, route }) => {
                     emailInput = ref;
                   }}
                   onChangeText={(text) =>
-                    setState(prev => ({
-                      ...prev,
+                    setState({
                       email: text
-                    }))
+                    })
                   }
-                  value={state?.email}
+                  value={classStateData?.email}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   returnKeyType="next"
@@ -681,20 +668,23 @@ export default Login = ({ navigation, route }) => {
                     passwordInput = ref;
                   }}
                   onChangeText={(text) =>
-                    setState(prev => ({
-                      ...prev,
+                    setState({
                       password: text
-                    }))
+                    })
                   }
-                  value={state?.password}
+                  value={classStateData?.password}
                   keyboardType="default"
                   autoCapitalize="none"
                   returnKeyLabel="done"
                   returnKeyType="done"
-                  secureTextEntry={state?.isSecurePassword}
+                  secureTextEntry={classStateData?.isSecurePassword}
                   disableImg={true}
-                  iconName={state?.isSecurePassword ? 'eye-off' : 'eye'}
-                  iconPressAction={changePwdType}
+                  iconName={classStateData?.isSecurePassword ? 'eye-off' : 'eye'}
+                  iconPressAction={() => {
+                    setState({
+                      isSecurePassword: !classStateData?.isSecurePassword,
+                    })
+                  }}
                 />
 
               </View>
@@ -705,11 +695,16 @@ export default Login = ({ navigation, route }) => {
                   marginTop: (mobileW * 4) / 100,
                   flexDirection: 'row',
                 }}>
-                {state?.remember_me == false && <TouchableOpacity activeOpacity={0.9} style={{ width: '45%', flexDirection: 'row', paddingLeft: mobileW * 1 / 100 }} onPress={() => { remember_me_fun() }}>
+
+                <TouchableOpacity activeOpacity={0.9} style={{ width: '45%', flexDirection: 'row', paddingLeft: mobileW * 1 / 100 }} onPress={() => { 
+                  setState({
+                    isRememberChecked:!classStateData.isRememberChecked
+                  })
+                 }}>
                   <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ width: '20%' }}>
-                      <Image style={{ height: 23, width: 23, resizeMode: 'contain', tintColor: '#696464' }}
-                        source={Icons.BlackBox}></Image>
+                      <Image style={{ height: 23, width: 23, resizeMode: 'contain',  }}
+                        source={classStateData?.isRememberChecked == false ? Icons.BlackBox : Icons.CheckedBox}></Image>
                     </View>
 
                     <Text
@@ -721,25 +716,7 @@ export default Login = ({ navigation, route }) => {
                       {LanguageConfiguration.Remember[Configurations.language]}
                     </Text>
                   </View>
-                </TouchableOpacity>}
-                {state?.remember_me == true &&
-                  <TouchableOpacity activeOpacity={0.9} style={{ width: '45%', paddingLeft: mobileW * 1 / 100 }} onPress={() => { remove_remember_me_fun() }} >
-
-                    <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{ width: '20%' }}>
-                        <Image style={{ height: 23, width: 23, resizeMode: 'contain' }} source={Icons.CheckedBox}></Image>
-                      </View>
-                      <Text
-                        style={{
-                          color: Colors.regulartextcolor,
-                          fontFamily: Font.Regular,
-                          fontSize: Font.Remember,
-                        }}>
-                        {LanguageConfiguration.Remember[Configurations.language]}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                }
+                </TouchableOpacity>
 
 
 
@@ -768,7 +745,7 @@ export default Login = ({ navigation, route }) => {
 
                   }
                 }
-                onPress={() => loginbtn()}
+                onPress={() => onLogin()}
               />
 
             </View>

@@ -18,7 +18,6 @@ class FirebasePushNotifications {
   getFcmToken = async () => {
     const fcmToken = await messaging().getToken()
     if (fcmToken) {
-      console.log('fcmToken', fcmToken);
       return fcmToken;
       //fcmtoken= fcmToken
     } else {
