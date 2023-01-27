@@ -339,10 +339,6 @@ export const whiteStar=`<svg xmlns="http://www.w3.org/2000/svg" width="12.042" h
 <path id="Polygon_65" data-name="Polygon 65" d="M5.569.958a.5.5,0,0,1,.9,0l1.3,2.757A.5.5,0,0,0,8.15,4l2.936.455a.5.5,0,0,1,.282.843L9.216,7.508a.5.5,0,0,0-.135.428l.5,3.095a.5.5,0,0,1-.735.518l-2.583-1.42a.5.5,0,0,0-.482,0L3.2,11.548a.5.5,0,0,1-.735-.518l.5-3.095a.5.5,0,0,0-.135-.428L.674,5.294a.5.5,0,0,1,.282-.843L3.892,4a.5.5,0,0,0,.376-.281Z" fill="#fff"/>
 </svg>`
 
-export const VideoCall=`<svg xmlns="http://www.w3.org/2000/svg" width="12.308" height="12" viewBox="0 0 12.308 12">
-<path id="video_call" data-name="video call" d="M3421.385,8811.461l1.846-1.384v3.692l-1.846-1.385v1.385h-4.308v-3.692h4.308Zm-5.071,4.154h8.763v-7.385h-9.846v8.24Zm.425,1.23L3414,8819v-11.385a.61.61,0,0,1,.615-.615h11.077a.61.61,0,0,1,.615.615v8.615a.609.609,0,0,1-.615.615Z" transform="translate(-3414 -8807)" fill="#fff"/>
-</svg>`
-
 export const rightBlue=`<svg xmlns="http://www.w3.org/2000/svg" width="4.892" height="8.561" viewBox="0 0 4.892 8.561">
 <path id="back" d="M4.892,4.282h0a.609.609,0,0,1-.187.44h0L1.036,8.392l0,0a.611.611,0,1,1-.821-.905l3.2-3.2L.171,1.036h0A.611.611,0,0,1,1.036.171h0L4.705,3.84h0a.609.609,0,0,1,.187.44Z" fill="#0888d1"/>
 </svg>`
@@ -359,3 +355,7 @@ export const roundCheck=`<svg xmlns="http://www.w3.org/2000/svg" width="14" heig
 </svg>`
 
 export const Arrow = require('./arrow.png')
+
+export const VideoCall=`<svg xmlns="http://www.w3.org/2000/svg" width="12.308" height="12" viewBox="0 0 12.308 12">
+<path id="video_call" data-name="video call" d="M3421.385,8811.461l1.846-1.384v3.692l-1.846-1.385v1.385h-4.308v-3.692h4.308Zm-5.071,4.154h8.763v-7.385h-9.846v8.24Zm.425,1.23L3414,8819v-11.385a.61.61,0,0,1,.615-.615h11.077a.61.61,0,0,1,.615.615v8.615a.609.609,0,0,1-.615.615Z" transform="translate(-3414 -8807)" fill="#fff"/>
+</svg>`

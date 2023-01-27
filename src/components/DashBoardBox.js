@@ -14,6 +14,7 @@ const DashBoardBox = ({
   actionTextColor,
   actionMessage
 }) => {
+  (actionTextColor === '') ? 'black' : actionTextColor
   return (
     <>
       <TouchableOpacity onPress={onPress}>

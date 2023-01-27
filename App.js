@@ -16,7 +16,7 @@ import * as Sentry from '@sentry/react-native';
 
 Sentry.init({ 
   dsn: 'https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192', 
-  enableNative: false,
+  enableNative: true,
   integrations: [
     new Sentry.ReactNativeTracing({
       tracingOrigins: ["localhost", Configurations.baseURL, /^\//],

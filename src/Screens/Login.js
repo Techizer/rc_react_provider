@@ -108,6 +108,71 @@ export default Login = ({ navigation, route }) => {
 
   }
 
+  const getalldata = (position) => {
+
+    let longitude = position.coords.longitude
+    let latitude = position.coords.latitude
+    setState(prev => ({
+      ...prev,
+      latitude: latitude,
+      longitude: longitude,
+      loading: false
+    }))
+    myLatitude = latitude,
+      myLongitude = longitude
+    current_lat_long = position
+
+    let event = { latitude: latitude, longitude: longitude, latitudeDelta: state?.latdelta, longitudeDelta: state?.longdelta }
+    getadddressfromlatlong(event)
+  }
+
+  const getadddressfromlatlong = (event) => {
+
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + Configurations.mapkey + '&language=' + Configurations.maplanguage)
+
+      .then((response) => response.json())
+      .then((resp) => {
+        let responseJson = resp.results[0]
+        let city = '';
+        let administrative_area_level_1 = '';
+        for (let i = 0; i < responseJson.address_components.length; i++) {
+          if (responseJson.address_components[i].types[0] == "locality") {
+            city = responseJson.address_components[i].long_name
+            break;
+          }
+          else if (responseJson.address_components[i].types[0] == "administrative_area_level_2") {
+            city = responseJson.address_components[i].long_name
+          }
+
+        }
+        for (let j = 0; j < responseJson.address_components.length; j++) {
+          if (responseJson.address_components[j].types[0] == "administrative_area_level_1") {
+            administrative_area_level_1 = responseJson.address_components[j].long_name
+          }
+
+        }
+        let details = responseJson
+        let data2 = { 'latitude': details.geometry.location.lat, 'longitude': details.geometry.location.lng, 'address': details.formatted_address, 'city': city, 'administrative_area_level_1': administrative_area_level_1 }
+        add_location = data2
+
+        GooglePlacesRef && GooglePlacesRef.setAddressText(details.formatted_address)
+        setState(prev => ({
+          ...prev,
+          latdelta: event.latitudeDelta,
+          longdelta: event.longitudeDelta,
+          latitude: event.latitude,
+          longitude: event.longitude,
+          addressselected: details.formatted_address,
+          add_my_location: data2
+        }))
+
+        localStorage.setItemObject('address_arr', add_location.address);
+      })
+
+
+
+  }
+
   const getlatlong = async () => {
 
     let permission = await localStorage.getItemString('permission')

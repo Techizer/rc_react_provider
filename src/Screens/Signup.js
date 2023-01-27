@@ -8,6 +8,8 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { vs, s } from 'react-native-size-matters';
+import { SvgXml } from 'react-native-svg';
+import { leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
 
 export default Signup = ({ navigation, route }) => {
 
@@ -92,12 +94,12 @@ export default Signup = ({ navigation, route }) => {
       path: '',
       mime: '',
       filename: '',
-    }, 
+    },
     scfhs_image: {
       path: '',
       mime: '',
       filename: '',
-    }, 
+    },
   })
 
   useEffect(() => {
@@ -271,16 +273,16 @@ export default Signup = ({ navigation, route }) => {
 
       if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
         if ((classStateData.scfhs_number.length < 8 || classStateData.scfhs_number.trim().length < 8)) {
-          MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
+          MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
           return false;
         }
 
         if (classStateData.scfhs_number.length > 11 || classStateData.scfhs_number.trim().length > 11) {
-          MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
+          MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
           return false;
         }
         if (classStateData.scfhs_image.path == '') {
-          MessageFunctions.showError("Please upload SCFHS file")
+          MessageFunctions.showError("Please upload Health License File")
           return false;
         }
       }
@@ -367,17 +369,17 @@ export default Signup = ({ navigation, route }) => {
   }
 
   const Galleryopen = () => {
-    
+
     Media.launchGellery(true).then((obj) => {
       const pths = obj.path.split('/')
       const source = {
-        filename: pths[pths.length-1],
+        filename: pths[pths.length - 1],
         mime: obj.mime,
         path: obj.path,
       };
 
-      console.log({source});
-  
+      console.log({ source });
+
       if (classStateData.imageType === 'id_image') {
         setState({
           id_image: source,
@@ -401,14 +403,14 @@ export default Signup = ({ navigation, route }) => {
 
   const DocumentGalleryopen = async () => {
     Media.launchDocumentGellery(true).then((res) => {
-      
+
       const source = {
         filename: res.name,
         mime: res.type,
         path: res.uri,
       };
-      
-      console.log({source});
+
+      console.log({ source });
 
       if (classStateData.imageType === 'id_image') {
         setState({
@@ -427,7 +429,7 @@ export default Signup = ({ navigation, route }) => {
         });
       }
 
-      
+
     }).catch((error) => {
       setState({ mediamodal: false })
     })
@@ -803,7 +805,7 @@ export default Signup = ({ navigation, route }) => {
 
           <View style={{ width: '55%', alignSelf: 'center', }}>
             <Text
-            style={{
+              style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
                 fontSize: Font.Forgot,
@@ -862,7 +864,7 @@ export default Signup = ({ navigation, route }) => {
             mainContainer={{
               width: '100%',
             }}
-            lableText={'SCFHS Registration ID'}
+            lableText={'Health License ID'}
             inputRef={(ref) => {
               scfhs_numberInput = ref;
             }}
@@ -907,7 +909,7 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.Regular,
                   fontSize: Font.Remember,
                 }}>
-                Upload Photocopy of Reg. ID
+                Upload Photocopy of Health License
               </Text>
             </View>
           </TouchableOpacity>
@@ -1427,10 +1429,10 @@ export default Signup = ({ navigation, route }) => {
                 }}
                 style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
               >
-                <Image
-                  style={{ width: mobileW * 10 / 100, height: mobileW * 10 / 100, resizeMode: 'contain' }}
-                  source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}>
-                </Image>
+                <SvgXml xml={
+                  Configurations.textalign == "right"
+                    ? rightArrow : leftArrow
+                } height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
 
               </TouchableHighlight>
             </View>
@@ -1529,7 +1531,7 @@ export default Signup = ({ navigation, route }) => {
                               selectuserType: index,
                               showUsertype: false
                             })
-                            console.log({index});
+                            console.log({ index });
                             if (index == 0 || index == 3 || index == 4) {
                               get_speciality(index)
                             }

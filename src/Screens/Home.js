@@ -122,12 +122,11 @@ export default Home = ({ navigation, route }) => {
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-    var that = this;
     PushNotification.configure({
       onNotification: function (notification) {
         console.log("NOTIFICATION:", notification);
         if (notification.data?.type == "Logout") {
-          that.logout();
+          logout();
         }
         if (notification.userInteraction) {
           // Handle notification click
@@ -143,7 +142,7 @@ export default Home = ({ navigation, route }) => {
                   text: "Reject",
                   onPress: () => {
                     console.log("Cancel Pressed");
-                    that.callRejectNotification(data)
+                    callRejectNotification(data)
                   },
                   style: "cancel",
                 },
@@ -158,17 +157,13 @@ export default Home = ({ navigation, route }) => {
                     // val toUserName = json.getString("toUserName")
                     // val toUserId = json.getString("toUserId")
                     // val orderId = json.getString("order_id")
-                    that.showVideoCallAlert(data)
+                    showVideoCallAlert(data)
                   },
                   style: "default",
                 },
               ],
               {
                 cancelable: true,
-                // onDismiss: () =>
-                //   Alert.alert(
-                //     "This alert was dismissed by tapping outside of the alert dialog."
-                //   ),
               }
             )
           }
@@ -244,28 +239,6 @@ export default Home = ({ navigation, route }) => {
       });
   }
 
-  const getnotification_Call = async () => {
-
-
-    PushNotification.createChannel(
-      {
-        channelId: "rootscares1", // (required)
-        channelName: "rootscare messasge", // (required)
-
-        importance: 4, // (optional) default: 4. Int value of the Android notification importance
-        vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-      },
-      (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-    )
-
-    // console.log('logmy',remoteMessage.notification.body)
-    // console.log('logmy',remoteMessage.notification.title)
-
-
-
-  }
-
-
   const messageListener = async () => {
 
     //alert('come')
@@ -280,13 +253,12 @@ export default Home = ({ navigation, route }) => {
       },
       (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
     )
-    var that = this;
     messaging().onMessage(async remoteMessage => {
 
-      console.log('------------------------------', 'I am Notification');
+      console.log({remoteMessage});
 
       if (remoteMessage.data?.type == "Logout") {
-        that.logout();
+        logout();
       }
 
       PushNotification.localNotification({

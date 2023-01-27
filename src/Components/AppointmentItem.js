@@ -1,13 +1,8 @@
 import {
-    FlatList,
     Text,
     View,
     TouchableOpacity,
     StyleSheet,
-    TouchableHighlight,
-    Image,
-    ScrollView,
-    ActivityIndicator
 } from "react-native";
 import React from "react";
 import moment from "moment-timezone";
@@ -18,6 +13,8 @@ import { Colors, Font } from "../Provider/Colorsfont";
 import { LanguageConfiguration } from "../Helpers/LanguageProvider";
 import { Configurations } from "../Provider/configProvider";
 import { mobileW, windowHeight, windowWidth } from "../Helpers/Utils";
+import { VideoCall } from "../Assets/Icons/SvgIcons/Index";
+import { SvgXml } from "react-native-svg";
 
 const AppointmentItem = ({
     item,
@@ -363,7 +360,7 @@ const AppointmentItem = ({
 
                         <View
                             style={{
-                                alignItems: 'flex-end',
+                                alignItems: 'center',
                                 flexDirection: 'row',
 
                                 width: '65%',
@@ -372,27 +369,31 @@ const AppointmentItem = ({
 
                             }}>
 
-                            {(item.acceptance_status == 'Accepted' &&
+                            {((item.acceptance_status == 'Accepted' &&
                                 item.service_type == "Doctor" &&
                                 item.appointment_type === "Online" && VideoCallBtn == true) &&
-                                item.booking_type === 'online_task' &&
-                                <TouchableOpacity onPress={onPressVideoCall}
+                                item.booking_type === 'online_task') &&
+
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    onPress={onPressVideoCall}
                                     style={{
-                                        backgroundColor: Colors.buttoncolorhgreen,
-                                        width: '45%',
-                                        borderRadius: (mobileW * 1) / 100,
-                                        justifyContent: 'center',
-                                        paddingVertical: mobileW * 2 / 100,
-                                        marginRight: 10
-                                    }}>
+                                        paddingHorizontal: s(8),
+                                        paddingVertical: vs(4),
+                                        backgroundColor: Colors.Green,
+                                        borderRadius: 5,
+                                        flexDirection: 'row',
+                                        alignItems: 'center'
+                                    }} >
+                                    <SvgXml xml={VideoCall} />
                                     <Text
                                         style={{
-                                            textAlign: 'center',
-                                            color: Colors.white_color,
-                                            textTransform: 'uppercase',
-                                            fontFamily: Font.Medium,
-                                            fontSize: mobileW * 3 / 100,
-                                        }}>VIDEO CALL</Text>
+                                            fontSize: Font.small,
+                                            fontFamily: Font.SemiBold,
+                                            color: Colors.White,
+                                            marginLeft: s(7)
+                                        }}
+                                    >VIDEO CALL</Text>
                                 </TouchableOpacity>
 
                             }

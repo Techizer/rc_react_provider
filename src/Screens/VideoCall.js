@@ -207,7 +207,7 @@ const VideoCall = (props) => {
       dominantSpeakerEnabled: true
     });
     setStatus("connecting");
-    countTimeCall()
+    // countTimeCall()
   };
 
   const _onEndButtonPress = () => {
@@ -226,6 +226,7 @@ const VideoCall = (props) => {
 
   const _onRoomDidConnect = () => {
     setStatus("connected");
+    countTimeCall()
   };
 
   const _onRoomDidDisconnect = ({ error }) => {
