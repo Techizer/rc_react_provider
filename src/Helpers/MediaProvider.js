@@ -49,7 +49,7 @@ class MediaProvider {
             cropping: cropvalue,
             includeBase64: true,
             includeExif: true,
-            compressImageQuality: 0.4,
+            compressImageQuality: 0.8,
             // multiple: true
          }).then((res) => {
             resolve(res);
@@ -108,7 +108,6 @@ class MediaProvider {
                   DocumentPicker.types.allFiles
                ],
             });
-            console.log('resresresres', res);
             resolve(res[0]);
             // console.log(
             //    res.uri,

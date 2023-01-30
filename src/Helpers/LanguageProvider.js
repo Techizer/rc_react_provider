@@ -1,6 +1,6 @@
 import { Alert, ToastAndroid, I18nManager, Platform } from "react-native";
 import { localStorage } from '../Provider/localStorageProvider';
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Configurations } from "../Provider/configProvider";
 import RNRestart from 'react-native-restart';
 global.language_key = 1;
