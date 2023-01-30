@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, LOGGEDIN_USER_TYPE, SHOULD_AUTO_LOGIN } from '../Types';
+import { ALL_USER_LOGIN_DATA, LOGGEDIN_USER_TYPE, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from '../Types';
 import { LOGGEDIN_USER_DATA, LOGOUT, FCM_DEVICE_TOKEN } from '../Types';
 
 const initialState = {
@@ -45,6 +45,16 @@ const Authentication = (state = initialState, action = {}) => {
             return {
                 ...state,
                 fcmDeviceToken: action.payload,
+            };
+        case USER_REMEMBERED_EMAIL:
+            return {
+                ...state,
+                userEmail: action.payload,
+            };
+        case USER_REMEMBERED_PASSWORD:
+            return {
+                ...state,
+                userPassword: action.payload,
             };
         case SHOULD_AUTO_LOGIN:
             return {

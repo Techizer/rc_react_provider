@@ -25,6 +25,7 @@ import SimpleToast from 'react-native-simple-toast';
 import AddressInputPopup from '../Components/AddressInputPopup';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useSelector } from 'react-redux';
 
 let ScreenHeight = Dimensions.get('window').height;
 
@@ -45,6 +46,12 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
+  
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
     address_id = route?.params?.address_id;
     isNew = route?.params?.isNew;
 
@@ -55,7 +62,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
 
     const getSpecificCountryCode = async () => {
 
-        let user_details = await localStorage.getItemObject('user_arr');
+        let user_details = loginUserData
         const { work_area } = user_details
         if (work_area === 'UAE') {
             setState({
@@ -265,7 +272,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     }
 
     const getPlaceKey = async () => {
-        let user_details = await localStorage.getItemObject('user_arr');
+        let user_details = loginUserData
         console.log("user_details:: ", user_details);
         let place_key = user_details['place_key'];
         setState({

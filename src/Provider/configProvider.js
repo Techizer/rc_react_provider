@@ -72,65 +72,6 @@ class configProvider {
 		player_id_me1 = player_id
 	}
 
-	checkUserDeactivate = async (navigation) => {
-		MessageFunctions.toast('Your account has been deactivated by admin', 'long')
-		setTimeout(() => {
-			this.AppLogout(navigation);
-		}, 200);
-		return false;
-	}
-	AppLogout = async (navigation) => {
-		console.log('AppLogout');
-		//----------------------- if get user login type -------------
-		var userdata = await localStorage.getItemObject('user_arr');
-		var password = await localStorage.getItemString('password');
-		var email = await localStorage.getItemString('email');
-		var rememberme = await localStorage.getItemString('rememberme');
-		var language = await localStorage.getItemString('language');
-		console.log(password);
-		console.log(email);
-		console.log(rememberme);
-		console.log(language);
-		Configurations.login = 0
-		if (userdata != null) {
-			if (userdata.login_type == 0) {
-				localStorage.clear();
-				if (rememberme == 'yes') {
-					localStorage.setItemString('password', password);
-					localStorage.setItemString('email', email);
-					localStorage.setItemString('rememberme', rememberme);
-					// /	localStorage.setItemString('language',JSON.stringify(language));
-				} else {
-					localStorage.setItemString('password', password);
-					localStorage.setItemString('email', email);
-					localStorage.setItemString('language', JSON.stringify(language));
-				}
-
-				navigation.navigate('Login');
-
-			} else if (userdata.login_type == 1) {
-				console.log('face boook login');
-				LoginManager.logOut();
-				localStorage.clear();
-				navigation.navigate('Login')
-			} else if (userdata.login_type == 2) {
-				console.log('google login')
-				try {
-					await GoogleSignin.revokeAccess();
-					await GoogleSignin.signOut();
-				} catch (error) {
-					alert(error);
-				}
-				localStorage.clear();
-				navigation.navigate('Login')
-			} else if (userdata.login_type == 5) {
-				console.log('face boook login')
-			}
-		} else {
-			console.log('user arr not found');
-		}
-	}
-
 };
 export const Configurations = new configProvider();
 

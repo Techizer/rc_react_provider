@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Alert, Image, TouchableOpacity, FlatList } from 'react-native';
-import { Colors, Font, MessageFunctions, Configurations, mobileW, localStorage, API } from '../Helpers/Utils';
+import { Colors, Font, MessageFunctions, Configurations, mobileW, API } from '../Helpers/Utils';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useSelector } from 'react-redux';
 
 export default Withdrawal = ({ navigation, route }) => {
   
@@ -18,6 +19,12 @@ export default Withdrawal = ({ navigation, route }) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   useEffect(() => {
     getServices()
   }, [])
@@ -28,7 +35,7 @@ export default Withdrawal = ({ navigation, route }) => {
   }
 
   const getServices = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
@@ -98,7 +105,7 @@ export default Withdrawal = ({ navigation, route }) => {
   };
 
   const deleteBankDetails = async (acceptance_status) => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let url = Configurations.baseURL + "api-provider-delete-bank-details";

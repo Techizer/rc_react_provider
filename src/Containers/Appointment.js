@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList } from 'react-native';
 
-import { Font, MessageFunctions, Configurations, mobileW, localStorage, API } from '../Helpers/Utils';
+import { Font, MessageFunctions, Configurations, mobileW, API } from '../Helpers/Utils';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import AppointmentItem from '../Components/AppointmentItem';
+import { useSelector } from 'react-redux';
 
 
 export default Appointment = ({ navigation, route, pageName }) => {
@@ -19,6 +20,11 @@ export default Appointment = ({ navigation, route, pageName }) => {
     getApppointments()
     getDay()
   }, [])
+
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
 
   const reloadList = () => {
     getApppointments()
@@ -86,7 +92,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
   };
 
   const getApppointments = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData;
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
@@ -145,7 +151,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
   };
 
   const updateProviderAppointmentStatus = async (acceptanceStatus, appointmentID, listIndex) => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData;
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let url = Configurations.baseURL + "api-update-provider-appointment-status";

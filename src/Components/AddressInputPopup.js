@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Text, TouchableOpacity, View, Image, StyleSheet, ActivityIndicator, TouchableHighlight, Keyboard, Platform } from "react-native";
 import Modal from "react-native-modal";
 import { Colors, Font } from "../Provider/Colorsfont";
-import { windowWidth, Configurations, localStorage, API, MessageFunctions, windowHeight } from "../Helpers/Utils";
+import { windowWidth, Configurations, API, MessageFunctions, windowHeight } from "../Helpers/Utils";
 import { Cross } from "../Assets/Icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
@@ -10,6 +10,7 @@ import AuthInputBoxSec from "./AuthInputBoxSec";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Button from "./Button";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
+import { useSelector } from "react-redux";
 
 const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () => { },
     navigation,
@@ -37,6 +38,11 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
     const landmarkRef = useRef()
     const buildingRef = useRef()
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
     useEffect(() => {
         setGoogleAddress(googleAddress)
 
@@ -57,10 +63,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
     }, [addressIDParam, addressTitleParam, googleAddressParam, nearestLandmarkParam, buildingNameParam, isDefaultParam, longitudeParam, latitudeParam, shouldShowEditParam])
 
     const addEditAddress = async () => {
-        var user_details = await localStorage.getItemObject("user_arr");
-        let user_id = user_details["user_id"];
-
-        console.log({user_details});
+        let user_id = loginUserData["user_id"];
 
         let endpoint = ''
         if (type === 'editAddress') {
@@ -93,7 +96,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
         } else if (type === 'addAddress') {
             data.append("user_id", user_id);
             data.append("title", title);
-            data.append("service_type", user_details?.user_type);
+            data.append("service_type", loginUserData?.user_type);
             data.append("address", googleAddress);
             data.append("landmark", nearest);
             data.append("building_name", building);

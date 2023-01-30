@@ -1,9 +1,10 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView, Dimensions, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Colors, Font, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, MessageFunctions, MessageTexts, Configurations, mobileW, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from '../Assets/Icons/IReferences';
 import ScreenHeader from '../Components/ScreenHeader';
+import { useSelector } from 'react-redux';
 
 
 const windowHeight = Math.round(Dimensions.get("window").height);
@@ -35,8 +36,14 @@ export default NeedSupport = ({ navigation, route }) => {
     });
   }, [])
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const getData = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
@@ -65,7 +72,7 @@ export default NeedSupport = ({ navigation, route }) => {
   }
 
   const onSubmit = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']

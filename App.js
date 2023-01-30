@@ -1,23 +1,20 @@
 
 
 import React, { Component } from 'react';
-import { I18nManager, StatusBar, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ApplicationContainerWrapper, AppConsumer } from './src/Containers/ApplicationContainerWrapper';
 import Stacknav from './src/Stacks/Routenavigation';
 import { FBPushNotifications } from './src/Helpers/FirebasePushNotifications';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage } from './src/Helpers/Utils';
+import { Configurations } from './src/Helpers/Utils';
 import FlashMessage from "react-native-flash-message";
-import RNRestart from 'react-native-restart';
 import moment from 'moment-timezone';
 import { ScreenReferences } from './src/Stacks/ScreenReferences';
 
 import * as Sentry from '@sentry/react-native';
 import { useEffect } from 'react';
-import { persistor, store } from './src/Redux/Store';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import { store, persistor } from './src/Redux/Store'
 Sentry.init({
   dsn: 'https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192',
   enableNative: false,

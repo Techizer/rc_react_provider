@@ -1,30 +1,19 @@
-import React, { Component, useEffect, useState } from 'react';
-import {
-  TextInput, Switch, Text, View,
-  ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TextInput, Switch, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   Colors,
   Font,
-  mobileH,
   MessageFunctions,
-  MessageTexts,
   Configurations,
   mobileW,
-  localStorage,
-
-
-  handleback,
-  LanguageConfiguration,
-  API,
-  MessageHeadings,
+  API
 } from '../Helpers/Utils';
 
 import Styles from '../Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
+import { Button } from '../Components'
+import { useSelector } from 'react-redux';
 
 export default PriceList = ({ navigation, route, pageName, page }) => {
   const [classStateData, setClassStateData] = useState({
@@ -40,8 +29,14 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     getServices()
   }, [])
 
+  
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const getServices = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let currency_symbol = user_details['currency_symbol']
@@ -142,7 +137,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
   }
 
   const insertUpdatePriceList = async (taskId, taskPrice) => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     console.log('pageName:: ', pageName);

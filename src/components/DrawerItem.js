@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Text, TouchableOpacity, View, Image, StyleSheet, Dimensions, } from "react-native";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from 'react-native-svg';
@@ -6,7 +6,6 @@ import { SvgXml } from 'react-native-svg';
 import { Colors } from "../Provider/Colorsfont";
 import { Font } from "../Provider/Colorsfont";
 import { Configurations } from "../Provider/configProvider";
-import { localStorage } from "../Provider/localStorageProvider";
 
 const deviceWidth = Dimensions.get('window').width
 let isGuest = false;
@@ -58,14 +57,6 @@ const DrawerItemContainer = ({
 
 
     });
-    useEffect(() => {
-        checkUserType()
-    })
-
-    const checkUserType = async () => {
-        isGuest = await localStorage.getItemString('Guest')
-        // console.log('.................', isGuest);
-    }
 
     return (
         <TouchableOpacity

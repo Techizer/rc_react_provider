@@ -1,6 +1,6 @@
 import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Colors, Font, Configurations, mobileW, localStorage, LanguageConfiguration, API } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 global.add_location = 'NA';
 global.amount_total = 0;
 global.username = 'NA'
@@ -8,17 +8,19 @@ import HTMLView from 'react-native-htmlview';
 import DeviceInfo from 'react-native-device-info';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useDispatch, useSelector } from 'react-redux';
+import { onUserLogout, setUserFCMToken, setUserLoginData } from '../Redux/Actions/UserActions';
+import {FBPushNotifications} from '../Helpers/FirebasePushNotifications'
 const appVersion = DeviceInfo.getVersion();
 
-export default Splash = ({navigation, route}) => {
+export default Splash = ({ navigation, route }) => {
 
   const [state, setState] = useState({
     email: '',
     password: '',
-    engbtn: true,
-    device_lang: 'AR',
+    device_lang: 'ENG',
     fcm_token: 123456,
-    loanguage: 1,
+    loanguage: 0,
     modalVisible3: false,
     appVer: '',
     updTitle: '',
@@ -30,70 +32,27 @@ export default Splash = ({navigation, route}) => {
     showHelp: '',
     helpTitle: '',
     helpUrl: '',
-    modalVisible3: ''
   })
 
-  const add_location = 'NA'
+  const {
+    userType,
+    shouldAutoLogin,
+    userEmail,
+    userPassword,
+    loginUserData
+  } = useSelector(state => state.Auth)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    language_fun()
-    authenticateSession()
+    checkAppVersion()
   }, [])
 
-  const language_fun = async () => {
-    let textalign = await localStorage.getItemObject('language');
-    console.log('textaligntextalign:: ', textalign);
-    if (textalign != null) {
-      console.log('textaligntextalign::if ', textalign);
-      if (textalign == 1) {
-
-        Configurations.textalign = 'right';
-        // Configurations.textalign = 'left';
-        Configurations.language = 1
-        setState(prev => ({
-          ...prev,
-          loanguage: 1
-        }))
-      } else {
-        localStorage.setItemObject('languagesetenglish', 3);
-        localStorage.setItemObject('languagecathc', 0)
-        Configurations.textalign = 'left';
-        Configurations.language = 0
-        setState(prev => ({
-          ...prev,
-          loanguage: 0
-        }))
-      }
-    }
-    else {
-      console.log('textaligntextalign::else ', textalign);
-      // Configurations.textalign = 'right';
-      // Configurations.language = 1
-      // localStorage.setItemObject('language', 1)
-      // setState({ loanguage: 1 })
-      Configurations.textalign = 'left';
-      Configurations.language = 0
-      localStorage.setItemObject('languagesetenglish', 3);
-      localStorage.setItemObject('languagecathc', 0)
-
-      setState(prev => ({
-        ...prev,
-        loanguage: 0
-      }))
-    }
-
-  }
-
-  const authenticateSession = async () => {
-    apiIosPatientUpdate()
-  }
-
-  const apiIosPatientUpdate = async () => {
+  const checkAppVersion = async () => {
     let lang = (state?.loanguage == 1) ? "ENG" : "ENG"
     let url = Configurations.baseURL + "api-ios-provider-update" + "?divice_lang=" + lang;
     console.log("url", url, Configurations.language)
     API.get(url, 1).then((obj) => {
-      
+
       if (obj.status == true) {
         if (parseFloat(obj.result.appVer) > parseFloat(appVersion)) {
           setState(prev => ({
@@ -112,122 +71,89 @@ export default Splash = ({navigation, route}) => {
           }))
 
         } else {
-          checkAuth()
+          setTimeout(() => {
+            createNewLoginSession()
+          }, 1000);
         }
 
-        console.log('get area', obj.result)
-
       } else {
-        checkAuth()
+        setTimeout(() => {
+          createNewLoginSession()
+        }, 1000);
         return false;
       }
     }).catch((error) => {
-      checkAuth()
+      createNewLoginSession()
       console.log("-------- error ------- " + error);
     })
 
   }
 
-  const checkAuth = () => {
-    setTimeout(() => {
-      new_authenticatesessinon()
-    }, 2000);
-  }
-
-  const checkAuthUserLogin = async (result, logindetail) => {
-    let result1 = await localStorage.getItemObject('user_signup');
-
-    let email = logindetail.email_phone
-    let password = logindetail.password
-    let user_type = result.user_type
-    var device_lang
-    if (Configurations.language == 0) {
-      device_lang = 'ENG'
-    }
-    else {
-      device_lang = 'AR'
-    }
-    let url = Configurations.baseURL + "api-service-provider-login";
-    var data = new FormData();
-
-    data.append('email', email)
-    data.append('password', password)
-    data.append('device_type', Configurations.device_type)
-    data.append('device_lang', device_lang)
-    data.append('fcm_token', fcmtoken)
-    data.append('user_type', user_type)
-
-    console.log('data', data)
-    API.post(url, data).then((obj) => {
-      console.log('obj', obj)
-      if (obj.status == true) {
-        var user_details = obj.result;
-        localStorage.setItemObject('user_arr', user_details);
-
-        navigation.navigate('Home')
-
-      }
-      else {
-        navigation.navigate('Login')
-      }
-    }).catch((error) => {
-      console.log("-------- error ------- " + error);
-
-    });
-  }
-
-  const checkLogout = async (result, logindetail) => {
-
-    let user_id = result.user_id;
-    let url = Configurations.baseURL + "api-check-login";
-    var data = new FormData();
-    data.append("user_id", user_id);
-    data.append("fcm_token", fcmtoken);
-
-    console.log("url", url);
-    console.log("data", data);
-    API
-      .post(url, data, 1)
-      .then((obj) => {
-        console.log("obj checkLogout: ", obj);
-        if (obj.result == true) {
-          checkAuthUserLogin(result, logindetail);
-
-        } else {
-          logout()
-        }
-      })
-      .catch((error) => {
-        console.log("-------- error ------- " + error);
-      });
-  }
-
   const logout = async () => {
-    await localStorage.removeItem("user_arr");
-    await localStorage.removeItem("user_login");
+    dispatch(onUserLogout())
     navigation.reset({
       index: 0,
       routes: [{ name: ScreenReferences.Login }],
     });
   };
 
-  const new_authenticatesessinon = async () => {
+  const createNewLoginSession = async () => {
 
-    let result = await localStorage.getItemObject('user_arr');
-    let logindetail = await localStorage.getItemObject('user_login');
-    console.log('splasedata', logindetail)
+    const fcmToken = await FBPushNotifications.getFcmToken()
+
+    let result = loginUserData
     if (result != null) {
+      let user_id = result.user_id;
+      let url = Configurations.baseURL + "api-check-login";
+      var data = new FormData();
+      data.append("user_id", user_id);
+      data.append("fcm_token", fcmToken);
+      
+      API
+        .post(url, data, 1)
+        .then((obj) => {
+          if (obj.result == true) {
+            var device_lang
+            if (Configurations.language == 0) {
+              device_lang = 'ENG'
+            }
+            else {
+              device_lang = 'AR'
+            }
+            let url = Configurations.baseURL + "api-service-provider-login";
+            var data = new FormData();
 
-      console.log("result ", result)
-      checkLogout(result, logindetail)
-      //  if(result.otp_verify == 1)
-      //  {
-      //&& result.profile_complete==0
+            data.append('email', userEmail)
+            data.append('password', userPassword)
+            data.append('device_type', Configurations.device_type)
+            data.append('device_lang', device_lang)
+            data.append('fcm_token', fcmToken)
+            data.append('user_type', result?.user_type)
 
+            API.post(url, data).then((obj) => {
+              if (obj.status == true) {
+                dispatch(setUserLoginData(obj.result))
+                dispatch(setUserFCMToken(fcmToken))
+                navigation.navigate(ScreenReferences.Home)
+              }
+              else {
+                navigation.navigate(ScreenReferences.Splash)
+              }
+            }).catch((error) => {
+              console.log("-------- error ------- " + error);
 
+            });
+
+          } else {
+            logout()
+          }
+        })
+        .catch((error) => {
+          console.log("-------- error ------- " + error);
+        });
     }
     else {
-      navigation.navigate('Login')
+      navigation.navigate(ScreenReferences.Login)
     }
 
   }
@@ -361,7 +287,7 @@ export default Splash = ({navigation, route}) => {
                       ...prev,
                       modalVisible3: false
                     }))
-                    new_authenticatesessinon()
+                    createNewLoginSession()
                   }}
                     style={{
                       width: mobileW * 35 / 100,

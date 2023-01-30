@@ -4,6 +4,7 @@ import { Colors, Font, MessageFunctions, Configurations, mobileW, localStorage, 
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useSelector } from 'react-redux';
 
 export default More = ({ navigation, route }) => {
   const [classStateData, setClassStateData] = useState({
@@ -17,18 +18,11 @@ export default More = ({ navigation, route }) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      get_language()
-    });
-  }, [])
+  
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
 
-  const get_language = async () => {
-    let textalign = await localStorage.getItemObject('language');
-    if (textalign != null) {
-      setState({ langaugeme: textalign })
-    }
-  }
 
   const launguage_setbtn = (language) => {
     console.log('Welcome')
@@ -43,7 +37,7 @@ export default More = ({ navigation, route }) => {
   }
 
   const submit_click = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
@@ -91,7 +85,7 @@ export default More = ({ navigation, route }) => {
     );
   }
   const delete_click = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 

@@ -1,8 +1,8 @@
-import { Text, View, StatusBar, BackHandler, Alert, SafeAreaView, KeyboardAwareScrollView, ScrollView, styles, TouchableOpacity, Image, TextInput } from 'react-native';
-import React, { Component, useEffect, useState } from 'react';
+import { Text, View, StatusBar, BackHandler, Alert, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
-import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, localStorage, MessageFunctions, MessageTexts, MessageHeadings } from '../Helpers/Utils';
+import { AuthInputBoxSec } from '../Components'
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts } from '../Helpers/Utils';
 import { Icons } from '../Assets/Icons/IReferences';
 
 export default OTP = ({ navigation, route }) => {

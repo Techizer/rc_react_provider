@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Colors, Font, mobileH, Configurations, mobileW, localStorage, API, MessageFunctions, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, API, MessageFunctions, MessageHeadings } from '../Helpers/Utils';
 import Styles from '../Styles';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -11,6 +11,7 @@ import { DashBoardBox } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useSelector } from 'react-redux';
 
 export default MyProfile = ({ navigation, route }) => {
 
@@ -76,12 +77,18 @@ export default MyProfile = ({ navigation, route }) => {
     });
   }, [])
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const setState = payload => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
   const getNotifications = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
@@ -135,7 +142,7 @@ export default MyProfile = ({ navigation, route }) => {
   }
 
   const getProfile = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']

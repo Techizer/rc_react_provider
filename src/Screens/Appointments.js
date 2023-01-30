@@ -1,26 +1,18 @@
 import React, { Component, useEffect } from 'react';
-import { useWindowDimensions, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, Dimensions, Platform, StatusBar } from 'react-native';
+import { useWindowDimensions, View, Dimensions, Platform, StatusBar } from 'react-native';
 import {
   Colors,
   Font,
-  mobileH,
-  MessageFunctions,
-  MessageTexts,
   Configurations,
   mobileW,
-  localStorage,
-  
-  
-  handleback,
   LanguageConfiguration,
   API,
-  MessageHeadings,
 } from '../Helpers/Utils';
 
-import Styles from '../Styles';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, TabBar } from 'react-native-tab-view';
 import AppointmentContainer from '../Containers/Appointment';
 import ScreenHeader from '../Components/ScreenHeader';
+import { useSelector } from 'react-redux';
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const windowWidth = Math.round(Dimensions.get("window").width);
@@ -76,10 +68,14 @@ export default Appointments = ({ navigation }) => {
     get_all_count()
   }, []);
 
+  
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const get_all_count = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
+    let user_id = loginUserData['user_id']
 
     let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)

@@ -5,16 +5,13 @@ import { Configurations } from "../Provider/configProvider";
 import {
   API,
   Colors,
-  
   Font,
-  LanguageConfiguration,
-  
-  localStorage,
   mobileW,
   MessageFunctions,
 } from "../Helpers/Utils";
 import Styles from "../Styles";
 import {ScreenReferences} from '../Stacks/ScreenReferences'
+import { useSelector } from "react-redux";
 
 const LabPackageListing = (props) => {
   const { navigation } = props;
@@ -29,12 +26,18 @@ const LabPackageListing = (props) => {
     getPackageList();
   }, []);
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const reloadPackList = () => {
     getPackageList();
   }
 
   const getPackageList = async () => {
-    let user_details = await localStorage.getItemObject("user_arr");
+    let user_details = loginUserData
     let user_id = user_details["user_id"];
     let user_type = user_details['user_type']
     let url = Configurations.baseURL + "api-get-lab-task";
@@ -65,7 +68,7 @@ const LabPackageListing = (props) => {
   };
 
   const apiLabPackageDisable = async (item, index) => {
-    let user_details = await localStorage.getItemObject("user_arr");
+    let user_details = loginUserData
     let user_id = user_details["user_id"];
     let user_type = user_details['user_type']
     let url = Configurations.baseURL + "api-lab-package-disable";

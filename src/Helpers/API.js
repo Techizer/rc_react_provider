@@ -20,7 +20,6 @@ class ApiContainer {
             },
           }).then((response) => response.json())
             .then((obj) => {
-              console.log('i am line no 20')
               if (loding_status == 0) {
                 global.props.hideLoader();
               }

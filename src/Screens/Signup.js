@@ -1,7 +1,7 @@
 import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { CameraGallery, Colors, Font, mobileH, localStorage, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Helpers/Utils';
+import { CameraGallery, Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";

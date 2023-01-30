@@ -3,18 +3,18 @@ import { FlatList, TextInput, Image, Text, TouchableOpacity, ScrollView } from "
 import { View } from "react-native-animatable";
 import HTMLView from "react-native-htmlview";
 import { Configurations } from "../Provider/configProvider";
-import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
+import { Button } from '../Components'
 import {
   API,
   Colors,
   Font,
   LanguageConfiguration,
-  localStorage,
   mobileW,
   MessageFunctions,
 } from "../Helpers/Utils";
 import Styles from "../Styles";
 import { Icons } from "../Assets/Icons/IReferences";
+import { useSelector } from "react-redux";
 
 const LabPackageDetails = ({ navigation, route }) => {
   const { packageId, providerId } = route.params;
@@ -23,12 +23,18 @@ const LabPackageDetails = ({ navigation, route }) => {
   const [currencyData, setCurrency] = useState();
   const [priceData, setPrice] = useState("");
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   useEffect(() => {
     getPackageList();
   }, []);
 
   const getPackageList = async () => {
-    let user_details = await localStorage.getItemObject("user_arr");
+    let user_details = loginUserData;
     let user_id = user_details["user_id"];
     let currency_symbol = user_details['currency_symbol']
     setCurrency(currency_symbol)
@@ -75,7 +81,7 @@ const LabPackageDetails = ({ navigation, route }) => {
   }
 
   const insertUpdatePriceList = async (taskId, taskPrice) => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData;
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 

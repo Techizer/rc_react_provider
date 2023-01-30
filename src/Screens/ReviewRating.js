@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, FlatList, SafeAreaView, Image, Modal, TouchableOpacity, StatusBar, Dimensions, Platform } from 'react-native';
-import { Colors, Font, Configurations, mobileW, localStorage, handleback, LanguageConfiguration, API } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
+import { useSelector } from 'react-redux';
 
 
 export default ReviewRating = ({ navigation, route }) => {
@@ -27,8 +28,14 @@ export default ReviewRating = ({ navigation, route }) => {
     getNotifications(0)
   }, [])
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const getNotifications = async (page) => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let apishow = "api-all-provider-review"

@@ -1,24 +1,21 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, StatusBar, Dimensions } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
-import { DrawerSubMenu } from '../Components'
-import Styles from '../Styles';
+import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, Modal, Dimensions } from 'react-native';
+import { Colors, Font, MessageFunctions, Configurations, LanguageConfiguration, API } from '../Helpers/Utils';
 import { DrawerActions } from '@react-navigation/native';
 import { s, vs } from 'react-native-size-matters';
-import { Appointment, MyAppointment, dummyUser, leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
+import { dummyUser, leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
 import { SvgXml } from 'react-native-svg';
 import DrawerItemContainer from '../Components/DrawerItem';
 import { DrawerIcons } from '../Assets/Icons/drawer';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useDispatch, useSelector } from 'react-redux';
+import { onUserLogout } from '../Redux/Actions/UserActions';
 global.add_location = 'NA';
 const windowWidth = Dimensions.get('window').width
 
 export default Drawer = ({ navigation, route }) => {
   const [classStateData, setClassStateData] = useState({
     modalVisible: false,
-    address_new: 'NA',
-    name: '',
     profile_img: null,
     totalCompletionPercentage: 0
   })
@@ -27,11 +24,17 @@ export default Drawer = ({ navigation, route }) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
+  const dispatch = useDispatch()
+
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
   useEffect(() => {
     navigation.addListener('focus', () => {
       if (add_location != 'NA') {
         setState({
-          address_new: add_location.address,
           latitude: add_location.latitude,
           longitude: add_location.longitude
         })
@@ -42,7 +45,7 @@ export default Drawer = ({ navigation, route }) => {
   }, [])
 
   const getPercentage = async () => {
-    var user_details = await localStorage.getItemObject("user_arr");
+    var user_details = loginUserData;
     let { user_id, user_type } = user_details;
     let url = Configurations.baseURL + "api-provider-profile-complete";
 
@@ -68,20 +71,12 @@ export default Drawer = ({ navigation, route }) => {
   }
 
   const getProfile = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
-    let address_arr = await localStorage.getItemObject('address_arr')
+    let user_details = loginUserData
     let user_type = user_details['user_type']
     setState({
-      address_new: address_arr,
-      user_type: user_type
+      user_type: user_type,
     })
 
-    setState({
-      name: user_details['first_name'],
-      email: user_details['email'],
-      mobile: user_details['phone_number'],
-      //address_old: user_details['current_address'],
-    })
     if (user_details.image != null) {
       setState({
         profile_img: Configurations.img_url3 + user_details['image'],
@@ -95,15 +90,14 @@ export default Drawer = ({ navigation, route }) => {
   }
 
   const logout = async () => {
-    await localStorage.removeItem('user_arr');
-    await localStorage.removeItem('user_login');
+    dispatch(onUserLogout())
     setState({ show: false })
     navigation.navigate('Login')
 
   }
 
   const logoutApi = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let url = Configurations.baseURL + "api-logout";
     var data = new FormData();
@@ -179,7 +173,7 @@ export default Drawer = ({ navigation, route }) => {
                       textAlign: Configurations.textRotate,
 
                     }}>
-                    {classStateData.name}
+                    {loginUserData?.first_name}
                   </Text>
                 </View>
 

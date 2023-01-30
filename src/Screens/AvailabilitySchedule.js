@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useWindowDimensions, Text, View, Dimensions, StatusBar } from 'react-native';
-import { Colors, Font, Configurations, mobileW, localStorage, LanguageConfiguration } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration } from '../Helpers/Utils';
 import { TabView, TabBar } from 'react-native-tab-view';
 import AvailabilityScheduleContainer from '../Containers/AvailabilitySchedule';
 import ScreenHeader from '../Components/ScreenHeader';
+import { useSelector } from 'react-redux';
 
 const renderTabBar = props => (
   <TabBar
@@ -50,10 +51,15 @@ export default AvailabilitySchedule = ({ navigation }) => {
     getUserData();
   }, []);
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const getUserData = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
     console.log("user_typeuser_type:: ", user_type);
     if (user_type == "nurse") {
       setRoutes([

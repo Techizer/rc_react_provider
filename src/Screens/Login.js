@@ -1,8 +1,7 @@
-import { Modal, Text, Dimensions, View, PermissionsAndroid, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, Keyboard } from 'react-native';
+import { Modal, Text, Dimensions, View, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Geolocation from '@react-native-community/geolocation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions, localStorage } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions } from '../Helpers/Utils';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
@@ -22,7 +21,6 @@ export default Login = ({ navigation, route }) => {
     email: '',
     password: '',
     device_lang: 'AR',
-    langaugeme: 0,
     isRememberChecked: false,
     fcm_token: 123456,
     showUsertype: false,
@@ -71,15 +69,17 @@ export default Login = ({ navigation, route }) => {
     userType,
     shouldAutoLogin,
     userEmail,
-    userPassword
+    userPassword,
+    loginUserData
   } = useSelector(state => state.Auth)
 
   useEffect(() => {
+    const mUserTypeIndex = classStateData.userType.findIndex(u => u.value === userType)
     console.log({
       email: userEmail,
       password: userPassword,
       isRememberChecked: shouldAutoLogin,
-      selectuserType: classStateData.userType.findIndex(u => u.title === userType.title)
+      selectuserType: mUserTypeIndex
     });
     if (shouldAutoLogin) {
       if (userEmail && userPassword) {
@@ -87,7 +87,7 @@ export default Login = ({ navigation, route }) => {
           email: userEmail,
           password: userPassword,
           isRememberChecked: shouldAutoLogin,
-          selectuserType: classStateData.userType.findIndex(u => u.title === userType.title)
+          selectuserType: mUserTypeIndex
         })
       }
     }
@@ -99,13 +99,9 @@ export default Login = ({ navigation, route }) => {
       payload =>
         BackHandler.addEventListener('hardwareBackPress', handleBackPress),
     );
-    getLanguage()
   }, [])
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      getLanguage()
-    });
     _willBlurSubscription = navigation.addListener(
       'blur',
       payload =>
@@ -129,180 +125,6 @@ export default Login = ({ navigation, route }) => {
 
   }, [])
 
-  const getLanguage = async () => {
-    let textalign = await localStorage.getItemObject('language');
-    if (textalign != null) {
-
-      setState({
-        langaugeme: textalign
-      })
-
-    }
-    let address_arr = await localStorage.getItemObject('address_arr')
-    if (address_arr == '' || address_arr == 'NA' || address_arr == null) {
-      getLatitudeLongitude();
-    }
-
-  }
-
-  const getData = (position) => {
-
-    let longitude = position.coords.longitude
-    let latitude = position.coords.latitude
-    setState({
-      latitude: latitude,
-      longitude: longitude,
-      loading: false
-    })
-
-    global.current_lat_long = position;
-    global.myLatitude = latitude;
-    global.myLongitude = longitude;
-
-    let event = { latitude: latitude, longitude: longitude, latitudeDelta: classStateData?.latdelta, longitudeDelta: classStateData?.longdelta }
-    getAddressFromLatLong(event)
-  }
-
-  const getAddressFromLatLong = (event) => {
-
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + event.latitude + ',' + event.longitude + '&key=' + Configurations.mapkey + '&language=' + Configurations.maplanguage)
-
-      .then((response) => response.json())
-      .then((resp) => {
-        let responseJson = resp.results[0]
-        let city = '';
-        let administrative_area_level_1 = '';
-        for (let i = 0; i < responseJson.address_components.length; i++) {
-          if (responseJson.address_components[i].types[0] == "locality") {
-            city = responseJson.address_components[i].long_name
-            break;
-          }
-          else if (responseJson.address_components[i].types[0] == "administrative_area_level_2") {
-            city = responseJson.address_components[i].long_name
-          }
-
-        }
-        for (let j = 0; j < responseJson.address_components.length; j++) {
-          if (responseJson.address_components[j].types[0] == "administrative_area_level_1") {
-            administrative_area_level_1 = responseJson.address_components[j].long_name
-          }
-
-        }
-        let details = responseJson
-        let data2 = { 'latitude': details.geometry.location.lat, 'longitude': details.geometry.location.lng, 'address': details.formatted_address, 'city': city, 'administrative_area_level_1': administrative_area_level_1 }
-        add_location = data2
-
-        GooglePlacesRef && GooglePlacesRef.setAddressText(details.formatted_address)
-        setState({
-          latdelta: event.latitudeDelta,
-          longdelta: event.longitudeDelta,
-          latitude: event.latitude,
-          longitude: event.longitude,
-          addressselected: details.formatted_address,
-          add_my_location: data2
-        })
-
-        localStorage.setItemObject('address_arr', add_location.address);
-      })
-
-
-
-  }
-
-  const getLatitudeLongitude = async () => {
-
-    let permission = await localStorage.getItemString('permission')
-    if (permission != 'denied') {
-      if (Platform.OS === 'ios') {
-        callLocation();
-      } else {
-        async function requestLocationPermission() {
-          try {
-            const granted = await PermissionsAndroid.request(
-              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
-              'title': 'Location Access Required',
-              'message': 'This App needs to Access your location'
-            })
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-              callLocation();
-            } else {
-              let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.latitude } }
-              getData(position)
-              localStorage.setItemString('permission', 'denied')
-
-            }
-          } catch (err) { console.warn(err) }
-        }
-        requestLocationPermission();
-      }
-    } else {
-      let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
-      getData(position)
-    }
-  }
-
-  const callLocation = async () => {
-    setState({
-      loading: true
-    })
-    localStorage.getItemObject('position').then((position) => {
-      // console.log('position', position)
-      if (position != null) {
-        var pointcheck1 = 0
-        getData(position)
-        Geolocation.getCurrentPosition(
-          //Will give you the current location
-          (position) => {
-
-            localStorage.setItemObject('position', position)
-            getData(position);
-            pointcheck1 = 1
-          },
-          (error) => {
-            let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
-
-            getData(position)
-          },
-          { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
-        );
-        watchID = Geolocation.watchPosition((position) => {
-
-          if (pointcheck1 != 1) {
-            localStorage.setItemObject('position', position)
-            getData(position)
-          }
-
-        });
-
-      }
-      else {
-        var pointcheck = 0
-        Geolocation.getCurrentPosition(
-          (position) => {
-            localStorage.setItemObject('position', position)
-            getData(position)
-            pointcheck = 1
-          },
-          (
-            error) => {
-            let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
-
-            getData(position)
-          },
-          { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
-        );
-        watchID = Geolocation.watchPosition((position) => {
-
-          if (pointcheck != 1) {
-
-            localStorage.setItemObject('position', position)
-            getData(position)
-          }
-
-        });
-      }
-    })
-  }
 
   const handleBackPress = () => {
     Alert.alert(
@@ -371,16 +193,14 @@ export default Login = ({ navigation, route }) => {
 
         var user_details = obj.result;
 
-        setState(classStateData)
+        // setState(classStateData)
 
-        console.log('user_details', user_details);
+        // console.log('user_details', user_details);
         const uservalue = {
           email_phone: classStateData?.email, email: classStateData?.email,
           password: classStateData?.password
         };
-        localStorage.setItemObject('user_login', uservalue);
-        localStorage.setItemObject('user_arr', user_details);
-
+        
         dispatch(setUserLoginData(obj?.result))
         dispatch(setUserFCMToken(classStateData?.fcm_token))
         dispatch(setUserLoginType(classStateData?.userType[classStateData?.selectuserType].value))

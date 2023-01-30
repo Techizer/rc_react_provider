@@ -1,5 +1,4 @@
 import { Alert, ToastAndroid, I18nManager, Platform } from "react-native";
-import { localStorage } from '../Provider/localStorageProvider';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Configurations } from "../Provider/configProvider";
 import RNRestart from 'react-native-restart';
@@ -8,25 +7,17 @@ class LanguageProvider {
 
   language_get = async () => {
     var item = await AsyncStorage.getItem('language');
-    console.log('check launguage option', item)
     if (item != null) {
-      console.log('kya bat h vikas bhai', Configurations.language)
       Configurations.language = item;
     }
-    console.log('language_key123', Configurations.language)
   }
 
   language_set = async (languagem) => {
-    // var item = await AsyncStorage.getItem('language');
-    //  localStorage.setItemObject('language', 1)
-    console.log('I18nManager.isRTL muskan', I18nManager.isRTL)
     if (languagem == 0) {
 
       I18nManager.forceRTL(false);
       I18nManager.allowRTL(false);
       Configurations.textalign = 'left';
-      localStorage.setItemObject('language', 0)
-      localStorage.setItemObject('languagecathc', 0)
       Configurations.language = 0
     }
     else {
@@ -34,40 +25,12 @@ class LanguageProvider {
       I18nManager.forceRTL(true);
       I18nManager.allowRTL(true);
       Configurations.textalign = 'right';
-      localStorage.setItemObject('language', 1)
-      localStorage.removeItem('languagecathc')
-      localStorage.removeItem('languagesetenglish');
       Configurations.language = 1
     }
-    // if(I18nManager.isRTL){
-    //    console.log('HI Vikas')
-    //    I18nManager.forceRTL(false);
-    //      I18nManager.allowRTL(false);f
-    //      Configurations.textalign='left';
-    //      localStorage.setItemObject('language',0)
-    //      localStorage.setItemObject('languagecathc',0)
-    //      Configurations.language = 0
-    //  }else if(!I18nManager.isRTL){
-    //   console.log('HI Vaishali')
-
-    //    I18nManager.forceRTL(true);
-    //    I18nManager.allowRTL(true);
-    //    Configurations.textalign='right';
-    //    localStorage.setItemObject('language',1)
-    //    localStorage.removeItem('languagecathc')
-    //    localStorage.removeItem('languagesetenglish');
-    //    Configurations.language = 1
-    //  }
     setTimeout(() => {
       RNRestart.Restart()
     }, 500);
-
-    //// I18nManager.forceRTL(false);
-    // Configurations.language = value;
-
   }
-  //----------------------------------------------by gunjan
-  //------------------login------------------
   Help = ['Help', 'مساعدة']
   Update = ['UPDATE', 'تحديث']
   OK = ['OK', 'موافق  ']

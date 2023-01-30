@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 
-import { Colors, Font, MessageFunctions, Configurations, mobileW, localStorage, API } from '../Helpers/Utils';
+import { Colors, Font, MessageFunctions, Configurations, mobileW, API } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
 import { Button } from '../Components'
 import ListBottomSheet from '../Components/ListBottomSheet';
 import { Arrow } from '../Assets/Icons/SvgIcons/Index';
+import { useSelector } from 'react-redux';
 
 const radiusArr = [
   {
@@ -140,8 +141,13 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     getAvailabilityScheduleData()
   }, [])
 
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
   const getAvailabilityScheduleData = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData;
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let task_type = ""
@@ -244,7 +250,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
   }
 
   const insertUpdatePriceList = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData;
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     

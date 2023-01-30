@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import {
-  Configurations, localStorage, API,
+  Configurations, API,
 } from '../Helpers/Utils';
 
 import {
@@ -24,6 +24,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { min } from 'moment-timezone';
+import { useSelector } from 'react-redux';
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -45,6 +46,12 @@ const VideoCall = (props) => {
   const [secs, setSecs] = useState(0)
   const [started, setStarted] = useState(false);
   const [localtrackVideo, setlocaltrackVideo] = useState(true);
+
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
 
   useEffect(() => {
     if (props.route.params.item.ispage == "accept") {
@@ -115,7 +122,7 @@ const VideoCall = (props) => {
   }
 
   const get_call_token = async (callType) => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
 
@@ -153,7 +160,7 @@ const VideoCall = (props) => {
   }
 
   const get_incoming_call_token = async (callType) => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     // console.log('this.props.pageName:: ', this.props.pageName);

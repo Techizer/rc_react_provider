@@ -11,6 +11,7 @@ import { useIsFocused } from "@react-navigation/native";
 import AddressInputPopup from "../Components/AddressInputPopup";
 import AddressContainer from "../Components/AddressContainer";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
+import { useSelector } from "react-redux";
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
@@ -31,6 +32,12 @@ const ServiceAddress = ({ navigation, route }) => {
 
     const { isMTrue, lat, lng, id, googleAddress } = route?.params || { isMTrue: false, lat: 0, lng: 0, id: 0, googleAddress: '' }
 
+    
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
     useEffect(() => {
         console.log({ isMTrue, lat, lng, id, googleAddress });
         setIsMTrueState(isMTrue)
@@ -38,7 +45,7 @@ const ServiceAddress = ({ navigation, route }) => {
     }, [isFocused, addressSheet])
 
     const getAddresses = async () => {
-        let user_details = await localStorage.getItemObject('user_arr')
+        let user_details = loginUserData
         let { user_id, user_type } = user_details
 
         let url = Configurations.baseURL + "api-provider-list-address";

@@ -4,7 +4,7 @@ import {
   Alert, ScrollView, PermissionsAndroid, StyleSheet, Image, TouchableOpacity,
   ImageBackground, Platform, BackHandler
 } from 'react-native';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Styles from '../Styles';
 import messaging from '@react-native-firebase/messaging';
@@ -15,6 +15,8 @@ import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useDispatch, useSelector } from 'react-redux';
+import { onUserLogout } from '../Redux/Actions/UserActions';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
@@ -22,8 +24,6 @@ global.post_location = 'NA'
 global.cart_customer = [];
 
 export default Home = ({ navigation, route }) => {
-
-  const screens = 'Home'
 
   const [state, setState] = useState({
     modalVisible3: false,
@@ -110,9 +110,15 @@ export default Home = ({ navigation, route }) => {
 
   })
 
+  const dispatch = useDispatch()
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
   const logout = async () => {
-    await localStorage.removeItem("user_arr");
-    await localStorage.removeItem("user_login");
+    
+    dispatch(onUserLogout())
 
     navigation.reset({
       index: 0,
@@ -197,7 +203,7 @@ export default Home = ({ navigation, route }) => {
   }
 
   const getPercentage = async () => {
-    var user_details = await localStorage.getItemObject("user_arr");
+    var user_details = loginUserData;
     let { user_id, user_type } = user_details;
     let url = Configurations.baseURL + "api-provider-profile-complete";
 
@@ -290,7 +296,7 @@ export default Home = ({ navigation, route }) => {
   }
 
   const callRejectNotification = async (notidata) => {
-    let user_details = await localStorage.getItemObject("user_arr");
+    let user_details = loginUserData
     let user_id = user_details["user_id"];
     let apiName = "api-get-video-access-token-with-push-notification";
     let url = Configurations.baseURL + apiName;
@@ -320,7 +326,7 @@ export default Home = ({ navigation, route }) => {
   };
 
   const get_all_count = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
 
@@ -357,7 +363,7 @@ export default Home = ({ navigation, route }) => {
   }
 
   const getProfile = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     console.log("user_typeuser_type:: ", user_type);

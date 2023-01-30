@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import { Colors, Font, Configurations, mobileW, localStorage, API } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, API } from '../Helpers/Utils';
 
 import { Icons } from '../Assets/Icons/IReferences';
+import { useSelector } from 'react-redux';
 
 export default Transaction = ({ navigation, route, page, pageName }) => {
 
@@ -21,8 +22,14 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
     getTransactions()
   }, [])
 
+  
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
   const getTransactions = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
+    let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     console.log('pageName:: ', pageName);

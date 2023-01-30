@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Text, TextInput, View, ScrollView, Linking, SafeAreaView, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar } from 'react-native';
-import { CameraGallery, Media, Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, LanguageConfiguration, API } from '../Helpers/Utils';
+import { CameraGallery, Media, Colors, Font, mobileH, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -16,6 +16,7 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { s, vs } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
+import { useSelector } from 'react-redux';
 
 var Sound = require('react-native-sound');
 
@@ -58,6 +59,12 @@ export default AppointmentDetails = ({ navigation, route }) => {
       setTimeout(resolver, 300)
     }
   }
+
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
 
   useEffect(() => {
     get_all_details(0)
@@ -174,9 +181,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
   }
 
   const get_all_details = async (page) => {
-    let user_details = await localStorage.getItemObject('user_arr');
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
     let url = Configurations.baseURL + "api-provider-appointment-details" //"api-patient-appointment-details";  
 
     var data = new FormData();
@@ -292,8 +298,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
   };
 
   const updateProviderAppointmentStatus = async (acceptanceStatus, appointmentID) => {
-    let user_details = await localStorage.getItemObject('user_arr');
-    let user_type = user_details['user_type']
+    let user_type = loginUserData['user_type']
     let url = Configurations.baseURL + "api-update-provider-appointment-status";
 
     var data = new FormData();
@@ -324,9 +329,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
       return false;
     }
 
-    let user_details = await localStorage.getItemObject('user_arr');
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
     let url = Configurations.baseURL + "api-complete-provider-appointment-status";
     var data = new FormData();
     data.append('id', id)

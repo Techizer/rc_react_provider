@@ -1,7 +1,7 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView } from 'react-native'
-import React, { Component, useEffect, useState } from 'react'
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW, localStorage, handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
-import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
+import React, { useEffect, useState } from 'react'
+import { Colors, Font, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
+import { AuthInputBoxSec, Button } from '../Components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
@@ -12,9 +12,7 @@ export default AddBankInformation = ({ navigation, route }) => {
     Select_arr: 'NA',
     selectmodal: false,
     message: '',
-    selectissuefocus: false,
     select: '',
-    selectissue: '',
     isCheck: false,
     successmodal: false,
     bank_name: "",
@@ -23,7 +21,6 @@ export default AddBankInformation = ({ navigation, route }) => {
     cnfaccount_no: "",
     iban_no: "",
     swift_no: "",
-    message: ""
   })
 
   const setState = payload => {
@@ -32,14 +29,18 @@ export default AddBankInformation = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      get_all_topic()
+      getData()
     });
   }, [])
 
-  const get_all_topic = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
+
+
+  const getData = async () => {
+    let user_id = loginUserData['user_id']
 
     let url = Configurations.baseURL + "api-patient-need-help-topic";
     console.log("url", url)
@@ -64,7 +65,7 @@ export default AddBankInformation = ({ navigation, route }) => {
       setState({ loading: false });
     });
   }
-  const submit_click = async () => {
+  const onUpdate = async () => {
 
     if (classStateData.bank_name.length <= 0) {
       MessageFunctions.showError("Please enter bank name!")
@@ -95,17 +96,11 @@ export default AddBankInformation = ({ navigation, route }) => {
       return false;
     }
 
-    let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
 
     let url = Configurations.baseURL + "api-update-bank-details";
-    console.log("url", url)
     var data = new FormData();
-    // {"id":"23", "user_id":"39", "bank_name":"State Bank of India",
-    // "your_bank_name":"MJ","account_no":"0000000","iban_no":"11111",
-    // "swift_no":"22222","message":Kolkata }
     data.append('user_id', user_id)
     data.append('id', classStateData.id)
     data.append('bank_name', classStateData.bank_name)
@@ -609,7 +604,7 @@ export default AddBankInformation = ({ navigation, route }) => {
                 // mainContainer: styles.butonContainer
               }
             }
-            onPress={() => submit_click()}
+            onPress={() => onUpdate()}
           // isBlank={false}
           />
 

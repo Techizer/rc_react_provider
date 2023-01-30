@@ -1,18 +1,17 @@
-import { Text, View, StatusBar, SafeAreaView, ScrollView, styles, TouchableOpacity, Image, TextInput, Modal, FlatList, keyboardType, Keyboard, Platform, Dimensions } from 'react-native';
-import React, { Component, useEffect, useState } from 'react';
+import { Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, TextInput, Modal, FlatList, Keyboard, Platform, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, localStorage, API, MessageFunctions, MessageTexts, MessageHeadings, CameraGallery, Media } from '../Helpers/Utils';
-import Styles from '../Styles';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, CameraGallery, Media } from '../Helpers/Utils';
 import DateTimePicker from "react-native-modal-datetime-picker";
-import DatePicker from 'react-native-date-picker'
 import MonthPicker from 'react-native-month-year-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
-import { Col } from 'ionic-angular';
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserLoginData } from '../Redux/Actions/UserActions';
+
 const bloodModal_arr = [
   {
     id: 1,
@@ -362,7 +361,12 @@ export default EditProfile = ({navigation, route}) => {
     selectuserType: -1,
 
   })
+  const dispatch = useDispatch()
   const screens = ScreenReferences.EditProfile;
+
+  const {
+    loginUserData
+  } = useSelector(state => state.Auth)
 
   useEffect(() => {
     navigation.addListener('focus', () => {
@@ -378,10 +382,10 @@ export default EditProfile = ({navigation, route}) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
+  
+
   get_all_notification = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
+    let user_id = loginUserData['user_id']
 
     let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
@@ -410,9 +414,7 @@ export default EditProfile = ({navigation, route}) => {
   }
 
   get_all_nationlity = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
+    let user_id = loginUserData['user_id']
 
     let url = Configurations.baseURL + "api-getnationality";
     console.log("url", url)
@@ -421,15 +423,9 @@ export default EditProfile = ({navigation, route}) => {
 
 
     API.post(url, data, 1).then((obj) => {
-
       if (obj.status == true) {
-        console.log('obj nationaltity', obj)
         setState({ nationality_arr: obj.result })
-
-
       } else {
-
-
         return false;
       }
     }).catch((error) => {
@@ -486,10 +482,8 @@ export default EditProfile = ({navigation, route}) => {
   }
 
   getProfile = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
 
     let url = Configurations.baseURL + "api-get-provider-profile";
     console.log("url", url)
@@ -649,8 +643,7 @@ export default EditProfile = ({navigation, route}) => {
   }
 
   medical_click = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
-    let user_id = user_details['user_id']
+    let user_id = loginUserData['user_id']
     let url = Configurations.baseURL + "api-edit-patient-profile-medical";
     console.log("url", url)
 
@@ -673,12 +666,7 @@ export default EditProfile = ({navigation, route}) => {
 
 
       if (obj.status == true) {
-
-        let user_details = obj.result;
-        localStorage.setItemObject('user_arr', user_details);
-
-        // MessageFunctions.toast(obj.message,'center')
-
+        dispatch(setUserLoginData(obj.result))
       } else {
         MessageFunctions.toast(obj.message, 'center')
         return false;
@@ -722,8 +710,7 @@ export default EditProfile = ({navigation, route}) => {
   }
 
   submit_click = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
-    let user_id = user_details['user_id']
+    let user_id = loginUserData['user_id']
 
     Keyboard.dismiss()
 
@@ -931,8 +918,7 @@ export default EditProfile = ({navigation, route}) => {
 
       setState({ loading: false });
       if (obj.status == true) {
-        let user_details = obj.result;
-        localStorage.setItemObject('user_arr', user_details);
+        dispatch(setUserLoginData(obj.result))
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -947,8 +933,7 @@ export default EditProfile = ({navigation, route}) => {
 
   }
   lifestyle_click = async () => {
-    let user_details = await localStorage.getItemObject('user_arr');
-    let user_id = user_details['user_id']
+    let user_id = loginUserData['user_id']
 
 
 
@@ -976,10 +961,7 @@ export default EditProfile = ({navigation, route}) => {
       MessageFunctions.toast(MessageTexts.occuation[Configurations.language], 'center')
       return false;
     }
-
-
-
-
+    
     let url = Configurations.baseURL + "api-edit-patient-profile-style";
     console.log("url", url)
 
@@ -994,15 +976,8 @@ export default EditProfile = ({navigation, route}) => {
     data.append('occupation', classStateData.occupation)
 
     API.post(url, data).then((obj) => {
-
-
       if (obj.status == true) {
-
-        let user_details = obj.result;
-        localStorage.setItemObject('user_arr', user_details);
-
-        // MessageFunctions.toast(obj.message,'center')
-
+        dispatch(setUserLoginData(obj.result))
       } else {
         MessageFunctions.toast(obj.message, 'center')
         return false;
@@ -1015,10 +990,8 @@ export default EditProfile = ({navigation, route}) => {
   }
 
   get_speciality = async () => {
-    let user_details = await localStorage.getItemObject('user_arr')
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
 
     let url = Configurations.baseURL + "api-provider-get-speciality";
     console.log("url", url)

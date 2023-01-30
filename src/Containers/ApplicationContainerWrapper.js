@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react"
 import { SafeAreaView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
-import { Colors, Font, Media, MessageFunctions, MessageTexts, Configurations, localStorage } from '../Helpers/Utils';
+import { Colors, Font, Media, MessageFunctions, MessageTexts, Configurations } from '../Helpers/Utils';
 import AppLoader from '../Components/AppLoader'
 import * as Animatable from 'react-native-animatable';
 import NetInfo from '@react-native-community/netinfo';
