@@ -75,13 +75,19 @@ export default Login = ({ navigation, route }) => {
   } = useSelector(state => state.Auth)
 
   useEffect(() => {
+    console.log({
+      email: userEmail,
+      password: userPassword,
+      isRememberChecked: shouldAutoLogin,
+      selectuserType: classStateData.userType.findIndex(u => u.title === userType.title)
+    });
     if (shouldAutoLogin) {
       if (userEmail && userPassword) {
         setState({
           email: userEmail,
           password: userPassword,
           isRememberChecked: shouldAutoLogin,
-          selectuserType: classStateData.userType.findIndex(userType)
+          selectuserType: classStateData.userType.findIndex(u => u.title === userType.title)
         })
       }
     }
@@ -122,8 +128,6 @@ export default Login = ({ navigation, route }) => {
     setFCM()
 
   }, [])
-
-
 
   const getLanguage = async () => {
     let textalign = await localStorage.getItemObject('language');

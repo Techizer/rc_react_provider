@@ -7,8 +7,7 @@ import rootReducer from './Reducers/Index';
 const persistedReducers = persistReducer({
     key: 'root',
     storage: AsyncStorage,
-    Darklist: ['loadingReducer'],
-    
+    Darklist: ['loadingReducer']
   }, rootReducer);
 
   const preloadedState = {}
