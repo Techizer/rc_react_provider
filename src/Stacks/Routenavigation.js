@@ -48,7 +48,7 @@ function Mydrawer() {
 
       drawerContent={props => <Drawerscreen {...props} />}>
       <Drawer.Screen
-        name={ScreenReferences.Home}
+        name={ScreenReferences.HomeDrawer}
         options={{
 
           headerShown: false,

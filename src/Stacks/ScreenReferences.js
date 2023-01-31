@@ -11,6 +11,7 @@ export const ScreenReferences = {
     ForgotPassword: "ForgetPassword",
     OTP: "OTP",
     Home: "Home",
+    HomeDrawer: "HomeDrawer",
 
     AppointmentDetails: "AppointmentDetails",
     LabPackageDetails: "LabPackageDetails",

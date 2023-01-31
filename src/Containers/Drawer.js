@@ -16,7 +16,6 @@ const windowWidth = Dimensions.get('window').width
 export default Drawer = ({ navigation, route }) => {
   const [classStateData, setClassStateData] = useState({
     modalVisible: false,
-    profile_img: null,
     totalCompletionPercentage: 0
   })
   
@@ -39,20 +38,16 @@ export default Drawer = ({ navigation, route }) => {
           longitude: add_location.longitude
         })
       }
-      getProfile()
       getPercentage()
     });
   }, [])
 
   const getPercentage = async () => {
-    var user_details = loginUserData;
-    let { user_id, user_type } = user_details;
     let url = Configurations.baseURL + "api-provider-profile-complete";
 
     var data = new FormData();
-    console.log({ user_id, user_type });
-    data.append("login_user_id", user_id);
-    data.append("user_type", user_type);
+    data.append("login_user_id", loginUserData?.user_id);
+    data.append("user_type", loginUserData?.user_type);
     API
       .post(url, data, 1)
       .then((completionData) => {
@@ -61,28 +56,8 @@ export default Drawer = ({ navigation, route }) => {
         })
       })
       .catch((error) => {
-        console.log({ errorz: error });
-        // setIsLoading(false)
-        // setIsDelete(false)
-        // MessageFunctions.showError(obj.message)
-        // onRequestClose()
-        // console.log("-------- error ------- " + error);
+        
       });
-  }
-
-  const getProfile = async () => {
-    let user_details = loginUserData
-    let user_type = user_details['user_type']
-    setState({
-      user_type: user_type,
-    })
-
-    if (user_details.image != null) {
-      setState({
-        profile_img: Configurations.img_url3 + user_details['image'],
-      })
-    }
-
   }
 
   const confirm_click = async () => {
@@ -97,11 +72,9 @@ export default Drawer = ({ navigation, route }) => {
   }
 
   const logoutApi = async () => {
-    let user_details = loginUserData
-    let user_id = user_details['user_id']
     let url = Configurations.baseURL + "api-logout";
     var data = new FormData();
-    data.append('user_id', user_id)
+    data.append('user_id', loginUserData?.user_id)
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
@@ -146,14 +119,13 @@ export default Drawer = ({ navigation, route }) => {
 
             <View style={{ width: '31%' }} >
               {
-                (classStateData.profile_img == "NA" || classStateData.profile_img == "" || classStateData.profile_img == null) ?
+                (loginUserData?.image == "NA" || loginUserData?.image == "" || loginUserData?.image == null) ?
                   <SvgXml xml={dummyUser} style={{
                     alignSelf: "center",
                   }} />
                   :
-                  // <SvgUri uri={classStateData.profile_img} />
                   <Image
-                    source={{ uri: classStateData.profile_img }}
+                    source={{ uri: Configurations.img_url3 + loginUserData?.image }}
                     style={{ height: s(85), width: s(85), borderRadius: s(85), backgroundColor: Colors.backgroundcolor, alignSelf: 'center' }}
                   />
 
@@ -503,5 +475,4 @@ export default Drawer = ({ navigation, route }) => {
       </ScrollView>
     </SafeAreaView>
   );
-
 }

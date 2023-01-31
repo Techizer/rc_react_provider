@@ -11,10 +11,12 @@ const DashBoardBox = ({
   isMargin,
   isBorder,
   actionColor,
-  actionTextColor,
+  actionTextColor = '#000000',
   actionMessage
 }) => {
-  (actionTextColor === '') ? 'black' : actionTextColor
+  if (actionTextColor === '' || !actionTextColor) {
+    actionTextColor = '#000000'
+  }
   return (
     <>
       <TouchableOpacity onPress={onPress}>

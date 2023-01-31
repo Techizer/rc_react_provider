@@ -1,17 +1,11 @@
-import React, { Component, useEffect, useState } from 'react';
-import {
-  Modal, StatusBar, Text, FlatList, View,
-  Alert, ScrollView, PermissionsAndroid, StyleSheet, Image, TouchableOpacity,
-  ImageBackground, Platform, BackHandler
-} from 'react-native';
-import { Colors, Font, mobileH, MessageFunctions, MessageTexts, Configurations, mobileW,  handleback, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, { useEffect, useState } from 'react';
+import { Text, FlatList, View, Alert, StyleSheet, Image, TouchableOpacity, Platform, BackHandler } from 'react-native';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import Styles from '../Styles';
 import messaging from '@react-native-firebase/messaging';
 import { DashBoardBox } from '../Components'
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
@@ -26,16 +20,7 @@ global.cart_customer = [];
 export default Home = ({ navigation, route }) => {
 
   const [state, setState] = useState({
-    modalVisible3: false,
-    latdelta: '0.0922',
-    longdelta: '0.0421',
-    profile_img: '',
-    title: 'Booking',
-    body: '',
-    address_new: '',
-    address_old: '',
     notification_count: '',
-    app_status: '',
     profileCompletionData: null,
     HomeHealthcareServiceAppointments: [
       {
@@ -116,16 +101,6 @@ export default Home = ({ navigation, route }) => {
     loginUserData
   } = useSelector(state => state.Auth)
 
-  const logout = async () => {
-    
-    dispatch(onUserLogout())
-
-    navigation.reset({
-      index: 0,
-      routes: [{ name: ScreenReferences.Login }],
-    });
-  };
-
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     PushNotification.configure({
@@ -192,6 +167,16 @@ export default Home = ({ navigation, route }) => {
     }
   }, [])
 
+  const logout = async () => {
+    
+    dispatch(onUserLogout())
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: ScreenReferences.Login }],
+    });
+  };
+
   const handleBackButton = () => {
     console.log('Back button is pressed', route.name);
     if (route.name == ScreenReferences.Home) {
@@ -203,13 +188,11 @@ export default Home = ({ navigation, route }) => {
   }
 
   const getPercentage = async () => {
-    var user_details = loginUserData;
-    let { user_id, user_type } = user_details;
     let url = Configurations.baseURL + "api-provider-profile-complete";
 
     var data = new FormData();
-    data.append("login_user_id", user_id);
-    data.append("user_type", user_type);
+    data.append("login_user_id", loginUserData?.user_id);
+    data.append("user_type", loginUserData?.user_type);
     API
       .post(url, data, 1)
       .then((completionData) => {
@@ -296,13 +279,11 @@ export default Home = ({ navigation, route }) => {
   }
 
   const callRejectNotification = async (notidata) => {
-    let user_details = loginUserData
-    let user_id = user_details["user_id"];
     let apiName = "api-get-video-access-token-with-push-notification";
     let url = Configurations.baseURL + apiName;
 
     var data = new FormData();
-    data.append("fromUserId", user_id);
+    data.append("fromUserId", loginUserData?.user_id);
     data.append("fromUserName", notidata.toUserName);
     data.append("order_id", notidata.order_id);
     data.append("room_name", notidata.room_name);
@@ -326,14 +307,10 @@ export default Home = ({ navigation, route }) => {
   };
 
   const get_all_count = async () => {
-    let user_details = loginUserData
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-
     let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();
-    data.append('login_user_id', user_id)
+    data.append('login_user_id', loginUserData?.user_id)
 
     
     API.post(url, data, 1).then((obj) => {
@@ -343,12 +320,7 @@ export default Home = ({ navigation, route }) => {
           ...prev,
           notification_count: obj.result
         }))
-        getProfile()
-
-
       } else {
-
-
         return false;
       }
     }).catch((error) => {
@@ -359,27 +331,6 @@ export default Home = ({ navigation, route }) => {
       }))
       console.log("-------- error ------- " + error);
     })
-
-  }
-
-  const getProfile = async () => {
-    let user_details = loginUserData
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
-    console.log("user_typeuser_type:: ", user_type);
-    setState(prev => ({
-      ...prev,
-      address_old: user_details.current_address,
-      user_type: user_type
-
-    }))
-
-    if (user_details.image != null) {
-      setState(prev => ({
-        ...prev,
-        profile_img: Configurations.img_url3 + user_details['image'],
-      }))
-    }
 
   }
 
@@ -412,7 +363,7 @@ export default Home = ({ navigation, route }) => {
                 navigation.toggleDrawer();
               }}>
                 <Image
-                  source={state?.profile_img == null || state?.profile_img == '' ? Icons.AccountFilled : { uri: state?.profile_img }}
+                  source={loginUserData?.image == null || loginUserData?.image == '' ? Icons.AccountFilled : { uri: Configurations.img_url3 + loginUserData?.image }}
                   style={{
                     // resizeMode: 'contain',
                     width: (mobileW * 9) / 100,
@@ -661,8 +612,8 @@ export default Home = ({ navigation, route }) => {
             renderItem={({ item, index }) => {
               return (
                 <DashBoardBox
-                  textTitle={(state?.user_type == 'lab' && index == 2) ? item?.titleL : item?.title}
-                  textInfo={(state?.user_type == 'lab' && index == 2) ? item?.detailsL : item?.details}
+                  textTitle={(loginUserData?.user_type == 'lab' && index == 2) ? item?.titleL : item?.title}
+                  textInfo={(loginUserData?.user_type == 'lab' && index == 2) ? item?.detailsL : item?.details}
                   infoIcon={item?.img}
                   actionColor={item.actionColor}
                   actionTextColor={item?.actionTextColor}
