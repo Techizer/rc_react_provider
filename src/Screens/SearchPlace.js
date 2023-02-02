@@ -8,7 +8,7 @@ import {
     Dimensions,
     Platform,
     StatusBar,
-    PermissionsAndroid
+    PermissionsAndroid,
 } from 'react-native';
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -42,8 +42,9 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     })
 
     
-  const setState = payload => {
+  const setState = (payload, cb = () => {}) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
+    cb()
   }
 
   
@@ -56,25 +57,13 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     isNew = route?.params?.isNew;
 
     useEffect(() => {
-        getSpecificCountryCode()
-        getPlaceKey()
+        const countryKey = (loginUserData?.work_area === 'UAE') ? 'AE' : 'SA'
+        setState({
+            place_key: loginUserData?.place_key,
+            countryKey: countryKey
+        })
     }, [])
 
-    const getSpecificCountryCode = async () => {
-
-        let user_details = loginUserData
-        const { work_area } = user_details
-        if (work_area === 'UAE') {
-            setState({
-                countryKey: 'AE'
-            })
-        }
-        else if (work_area === 'Saudi Arabia') {
-            setState({
-                countryKey: 'SA'
-            })
-        }
-    }
 
     const selectGooglePlace = ({
         data,
@@ -90,9 +79,6 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                 service_long: longitude,
                 service_address: data?.description,
                 isVisible: true
-            },
-            () => {
-
             }
         );
     };
@@ -127,10 +113,11 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                 let data2 = { 'latitude': details.geometry.location.lat, 'longitude': details.geometry.location.lng, 'address': details.formatted_address, 'city': city, 'administrative_area_level_1': administrative_area_level_1, 'description': details?.formatted_address }
 
                 post_location = data2
-                GooglePlacesRef && GooglePlacesRef.setAddressText(details.formatted_address)
-                console.log({ data2, details })
+                // GooglePlacesRef && GooglePlacesRef.setAddressText()
+                // console.log({ data2, details })
                 setState(
                     {
+                        service_address: details.formatted_address,
                         latitude: details.geometry.location.lat,
                         longitude: details.geometry.location.lng,
                     },
@@ -166,7 +153,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
         update_adress()
     }
 
-    const callLocation = async (that) => {
+    const callLocation = async () => {
         setState({ loading: true })
         localStorage.getItemObject('position').then((position) => {
 
@@ -188,7 +175,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                     },
                     { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
                 );
-                that.watchID = Geolocation.watchPosition((position) => {
+                watchID = Geolocation.watchPosition((position) => {
 
 
                     if (pointcheck1 != 1) {
@@ -219,7 +206,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                     },
                     { enableHighAccuracy: true, timeout: 150000000, maximumAge: 1000 }
                 );
-                that.watchID = Geolocation.watchPosition((position) => {
+                watchID = Geolocation.watchPosition((position) => {
                     //Will give you the location on location change
                     console.log('data', position);
 
@@ -236,50 +223,28 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
 
     const getlatlong = async () => {
 
-        let permission = await localStorage.getItemString('permission')
-        if (permission != 'denied') {
-            var that = this;
-            //Checking for the permission just after component loaded
-            if (Platform.OS === 'ios') {
-                callLocation(that);
-            } else {
-                // callLocation(that);
-                async function requestLocationPermission() {
-                    try {
-                        const granted = await PermissionsAndroid.request(
-                            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
-                            'title': 'Location Access Required',
-                            'message': 'This App needs to Access your location'
-                        }
-                        )
-                        console.log('granted', PermissionsAndroid.RESULTS.GRANTED)
-                        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                            that.callLocation(that);
-                        } else {
-                            let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.latitude } }
-                            that.getalldata(position)
-                            localStorage.setItemString('permission', 'denied')
+        var hasPermissions;
 
-                        }
-                    } catch (err) { console.warn(err) }
+        if (Platform.OS === 'ios') {
+            callLocation()
+        } else if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+                    'title': 'Location Access Required',
+                    'message': 'This App needs to Access your location'
                 }
-                requestLocationPermission();
-            }
-        } else {
-            let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.longitude } }
-            getalldata(position)
-        }
-    }
+                )
+                console.log('granted', PermissionsAndroid.RESULTS.GRANTED)
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    callLocation();
+                } else {
+                    let position = { 'coords': { 'latitude': Configurations.latitude, 'longitude': Configurations.latitude } }
+                    getalldata(position)
 
-    const getPlaceKey = async () => {
-        let user_details = loginUserData
-        console.log("user_details:: ", user_details);
-        let place_key = user_details['place_key'];
-        setState({
-            place_key: place_key
-        }, () => {
-            //setTimeout(() => locationRef.focus(), 100)
-        })
+                }
+            } catch (err) { console.warn(err) }
+        } 
     }
 
     const lLan = Configurations.language

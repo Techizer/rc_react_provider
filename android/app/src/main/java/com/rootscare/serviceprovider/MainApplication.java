@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+
+import io.branch.referral.Branch;
 import io.sentry.react.RNSentryPackage;
 import io.sentry.react.RNSentryPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -47,6 +49,13 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+
+      // Branch logging for debugging
+      Branch.enableLogging();
+
+      // Branch object initialization
+      Branch.getAutoInstance(this);
   }
 
   /**

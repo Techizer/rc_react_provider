@@ -102,7 +102,7 @@ const ServiceAddress = ({ navigation, route }) => {
 
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    data={addressList}
+                    data={addressList.length > 1 ? addressList.splice(1, addressList.length): addressList}
                     ListHeaderComponent={() => {
                         return (
                             <View
