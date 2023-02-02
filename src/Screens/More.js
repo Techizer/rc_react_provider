@@ -5,6 +5,7 @@ import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
+import { onUserLogout } from '../Redux/Actions/UserActions';
 
 export default More = ({ navigation, route }) => {
   const [classStateData, setClassStateData] = useState({
@@ -18,10 +19,12 @@ export default More = ({ navigation, route }) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
-  
+
   const {
     loginUserData
   } = useSelector(state => state.Auth)
+
+  const dispatch = useDispatch()
 
 
   const launguage_setbtn = (language) => {
@@ -85,20 +88,17 @@ export default More = ({ navigation, route }) => {
     );
   }
   const delete_click = async () => {
-    let user_details = loginUserData
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-
     let url = Configurations.baseURL + "api-delete-user";
-    console.log("url", url)
     var data = new FormData();
-    data.append('user_id', user_id)
+    data.append('user_id', loginUserData?.user_id)
 
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        localStorage.removeItem('user_arr');
-        localStorage.removeItem('user_login');
-        navigation.navigate('Login')
+        dispatch(onUserLogout())
+        navigation.reset({
+          index: 0,
+          routes: [{ name: ScreenReferences.Login }],
+        });
       }
       else {
         MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);

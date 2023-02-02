@@ -197,7 +197,7 @@ class LanguageProvider {
 
   // --------------------------------------------------------gunjan  03-03-22
   //----------------------------NeedSupportpage
-  need_text = ['Post your issue here,we will call you in 24-48 business hours. or you if you ave anything urgent call at +44 8978636300 number', ' اكتب مشكلتك هنا، وسوف نتواصل معك في غضون 24–48 ساعة عمل،أو إذا كان لديك أي شيء عاجل اتصل بنا على الرقم  24776 9200']
+  need_text = ['Post your issue here, we will call you in 24-48 business hours. Or, if you have anything urgent call us at +44 8978 6363 00 number.', ' اكتب مشكلتك هنا، وسوف نتواصل معك في غضون 24–48 ساعة عمل،أو إذا كان لديك أي شيء عاجل اتصل بنا على الرقم  24776 9200']
   text_input_topic = ['Write your issue in details here.', ' اكتب مشكلتك بالتفصيل هنا  ']
   select_topic_text = ['Select a Topic', 'اختر عنوانا ']
   select_issues_text = ['Select issue', 'حدد المشكلة  ']

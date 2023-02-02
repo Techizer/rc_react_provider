@@ -518,7 +518,7 @@ export default Home = ({ navigation, route }) => {
                         fontFamily: Font.Medium,
                         fontSize: Font.medium
                       }}>
-                        {cProgress >= 100 ? `Profile Completion` : 'Complete Account & Booking Preference Setup'}
+                        {cProgress >= 100 ? `Profile Complete` : 'Profile In Progress'}
                       </Text>
 
                       <Text style={{

@@ -9,18 +9,14 @@ import Signup from '../Screens/Signup';
 import MyProfile from '../Screens/MyProfile';
 import EditProfile from '../Screens/EditProfile';
 import Home from '../Screens/Home';
-// import Appointment from '../Screens/Appointment';
 import Appointments from '../Screens/Appointments';
 import VideoCall from '../Screens/VideoCall';
 import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
-// import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
 import PriceList from '../Screens/PriceList';
-// import PriceList from '../PriceList';
-// import LabPackageListing from '../LabPackageListing';
 import LabPackageDetails from '../Screens/LabPackageDetails';
 import Transaction from '../Screens/Transaction';
-// import Transaction from '../Transaction';
 import Withdrawal from '../Screens/Withdrawal';
+import SearchPlace from '../Screens/SearchPlace';
 import AddBankInformation from '../Screens/AddBankInformation';
 import ReviewRating from '../Screens/ReviewRating';
 import More from '../Screens/More';
@@ -33,7 +29,6 @@ import AppointmentDetails from '../Screens/AppointmentDetails';
 import NeedSupport from '../Screens/NeedSupport';
 import OTP from '../Screens/OTP';
 import ServiceAddress from '../Screens/ServiceAddress';
-import { SearchPlaceScreen } from '../Components';
 import { ScreenReferences } from './ScreenReferences';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -151,7 +146,7 @@ const Stacknav = navigation => {
       />
       <Stack.Screen
         name={ScreenReferences.SearchPlace}
-        component={SearchPlaceScreen}
+        component={SearchPlace}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen

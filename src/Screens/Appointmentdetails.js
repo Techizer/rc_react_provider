@@ -17,6 +17,7 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { s, vs } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
 import { useSelector } from 'react-redux';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 var Sound = require('react-native-sound');
 
@@ -36,14 +37,15 @@ export default AppointmentDetails = ({ navigation, route }) => {
     reportModalVisible: false,
     reportsArr: [],
     modalPatientPrescription: false,
+    isLoading: true,
     sound: {
       //Just for Schema
       _duration: 0,
       getDuration: () => 0,
-      setCurrentTime: () => {},
+      setCurrentTime: () => { },
       isLoaded: () => false,
-      getCurrentTime: () => ({seconds: 0 ,isPlaying: false}),
-      pause: () => {}
+      getCurrentTime: () => ({ seconds: 0, isPlaying: false }),
+      pause: () => { }
 
     },
     sliderEditing: false
@@ -83,7 +85,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
     if (classStateData.appoinment_detetails.symptom_recording) {
       let recordingUrl = Configurations.img_url3 + classStateData.appoinment_detetails.symptom_recording;
 
-      console.log({recordingUrl});
+      console.log({ recordingUrl });
 
       setState({
         sound: new Sound(recordingUrl, '', (error) => {
@@ -118,6 +120,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
     } else {
       if (classStateData.sound) {
         classStateData.sound.setCurrentTime(value);
+
         setState({ playSeconds: value });
       }
     }
@@ -180,7 +183,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
     setState({ playState: 'paused' });
   }
 
-  const get_all_details = async (page) => {
+  const get_all_details = async () => {
     let user_id = loginUserData['user_id']
     let user_type = loginUserData['user_type']
     let url = Configurations.baseURL + "api-provider-appointment-details" //"api-patient-appointment-details";  
@@ -190,11 +193,12 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
     data.append('service_type', user_type)
 
-    API.post(url, data, page).then((obj) => {
+    API.post(url, data, 0).then((obj) => {
       if (obj.status == true) {
         setState({
           appoinment_detetails: obj.result,
-          message: obj.message
+          message: obj.message,
+          isLoading: false
         }, () => {
           onStartPlay(false)
         })
@@ -205,8 +209,11 @@ export default AppointmentDetails = ({ navigation, route }) => {
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-
-    });
+      setState({
+        isLoading: false
+      })
+    }).finally(() => {
+    })
 
   }
 
@@ -217,7 +224,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
         longitude: long, //18.697459
         address: address
       },
-      
+
     }
 
     getDirections(data)
@@ -655,8 +662,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
     return (
       <View style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1 }}></SafeAreaView>
-
         <ScreenHeader
           onBackPress={() => {
             navigation.goBack();
@@ -667,1600 +672,1669 @@ export default AppointmentDetails = ({ navigation, route }) => {
           title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-
-          showsVerticalScrollIndicator={false}  >
-          <KeyboardAwareScrollView extraScrollHeight={50}
-            enableOnAndroid={true}
-            keyboardShouldPersistTaps='handled'
-            contentContainerStyle={{
-              justifyContent: 'center',
-              paddingBottom: vs(30),
-            }}
-            showsVerticalScrollIndicator={false}>
-
-            <View
-              style={{
-                flex: 1,
-                marginBottom: (mobileW * 40) / 100,
-                shadowOpacity: 0.3,
-                shadowColor: '#000',
-                shadowOffset: { width: 2, height: 2 },
-                elevation: 2,
-                paddingVertical: vs(9),
+        <>
+          {
+            classStateData.isLoading ?
+              <View style={{
+                width: windowWidth,
                 backgroundColor: Colors.White,
+                paddingHorizontal: s(11),
+                paddingVertical: vs(9),
+                marginTop: vs(7),
               }}>
-              <View style={{}}>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: '100%',
+                    paddingHorizontal: s(11),
+                  }}>
+                  <View style={{ width: "30%", }}>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={s(75)} height={s(75)} borderRadius={s(100)} />
+                    </SkeletonPlaceholder>
+                  </View>
+
+                  <View style={{ justifyContent: 'center' }}>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                    </SkeletonPlaceholder>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                    </SkeletonPlaceholder>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                    </SkeletonPlaceholder>
+                  </View>
+                </View>
+                <View style={{ width: '100%', height: 1.5, backgroundColor: Colors.backgroundcolor, marginTop: vs(7), marginBottom: vs(7) }}></View>
 
                 <View>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 12) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                  </SkeletonPlaceholder>
 
-                  {/* Order ID & Status */}
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: 'space-between',
-                      width: "100%",
-                      alignSelf: "center",
-                      borderBottomWidth: 1.5,
-                      borderBottomColor: Colors.backgroundcolor,
-                      paddingBottom: vs(5),
-                      paddingHorizontal: s(13),
+                  <View style={{ flexDirection: 'row', marginTop: vs(7) }}>
 
-                    }}>
-
-                    <Text
-                      style={{
-                        fontSize: Font.small,
-                        fontFamily: Font.Medium,
-                        color: Colors.Theme
-                      }}
-                    >
-                      {item.order_id}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: Font.small,
-                        fontFamily: Font.Medium,
-                        color: item?.acceptance_status === 'Pending' ? Colors.Yellow : (item?.acceptance_status === 'Completed' || item?.acceptance_status === 'Accepted') ? Colors.Green : Colors.Red,
-                      }}
-                    >
-                      {item.acceptance_status}
-                    </Text>
-
-                  </View>
-
-                  {/* Profile Image and Personal Details */}
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      paddingVertical: vs(11),
-                      paddingHorizontal: s(13),
-                    }}>
-                    <View style={{ width: "28%", alignSelf: "center" }}>
-                      {
-                        (item.provider_image == "NA" || item.provider_image == null || item.provider_image == "") ?
-                          <SvgXml xml={dummyUser = ''} style={{
-                            alignSelf: "center",
-                            marginTop: vs(5)
-                          }} />
-                          :
-                          <Image
-                            source={{ uri: Configurations.img_url3 + item.provider_image }}
-                            style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, bordercolor: Colors.Highlight }}
-                          />
-                      }
+                    <View style={{ flex: 1 }}>
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                      </SkeletonPlaceholder>
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                      </SkeletonPlaceholder>
                     </View>
 
-                    <View
-                      style={{
-                        width: "60%",
-                      }}>
+                    <View style={{ flex: 1 }}>
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                      </SkeletonPlaceholder>
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                      </SkeletonPlaceholder>
+                    </View>
+
+                    <View style={{ flex: 1 }}>
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                      </SkeletonPlaceholder>
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                      </SkeletonPlaceholder>
+                    </View>
+
+                  </View>
+                </View>
+              </View>
+              :
+              <KeyboardAwareScrollView extraScrollHeight={50}
+                enableOnAndroid={true}
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={{
+                  justifyContent: 'center',
+                  paddingBottom: vs(30),
+                }}
+                showsVerticalScrollIndicator={false}>
+                <View
+                  style={{
+                    flex: 1,
+                    marginBottom: (mobileW * 40) / 100,
+                    shadowOpacity: 0.3,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 2, height: 2 },
+                    elevation: 2,
+                    paddingVertical: vs(9),
+                    backgroundColor: Colors.White,
+                  }}>
+                  <View style={{}}>
+
+                    <View>
+
+                      {/* Order ID & Status */}
                       <View
                         style={{
                           flexDirection: "row",
+                          justifyContent: 'space-between',
+                          width: "100%",
+                          alignSelf: "center",
+                          borderBottomWidth: 1.5,
+                          borderBottomColor: Colors.backgroundcolor,
+                          paddingBottom: vs(5),
+                          paddingHorizontal: s(13),
+
                         }}>
+
                         <Text
                           style={{
+                            fontSize: Font.small,
                             fontFamily: Font.Medium,
-                            color: Colors.Theme,
-                            fontSize: Font.small,
-                            alignSelf: 'flex-start',
-                          }}>
-                          {item.service_type}
-                        </Text>
-                        {item.hospital_id != "" && (
-                          <Text
-                            style={{
-                              color: "#FCFFFE",
-                              backgroundColor: "#FFA800",
-                              fontFamily: Font.Medium,
-                              fontSize: Font.medium,
-                              padding: (windowWidth * 2) / 100,
-                              marginTop: -3,
-                              marginLeft: 10,
-                              paddingVertical: (windowWidth * 0.6) / 100,
-                            }}
-                          >
-                            {LanguageConfiguration.Hospital[Configurations.language]}
-                          </Text>
-                        )}
-                      </View>
-                      <Text
-                        style={{
-                          fontFamily: Font.Medium,
-                          fontSize: Font.medium,
-                          paddingVertical: (windowWidth * 1.1) / 100,
-                          color: Colors.DarkGrey,
-                          alignSelf: 'flex-start',
-                        }}
-                      >
-                        {item.provider_name}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: Font.Regular,
-                          fontSize: Font.small,
-                          color: Colors.DarkGrey,
-                          alignSelf: 'flex-start',
-                        }}
-                      >
-                        {item.speciality}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* Appointment Schedule Section */}
-                  <View
-                    style={{
-                      backgroundColor: Colors.appointmentdetaillightblue,
-                      paddingHorizontal: s(13),
-                      paddingVertical: vs(10)
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: Font.Medium,
-                        fontSize: Font.small,
-                        color: Colors.darkText,
-                        alignSelf: 'flex-start',
-                        paddingBottom: (windowWidth * 3) / 100,
-                      }}
-                    >
-                      {LanguageConfiguration.appointment_schedule[Configurations.language]}
-                    </Text>
-
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}>
-
-                      <View
-                        style={{
-                          flex: 1,
-                          marginTop: (windowWidth * 1) / 100,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
+                            color: Colors.Theme
                           }}
                         >
-                          {LanguageConfiguration.Date[Configurations.language]}
+                          {item.order_id}
                         </Text>
                         <Text
                           style={{
+                            fontSize: Font.small,
                             fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
-                            marginTop: vs(5)
-                          }} >
-                          {item.app_date}
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 1.35,
-                          marginTop: (windowWidth * 1) / 100,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
+                            color: item?.acceptance_status === 'Pending' ? Colors.Yellow : (item?.acceptance_status === 'Completed' || item?.acceptance_status === 'Accepted') ? Colors.Green : Colors.Red,
                           }}
                         >
-                          {LanguageConfiguration.Time[Configurations.language]}
+                          {item.acceptance_status}
                         </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
-                            marginTop: vs(5)
-                          }} >
-                          {item.app_time}
-                        </Text>
+
                       </View>
 
+                      {/* Profile Image and Personal Details */}
                       <View
                         style={{
-                          flex: 0.65,
-                          marginTop: (windowWidth * 1) / 100,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
-                          }}
-                        >
-                          {'Type'}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
-                            textAlign: 'left',
-                            marginTop: vs(5)
-                          }} >
-                          {item?.task_type}
-                        </Text>
-                      </View>
-
-                    </View>
-
-                    <View
-                      style={{
-                        width: "100%",
-                        alignSelf: "center",
-                        borderTopWidth: 1.5,
-                        borderTopColor: '#D8D8D8',
-                        marginTop: vs(10),
-                        paddingTop: vs(8)
-                      }}>
-
-                      <View
-                        style={{
-                          width: "42%",
-                          justifyContent: "space-between",
                           flexDirection: "row",
-                          alignItems: 'center'
+                          alignItems: "center",
+                          paddingVertical: vs(11),
+                          paddingHorizontal: s(13),
                         }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.small,
-                            color: Colors.DarkGrey,
-                          }}>
-                          {LanguageConfiguration.BookingOn[Configurations.language]}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.DarkGrey,
-                            textTransform: "uppercase",
-                          }}>
-                          {item.booking_date}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-
-                  {/* // patient symptom doctor */}
-                  {
-                    (item.service_type == "Doctor" &&
-                      (item.symptom_recording != "" || item.symptom_text != "")) &&
-                    <View
-                      style={{
-                        width: "100%",
-                        alignSelf: "center",
-                        backgroundColor: "#FDF7EB",
-                        paddingVertical: vs(9),
-                        paddingHorizontal: s(13)
-                      }}>
-                      <Text style={{
-                        fontFamily: Font.Medium,
-                        fontSize: Font.small,
-                        color: Colors.Theme,
-                        alignSelf: 'flex-start',
-                      }}>
-                        Patient Symptom
-                      </Text>
-                      {
-                        (item.symptom_recording != "") &&
-                        <View
-                          style={{
-                            width: "100%",
-                            alignSelf: "center",
-                            justifyContent: 'space-between',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderBottomWidth: 1.5,
-                            borderColor: Colors.gainsboro,
-                            paddingVertical: vs(5)
-                          }}>
-
-                          <Text
-                            style={{
-                              width: '30%',
-                              fontFamily: Font.Medium,
-                              fontSize: Font.small,
-                              color: Colors.detailTitles,
-                              textAlign: 'left',
-                            }}
-                          >
-                            {'Voice Recording'}
-                          </Text>
-                          <View style={{
-                            width: '70%',
-                            flexDirection: "row",
-                            alignItems: 'center'
-                          }}>
-                            <TouchableOpacity onPress={() => {
-                              (classStateData.playState == 'paused') ?
-                                onStartPlay(true) : pause()
-                            }}>
-                              <Image
-                                source={(classStateData.playState == 'paused') ?
-                                  Icons.Play : Icons.Pause}
-
-                                style={{
-                                  width: (mobileW * 8) / 100,
-                                  height: (mobileW * 8) / 100,
-
-                                }}></Image>
-                            </TouchableOpacity>
-                            <Slider
-                              onTouchStart={onSliderEditStart}
-                              onTouchEnd={onSliderEditEnd}
-                              onValueChange={onSliderEditing}
-                              value={classStateData.playSeconds}
-                              maximumValue={(classStateData.sound.getDuration() === -1) ? 0: classStateData.sound.getDuration()}
-                              maximumTrackTintColor='gray'
-                              minimumTrackTintColor={Colors.theme_color}
-                              thumbImage={classStateData.sliderIcon}
-                              style={{
-                                flex: 1,
+                        <View style={{ width: "28%", alignSelf: "center" }}>
+                          {
+                            (item.provider_image == "NA" || item.provider_image == null || item.provider_image == "") ?
+                              <SvgXml xml={dummyUser = ''} style={{
                                 alignSelf: "center",
-                                marginHorizontal: Platform.select({ ios: 5 }),
-                                height: (windowWidth * 10) / 100,
+                                marginTop: vs(5)
                               }} />
-                            <Text style={{ color: 'black', alignSelf: 'center' }}>{durationString}</Text>
-                          </View>
+                              :
+                              <Image
+                                source={{ uri: Configurations.img_url3 + item.provider_image }}
+                                style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, bordercolor: Colors.Highlight }}
+                              />
+                          }
                         </View>
-                      }
-                      {
-                        (item.symptom_text != "") &&
-                        <View
-                          style={{
-                            borderBottomWidth: 1.5,
-                            borderColor: Colors.gainsboro,
-                            paddingVertical: vs(9)
-                          }}>
-                          <Text style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
-                            marginBottom: (windowWidth * 3.5) / 100,
-                          }}>
-                            Symptom description
-                          </Text>
-                          <Text style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            alignSelf: 'flex-start',
-                          }}>
-                            {item.symptom_text}
-                          </Text>
-                        </View>
-                      }
-                      {item.patient_prescription != "" && (
-                        <View
-                          style={{
-                            width: "100%",
-                            justifyContent: 'space-between',
-                            flexDirection: "row",
-                            alignItems: 'center',
-                            alignSelf: "center",
-                            paddingTop: vs(9)
-                          }}
-                        >
-                          <View style={{
-                            width: "90%",
-                            flexDirection: "row",
-                            alignItems: 'center',
-                          }}>
-                            <Image
-                              resizeMode="contain"
-                              source={Icons.FileAttachment}
-                              style={{
-                                width: "5%",
-                                height: 15,
-                                marginRight: (windowWidth * 2) / 100,
-                                borderColor: Colors.Theme,
-                              }}
-                            />
-                          </View>
-                          <View style={{
-                            width: '74%',
-                          }}>
-                            <Text
-                              numberOfLines={1}
-                              lineBreakMode='tail'
-                              style={{
-                                fontFamily: Font.Regular,
-                                fontSize: Font.small,
-                                color: Colors.detailTitles,
-                                textAlign: "auto",
-                              }}
-                            >
-                              {item.patient_prescription}
-                            </Text>
-                          </View>
 
-                          <View style={{
-                            width: "10%",
-                            flexDirection: "row",
-                            justifyContent: 'flex-end',
+                        <View
+                          style={{
+                            width: "60%",
                           }}>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                            }}>
                             <Text
-                              onPress={() => {
-                                setState({
-                                  modalPatientPrescription: true,
-                                });
-                              }}
                               style={{
                                 fontFamily: Font.Medium,
-                                fontSize: Font.small,
                                 color: Colors.Theme,
-                              }}
-                            >
-                              View
+                                fontSize: Font.small,
+                                alignSelf: 'flex-start',
+                              }}>
+                              {item.service_type}
                             </Text>
+                            {item.hospital_id != "" && (
+                              <Text
+                                style={{
+                                  color: "#FCFFFE",
+                                  backgroundColor: "#FFA800",
+                                  fontFamily: Font.Medium,
+                                  fontSize: Font.medium,
+                                  padding: (windowWidth * 2) / 100,
+                                  marginTop: -3,
+                                  marginLeft: 10,
+                                  paddingVertical: (windowWidth * 0.6) / 100,
+                                }}
+                              >
+                                {LanguageConfiguration.Hospital[Configurations.language]}
+                              </Text>
+                            )}
                           </View>
+                          <Text
+                            style={{
+                              fontFamily: Font.Medium,
+                              fontSize: Font.medium,
+                              paddingVertical: (windowWidth * 1.1) / 100,
+                              color: Colors.DarkGrey,
+                              alignSelf: 'flex-start',
+                            }}
+                          >
+                            {item.provider_name}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.DarkGrey,
+                              alignSelf: 'flex-start',
+                            }}
+                          >
+                            {item.speciality}
+                          </Text>
                         </View>
-                      )}
-                      <Modal
-                        backdropOpacity={3}
-                        animationType="fade"
-                        transparent={true}
-                        visible={classStateData.modalPatientPrescription}
-                        presentationStyle="overFullScreen"
-                        onRequestClose={() => {
-                          setState({ modalPatientPrescription: false });
-                        }}
-                      >
-                        <View
+                      </View>
+
+                      {/* Appointment Schedule Section */}
+                      <View
+                        style={{
+                          backgroundColor: Colors.appointmentdetaillightblue,
+                          paddingHorizontal: s(13),
+                          paddingVertical: vs(10)
+                        }}>
+                        <Text
                           style={{
-                            width: "95%",
-                            height: mobileH - 100,
-                            backgroundColor: Colors.white_color,
-                            margin: (mobileW * 15) / 100,
-                            borderRadius: (mobileW * 2) / 100,
-                            borderWidth: 1,
-                            borderColor: Colors.gray5,
-                            shadowOpacity: 0.5,
-                            shadowColor: "#000",
-                            shadowOffset: { width: 2, height: 2 },
-                            elevation: 5,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            alignSelf: "center",
-                            flex: 1,
+                            fontFamily: Font.Medium,
+                            fontSize: Font.small,
+                            color: Colors.darkText,
+                            alignSelf: 'flex-start',
+                            paddingBottom: (windowWidth * 3) / 100,
                           }}
                         >
-                          <TouchableOpacity
-                            style={{
-                              position: "absolute",
-                              top: -10,
-                              right: -5,
-                            }}
-                            onPress={() =>
-                              setState({
-                                modalPatientPrescription: false,
-                              })
-                            }
-                          >
-                            <Image
-                              source={Icons.Cross}
-                              style={{
-                                resizeMode: "contain",
-                                width: 30,
-                                height: 30,
-                                alignSelf: "center",
-                              }}
-                            />
-                          </TouchableOpacity>
-                          <Image
-                            source={{ uri: Configurations.img_url3 + item.patient_prescription }}
-                            style={{
-                              resizeMode: "cover",
-                              width: "100%",
-                              height: (mobileH * 40) / 100,
-                            }}
-                          />
-                        </View>
-                      </Modal>
-                    </View>
-                  }
+                          {LanguageConfiguration.appointment_schedule[Configurations.language]}
+                        </Text>
 
-                  {/* // prescription doctor */}
-                  {
-                    (item.acceptance_status == 'Completed' &&
-                      item.service_type == "Doctor") &&
-                    <View
-                      style={{
-                        width: "100%",
-                        alignSelf: "center",
-                        paddingVertical: vs(10),
-                        paddingHorizontal: s(13),
-                      }}>
-                      <Text style={{
-                        fontFamily: Font.Medium,
-                        fontSize: Font.small,
-                        color: Colors.Theme,
-                        alignSelf: 'flex-start',
-                        paddingBottom: (windowWidth * 4) / 100,
-                      }}>
-                        Prescription
-                      </Text>
-                      <View style={{
-                        flexDirection: "row",
-                        width: "100%",
-                        paddingVertical: vs(10),
-                        borderBottomWidth: 1,
-                        borderBottomColor: Colors.Border
-                      }}>
-                        <View style={{
-                          width: '17%',
-                        }}>
-                          <Image
-                            defaultSource={Icons.Prescription}
-                            source={Icons.Prescription}
-                            style={{
-                              width: vs(40),
-                              height: s(40)
-                            }} />
-                        </View>
-                        <View style={{
-                          width: "83%",
-                        }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}>
 
-                          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              marginTop: (windowWidth * 1) / 100,
+                            }}>
                             <Text
-                              numberOfLines={1}
                               style={{
                                 fontFamily: Font.Regular,
                                 fontSize: Font.small,
                                 color: Colors.detailTitles,
                                 alignSelf: 'flex-start',
-                                width: '50%'
-                              }}>{item.provider_prescription}</Text>
-
-
-
-                            <TouchableOpacity style={{
-                              width: '25%'
-                            }} onPress={() => {
-                              if (item.provider_prescription != "") {
-                                downloadPrescription(Configurations.img_url3 + item.provider_prescription, item.provider_prescription)
-                              }
-
-                            }}>
-                              <Text style={{
-                                textAlign: "right",
-                                fontFamily: Font.Regular,
-                                fontSize: Font.xsmall,
-                                color: Colors.Theme,
-                              }}>Download</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                              width: '25%'
-                            }} onPress={() => {
-                              setState({
-                                imageType: 'provider_prescription',
-                                mediamodal: true
-                              }, () => {
-
-                              })
-                            }}>
-                              <Text style={{
-                                textAlign: "right",
-                                fontFamily: Font.Regular,
-                                fontSize: Font.xsmall,
-                                color: Colors.orange,
-                              }}>Re-Upload</Text>
-                            </TouchableOpacity>
+                              }}
+                            >
+                              {LanguageConfiguration.Date[Configurations.language]}
+                            </Text>
+                            <Text
+                              style={{
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                alignSelf: 'flex-start',
+                                marginTop: vs(5)
+                              }} >
+                              {item.app_date}
+                            </Text>
                           </View>
 
-                          <Text style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.xsmall,
-                            color: Colors.lightGrey,
-                            alignSelf: 'flex-start',
-                            marginTop: vs(3)
-                          }}>{item.provider_upd}</Text>
+                          <View
+                            style={{
+                              flex: 1.35,
+                              marginTop: (windowWidth * 1) / 100,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                alignSelf: 'flex-start',
+                              }}
+                            >
+                              {LanguageConfiguration.Time[Configurations.language]}
+                            </Text>
+                            <Text
+                              style={{
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                alignSelf: 'flex-start',
+                                marginTop: vs(5)
+                              }} >
+                              {item.app_time}
+                            </Text>
+                          </View>
+
+                          <View
+                            style={{
+                              flex: 0.65,
+                              marginTop: (windowWidth * 1) / 100,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                alignSelf: 'flex-start',
+                              }}
+                            >
+                              {'Type'}
+                            </Text>
+                            <Text
+                              style={{
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                alignSelf: 'flex-start',
+                                textAlign: 'left',
+                                marginTop: vs(5)
+                              }} >
+                              {item?.task_type}
+                            </Text>
+                          </View>
+
+                        </View>
+
+                        <View
+                          style={{
+                            width: "100%",
+                            alignSelf: "center",
+                            borderTopWidth: 1.5,
+                            borderTopColor: '#D8D8D8',
+                            marginTop: vs(10),
+                            paddingTop: vs(8)
+                          }}>
+
+                          <View
+                            style={{
+                              width: "42%",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
+                              alignItems: 'center'
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                                color: Colors.DarkGrey,
+                              }}>
+                              {LanguageConfiguration.BookingOn[Configurations.language]}
+                            </Text>
+                            <Text
+                              style={{
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.DarkGrey,
+                                textTransform: "uppercase",
+                              }}>
+                              {item.booking_date}
+                            </Text>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  }
-                  {/* // report lab */}
-                  {
-                    ((item.acceptance_status == 'Accepted' || item.acceptance_status == 'Completed') &&
-                      item.service_type == "Lab") &&
-                    <View
-                      style={{
-                        width: "100%",
-                        alignSelf: "center",
-                        paddingHorizontal: s(13),
-                        borderBottomWidth: (windowWidth * 0.3) / 100,
-                        borderColor: Colors.gainsboro,
-                        paddingVertical: (windowWidth * 2.5) / 100,
-                      }}>
-                      <Text style={{
-                        fontFamily: Font.Medium,
-                        fontSize: Font.regulartext_size,
-                        color: Colors.Theme,
-                        alignSelf: 'flex-start',
-                        paddingBottom: (windowWidth * 4) / 100,
-                      }}>
-                        Report Attachment
-                      </Text>
+
+                      {/* // patient symptom doctor */}
                       {
-                        (item.report != null && item.report.length > 0) &&
-                        item.report.map((rItem, rIndex) => {
-                          return (
-                            <View style={{
-                              flexDirection: 'row',
-                              width: '100%',
-                              borderBottomWidth: 1,
-                              borderBottomColor: Colors.gainsboro,
-                              marginBottom: 10
-                            }}>
+                        (item.service_type == "Doctor" &&
+                          (item.symptom_recording != "" || item.symptom_text != "")) &&
+                        <View
+                          style={{
+                            width: "100%",
+                            alignSelf: "center",
+                            backgroundColor: "#FDF7EB",
+                            paddingVertical: vs(9),
+                            paddingHorizontal: s(13)
+                          }}>
+                          <Text style={{
+                            fontFamily: Font.Medium,
+                            fontSize: Font.small,
+                            color: Colors.Theme,
+                            alignSelf: 'flex-start',
+                          }}>
+                            Patient Symptom
+                          </Text>
+                          {
+                            (item.symptom_recording != "") &&
+                            <View
+                              style={{
+                                width: "100%",
+                                alignSelf: "center",
+                                justifyContent: 'space-between',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                borderBottomWidth: 1.5,
+                                borderColor: Colors.gainsboro,
+                                paddingVertical: vs(5)
+                              }}>
+
+                              <Text
+                                style={{
+                                  width: '30%',
+                                  fontFamily: Font.Medium,
+                                  fontSize: Font.small,
+                                  color: Colors.detailTitles,
+                                  textAlign: 'left',
+                                }}
+                              >
+                                {'Voice Recording'}
+                              </Text>
                               <View style={{
-                                width: '20%',
-                                marginBottom: 10
-                                // backgroundColor: 'red'
+                                width: '70%',
+                                flexDirection: "row",
+                                alignItems: 'center'
+                              }}>
+                                <TouchableOpacity onPress={() => {
+                                  (classStateData.playState == 'paused') ?
+                                    onStartPlay(true) : pause()
+                                }}>
+                                  <Image
+                                    source={(classStateData.playState == 'paused') ?
+                                      Icons.Play : Icons.Pause}
+
+                                    style={{
+                                      width: (mobileW * 8) / 100,
+                                      height: (mobileW * 8) / 100,
+
+                                    }}></Image>
+                                </TouchableOpacity>
+                                <Slider
+                                  onTouchStart={onSliderEditStart}
+                                  onTouchEnd={onSliderEditEnd}
+                                  onValueChange={onSliderEditing}
+                                  value={classStateData.playSeconds}
+                                  maximumValue={(classStateData.sound.getDuration() === -1) ? 0 : classStateData.sound.getDuration()}
+                                  maximumTrackTintColor='gray'
+                                  minimumTrackTintColor={Colors.theme_color}
+                                  thumbImage={classStateData.sliderIcon}
+                                  style={{
+                                    flex: 1,
+                                    alignSelf: "center",
+                                    marginHorizontal: Platform.select({ ios: 5 }),
+                                    height: (windowWidth * 10) / 100,
+                                  }} />
+                                <Text style={{ color: 'black', alignSelf: 'center' }}>{durationString}</Text>
+                              </View>
+                            </View>
+                          }
+                          {
+                            (item.symptom_text != "") &&
+                            <View
+                              style={{
+                                borderBottomWidth: 1.5,
+                                borderColor: Colors.gainsboro,
+                                paddingVertical: vs(9)
+                              }}>
+                              <Text style={{
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                alignSelf: 'flex-start',
+                                marginBottom: (windowWidth * 3.5) / 100,
+                              }}>
+                                Symptom description
+                              </Text>
+                              <Text style={{
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                                color: Colors.detailTitles,
+                                alignSelf: 'flex-start',
+                              }}>
+                                {item.symptom_text}
+                              </Text>
+                            </View>
+                          }
+                          {item.patient_prescription != "" && (
+                            <View
+                              style={{
+                                width: "100%",
+                                justifyContent: 'space-between',
+                                flexDirection: "row",
+                                alignItems: 'center',
+                                alignSelf: "center",
+                                paddingTop: vs(9)
+                              }}
+                            >
+                              <View style={{
+                                width: "90%",
+                                flexDirection: "row",
+                                alignItems: 'center',
                               }}>
                                 <Image
-                                  defaultSource={Icons.Report}
-                                  source={Icons.Report}
+                                  resizeMode="contain"
+                                  source={Icons.FileAttachment}
                                   style={{
-                                    width: (mobileW * 14) / 100,
-                                    height: (mobileW * 16) / 100,
-                                  }}></Image>
+                                    width: "5%",
+                                    height: 15,
+                                    marginRight: (windowWidth * 2) / 100,
+                                    borderColor: Colors.Theme,
+                                  }}
+                                />
                               </View>
                               <View style={{
-                                width: '80%',
-                                // backgroundColor: 'blue'
+                                width: '74%',
                               }}>
                                 <Text
                                   numberOfLines={1}
+                                  lineBreakMode='tail'
+                                  style={{
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.small,
+                                    color: Colors.detailTitles,
+                                    textAlign: "auto",
+                                  }}
+                                >
+                                  {item.patient_prescription}
+                                </Text>
+                              </View>
+
+                              <View style={{
+                                width: "10%",
+                                flexDirection: "row",
+                                justifyContent: 'flex-end',
+                              }}>
+                                <Text
+                                  onPress={() => {
+                                    setState({
+                                      modalPatientPrescription: true,
+                                    });
+                                  }}
                                   style={{
                                     fontFamily: Font.Medium,
-                                    fontSize: Font.smallheadingfont,
-                                    color: Colors.darkgraytextheading,
-                                    textAlign: Configurations.textRotate,
-                                    marginTop: (mobileW * 1) / 100,
-                                    marginBottom: (mobileW * 2) / 100,
-                                  }}>{rItem.report}</Text>
-                                <Text style={{
-                                  fontFamily: Font.Medium,
-                                  fontSize: Font.ssubtext,
-                                  color: Colors.gray4,
-                                  textAlign: Configurations.textRotate,
-                                  marginBottom: (mobileW * 1) / 100,
-                                }}>{rItem.upload_date}</Text>
-                                <TouchableOpacity onPress={() => {
-                                  if (item.provider_prescription != "") {
-                                    downloadPrescription(Configurations.img_url3 + rItem.report, rItem.report)
-                                  }
-
-                                }}>
-                                  <Text style={{
-                                    textAlign: 'right',
-                                    fontFamily: Font.Medium,
-                                    fontSize: Font.tabtextsize,
-                                    color: Colors.theme_color,
-                                    marginBottom: (mobileW * 3) / 100,
-                                  }}>Download</Text>
-                                </TouchableOpacity>
-
+                                    fontSize: Font.small,
+                                    color: Colors.Theme,
+                                  }}
+                                >
+                                  View
+                                </Text>
                               </View>
                             </View>
-                          )
-                        })
-                      }
-                      {
-                        (UploadReportBtn == true) &&
-                        <>
-                          <View style={{
-                            width: '30%',
-                            alignSelf: 'flex-end'
-                          }}>
-                            <TouchableOpacity style={{
-                              borderWidth: 1,
-                              borderColor: Colors.theme_color,
-                              borderRadius: 5,
-                              padding: 6,
-                            }}
-                              onPress={() => {
-                                setState({
-                                  reportModalVisible: !classStateData.reportModalVisible
-                                })
-                              }}
-                            >
-                              <Text style={{
-                                textAlign: 'center',
-                                color: Colors.theme_color,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.buttontextsize,
-                              }}>UPLOAD</Text>
-                            </TouchableOpacity>
-                          </View>
+                          )}
                           <Modal
                             backdropOpacity={3}
                             animationType="fade"
                             transparent={true}
-                            visible={classStateData.reportModalVisible}
+                            visible={classStateData.modalPatientPrescription}
+                            presentationStyle="overFullScreen"
                             onRequestClose={() => {
-                              // closeButtonFunction()
+                              setState({ modalPatientPrescription: false });
                             }}
-
                           >
                             <View
                               style={{
-                                // height: '100%',
+                                width: "95%",
+                                height: mobileH - 100,
+                                backgroundColor: Colors.white_color,
+                                margin: (mobileW * 15) / 100,
+                                borderRadius: (mobileW * 2) / 100,
+                                borderWidth: 1,
+                                borderColor: Colors.gray5,
+                                shadowOpacity: 0.5,
+                                shadowColor: "#000",
+                                shadowOffset: { width: 2, height: 2 },
+                                elevation: 5,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                alignSelf: "center",
                                 flex: 1,
-                                // marginTop: 'auto',
-                                // backgroundColor: 'red'
-                                backgroundColor: '#00000090',
-                              }}>
-                              <View
+                              }}
+                            >
+                              <TouchableOpacity
                                 style={{
-                                  marginTop: 'auto',
-                                  minHeight: '25%',
-                                  maxHeight: '90%',
-                                  // alignSelf: 'flex-end',
-                                  backgroundColor: 'white',
-                                  borderTopStartRadius: 20,
-                                  borderTopEndRadius: 20
+                                  position: "absolute",
+                                  top: -10,
+                                  right: -5,
                                 }}
+                                onPress={() =>
+                                  setState({
+                                    modalPatientPrescription: false,
+                                  })
+                                }
                               >
+                                <Image
+                                  source={Icons.Cross}
+                                  style={{
+                                    resizeMode: "contain",
+                                    width: 30,
+                                    height: 30,
+                                    alignSelf: "center",
+                                  }}
+                                />
+                              </TouchableOpacity>
+                              <Image
+                                source={{ uri: Configurations.img_url3 + item.patient_prescription }}
+                                style={{
+                                  resizeMode: "cover",
+                                  width: "100%",
+                                  height: (mobileH * 40) / 100,
+                                }}
+                              />
+                            </View>
+                          </Modal>
+                        </View>
+                      }
+
+                      {/* // prescription doctor */}
+                      {
+                        (item.acceptance_status == 'Completed' &&
+                          item.service_type == "Doctor") &&
+                        <View
+                          style={{
+                            width: "100%",
+                            alignSelf: "center",
+                            paddingVertical: vs(10),
+                            paddingHorizontal: s(13),
+                          }}>
+                          <Text style={{
+                            fontFamily: Font.Medium,
+                            fontSize: Font.small,
+                            color: Colors.Theme,
+                            alignSelf: 'flex-start',
+                            paddingBottom: (windowWidth * 4) / 100,
+                          }}>
+                            Prescription
+                          </Text>
+                          <View style={{
+                            flexDirection: "row",
+                            width: "100%",
+                            paddingVertical: vs(10),
+                            borderBottomWidth: 1,
+                            borderBottomColor: Colors.Border
+                          }}>
+                            <View style={{
+                              width: '17%',
+                            }}>
+                              <Image
+                                defaultSource={Icons.Prescription}
+                                source={Icons.Prescription}
+                                style={{
+                                  width: vs(40),
+                                  height: s(40)
+                                }} />
+                            </View>
+                            <View style={{
+                              width: "83%",
+                            }}>
+
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text
+                                  numberOfLines={1}
+                                  style={{
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.small,
+                                    color: Colors.detailTitles,
+                                    alignSelf: 'flex-start',
+                                    width: '50%'
+                                  }}>{item.provider_prescription}</Text>
+
+
+
+                                <TouchableOpacity style={{
+                                  width: '25%'
+                                }} onPress={() => {
+                                  if (item.provider_prescription != "") {
+                                    downloadPrescription(Configurations.img_url3 + item.provider_prescription, item.provider_prescription)
+                                  }
+
+                                }}>
+                                  <Text style={{
+                                    textAlign: "right",
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.xsmall,
+                                    color: Colors.Theme,
+                                  }}>Download</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{
+                                  width: '25%'
+                                }} onPress={() => {
+                                  setState({
+                                    imageType: 'provider_prescription',
+                                    mediamodal: true
+                                  }, () => {
+
+                                  })
+                                }}>
+                                  <Text style={{
+                                    textAlign: "right",
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.xsmall,
+                                    color: Colors.orange,
+                                  }}>Re-Upload</Text>
+                                </TouchableOpacity>
+                              </View>
+
+                              <Text style={{
+                                fontFamily: Font.Regular,
+                                fontSize: Font.xsmall,
+                                color: Colors.lightGrey,
+                                alignSelf: 'flex-start',
+                                marginTop: vs(3)
+                              }}>{item.provider_upd}</Text>
+                            </View>
+                          </View>
+                        </View>
+                      }
+                      {/* // report lab */}
+                      {
+                        ((item.acceptance_status == 'Accepted' || item.acceptance_status == 'Completed') &&
+                          item.service_type == "Lab") &&
+                        <View
+                          style={{
+                            width: "100%",
+                            alignSelf: "center",
+                            paddingHorizontal: s(13),
+                            borderBottomWidth: (windowWidth * 0.3) / 100,
+                            borderColor: Colors.gainsboro,
+                            paddingVertical: (windowWidth * 2.5) / 100,
+                          }}>
+                          <Text style={{
+                            fontFamily: Font.Medium,
+                            fontSize: Font.regulartext_size,
+                            color: Colors.Theme,
+                            alignSelf: 'flex-start',
+                            paddingBottom: (windowWidth * 4) / 100,
+                          }}>
+                            Report Attachment
+                          </Text>
+                          {
+                            (item.report != null && item.report.length > 0) &&
+                            item.report.map((rItem, rIndex) => {
+                              return (
                                 <View style={{
-                                  padding: 20,
+                                  flexDirection: 'row',
+                                  width: '100%',
+                                  borderBottomWidth: 1,
+                                  borderBottomColor: Colors.gainsboro,
+                                  marginBottom: 10
                                 }}>
                                   <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
+                                    width: '20%',
+                                    marginBottom: 10
+                                    // backgroundColor: 'red'
                                   }}>
+                                    <Image
+                                      defaultSource={Icons.Report}
+                                      source={Icons.Report}
+                                      style={{
+                                        width: (mobileW * 14) / 100,
+                                        height: (mobileW * 16) / 100,
+                                      }}></Image>
+                                  </View>
+                                  <View style={{
+                                    width: '80%',
+                                    // backgroundColor: 'blue'
+                                  }}>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={{
+                                        fontFamily: Font.Medium,
+                                        fontSize: Font.smallheadingfont,
+                                        color: Colors.darkgraytextheading,
+                                        textAlign: Configurations.textRotate,
+                                        marginTop: (mobileW * 1) / 100,
+                                        marginBottom: (mobileW * 2) / 100,
+                                      }}>{rItem.report}</Text>
                                     <Text style={{
                                       fontFamily: Font.Medium,
-                                      fontSize: Font.headingfont_booking,
-                                      color: Colors.theme_color,
-                                      textTransform: 'uppercase',
-                                    }}>Report Attachment</Text>
-                                    <TouchableOpacity
-                                      style={{
-                                        justifyContent: 'center',
-                                        alignContent: 'center',
-                                        textAlign: 'center',
-                                      }}
-                                      onPress={() => {
-                                        setState({
-                                          reportModalVisible: !classStateData.reportModalVisible
-                                        })
-                                      }}>
-                                      <Image
-                                        // source={require('../assets/images/close.png')}
-                                        source={Icons.Cross}
-                                        style={{ width: 25, height: 25 }}
-                                      />
+                                      fontSize: Font.ssubtext,
+                                      color: Colors.gray4,
+                                      textAlign: Configurations.textRotate,
+                                      marginBottom: (mobileW * 1) / 100,
+                                    }}>{rItem.upload_date}</Text>
+                                    <TouchableOpacity onPress={() => {
+                                      if (item.provider_prescription != "") {
+                                        downloadPrescription(Configurations.img_url3 + rItem.report, rItem.report)
+                                      }
 
+                                    }}>
+                                      <Text style={{
+                                        textAlign: 'right',
+                                        fontFamily: Font.Medium,
+                                        fontSize: Font.tabtextsize,
+                                        color: Colors.theme_color,
+                                        marginBottom: (mobileW * 3) / 100,
+                                      }}>Download</Text>
                                     </TouchableOpacity>
+
                                   </View>
-
-                                  <TouchableOpacity onPress={() => {
+                                </View>
+                              )
+                            })
+                          }
+                          {
+                            (UploadReportBtn == true) &&
+                            <>
+                              <View style={{
+                                width: '30%',
+                                alignSelf: 'flex-end'
+                              }}>
+                                <TouchableOpacity style={{
+                                  borderWidth: 1,
+                                  borderColor: Colors.theme_color,
+                                  borderRadius: 5,
+                                  padding: 6,
+                                }}
+                                  onPress={() => {
                                     setState({
-                                      reportModalVisible: false,
-                                      isFromReportModal: true,
-                                      mediamodal: true
-                                    }, () => {
-
+                                      reportModalVisible: !classStateData.reportModalVisible
                                     })
+                                  }}
+                                >
+                                  <Text style={{
+                                    textAlign: 'center',
+                                    color: Colors.theme_color,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.buttontextsize,
+                                  }}>UPLOAD</Text>
+                                </TouchableOpacity>
+                              </View>
+                              <Modal
+                                backdropOpacity={3}
+                                animationType="fade"
+                                transparent={true}
+                                visible={classStateData.reportModalVisible}
+                                onRequestClose={() => {
+                                  // closeButtonFunction()
+                                }}
+
+                              >
+                                <View
+                                  style={{
+                                    // height: '100%',
+                                    flex: 1,
+                                    // marginTop: 'auto',
+                                    // backgroundColor: 'red'
+                                    backgroundColor: '#00000090',
                                   }}>
+                                  <View
+                                    style={{
+                                      marginTop: 'auto',
+                                      minHeight: '25%',
+                                      maxHeight: '90%',
+                                      // alignSelf: 'flex-end',
+                                      backgroundColor: 'white',
+                                      borderTopStartRadius: 20,
+                                      borderTopEndRadius: 20
+                                    }}
+                                  >
                                     <View style={{
-                                      padding: 10,
-                                      paddingTop: 10,
-                                      paddingBottom: 10,
-                                      marginTop: 20,
-                                      marginBottom: 20,
-                                      borderRadius: 10,
-                                      borderWidth: 1,
-                                      borderStyle: 'dashed',
-                                      bordercolor: Colors.gainsboro,
-                                      flexDirection: 'row'
+                                      padding: 20,
                                     }}>
                                       <View style={{
-                                        // backgroundColor: 'red',
-                                        justifyContent: 'center',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
                                         alignItems: 'center',
-                                        padding: 10,
-                                        paddingRight: 0,
-                                        marginRight: 10
-                                      }}>
-                                        {/* <Image
-                                      // source={require('../assets/images/close.png')}
-                                      source={Icons.Cross}
-                                      style={{ width: 25, height: 25 }}
-                                    /> */}
-                                        <FontAwesome5 style={{ alignSelf: 'center' }}
-                                          name={"file-upload"}
-                                          size={50}
-                                          color={Colors.gainsboro}></FontAwesome5>
-                                      </View>
-                                      <View style={{
-                                        // backgroundColor: 'yellow',
-                                        justifyContent: 'center'
                                       }}>
                                         <Text style={{
                                           fontFamily: Font.Medium,
                                           fontSize: Font.headingfont_booking,
-                                          color: Colors.darkgraytextheading,
-                                        }}>Tap or click to upload</Text>
-                                        <Text style={{
-                                          fontFamily: Font.Regular,
-                                          fontSize: Font.headinggray,
-                                          color: Colors.darkgraytextheading,
-                                        }}>Maximum file size allowed 10 MB</Text>
+                                          color: Colors.theme_color,
+                                          textTransform: 'uppercase',
+                                        }}>Report Attachment</Text>
+                                        <TouchableOpacity
+                                          style={{
+                                            justifyContent: 'center',
+                                            alignContent: 'center',
+                                            textAlign: 'center',
+                                          }}
+                                          onPress={() => {
+                                            setState({
+                                              reportModalVisible: !classStateData.reportModalVisible
+                                            })
+                                          }}>
+                                          <Image
+                                            // source={require('../assets/images/close.png')}
+                                            source={Icons.Cross}
+                                            style={{ width: 25, height: 25 }}
+                                          />
+
+                                        </TouchableOpacity>
                                       </View>
-                                    </View>
-                                  </TouchableOpacity>
 
-                                  {
-                                    (classStateData.reportsArr.length > 0) &&
-                                    <>
-                                      <ScrollView
-                                        scrollEnabled={(classStateData.reportsArr.length >= 4) ? true : false}
-                                        style={{
-                                          maxHeight: '68%',
-                                          marginBottom: (classStateData.reportsArr.length <= 4) ? 60 : 0
-                                        }}
-                                        showsVerticalScrollIndicator={false}
-                                      >
-                                        {
-                                          classStateData.reportsArr.map((file, index) => {
-                                            return (
+                                      <TouchableOpacity onPress={() => {
+                                        setState({
+                                          reportModalVisible: false,
+                                          isFromReportModal: true,
+                                          mediamodal: true
+                                        }, () => {
 
-                                              <View style={{
-                                                flexDirection: 'row',
-                                                width: '100%',
-                                                borderBottomWidth: 1,
-                                                borderBottomColor: Colors.gainsboro,
-                                                marginBottom: 10
-                                              }}>
-                                                <View style={{
-                                                  width: '18%',
-                                                  marginBottom: 10
-                                                  // backgroundColor: 'red'
-                                                }}>
-                                                  <Image
-                                                    defaultSource={Icons.Report}
-                                                    source={Icons.Report}
-                                                    style={{
-                                                      width: (mobileW * 12) / 100,
-                                                      height: (mobileW * 16) / 100,
-                                                    }}></Image>
-                                                </View>
-                                                <View style={{
-                                                  width: '82%',
-                                                  // backgroundColor: 'blue'
-                                                }}>
+                                        })
+                                      }}>
+                                        <View style={{
+                                          padding: 10,
+                                          paddingTop: 10,
+                                          paddingBottom: 10,
+                                          marginTop: 20,
+                                          marginBottom: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderStyle: 'dashed',
+                                          bordercolor: Colors.gainsboro,
+                                          flexDirection: 'row'
+                                        }}>
+                                          <View style={{
+                                            // backgroundColor: 'red',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            padding: 10,
+                                            paddingRight: 0,
+                                            marginRight: 10
+                                          }}>
+                                            {/* <Image
+                                      // source={require('../assets/images/close.png')}
+                                      source={Icons.Cross}
+                                      style={{ width: 25, height: 25 }}
+                                    /> */}
+                                            <FontAwesome5 style={{ alignSelf: 'center' }}
+                                              name={"file-upload"}
+                                              size={50}
+                                              color={Colors.gainsboro}></FontAwesome5>
+                                          </View>
+                                          <View style={{
+                                            // backgroundColor: 'yellow',
+                                            justifyContent: 'center'
+                                          }}>
+                                            <Text style={{
+                                              fontFamily: Font.Medium,
+                                              fontSize: Font.headingfont_booking,
+                                              color: Colors.darkgraytextheading,
+                                            }}>Tap or click to upload</Text>
+                                            <Text style={{
+                                              fontFamily: Font.Regular,
+                                              fontSize: Font.headinggray,
+                                              color: Colors.darkgraytextheading,
+                                            }}>Maximum file size allowed 10 MB</Text>
+                                          </View>
+                                        </View>
+                                      </TouchableOpacity>
+
+                                      {
+                                        (classStateData.reportsArr.length > 0) &&
+                                        <>
+                                          <ScrollView
+                                            scrollEnabled={(classStateData.reportsArr.length >= 4) ? true : false}
+                                            style={{
+                                              maxHeight: '68%',
+                                              marginBottom: (classStateData.reportsArr.length <= 4) ? 60 : 0
+                                            }}
+                                            showsVerticalScrollIndicator={false}
+                                          >
+                                            {
+                                              classStateData.reportsArr.map((file, index) => {
+                                                return (
+
                                                   <View style={{
                                                     flexDirection: 'row',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
                                                     width: '100%',
-                                                    // backgroundColor: 'red'
+                                                    borderBottomWidth: 1,
+                                                    borderBottomColor: Colors.gainsboro,
+                                                    marginBottom: 10
                                                   }}>
-                                                    <Text
-                                                      numberOfLines={2}
-                                                      lineBreakMode={'tail'}
-                                                      style={{
-                                                        width: '80%',
-                                                        fontFamily: Font.Medium,
-                                                        fontSize: Font.headinggray,
-                                                        color: Colors.darkgraytextheading,
-                                                        textAlign: Configurations.textRotate,
-                                                        marginTop: (mobileW * 2) / 100,
-                                                        marginBottom: (mobileW * 2) / 100,
-                                                      }}>{file.filename}</Text>
-                                                    <TouchableOpacity
-                                                      style={{
-                                                        justifyContent: 'flex-end',
-                                                        alignContent: 'flex-end',
-                                                        alignItems: 'flex-end',
-                                                        width: '20%',
-                                                        // backgroundColor: 'blue'
-                                                      }}
-                                                      onPress={() => {
-                                                        var array = [...classStateData.reportsArr]; // make a separate copy of the array
-                                                        var index = index
-                                                        if (index !== -1) {
-                                                          array.splice(index, 1);
-                                                          setState({ reportsArr: array });
-                                                        }
+                                                    <View style={{
+                                                      width: '18%',
+                                                      marginBottom: 10
+                                                      // backgroundColor: 'red'
+                                                    }}>
+                                                      <Image
+                                                        defaultSource={Icons.Report}
+                                                        source={Icons.Report}
+                                                        style={{
+                                                          width: (mobileW * 12) / 100,
+                                                          height: (mobileW * 16) / 100,
+                                                        }}></Image>
+                                                    </View>
+                                                    <View style={{
+                                                      width: '82%',
+                                                      // backgroundColor: 'blue'
+                                                    }}>
+                                                      <View style={{
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center',
+                                                        width: '100%',
+                                                        // backgroundColor: 'red'
                                                       }}>
-                                                      {/* <Entypo style={{
+                                                        <Text
+                                                          numberOfLines={2}
+                                                          lineBreakMode={'tail'}
+                                                          style={{
+                                                            width: '80%',
+                                                            fontFamily: Font.Medium,
+                                                            fontSize: Font.headinggray,
+                                                            color: Colors.darkgraytextheading,
+                                                            textAlign: Configurations.textRotate,
+                                                            marginTop: (mobileW * 2) / 100,
+                                                            marginBottom: (mobileW * 2) / 100,
+                                                          }}>{file.filename}</Text>
+                                                        <TouchableOpacity
+                                                          style={{
+                                                            justifyContent: 'flex-end',
+                                                            alignContent: 'flex-end',
+                                                            alignItems: 'flex-end',
+                                                            width: '20%',
+                                                            // backgroundColor: 'blue'
+                                                          }}
+                                                          onPress={() => {
+                                                            var array = [...classStateData.reportsArr]; // make a separate copy of the array
+                                                            var index = index
+                                                            if (index !== -1) {
+                                                              array.splice(index, 1);
+                                                              setState({ reportsArr: array });
+                                                            }
+                                                          }}>
+                                                          {/* <Entypo style={{
                                                           // alignSelf: 'flex-end'
                                                         }}
                                                           name={"cross"}
                                                           size={30}
                                                           color={Colors.gray4}></Entypo> */}
-                                                      <Image
-                                                        // source={require('../assets/images/close.png')}
-                                                        source={Icons.Cross}
-                                                        style={{ width: 20, height: 20 }}
-                                                      />
-                                                    </TouchableOpacity>
-                                                  </View>
+                                                          <Image
+                                                            // source={require('../assets/images/close.png')}
+                                                            source={Icons.Cross}
+                                                            style={{ width: 20, height: 20 }}
+                                                          />
+                                                        </TouchableOpacity>
+                                                      </View>
 
-                                                  <View style={{
-                                                    marginTop: 15,
-                                                    flexDirection: 'row',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center'
-                                                  }}>
-                                                    <View style={{
-                                                      height: 2,
-                                                      width: '80%',
-                                                      backgroundColor: Colors.theme_color
-                                                    }}>
+                                                      <View style={{
+                                                        marginTop: 15,
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center'
+                                                      }}>
+                                                        <View style={{
+                                                          height: 2,
+                                                          width: '80%',
+                                                          backgroundColor: Colors.theme_color
+                                                        }}>
+
+                                                        </View>
+                                                        <Text style={{
+                                                          fontFamily: Font.Regular,
+                                                          fontSize: Font.smallheadingfont,
+                                                          color: Colors.darkgraytextheading,
+                                                          textAlign: 'right',
+                                                          width: '20%'
+                                                        }}>100%</Text>
+                                                      </View>
 
                                                     </View>
-                                                    <Text style={{
-                                                      fontFamily: Font.Regular,
-                                                      fontSize: Font.smallheadingfont,
-                                                      color: Colors.darkgraytextheading,
-                                                      textAlign: 'right',
-                                                      width: '20%'
-                                                    }}>100%</Text>
                                                   </View>
 
-                                                </View>
-                                              </View>
+                                                )
+                                              })
+                                            }
+                                          </ScrollView>
 
-                                            )
-                                          })
-                                        }
-                                      </ScrollView>
+                                        </>
+                                      }
 
-                                    </>
-                                  }
 
+                                    </View>
+
+                                    {
+                                      (classStateData.reportsArr.length > 0) &&
+                                      <View style={{
+                                        position: 'absolute',
+                                        bottom: 25,
+                                        left: 0,
+                                        width: '100%'
+                                        // marginTop: 20
+                                      }}>
+                                        <Button
+                                          text={'Submit'}
+                                          // onLoading={classStateData.loading}
+                                          customStyles={
+                                            {
+                                              // mainContainer: styles.butonContainer
+                                              mainContainer: {
+                                                // width: '100%',
+
+                                              }
+                                            }
+                                          }
+                                          onPress={() => {
+                                            setState({
+                                              reportModalVisible: false,
+                                            }, () => {
+                                              upload_report_click()
+                                            })
+
+                                          }}
+                                        // isBlank={false}
+                                        />
+                                      </View>
+                                    }
+
+
+                                  </View>
 
                                 </View>
+                              </Modal>
+                            </>
+                          }
 
-                                {
-                                  (classStateData.reportsArr.length > 0) &&
-                                  <View style={{
-                                    position: 'absolute',
-                                    bottom: 25,
-                                    left: 0,
-                                    width: '100%'
-                                    // marginTop: 20
+                        </View>
+                      }
+
+                      {/* patient details */}
+                      <View style={{
+                        width: "100%",
+                        alignSelf: "center",
+                        paddingVertical: (windowWidth * 3) / 100,
+                      }}>
+                        <View style={{
+                          width: "100%",
+                          paddingHorizontal: s(13),
+                          flexDirection: "row",
+                          alignItems: 'center',
+                          justifyContent: "space-between",
+                        }}>
+                          <Text
+                            style={{
+                              fontFamily: Font.Medium,
+                              fontSize: Font.small,
+                              color: Colors.darkText,
+                              alignSelf: 'center',
+
+                            }}>{LanguageConfiguration.patient_details[Configurations.language]}</Text>
+                          <TouchableOpacity onPress={() => {
+                            setState({
+                              showPDetails: !classStateData.showPDetails
+                            })
+                          }}>
+                            <View style={{
+                              padding: 15,
+                              backgroundColor: Colors.backgroundcolor,
+                              justifyContent: "center",
+                            }}>
+                              <Image
+                                style={{
+                                  height: (mobileW * 4.5) / 100,
+                                  width: (mobileW * 4.5) / 100,
+                                }}
+                                source={(classStateData.showPDetails) ? Icons.UpArrow : Icons.DownArrow} />
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                        {
+                          (classStateData.showPDetails) &&
+                          <View style={{
+                            width: "100%",
+                            paddingHorizontal: s(13),
+                          }}>
+                            <Text
+                              style={{
+                                color: Colors.DarkGrey,
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                textAlign: Configurations.textalign,
+                                alignSelf: 'flex-start',
+                                marginTop: (windowWidth * 1) / 100,
+
+                              }}>
+                              {item.patient_name}
+                            </Text>
+
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                marginTop: (windowWidth * 1.5) / 100,
+                                width: "100%",
+                              }}>
+                              <Image
+                                source={Icons.Location}
+                                style={{
+                                  marginTop: (windowWidth * 1) / 100,
+                                  width: (windowWidth * 3.5) / 100,
+                                  height: (windowWidth * 3.5) / 100,
+                                  resizeMode: "contain",
+                                  tintColor: Colors.Theme,
+                                }}></Image>
+
+                              <Text
+                                style={{
+                                  color: Colors.DarkGrey,
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.small,
+                                  alignSelf: 'flex-start',
+                                  marginLeft: (windowWidth * 3) / 100,
+                                  width: "96%",
+
+                                }}>
+                                {item.patient_address}
+                              </Text>
+
+
+                            </View>
+
+                            <View>
+                              <TouchableOpacity onPress={() => {
+                                handleGetDirections(item?.patient_lat, item?.patient_long, item?.patient_address)
+                              }}>
+                                <Text
+                                  style={{
+                                    color: Colors.textblue,
+                                    fontFamily: Font.Medium,
+                                    fontSize: Font.sregulartext_size,
+                                    textAlign: Configurations.textRotate,
+                                    marginLeft: mobileW * 6.5 / 100,
+                                    marginTop: mobileW * 2 / 100,
+                                    width: '96%'
+
                                   }}>
-                                    <Button
-                                      text={'Submit'}
-                                      // onLoading={classStateData.loading}
-                                      customStyles={
-                                        {
-                                          // mainContainer: styles.butonContainer
-                                          mainContainer: {
-                                            // width: '100%',
+                                  Open Google Map
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
 
-                                          }
-                                        }
-                                      }
-                                      onPress={() => {
-                                        setState({
-                                          reportModalVisible: false,
-                                        }, () => {
-                                          upload_report_click()
-                                        })
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginTop: mobileW * 2 / 100
+                              }}>
+                              {Configurations.language == 0 ?
+                                <Image
+                                  source={Icons.PhoneSettings}
+                                  style={{
+                                    width: (mobileW * 3.5) / 100,
+                                    height: (mobileW * 3.5) / 100,
+                                    resizeMode: 'contain',
+                                    tintColor: Colors.theme_color,
+                                  }}></Image> :
+                                <Image
+                                  source={Icons.CallRTL}
+                                  style={{
+                                    width: (mobileW * 3.5) / 100,
+                                    height: (mobileW * 3.5) / 100,
+                                    resizeMode: 'contain',
+                                    tintColor: Colors.theme_color,
+                                  }}></Image>}
+                              <Text
+                                style={{
+                                  color: Colors.lightgraytext,
+                                  fontFamily: Font.Medium,
+                                  fontSize: Font.sregulartext_size,
+                                  textAlign: Configurations.textalign,
+                                  marginHorizontal: (mobileW * 3) / 100,
+                                }}>
+                                {item.patient_contact}
+                              </Text>
+                              <TouchableOpacity onPress={() => {
+                                Linking.openURL(`tel:${item.patient_contact}`)
+                              }}>
+                                <Text
+                                  style={{
+                                    color: Colors.textblue,
+                                    fontFamily: Font.Medium,
+                                    fontSize: Font.sregulartext_size,
+                                    textAlign: Configurations.textRotate,
+                                    marginLeft: mobileW * 2 / 100,
+                                    width: '96%'
 
-                                      }}
-                                    // isBlank={false}
-                                    />
-                                  </View>
-                                }
+                                  }}>
+                                  Call
+                                </Text>
+                              </TouchableOpacity>
 
-
+                            </View>
+                          </View>
+                        }
+                      </View>
+                      {(item.acceptance_status == 'Accepted' && (item.service_type != "Doctor" && item.service_type != "Lab")) ?
+                        (item?.OTP == "") ?
+                          <>
+                            <View style={{
+                              width: '90%',
+                              alignSelf: 'center', paddingVertical: mobileW * 2 / 100,
+                              flexDirection: 'row', borderTopWidth: 1,
+                              borderTopColor: Colors.bordercolor,
+                              alignItems: 'center'
+                            }}>
+                              <View style={{
+                                // backgroundColor: '#F7F8FA'
+                                width: '60%'
+                              }}>
+                                <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>Enter OTP to complete</Text>
+                              </View>
+                              <View style={{
+                                backgroundColor: '#F7F8FA',
+                                width: '40%',
+                                flexDirection: 'row',
+                                borderRadius: 5
+                                // justifyContent: 'space-between'
+                              }}>
+                                <TextInput
+                                  style={{
+                                    height: 30,
+                                    width: '75%',
+                                    // backgroundColor: 'red',
+                                    alignItems: 'center',
+                                    textAlign: 'center',
+                                    padding: 0,
+                                    color: 'black'
+                                  }}
+                                  onChangeText={(text) => {
+                                    setState({
+                                      ennterOTP: text
+                                    })
+                                  }}
+                                  value={classStateData.ennterOTP}
+                                  placeholder='Enter OTP'
+                                  placeholderTextColor={'#354052'}
+                                  keyboardType="number-pad"
+                                  returnKeyLabel='done'
+                                  returnKeyType='done'
+                                />
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    otpPressed(item?.id)
+                                  }}
+                                  style={{
+                                    width: '25%',
+                                    // paddingLeft: 5,
+                                    // paddingRight: 3,
+                                    borderLeftWidth: 1,
+                                    borderLeftColor: '#E2E7EE',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                  }}>
+                                  <Icon style={{ alignSelf: 'center' }}
+                                    name={"send-sharp"}
+                                    size={20}
+                                    color={'#0888D1'}></Icon>
+                                </TouchableOpacity>
                               </View>
 
                             </View>
-                          </Modal>
-                        </>
+                          </> :
+                          <>
+                            <View style={{ width: '90%', alignSelf: 'center', paddingVertical: mobileW * 2 / 100, flexDirection: 'row', borderTopWidth: 1, borderTopColor: Colors.bordercolor }}>
+                              <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
+                              <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '25%', textAlign: 'right', fontFamily: Font.Medium }}>{item.OTP}</Text>
+                            </View>
+                          </> : null
+
+
                       }
-
-                    </View>
-                  }
-
-                  {/* patient details */}
-                  <View style={{
-                    width: "100%",
-                    alignSelf: "center",
-                    paddingVertical: (windowWidth * 3) / 100,
-                  }}>
-                    <View style={{
-                      width: "100%",
-                      paddingHorizontal: s(13),
-                      flexDirection: "row",
-                      alignItems: 'center',
-                      justifyContent: "space-between",
-                    }}>
-                      <Text
-                        style={{
-                          fontFamily: Font.Medium,
-                          fontSize: Font.small,
-                          color: Colors.darkText,
-                          alignSelf: 'center',
-
-                        }}>{LanguageConfiguration.patient_details[Configurations.language]}</Text>
-                      <TouchableOpacity onPress={() => {
-                        setState({
-                          showPDetails: !classStateData.showPDetails
-                        })
-                      }}>
+                      {(item.acceptance_status == 'Completed' && (item.service_type != "Doctor" && item.service_type != "Lab")) &&
                         <View style={{
-                          padding: 15,
-                          backgroundColor: Colors.backgroundcolor,
-                          justifyContent: "center",
+                          width: "100%",
+                          alignSelf: "center",
+                          paddingVertical: (windowWidth * 2) / 100,
+                          flexDirection: "row",
+                          borderTopWidth: 1,
+                          borderTopColor: Colors.backgroundcolor,
+                          paddingHorizontal: s(13)
                         }}>
-                          <Image
-                            style={{
-                              height: (mobileW * 4.5) / 100,
-                              width: (mobileW * 4.5) / 100,
-                            }}
-                            source={(classStateData.showPDetails) ? Icons.UpArrow : Icons.DownArrow} />
+                          <Text style={{
+                            fontSize: Font.small,
+                            color: Colors.Green,
+                            width: "75%",
+                            alignSelf: 'flex-start',
+                            fontFamily: Font.Regular,
+                          }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
+                          <Text style={{ fontSize: Font.small, color: Colors.buttoncolorhgreen, width: '25%', textAlign: 'right', fontFamily: Font.Regular }}>{item.OTP}</Text>
                         </View>
-                      </TouchableOpacity>
-                    </View>
-                    {
-                      (classStateData.showPDetails) &&
+                      }
+                      {/* payment details */}
                       <View style={{
+                        backgroundColor: Colors.appointmentdetaillightgray,
                         width: "100%",
                         paddingHorizontal: s(13),
+                        paddingVertical: vs(9)
                       }}>
-                        <Text
-                          style={{
-                            color: Colors.DarkGrey,
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            textAlign: Configurations.textalign,
-                            alignSelf: 'flex-start',
-                            marginTop: (windowWidth * 1) / 100,
-
-                          }}>
-                          {item.patient_name}
-                        </Text>
 
                         <View
                           style={{
-                            flexDirection: "row",
-                            marginTop: (windowWidth * 1.5) / 100,
                             width: "100%",
-                          }}>
-                          <Image
-                            source={Icons.Location}
-                            style={{
-                              marginTop: (windowWidth * 1) / 100,
-                              width: (windowWidth * 3.5) / 100,
-                              height: (windowWidth * 3.5) / 100,
-                              resizeMode: "contain",
-                              tintColor: Colors.Theme,
-                            }}></Image>
+                            alignSelf: "center",
 
+
+                          }}>
                           <Text
                             style={{
-                              color: Colors.DarkGrey,
-                              fontFamily: Font.Regular,
+                              fontFamily: Font.Medium,
                               fontSize: Font.small,
                               alignSelf: 'flex-start',
-                              marginLeft: (windowWidth * 3) / 100,
-                              width: "96%",
+                              color: Colors.darkText,
+                            }}>{LanguageConfiguration.Payment[Configurations.language]}
 
-                            }}>
-                            {item.patient_address}
                           </Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              paddingVertical: (windowWidth * 2) / 100,
+                              borderBottomWidth: 1.5,
+                              borderColor: '#CCCCCC',
+                            }}>
+                            <FlatList
+                              data={item.task_details}
+                              scrollEnabled={true}
+                              nestedScrollEnabled={true}
+                              renderItem={({ item, index }) => {
+                                if (item.task_details != '') {
+                                  return (
+                                    <TouchableOpacity activeOpacity={0.9}
+                                      // onPress={() => { check_all(item, index) }}
+                                      style={{
+                                        alignItems: "center",
+                                        width: "100%",
+                                        paddingVertical: (windowWidth * 1.7) / 100,
+                                        flexDirection: "row",
+                                        justifyContent: 'space-between'
+                                      }}>
 
+                                      <Text
+                                        style={{
+                                          alignSelf: "center",
+                                          fontSize: Font.small,
+                                          fontFamily: Font.Regular,
+                                          color: Colors.DarkGrey,
+                                        }}>
+                                        {item.name}
+                                      </Text>
+                                      <Text
+                                        style={{
+                                          fontSize: Font.small,
+                                          fontFamily: Font.Regular,
+                                          color: Colors.DarkGrey,
+                                        }}>
+                                        {item.price}
+                                      </Text>
+                                    </TouchableOpacity>
+                                  );
+                                }
+                              }}></FlatList>
 
-                        </View>
+                          </View>
+                          {
+                            (item.appointment_type != "Online") &&
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                paddingVertical: (windowWidth * 2) / 100,
+                                // borderBottomWidth: (windowWidth * 0.3) / 100,
+                                borderColor: Colors.bordercolor,
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.small,
+                                  color: Colors.DarkGrey,
+                                }}>{LanguageConfiguration.distanceFare[Configurations.language]}
 
-                        <View>
-                          <TouchableOpacity onPress={() => {
-                            handleGetDirections(item?.patient_lat, item?.patient_long, item?.patient_address)
-                          }}>
+                              </Text>
+                              <Text
+                                style={{
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.small,
+                                  color: Colors.DarkGrey,
+                                }}>{item.distance_fee}
+
+                              </Text>
+                            </View>
+                          }
+
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              paddingVertical: (windowWidth * 1) / 100,
+                              borderColor: Colors.bordercolor,
+                              marginTop: (windowWidth * 1) / 100,
+                              marginBottom: (windowWidth * 3) / 100,
+                            }}>
                             <Text
                               style={{
-                                color: Colors.textblue,
-                                fontFamily: Font.Medium,
-                                fontSize: Font.sregulartext_size,
-                                textAlign: Configurations.textRotate,
-                                marginLeft: mobileW * 6.5 / 100,
-                                marginTop: mobileW * 2 / 100,
-                                width: '96%'
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                                color: Colors.DarkGrey,
+                              }}>{item.vat_percent}
 
-                              }}>
-                              Open Google Map
                             </Text>
-                          </TouchableOpacity>
-                        </View>
+                            <Text
+                              style={{
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                                color: Colors.DarkGrey,
+                              }}>{item.vat}
 
+                            </Text>
+                          </View>
+
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              paddingVertical: (windowWidth * 2) / 100,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.darkText,
+                              }}>
+                              {'Subtotal'}
+                            </Text>
+                            <Text
+                              style={{
+                                fontFamily: Font.Medium,
+                                fontSize: Font.small,
+                                color: Colors.darkText,
+                              }}>
+                              {item.price}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      {/* last button */}
+                      <View
+                        style={[{
+                          width: '91%',
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          backgroundColor: Colors.white_color,
+                          paddingTop: (mobileW * 3) / 100,
+                          paddingBottom: mobileW * 3 / 100,
+                          alignItems: 'center',
+
+                          // borderTopWidth: (mobileW * 0.3) / 100,
+                          borderColor: Colors.bordercolor,
+
+                        }, item.acceptance_status != 'Rejected' ? { justifyContent: 'space-between' } : null]}>
                         <View
                           style={{
-                            flexDirection: 'row',
                             alignItems: 'center',
-                            marginTop: mobileW * 2 / 100
+                            flexDirection: 'row',
+                            width: '40%'
                           }}>
                           {Configurations.language == 0 ?
                             <Image
-                              source={Icons.PhoneSettings}
+                              source={Icons.Wallet}
                               style={{
-                                width: (mobileW * 3.5) / 100,
-                                height: (mobileW * 3.5) / 100,
                                 resizeMode: 'contain',
-                                tintColor: Colors.theme_color,
+                                width: 15,
+                                height: 15,
                               }}></Image> :
                             <Image
-                              source={Icons.CallRTL}
+                              source={Icons.Wallet_arbic}
                               style={{
-                                width: (mobileW * 3.5) / 100,
-                                height: (mobileW * 3.5) / 100,
                                 resizeMode: 'contain',
-                                tintColor: Colors.theme_color,
+                                width: 15,
+                                height: 15,
                               }}></Image>}
                           <Text
                             style={{
-                              color: Colors.lightgraytext,
+                              color: Colors.theme_color,
+                              fontSize: (mobileW * 3.7) / 100,
                               fontFamily: Font.Medium,
-                              fontSize: Font.sregulartext_size,
-                              textAlign: Configurations.textalign,
-                              marginHorizontal: (mobileW * 3) / 100,
-                            }}>
-                            {item.patient_contact}
+                              marginTop: 0.5,
+                              marginLeft: mobileW * 2 / 100
+                            }}>{item.price}
+
                           </Text>
-                          <TouchableOpacity onPress={() => {
-                            Linking.openURL(`tel:${item.patient_contact}`)
-                          }}>
-                            <Text
-                              style={{
-                                color: Colors.textblue,
-                                fontFamily: Font.Medium,
-                                fontSize: Font.sregulartext_size,
-                                textAlign: Configurations.textRotate,
-                                marginLeft: mobileW * 2 / 100,
-                                width: '96%'
-
-                              }}>
-                              Call
-                            </Text>
-                          </TouchableOpacity>
-
                         </View>
-                      </View>
-                    }
-                  </View>
-                  {(item.acceptance_status == 'Accepted' && (item.service_type != "Doctor" && item.service_type != "Lab")) ?
-                    (item?.OTP == "") ?
-                      <>
                         <View style={{
-                          width: '90%',
-                          alignSelf: 'center', paddingVertical: mobileW * 2 / 100,
-                          flexDirection: 'row', borderTopWidth: 1,
-                          borderTopColor: Colors.bordercolor,
-                          alignItems: 'center'
+                          alignItems: 'center',
+                          justifyContent: 'flex-end',
+                          flexDirection: 'row',
+                          width: '60%',
+                          // backgroundColor: 'red'
                         }}>
-                          <View style={{
-                            // backgroundColor: '#F7F8FA'
-                            width: '60%'
-                          }}>
-                            <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>Enter OTP to complete</Text>
-                          </View>
-                          <View style={{
-                            backgroundColor: '#F7F8FA',
-                            width: '40%',
-                            flexDirection: 'row',
-                            borderRadius: 5
-                            // justifyContent: 'space-between'
-                          }}>
-                            <TextInput
-                              style={{
-                                height: 30,
-                                width: '75%',
-                                // backgroundColor: 'red',
-                                alignItems: 'center',
-                                textAlign: 'center',
-                                padding: 0,
-                                color: 'black'
+                          {item.acceptance_status == 'Pending' &&
+                            <>
+                              <TouchableOpacity onPress={() => {
+                                updateProviderAppointmentStatus("Accept", item.id)
                               }}
-                              onChangeText={(text) => {
-                                setState({
-                                  ennterOTP: text
-                                })
-                              }}
-                              value={classStateData.ennterOTP}
-                              placeholder='Enter OTP'
-                              placeholderTextColor={'#354052'}
-                              keyboardType="number-pad"
-                              returnKeyLabel='done'
-                              returnKeyType='done'
-                            />
-                            <TouchableOpacity
-                              onPress={() => {
-                                otpPressed(item?.id)
-                              }}
-                              style={{
-                                width: '25%',
-                                // paddingLeft: 5,
-                                // paddingRight: 3,
-                                borderLeftWidth: 1,
-                                borderLeftColor: '#E2E7EE',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                              }}>
-                              <Icon style={{ alignSelf: 'center' }}
-                                name={"send-sharp"}
-                                size={20}
-                                color={'#0888D1'}></Icon>
-                            </TouchableOpacity>
-                          </View>
 
-                        </View>
-                      </> :
-                      <>
-                        <View style={{ width: '90%', alignSelf: 'center', paddingVertical: mobileW * 2 / 100, flexDirection: 'row', borderTopWidth: 1, borderTopColor: Colors.bordercolor }}>
-                          <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
-                          <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '25%', textAlign: 'right', fontFamily: Font.Medium }}>{item.OTP}</Text>
-                        </View>
-                      </> : null
-
-
-                  }
-                  {(item.acceptance_status == 'Completed' && (item.service_type != "Doctor" && item.service_type != "Lab")) &&
-                    <View style={{
-                      width: "100%",
-                      alignSelf: "center",
-                      paddingVertical: (windowWidth * 2) / 100,
-                      flexDirection: "row",
-                      borderTopWidth: 1,
-                      borderTopColor: Colors.backgroundcolor,
-                      paddingHorizontal: s(13)
-                    }}>
-                      <Text style={{
-                        fontSize: Font.small,
-                        color: Colors.Green,
-                        width: "75%",
-                        alignSelf: 'flex-start',
-                        fontFamily: Font.Regular,
-                      }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
-                      <Text style={{ fontSize: Font.small, color: Colors.buttoncolorhgreen, width: '25%', textAlign: 'right', fontFamily: Font.Regular }}>{item.OTP}</Text>
-                    </View>
-                  }
-                  {/* payment details */}
-                  <View style={{
-                    backgroundColor: Colors.appointmentdetaillightgray,
-                    width: "100%",
-                    paddingHorizontal: s(13),
-                    paddingVertical: vs(9)
-                  }}>
-
-                    <View
-                      style={{
-                        width: "100%",
-                        alignSelf: "center",
-
-
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: Font.Medium,
-                          fontSize: Font.small,
-                          alignSelf: 'flex-start',
-                          color: Colors.darkText,
-                        }}>{LanguageConfiguration.Payment[Configurations.language]}
-
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          paddingVertical: (windowWidth * 2) / 100,
-                          borderBottomWidth: 1.5,
-                          borderColor: '#CCCCCC',
-                        }}>
-                        <FlatList
-                          data={item.task_details}
-                          scrollEnabled={true}
-                          nestedScrollEnabled={true}
-                          renderItem={({ item, index }) => {
-                            if (item.task_details != '') {
-                              return (
-                                <TouchableOpacity activeOpacity={0.9}
-                                  // onPress={() => { check_all(item, index) }}
+                                style={{
+                                  backgroundColor: Colors.buttoncolorhgreen,
+                                  width: '40%',
+                                  borderRadius: (mobileW * 1) / 100,
+                                  paddingVertical: (mobileW * 2) / 100,
+                                  justifyContent: 'center',
+                                  marginHorizontal: '4%'
+                                }}>
+                                <Text
                                   style={{
-                                    alignItems: "center",
-                                    width: "100%",
-                                    paddingVertical: (windowWidth * 1.7) / 100,
-                                    flexDirection: "row",
-                                    justifyContent: 'space-between'
-                                  }}>
+                                    textAlign: 'center',
+                                    color: Colors.white_color,
+                                    textTransform: 'uppercase',
+                                    fontFamily: Font.SemiBold,
+                                    fontSize: mobileW * 3 / 100,
+                                  }}>Accept</Text>
+                              </TouchableOpacity>
 
-                                  <Text
-                                    style={{
-                                      alignSelf: "center",
-                                      fontSize: Font.small,
-                                      fontFamily: Font.Regular,
-                                      color: Colors.DarkGrey,
-                                    }}>
-                                    {item.name}
-                                  </Text>
-                                  <Text
-                                    style={{
-                                      fontSize: Font.small,
-                                      fontFamily: Font.Regular,
-                                      color: Colors.DarkGrey,
-                                    }}>
-                                    {item.price}
-                                  </Text>
-                                </TouchableOpacity>
-                              );
-                            }
-                          }}></FlatList>
+                              <TouchableOpacity onPress={() => {
+                                showConfirmDialogReject("Reject", item.id)
+                              }}
 
-                      </View>
-                      {
-                        (item.appointment_type != "Online") &&
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            paddingVertical: (windowWidth * 2) / 100,
-                            // borderBottomWidth: (windowWidth * 0.3) / 100,
-                            borderColor: Colors.bordercolor,
-                          }}>
-                          <Text
-                            style={{
-                              fontFamily: Font.Regular,
-                              fontSize: Font.small,
-                              color: Colors.DarkGrey,
-                            }}>{LanguageConfiguration.distanceFare[Configurations.language]}
+                                style={{
+                                  backgroundColor: '#FF4500',
+                                  width: '40%',
+                                  borderRadius: (mobileW * 1) / 100,
+                                  paddingVertical: (mobileW * 2) / 100,
+                                  justifyContent: 'center',
+                                }}>
+                                <Text
+                                  style={{
+                                    textAlign: 'center',
+                                    color: Colors.white_color,
+                                    textTransform: 'uppercase',
+                                    fontFamily: Font.SemiBold,
+                                    fontSize: mobileW * 3 / 100,
+                                  }}>Reject</Text>
+                              </TouchableOpacity>
+                            </>
+                          }
+                          <CameraGallery mediamodal={classStateData.mediamodal}
+                            isCamera={false}
+                            isGallery={true}
+                            isDocument={true}
+                            Camerapopen={() => { Camerapopen() }}
+                            Galleryopen={() => { Galleryopen() }}
+                            DocumentGalleryopen={() => { DocumentGalleryopen() }}
+                            Canclemedia={() => {
+                              setState({
+                                mediamodal: false,
+                                reportModalVisible: (classStateData.isFromReportModal == true) ? true : false
+                              })
+                            }}
+                          />
+                          {(item.acceptance_status == 'Accepted' &&
+                            item.service_type == "Doctor" &&
+                            item.appointment_type == "Online" && VideoCallBtn == true) &&
+                            item.booking_type === 'online_task' &&
+                            <>
+                              <TouchableOpacity onPress={() => {
+                                navigation.navigate(ScreenReferences.VideoCall, {
+                                  item: item
+                                });
+                              }}
 
-                          </Text>
-                          <Text
-                            style={{
-                              fontFamily: Font.Regular,
-                              fontSize: Font.small,
-                              color: Colors.DarkGrey,
-                            }}>{item.distance_fee}
+                                style={{
+                                  backgroundColor: Colors.buttoncolorhgreen,
+                                  // width: mobileW * 22 / 100,
+                                  borderRadius: (mobileW * 1) / 100,
+                                  // paddingVertical: (mobileW * 1.5) / 100,
+                                  padding: (mobileW * 2) / 100,
+                                  justifyContent: 'center',
 
-                          </Text>
-                        </View>
-                      }
-
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          paddingVertical: (windowWidth * 1) / 100,
-                          borderColor: Colors.bordercolor,
-                          marginTop: (windowWidth * 1) / 100,
-                          marginBottom: (windowWidth * 3) / 100,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.small,
-                            color: Colors.DarkGrey,
-                          }}>{item.vat_percent}
-
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Regular,
-                            fontSize: Font.small,
-                            color: Colors.DarkGrey,
-                          }}>{item.vat}
-
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          paddingVertical: (windowWidth * 2) / 100,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.darkText,
-                          }}>
-                          {'Subtotal'}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.darkText,
-                          }}>
-                          {item.price}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  {/* last button */}
-                  <View
-                    style={[{
-                      width: '91%',
-                      alignSelf: 'center',
-                      flexDirection: 'row',
-                      backgroundColor: Colors.white_color,
-                      paddingTop: (mobileW * 3) / 100,
-                      paddingBottom: mobileW * 3 / 100,
-                      alignItems: 'center',
-
-                      // borderTopWidth: (mobileW * 0.3) / 100,
-                      borderColor: Colors.bordercolor,
-
-                    }, item.acceptance_status != 'Rejected' ? { justifyContent: 'space-between' } : null]}>
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        width: '40%'
-                      }}>
-                      {Configurations.language == 0 ?
-                        <Image
-                          source={Icons.Wallet}
-                          style={{
-                            resizeMode: 'contain',
-                            width: 15,
-                            height: 15,
-                          }}></Image> :
-                        <Image
-                          source={Icons.Wallet_arbic}
-                          style={{
-                            resizeMode: 'contain',
-                            width: 15,
-                            height: 15,
-                          }}></Image>}
-                      <Text
-                        style={{
-                          color: Colors.theme_color,
-                          fontSize: (mobileW * 3.7) / 100,
-                          fontFamily: Font.Medium,
-                          marginTop: 0.5,
-                          marginLeft: mobileW * 2 / 100
-                        }}>{item.price}
-
-                      </Text>
-                    </View>
-                    <View style={{
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      flexDirection: 'row',
-                      width: '60%',
-                      // backgroundColor: 'red'
-                    }}>
-                      {item.acceptance_status == 'Pending' &&
-                        <>
-                          <TouchableOpacity onPress={() => {
-                            updateProviderAppointmentStatus("Accept", item.id)
-                          }}
-
-                            style={{
-                              backgroundColor: Colors.buttoncolorhgreen,
-                              width: '40%',
-                              borderRadius: (mobileW * 1) / 100,
-                              paddingVertical: (mobileW * 2) / 100,
-                              justifyContent: 'center',
-                              marginHorizontal: '4%'
-                            }}>
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                color: Colors.white_color,
-                                textTransform: 'uppercase',
-                                fontFamily: Font.SemiBold,
-                                fontSize: mobileW * 3 / 100,
-                              }}>Accept</Text>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity onPress={() => {
-                            showConfirmDialogReject("Reject", item.id)
-                          }}
-
-                            style={{
-                              backgroundColor: '#FF4500',
-                              width: '40%',
-                              borderRadius: (mobileW * 1) / 100,
-                              paddingVertical: (mobileW * 2) / 100,
-                              justifyContent: 'center',
-                            }}>
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                color: Colors.white_color,
-                                textTransform: 'uppercase',
-                                fontFamily: Font.SemiBold,
-                                fontSize: mobileW * 3 / 100,
-                              }}>Reject</Text>
-                          </TouchableOpacity>
-                        </>
-                      }
-                      <CameraGallery mediamodal={classStateData.mediamodal}
-                        isCamera={false}
-                        isGallery={true}
-                        isDocument={true}
-                        Camerapopen={() => { Camerapopen() }}
-                        Galleryopen={() => { Galleryopen() }}
-                        DocumentGalleryopen={() => { DocumentGalleryopen() }}
-                        Canclemedia={() => {
-                          setState({
-                            mediamodal: false,
-                            reportModalVisible: (classStateData.isFromReportModal == true) ? true : false
-                          })
-                        }}
-                      />
-                      {(item.acceptance_status == 'Accepted' &&
-                        item.service_type == "Doctor" &&
-                        item.appointment_type == "Online" && VideoCallBtn == true) &&
-                        item.booking_type === 'online_task' &&
-                        <>
-                          <TouchableOpacity onPress={() => {
-                            navigation.navigate(ScreenReferences.VideoCall, {
-                              item: item
-                            });
-                          }}
-
-                            style={{
-                              backgroundColor: Colors.buttoncolorhgreen,
-                              // width: mobileW * 22 / 100,
-                              borderRadius: (mobileW * 1) / 100,
-                              // paddingVertical: (mobileW * 1.5) / 100,
-                              padding: (mobileW * 2) / 100,
-                              justifyContent: 'center',
-
-                            }}>
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                color: Colors.white_color,
-                                textTransform: 'uppercase',
-                                fontFamily: Font.SemiBold,
-                                fontSize: mobileW * 3 / 100,
-                              }}>VIDEO CALL</Text>
-                          </TouchableOpacity>
-                          {/* <TouchableOpacity
+                                }}>
+                                <Text
+                                  style={{
+                                    textAlign: 'center',
+                                    color: Colors.white_color,
+                                    textTransform: 'uppercase',
+                                    fontFamily: Font.SemiBold,
+                                    fontSize: mobileW * 3 / 100,
+                                  }}>VIDEO CALL</Text>
+                              </TouchableOpacity>
+                              {/* <TouchableOpacity
                               onPress={() => {
                                 setState({
                                   id: item.id,
@@ -2284,99 +2358,102 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                 }}
                               />
                             </TouchableOpacity> */}
-                        </>
-                      }
-
-                      {
-                        (item.acceptance_status == 'Accepted' && UploadprecriptionBtn == true &&
-                          item.service_type == "Doctor" && item.provider_prescription == null) &&
-                        <>
-                          <TouchableOpacity onPress={() => {
-                            setState({
-                              imageType: 'provider_prescription',
-                              mediamodal: true
-                            }, () => {
-
-                            })
-                          }}
-
-                            style={{
-                              backgroundColor: Colors.orange,
-                              // width: mobileW * 39 / 100,
-                              borderRadius: (mobileW * 1) / 100,
-                              // paddingVertical: (mobileW * 1.5) / 100,
-                              padding: (mobileW * 2) / 100,
-                              justifyContent: 'center',
-                              marginLeft: 7
-                            }}>
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                color: Colors.white_color,
-                                textTransform: 'uppercase',
-                                fontFamily: Font.SemiBold,
-                                fontSize: mobileW * 3 / 100,
-                              }}>UPLOAD Prescription</Text>
-                          </TouchableOpacity>
-                        </>
-                      }
-
-                      {item.acceptance_status == 'Completed' &&
-                        <View style={{ alignItems: 'flex-end' }}>
-                          {item.avg_rating != '' && item.avg_rating != 0 ?
-                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: '2%' }}>
-                              <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{LanguageConfiguration.rated[Configurations.language]}</Text>
-                              <StarRating
-                                disabled={false}
-                                fullStar={Icons.YellowStar}
-                                emptyStar={Icons.UnfilledStar}
-                                maxStars={5}
-                                starSize={15}
-                                rating={item.avg_rating}
-
-                              />
-
-                            </View> :
-                            <>
-                              <Text style={{
-                                fontFamily: Font.Regular, color: '#000',
-                                fontSize: mobileW * 3.5 / 100,
-                                //  marginRight: mobileW * 2 / 100,
-                                textAlign: 'right',
-                              }}>{'Not Rated Yet'}</Text>
                             </>
                           }
+
+                          {
+                            (item.acceptance_status == 'Accepted' && UploadprecriptionBtn == true &&
+                              item.service_type == "Doctor" && item.provider_prescription == null) &&
+                            <>
+                              <TouchableOpacity onPress={() => {
+                                setState({
+                                  imageType: 'provider_prescription',
+                                  mediamodal: true
+                                }, () => {
+
+                                })
+                              }}
+
+                                style={{
+                                  backgroundColor: Colors.orange,
+                                  // width: mobileW * 39 / 100,
+                                  borderRadius: (mobileW * 1) / 100,
+                                  // paddingVertical: (mobileW * 1.5) / 100,
+                                  padding: (mobileW * 2) / 100,
+                                  justifyContent: 'center',
+                                  marginLeft: 7
+                                }}>
+                                <Text
+                                  style={{
+                                    textAlign: 'center',
+                                    color: Colors.white_color,
+                                    textTransform: 'uppercase',
+                                    fontFamily: Font.SemiBold,
+                                    fontSize: mobileW * 3 / 100,
+                                  }}>UPLOAD Prescription</Text>
+                              </TouchableOpacity>
+                            </>
+                          }
+
+                          {item.acceptance_status == 'Completed' &&
+                            <View style={{ alignItems: 'flex-end' }}>
+                              {item.avg_rating != '' && item.avg_rating != 0 ?
+                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: '2%' }}>
+                                  <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{LanguageConfiguration.rated[Configurations.language]}</Text>
+                                  <StarRating
+                                    disabled={false}
+                                    fullStar={Icons.YellowStar}
+                                    emptyStar={Icons.UnfilledStar}
+                                    maxStars={5}
+                                    starSize={15}
+                                    rating={item.avg_rating}
+
+                                  />
+
+                                </View> :
+                                <>
+                                  <Text style={{
+                                    fontFamily: Font.Regular, color: '#000',
+                                    fontSize: mobileW * 3.5 / 100,
+                                    //  marginRight: mobileW * 2 / 100,
+                                    textAlign: 'right',
+                                  }}>{'Not Rated Yet'}</Text>
+                                </>
+                              }
+                            </View>
+                          }
+                          {item.acceptance_status == 'Rejected' && item.rf_text != '' &&
+                            <View
+
+                              style={{
+                                width: mobileW * 24 / 100,
+                                borderRadius: 1,
+                                paddingVertical: (mobileW * 1) / 100,
+                                justifyContent: 'center',
+                                marginLeft: mobileW * 2 / 100
+                              }}>
+                              <Text
+                                style={{
+                                  textAlign: 'center',
+                                  color: '#FF4500',
+                                  textTransform: 'uppercase',
+                                  fontFamily: Font.SemiBold,
+                                  fontSize: Font.medium,
+                                }}>{LanguageConfiguration.Refunde[Configurations.language]}
+
+                              </Text>
+                            </View>}
                         </View>
-                      }
-                      {item.acceptance_status == 'Rejected' && item.rf_text != '' &&
-                        <View
-
-                          style={{
-                            width: mobileW * 24 / 100,
-                            borderRadius: 1,
-                            paddingVertical: (mobileW * 1) / 100,
-                            justifyContent: 'center',
-                            marginLeft: mobileW * 2 / 100
-                          }}>
-                          <Text
-                            style={{
-                              textAlign: 'center',
-                              color: '#FF4500',
-                              textTransform: 'uppercase',
-                              fontFamily: Font.SemiBold,
-                              fontSize: Font.medium,
-                            }}>{LanguageConfiguration.Refunde[Configurations.language]}
-
-                          </Text>
-                        </View>}
+                      </View>
                     </View>
+
                   </View>
                 </View>
+              </KeyboardAwareScrollView>
+          }
 
-              </View>
-            </View>
-          </KeyboardAwareScrollView>
-        </ScrollView>
+        </>
+
       </View>
     );
   }

@@ -197,6 +197,21 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
 
   }
 
+  let text = ''
+
+  if (page == "tests") {
+    text = "Switch on the 'Tests' available for home collection service, enter the appropriate amount."
+  } else if (page == "onlineconsultation") {
+    text = "Switch on the 'Online Consultation' if you wish to provide service, enter the appropriate amount."
+  } else if (page == "homeconsultation") {
+    text = "Switch on the 'Home Visit' if you wish to provide service, enter the appropriate amount."
+  } else if (page == "task") {
+    text = "Switch on the 'Task' as you wish to provide service, enter the appropriate amount in each task."
+  } else {
+    text =  "Switch on the 'Hours' as you wish to provide service, enter the appropriate amount for each hourly slot."
+  }
+                 
+
   return (
     <View style={{
       flex: 1,
@@ -220,13 +235,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
           }}>
             <Text style={[Styles.textcontent, {
               marginTop: 6
-            }]}>{(page == "tests") ?
-              'Select the Tests you as wish to provide service.'
-              : (page == "onlineconsultation" || page == "homeconsultation") ?
-                'Switch on the task if you wish to provide service'
-                : (page == "task") ?
-                  'Select the Tasks you as wish to provide service.' :
-                  'Select the Hours you as wish to provide service.'}</Text>
+            }]}>{text}</Text>
           </View>
           <View style={{
             marginTop: 12,
@@ -269,7 +278,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                           fontFamily: Font.Regular,
                           fontSize: mobileW * 3.6 / 100,
                         }}>
-                        Booking Duration
+                        {'Booking duration per service'}
                       </Text>
                     </View>
                   </View>

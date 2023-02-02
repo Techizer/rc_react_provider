@@ -11,6 +11,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Button from "./Button";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
+import { TextInput } from "react-native-paper";
 
 const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () => { },
     navigation,
@@ -39,9 +40,9 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
     const buildingRef = useRef()
 
 
-  const {
-    loginUserData
-  } = useSelector(state => state.Auth)
+    const {
+        loginUserData
+    } = useSelector(state => state.Auth)
 
     useEffect(() => {
         setGoogleAddress(googleAddress)
@@ -218,9 +219,20 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
                                     editable
                                 />
 
-                                <AuthInputBoxSec
-                                    mainContainer={{ marginTop: vs(5), width: '100%' }}
-                                    lableText={'Google Map Address'}
+                                <TextInput
+                                    style={{
+                                        backgroundColor: Colors.tab_background_color,
+                                        alignSelf: 'flex-start',
+                                        justifyContent: 'flex-start',
+                                        textAlignVertical: 'top',
+                                        width: '100%',
+                                        color: Colors.Black,
+                                        fontSize: Font.medium,
+                                        textAlign: Configurations.textalign,
+                                        fontFamily: Font.Regular,
+                                        marginTop: vs(5)
+                                    }}
+                                    label={'Google Map Address'}
                                     onChangeText={(val) => setGoogleAddress(val)}
                                     value={googleAddress.trim()}
                                     keyboardType="default"
@@ -228,20 +240,35 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
                                     returnKeyType="next"
                                     editable={false}
                                     multiline
-                                    disableImg={shouldShowEditParam}
-                                    inputFieldStyle={{
-                                        color: Colors.Black
-                                    }}
-                                    iconName={'pencil'}
-                                    iconPressAction={shouldShowEditParam ? () => {
-                                        onRequestClose()
-                                        setTimeout(() => {
-                                            navigation.replace(ScreenReferences.SearchPlace, {
-                                                address_id: addressIDParam,
-                                                isNew: false
-                                            })
-                                        }, 500)
-                                    } : () => { }}
+                                    mode='outlined'
+                                    outlineColor={Colors.field_border_color}
+                                    activeOutlineColor={Colors.placholderactive}
+                                    allowFontScaling={false}
+                                    right={
+                                        (shouldShowEditParam) &&
+                                        <TextInput.Icon
+                                            name={'pencil'}
+                                            onPress={shouldShowEditParam ? () => {
+                                                onRequestClose()
+                                                setTimeout(() => {
+                                                    navigation.replace(ScreenReferences.SearchPlace, {
+                                                        address_id: addressIDParam,
+                                                        isNew: false
+                                                    })
+                                                }, 500)
+                                            } : () => { }}
+                                            forceTextInputFocus={false}
+                                            color={Colors.regulartextcolor}
+                                            style={{
+                                                marginTop: 12,
+                                                alignSelf: 'center',
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}
+
+                                        />
+
+                                    }
                                 />
 
                                 <AuthInputBoxSec

@@ -78,8 +78,11 @@ const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = 
                                     selectedAddress(index)
                                 }}
                                 underlayColor={Colors.Highlight}
-                                style={{ width: '100%', height: vs(20), borderRadius: 4, alignItems: 'center', justifyContent: 'center' }}>
-                                <SvgXml xml={Edit} />
+                                style={{ width: '100%', height: vs(22), borderRadius: 4, alignItems: 'center', justifyContent: 'center' }}>
+                                <SvgXml xml={Edit} style={{
+                                    height: vs(17),
+                                    width: vs(17)
+                                }} height={vs(17)} width={vs(17)}/>
                             </TouchableHighlight>
                         </View>
 

@@ -17,7 +17,7 @@ export const ScreenReferences = {
     LabPackageDetails: "LabPackageDetails",
 
     ServiceAddress: "ServiceAddress",
-    SearchPlace: "SearchPlaceScreen",
+    SearchPlace: "SearchPlace",
 
     NeedSupport: "NeedSupport",
     Notifications: "Notifications",

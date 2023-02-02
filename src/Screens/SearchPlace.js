@@ -26,8 +26,9 @@ import AddressInputPopup from '../Components/AddressInputPopup';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
-
+import Geolocation from '@react-native-community/geolocation';
 let ScreenHeight = Dimensions.get('window').height;
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
 export default SearchPlaceScreen = ({ navigation, route }) => {
 
@@ -41,16 +42,17 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
         service_address: '',
     })
 
-    
-  const setState = (payload, cb = () => {}) => {
-    setClassStateData(prev => ({ ...prev, ...payload }))
-    cb()
-  }
 
-  
-  const {
-    loginUserData
-  } = useSelector(state => state.Auth)
+    const setState = (payload, cb = () => { }) => {
+        setClassStateData(prev => ({ ...prev, ...payload }))
+        cb()
+    }
+
+
+
+    const {
+        loginUserData
+    } = useSelector(state => state.Auth)
 
 
     address_id = route?.params?.address_id;
@@ -150,10 +152,11 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
 
         let event = { latitude: latitude, longitude: longitude, latitudeDelta: classStateData.latdelta, longitudeDelta: classStateData.longdelta }
         getadddressfromlatlong(event)
-        update_adress()
+        // update_adress()
     }
 
-    const callLocation = async () => {
+    const callLocationAccess = async () => {
+        SimpleToast.show('Getting current location')
         setState({ loading: true })
         localStorage.getItemObject('position').then((position) => {
 
@@ -221,6 +224,43 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
         })
     }
 
+    const callLocation = async () => {
+
+        if (Platform.OS === 'ios') {
+            callLocationAccess()
+        }
+        else {
+
+            RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+                interval: 10000,
+                fastInterval: 5000,
+            })
+                .then((data) => {
+                    // The user has accepted to enable the location services
+                    // data can be :
+                    //  - "already-enabled" if the location services has been already enabled
+                    //  - "enabled" if user has clicked on OK button in the popup
+                    callLocationAccess()
+                })
+                .catch((err) => {
+                    SimpleToast.show('Please enable your GPS')
+                    // callLocation()
+                    // The user has not accepted to enable the location services or something went wrong during the process
+                    // "err" : { "code" : "ERR00|ERR01|ERR02|ERR03", "message" : "message"}
+                    // codes :
+                    //  - ERR00 : The user has clicked on Cancel button in the popup
+                    //  - ERR01 : If the Settings change are unavailable
+                    //  - ERR02 : If the popup has failed to open
+                    //  - ERR03 : Internal error
+                });
+
+        }
+
+
+
+
+    }
+
     const getlatlong = async () => {
 
         var hasPermissions;
@@ -229,6 +269,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
             callLocation()
         } else if (Platform.OS === 'android') {
             try {
+                // SimpleToast.show('Please grant relevant permissions')
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
                     'title': 'Location Access Required',
@@ -244,7 +285,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
 
                 }
             } catch (err) { console.warn(err) }
-        } 
+        }
     }
 
     const lLan = Configurations.language
@@ -411,7 +452,6 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                     marginTop: (Platform.OS === 'ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8
                 }}>
                     <TouchableOpacity onPress={() => {
-                        SimpleToast.show('Getting current location')
                         getlatlong()
                     }} style={{ flexDirection: 'row', width: '100%', alignSelf: 'flex-start', paddingTop: 4, paddingBottom: 32 }}>
                         {

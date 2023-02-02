@@ -10,7 +10,7 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout, setUserFCMToken, setUserLoginData } from '../Redux/Actions/UserActions';
-import {FBPushNotifications} from '../Helpers/FirebasePushNotifications'
+import { FBPushNotifications } from '../Helpers/FirebasePushNotifications'
 const appVersion = DeviceInfo.getVersion();
 
 export default Splash = ({ navigation, route }) => {
@@ -90,11 +90,18 @@ export default Splash = ({ navigation, route }) => {
   }
 
   const logout = async () => {
-    dispatch(onUserLogout())
-    navigation.reset({
-      index: 0,
-      routes: [{ name: ScreenReferences.Login }],
-    });
+    let url = Configurations.baseURL + "api-logout";
+    var data = new FormData();
+    data.append('user_id', loginUserData?.user_id)
+
+    API.post(url, data).finally(() => {
+      dispatch(onUserLogout())
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ScreenReferences.Login }],
+      });
+    })
+
   };
 
   const createNewLoginSession = async () => {
@@ -102,13 +109,13 @@ export default Splash = ({ navigation, route }) => {
     const fcmToken = await FBPushNotifications.getFcmToken()
 
     let result = loginUserData
-    if (result != null) {
+    if (loginUserData !== null) {
       let user_id = result.user_id;
       let url = Configurations.baseURL + "api-check-login";
       var data = new FormData();
       data.append("user_id", user_id);
       data.append("fcm_token", fcmToken);
-      
+
       API
         .post(url, data, 1)
         .then((obj) => {
@@ -120,29 +127,41 @@ export default Splash = ({ navigation, route }) => {
             else {
               device_lang = 'AR'
             }
-            let url = Configurations.baseURL + "api-service-provider-login";
-            var data = new FormData();
 
-            data.append('email', userEmail)
-            data.append('password', userPassword)
-            data.append('device_type', Configurations.device_type)
-            data.append('device_lang', device_lang)
-            data.append('fcm_token', fcmToken)
-            data.append('user_type', result?.user_type)
+            if (userEmail && userPassword && userEmail != '' && userPassword != '') {
 
-            API.post(url, data).then((obj) => {
-              if (obj.status == true) {
-                dispatch(setUserLoginData(obj.result))
-                dispatch(setUserFCMToken(fcmToken))
-                navigation.navigate(ScreenReferences.Home)
-              }
-              else {
-                navigation.navigate(ScreenReferences.Splash)
-              }
-            }).catch((error) => {
-              console.log("-------- error ------- " + error);
+              let url = Configurations.baseURL + "api-service-provider-login";
+              var data = new FormData();
 
-            });
+              data.append('email', userEmail)
+              data.append('password', userPassword)
+              data.append('device_type', Configurations.device_type)
+              data.append('device_lang', device_lang)
+              data.append('fcm_token', fcmToken)
+              data.append('user_type', result?.user_type)
+
+              API.post(url, data).then((obj) => {
+                console.log({obj});
+                if (obj.status == true) {
+                  console.log('Status is TT');
+                  dispatch(setUserLoginData(obj.result))
+                  dispatch(setUserFCMToken(fcmToken))
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: ScreenReferences.Home }],
+                  });
+                }
+                else {
+                  logout()
+                }
+              }).catch((error) => {
+                console.log("-------- error ------- " + error);
+
+              });
+
+            } else {
+              logout()
+            }
 
           } else {
             logout()
@@ -153,7 +172,10 @@ export default Splash = ({ navigation, route }) => {
         });
     }
     else {
-      navigation.navigate(ScreenReferences.Login)
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ScreenReferences.Login }],
+      });
     }
 
   }
