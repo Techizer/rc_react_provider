@@ -45,9 +45,15 @@
 
         </activity>
 
+        <provider android:authorities="com.facebook.app.FacebookContentProvider255642823428638"
+        android:name="com.facebook.FacebookContentProvider"
+        android:exported="true" />
+
         <!-- Branch init -->
         <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_ll9Sq8lJLcf5V6AQCb2UbfbiurewJHPK" />
         <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />     <!-- Set to true to use Branch_Test_Key (useful when simulating installs and/or switching between debug and production flavors) -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
 
     </application>
 
@@ -57,6 +63,8 @@
             <data android:mimeType="text/plain" />
         </intent>
     </queries>
+
+
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Request legacy Bluetooth permissions on older devices. -->

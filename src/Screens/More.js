@@ -4,7 +4,7 @@ import { Colors, Font, MessageFunctions, Configurations, mobileW, localStorage, 
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';
 
 export default More = ({ navigation, route }) => {

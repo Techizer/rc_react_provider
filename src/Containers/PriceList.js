@@ -29,7 +29,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     getServices()
   }, [])
 
-  
+
   const {
     loginUserData
   } = useSelector(state => state.Auth)
@@ -111,28 +111,30 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
       var taskId = ''
       var taskPrice = ''
       var sep = ''
-      classStateData.taskArr.map((item, index) => {
-        if (item?.isChecked) {
-          let price = (item?.price != '') ? parseFloat(item?.price) : 0
-          console.log("priceprice: ", price);
-          if (price <= 0) {
-            console.log(index, item?.isChecked, price);
-            isError = true
-          } else {
-            taskId = taskId + sep + item?.id
-            taskPrice = taskPrice + sep + item?.price
-            sep = ','
-          }
-        }
-      })
-      if (isError) {
-        MessageFunctions.showError("Selected slot must have a valid price")
-      } else {
-        console.log("taskId:: ", taskId);
-        console.log("taskPrice:: ", taskPrice);
-        insertUpdatePriceList(taskId, taskPrice)
-      }
+      const enabledTasksCount = classStateData.taskArr.filter(task => task?.isChecked === true).length
+      console.log({ enabledTasksCount });
 
+      if (enabledTasksCount <= 0) {
+        MessageFunctions.showError("You must switch on at list 'One Item' to make yourself available for the booking.")
+      } else {
+        classStateData.taskArr.map((item, index) => {
+          if (item?.isChecked) {
+            let price = (item?.price != '') ? parseFloat(item?.price) : 0
+            if (price <= 0) {
+              isError = true
+            } else {
+              taskId = taskId + sep + item?.id
+              taskPrice = taskPrice + sep + item?.price
+              sep = ','
+            }
+          }
+        })
+        if (isError) {
+          MessageFunctions.showError("Selected slot must have a valid price")
+        } else {
+          insertUpdatePriceList(taskId, taskPrice)
+        }
+      }
     }
   }
 
@@ -208,9 +210,9 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
   } else if (page == "task") {
     text = "Switch on the 'Task' as you wish to provide service, enter the appropriate amount in each task."
   } else {
-    text =  "Switch on the 'Hours' as you wish to provide service, enter the appropriate amount for each hourly slot."
+    text = "Switch on the 'Hours' as you wish to provide service, enter the appropriate amount for each hourly slot."
   }
-                 
+
 
   return (
     <View style={{
@@ -266,27 +268,22 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                   flexDirection: 'row',
                   // backgroundColor: 'red'
                 }}>
-                <View style={{ width: '50%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                    {/* {classStateData.mabtn == false && */}
-                    <View style={{ width: '70%', alignSelf: 'center' }}>
-                      <Text
-                        style={{
-                          // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: Configurations.textRotate,
-                          color: Colors.placeholder_text,
-                          fontFamily: Font.Regular,
-                          fontSize: mobileW * 3.6 / 100,
-                        }}>
-                        {'Booking duration per service'}
-                      </Text>
-                    </View>
-                  </View>
+                <View style={{ width: '60%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text
+                    style={{
+                      // marginLeft: mobileW * 1.5 / 100,
+                      textAlign: Configurations.textRotate,
+                      color: Colors.placeholder_text,
+                      fontFamily: Font.Regular,
+                      fontSize: mobileW * 3.6 / 100,
+                    }}>
+                    {'Booking duration per service'}
+                  </Text>
                 </View>
 
                 <View
                   style={{
-                    width: '50%',
+                    width: '40%',
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -311,7 +308,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                           }}>
                           <Icon style={{ alignSelf: 'center' }}
                             name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
-                            size={22}
+                            size={20}
                             color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                           <Text
                             style={{
@@ -319,7 +316,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                               marginLeft: mobileW * 1.5 / 100,
                               color: Colors.placeholder_text,
                               fontFamily: Font.Regular,
-                              fontSize: mobileW * 3.6 / 100,
+                              fontSize: mobileW * 3.5 / 100,
                               // alignSelf: 'center',
                             }}>
                             45 Min Slots
@@ -336,7 +333,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                             }}>
                             <Icon style={{ alignSelf: 'center' }}
                               name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
-                              size={22}
+                              size={20}
                               color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                             <Text
                               style={{
@@ -344,7 +341,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                 marginLeft: mobileW * 1.5 / 100,
                                 color: Colors.placeholder_text,
                                 fontFamily: Font.Regular,
-                                fontSize: mobileW * 3.6 / 100,
+                                fontSize: mobileW * 3.5 / 100,
                                 // alignSelf: 'center',
                               }}>
                               15 Min Slots
@@ -361,7 +358,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                               }}>
                               <Icon style={{ alignSelf: 'center' }}
                                 name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
-                                size={22}
+                                size={20}
                                 color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                               <Text
                                 style={{
@@ -369,7 +366,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                   marginLeft: mobileW * 1.5 / 100,
                                   color: Colors.placeholder_text,
                                   fontFamily: Font.Regular,
-                                  fontSize: mobileW * 3.6 / 100,
+                                  fontSize: mobileW * 3.5 / 100,
                                   // alignSelf: 'center',
                                 }}>
                                 45 Min Slots
@@ -386,7 +383,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                 }}>
                                 <Icon style={{ alignSelf: 'center' }}
                                   name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
-                                  size={22}
+                                  size={20}
                                   color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
                                 <Text
                                   style={{
@@ -394,7 +391,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                     marginLeft: mobileW * 1.5 / 100,
                                     color: Colors.placeholder_text,
                                     fontFamily: Font.Regular,
-                                    fontSize: mobileW * 3.6 / 100,
+                                    fontSize: mobileW * 3.5 / 100,
                                     // alignSelf: 'center',
                                   }}>
                                   30 Min Slots
@@ -402,7 +399,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                               </TouchableOpacity> :
                               <Text style={{
                                 fontFamily: Font.Regular,
-                                fontSize: 14,
+                                fontSize: Font.medium,
                                 color: Colors.textblue,
                                 textAlign: 'right'
                               }}>As Selected</Text>

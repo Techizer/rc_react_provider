@@ -62,10 +62,6 @@ export default Withdrawal = ({ navigation, route }) => {
           bankdetails: obj.result.bankdetails,
           message: obj.message
         })
-        console.log('obj.result', obj.result, obj.result.paymentdetails[0])
-
-
-
       } else {
 
         setState({

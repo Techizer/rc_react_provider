@@ -1,8 +1,9 @@
 import React, { Component, useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { AppState, Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import RNRestart from 'react-native-restart';
 import Splash from '../Screens/Splash';
 import Login from '../Screens/Login';
 import Signup from '../Screens/Signup';
@@ -30,6 +31,9 @@ import NeedSupport from '../Screens/NeedSupport';
 import OTP from '../Screens/OTP';
 import ServiceAddress from '../Screens/ServiceAddress';
 import { ScreenReferences } from './ScreenReferences';
+import { useDispatch } from 'react-redux';
+import { onUserLogout } from '../Redux/Actions/UserActions';
+import { localStorage } from '../Provider/localStorageProvider';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -55,18 +59,46 @@ function Mydrawer() {
   );
 }
 const Stacknav = navigation => {
+  const dispatch = useDispatch()
   useEffect(() => {
+    appStateSubscription = AppState.addEventListener(
+      "change",
+      async (nextAppState) => {
+        console.log("nextAppState", nextAppState);
+        if (nextAppState == 'inactive' || nextAppState == 'background') {
 
+        }
+        if (nextAppState === "active") {
+          const logoutBit = await localStorage.getItemString('logout_bit')
+          console.log({ logoutBit });
+          if (logoutBit === '100') {
+            localStorage.setItemString('logout_bit', '200')
+            dispatch(onUserLogout())
+            navigation.reset({
+              index: 0,
+              routes: [{ name: ScreenReferences.Login }],
+            });
+
+            RNRestart.Restart()
+          }
+          else if (logoutBit == null || logoutBit == undefined) {
+            localStorage.setItemString('logout_bit', '200')
+          }
+        }
+
+      }
+    );
+    return () => appStateSubscription.remove()
   }, [])
   return (
     <Stack.Navigator initialRouteName={ScreenReferences.Splash}>
-      
+
       <Stack.Screen
         name={ScreenReferences.Splash}
         component={Splash}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-      
+
       <Stack.Screen
         name={ScreenReferences.AppointmentDetails}
         component={AppointmentDetails}
@@ -82,7 +114,7 @@ const Stacknav = navigation => {
         component={Notifications}
         options={{ headerShown: false }}
       />
-      
+
       <Stack.Screen
         name={ScreenReferences.ForgotPassword}
         component={ForgetPassword}
@@ -160,7 +192,7 @@ const Stacknav = navigation => {
         component={Transaction}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-      
+
       <Stack.Screen
         name={ScreenReferences.Withdrawal}
         component={Withdrawal}

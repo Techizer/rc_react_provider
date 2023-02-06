@@ -195,6 +195,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
     API.post(url, data, 0).then((obj) => {
       if (obj.status == true) {
+        console.log({ AppointmentDetails: obj?.result });
         setState({
           appoinment_detetails: obj.result,
           message: obj.message,
@@ -422,7 +423,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
   }
 
   const Galleryopen = () => {
-    const { imageType } = state;
+    const { imageType } = classStateData;
     Media.launchGellery(false).then((obj) => {
       if (classStateData.isFromReportModal == true) {
         var objF = undefined
@@ -473,7 +474,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
   }
 
   const DocumentGalleryopen = async () => {
-    const { imageType } = state;
+    const { imageType } = classStateData;
     Media.launchDocumentGellery(true).then((res) => {
 
       const source = {
@@ -1823,122 +1824,138 @@ export default AppointmentDetails = ({ navigation, route }) => {
                             width: "100%",
                             paddingHorizontal: s(13),
                           }}>
-                            <Text
-                              style={{
-                                color: Colors.DarkGrey,
-                                fontFamily: Font.Medium,
-                                fontSize: Font.small,
-                                textAlign: Configurations.textalign,
-                                alignSelf: 'flex-start',
-                                marginTop: (windowWidth * 1) / 100,
 
-                              }}>
-                              {item.patient_name}
-                            </Text>
-
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                marginTop: (windowWidth * 1.5) / 100,
-                                width: "100%",
-                              }}>
-                              <Image
-                                source={Icons.Location}
-                                style={{
-                                  marginTop: (windowWidth * 1) / 100,
-                                  width: (windowWidth * 3.5) / 100,
-                                  height: (windowWidth * 3.5) / 100,
-                                  resizeMode: "contain",
-                                  tintColor: Colors.Theme,
-                                }}></Image>
-
+                            {
+                              (item?.patient_name != null) &&
                               <Text
                                 style={{
                                   color: Colors.DarkGrey,
-                                  fontFamily: Font.Regular,
-                                  fontSize: Font.small,
-                                  alignSelf: 'flex-start',
-                                  marginLeft: (windowWidth * 3) / 100,
-                                  width: "96%",
-
-                                }}>
-                                {item.patient_address}
-                              </Text>
-
-
-                            </View>
-
-                            <View>
-                              <TouchableOpacity onPress={() => {
-                                handleGetDirections(item?.patient_lat, item?.patient_long, item?.patient_address)
-                              }}>
-                                <Text
-                                  style={{
-                                    color: Colors.textblue,
-                                    fontFamily: Font.Medium,
-                                    fontSize: Font.sregulartext_size,
-                                    textAlign: Configurations.textRotate,
-                                    marginLeft: mobileW * 6.5 / 100,
-                                    marginTop: mobileW * 2 / 100,
-                                    width: '96%'
-
-                                  }}>
-                                  Open Google Map
-                                </Text>
-                              </TouchableOpacity>
-                            </View>
-
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                marginTop: mobileW * 2 / 100
-                              }}>
-                              {Configurations.language == 0 ?
-                                <Image
-                                  source={Icons.PhoneSettings}
-                                  style={{
-                                    width: (mobileW * 3.5) / 100,
-                                    height: (mobileW * 3.5) / 100,
-                                    resizeMode: 'contain',
-                                    tintColor: Colors.theme_color,
-                                  }}></Image> :
-                                <Image
-                                  source={Icons.CallRTL}
-                                  style={{
-                                    width: (mobileW * 3.5) / 100,
-                                    height: (mobileW * 3.5) / 100,
-                                    resizeMode: 'contain',
-                                    tintColor: Colors.theme_color,
-                                  }}></Image>}
-                              <Text
-                                style={{
-                                  color: Colors.lightgraytext,
                                   fontFamily: Font.Medium,
-                                  fontSize: Font.sregulartext_size,
+                                  fontSize: Font.small,
                                   textAlign: Configurations.textalign,
-                                  marginHorizontal: (mobileW * 3) / 100,
+                                  alignSelf: 'flex-start',
+                                  marginTop: (windowWidth * 1) / 100,
+
                                 }}>
-                                {item.patient_contact}
+                                {item?.patient_name}
                               </Text>
-                              <TouchableOpacity onPress={() => {
-                                Linking.openURL(`tel:${item.patient_contact}`)
-                              }}>
+                            }
+
+
+                            {
+                              (item?.patient_address != null) &&
+                              <>
+
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    marginTop: (windowWidth * 1.5) / 100,
+                                    width: "100%",
+                                  }}>
+                                  <Image
+                                    source={Icons.Location}
+                                    style={{
+                                      marginTop: (windowWidth * 1) / 100,
+                                      width: (windowWidth * 3.5) / 100,
+                                      height: (windowWidth * 3.5) / 100,
+                                      resizeMode: "contain",
+                                      tintColor: Colors.Theme,
+                                    }}></Image>
+
+                                  <Text
+                                    style={{
+                                      color: Colors.DarkGrey,
+                                      fontFamily: Font.Regular,
+                                      fontSize: Font.small,
+                                      alignSelf: 'flex-start',
+                                      marginLeft: (windowWidth * 3) / 100,
+                                      width: "96%",
+
+                                    }}>
+                                    {item?.patient_address}
+                                  </Text>
+
+
+                                </View>
+
+                                <View>
+                                  <TouchableOpacity onPress={() => {
+                                    handleGetDirections(item?.patient_lat, item?.patient_long, item?.patient_address)
+                                  }}>
+                                    <Text
+                                      style={{
+                                        color: Colors.textblue,
+                                        fontFamily: Font.Medium,
+                                        fontSize: Font.sregulartext_size,
+                                        textAlign: Configurations.textRotate,
+                                        marginLeft: mobileW * 6.5 / 100,
+                                        marginTop: mobileW * 2 / 100,
+                                        width: '96%'
+
+                                      }}>
+                                      Open Google Map
+                                    </Text>
+                                  </TouchableOpacity>
+                                </View>
+                              </>
+                            }
+
+                            {
+                              (item?.patient_contact != null) &&
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  marginTop: mobileW * 2 / 100
+                                }}>
+                                {Configurations.language == 0 ?
+                                  <Image
+                                    source={Icons.PhoneSettings}
+                                    style={{
+                                      width: (mobileW * 3.5) / 100,
+                                      height: (mobileW * 3.5) / 100,
+                                      resizeMode: 'contain',
+                                      tintColor: Colors.theme_color,
+                                    }}></Image> :
+                                  <Image
+                                    source={Icons.CallRTL}
+                                    style={{
+                                      width: (mobileW * 3.5) / 100,
+                                      height: (mobileW * 3.5) / 100,
+                                      resizeMode: 'contain',
+                                      tintColor: Colors.theme_color,
+                                    }}></Image>}
                                 <Text
                                   style={{
-                                    color: Colors.textblue,
+                                    color: Colors.lightgraytext,
                                     fontFamily: Font.Medium,
                                     fontSize: Font.sregulartext_size,
-                                    textAlign: Configurations.textRotate,
-                                    marginLeft: mobileW * 2 / 100,
-                                    width: '96%'
-
+                                    textAlign: Configurations.textalign,
+                                    marginHorizontal: (mobileW * 3) / 100,
                                   }}>
-                                  Call
+                                  {item.patient_contact}
                                 </Text>
-                              </TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                  Linking.openURL(`tel:${item.patient_contact}`)
+                                }}>
+                                  <Text
+                                    style={{
+                                      color: Colors.textblue,
+                                      fontFamily: Font.Medium,
+                                      fontSize: Font.sregulartext_size,
+                                      textAlign: Configurations.textRotate,
+                                      marginLeft: mobileW * 2 / 100,
+                                      width: '96%'
 
-                            </View>
+                                    }}>
+                                    Call
+                                  </Text>
+                                </TouchableOpacity>
+
+                              </View>
+                            }
+
+
                           </View>
                         }
                       </View>

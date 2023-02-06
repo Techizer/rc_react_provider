@@ -5,6 +5,7 @@ import { AuthInputBoxSec, Button } from '../Components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useSelector } from 'react-redux';
 
 
 export default AddBankInformation = ({ navigation, route }) => {

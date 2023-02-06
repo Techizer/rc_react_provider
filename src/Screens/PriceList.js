@@ -14,40 +14,6 @@ import ScreenHeader from '../Components/ScreenHeader';
 import { useSelector } from 'react-redux';
 
 
-const renderTabBar = props => (
-  <TabBar
-    {...props}
-    indicatorStyle={{
-      backgroundColor: Colors.Theme,
-      height: (mobileW * 0.75) / 100,
-    }}
-    activeColor={Colors.Theme}
-    inactiveColor={'#354052'}
-    style={{ backgroundColor: '#F1F2F4' }}
-    labelStyle={{
-      textTransform: 'capitalize',
-      fontSize: (mobileW * 3.25) / 100,
-      textAlign: 'center',
-      fontFamily: Font.Medium,
-    }}
-    renderLabel={({ focused, route }) => {
-      return (
-        <Text
-          style={{
-            color: (focused) ? Colors.textblue : Colors.splashtextcolor,
-            textTransform: 'capitalize',
-            fontSize: (mobileW * 3.5) / 100,
-            textAlign: 'center',
-            fontFamily: Font.SemiBold,
-          }}
-        >
-          {route.title}
-        </Text>
-      );
-    }}
-  />
-);
-
 const windowHeight = Math.round(Dimensions.get("window").height);
 const windowWidth = Math.round(Dimensions.get("window").width);
 const deviceHeight = Dimensions.get('screen').height;
@@ -183,6 +149,47 @@ export default PriceList = ({ navigation }) => {
     }
   };
 
+
+const renderTabBar = props => {
+  const objStyle = (routes.length !== 1) ? {} : {
+    height: 0
+  }
+  return (
+  <TabBar
+    {...props}
+    indicatorStyle={{
+      backgroundColor: Colors.Theme,
+      height: (routes.length !== 1) ? (mobileW * 0.75) / 100: 0,
+    }}
+    activeColor={Colors.Theme}
+    inactiveColor={'#354052'}
+    style={{ backgroundColor: '#F1F2F4', ...objStyle }}
+    labelStyle={{
+      textTransform: 'capitalize',
+      fontSize: (mobileW * 3.25) / 100,
+      textAlign: 'center',
+      fontFamily: Font.Medium,
+    }}
+    renderLabel={({ focused, route }) => {
+      return (
+        <Text
+          style={{
+            color: (focused) ? Colors.textblue : Colors.splashtextcolor,
+            textTransform: 'capitalize',
+            fontSize: (mobileW * 3.5) / 100,
+            textAlign: 'center',
+            fontFamily: Font.SemiBold,
+          }}
+        >
+          {route.title}
+        </Text>
+      );
+    }}
+  />
+  )
+  }
+
+
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -202,7 +209,7 @@ export default PriceList = ({ navigation }) => {
             leftIcon
             rightIcon={false}
             navigation={navigation}
-            title={'Price List'}
+            title={(routes.length !== 1) ? 'Price List': routes[0]?.title + ' Price List'}
             style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
           {

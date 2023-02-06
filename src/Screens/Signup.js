@@ -55,7 +55,7 @@ export default Signup = ({ navigation, route }) => {
       value: "caregiver"
     },
     {
-      title: "Babysitter",
+      title: "Baby Care",
       value: "babysitter"
     },
     {

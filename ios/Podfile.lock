@@ -29,6 +29,8 @@ PODS:
     - FBSDKCoreKit (= 15.0.0)
   - Firebase (10.3.0):
     - Firebase/Core (= 10.3.0)
+  - Firebase/Analytics (10.3.0):
+    - Firebase/Core
   - Firebase/Core (10.3.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 10.3.0)
@@ -537,6 +539,10 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
+  - RNFBAnalytics (17.0.0):
+    - Firebase/Analytics (= 10.3.0)
+    - React-Core
+    - RNFBApp
   - RNFBApp (16.7.0):
     - Firebase/CoreOnly (= 10.3.0)
     - React-Core
@@ -689,6 +695,7 @@ DEPENDENCIES:
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -849,6 +856,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNFBAnalytics:
+    :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
@@ -958,6 +967,7 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNDateTimePicker: 00247f26c34683c80be94207f488f6f13448586e
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
+  RNFBAnalytics: 6f137d71353c579a34fa7e824123020c6129610e
   RNFBApp: 1ee535dcb7773ca612d3a2e53a1f78f8f2fb6abf
   RNFBMessaging: 04ecf12bae7543cd8df145f1b26d89d867594be7
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
@@ -976,6 +986,6 @@ SPEC CHECKSUMS:
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ec8e4bdc5f976e1fc864d59ebb2d3932945dbcdb
+PODFILE CHECKSUM: c397ebe0f8e8f31173e999c6464bf5d3afdddc63
 
 COCOAPODS: 1.11.3

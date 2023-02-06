@@ -73,7 +73,7 @@ const DashBoardBox = ({
 
             <View style={{
               // backgroundColor: 'yellow',
-              width: '48%',
+              width: '47%',
               justifyContent: 'center',
               alignItems: 'flex-start',
               paddingLeft: (mobileW * 5) / 100,
@@ -87,10 +87,10 @@ const DashBoardBox = ({
             </View>
 
             <View style={{
-              width: '38%',
+              width: '41%',
               justifyContent: 'center',
               alignItems: 'flex-start',
-              paddingHorizontal: (mobileW * 3) / 100,
+              paddingHorizontal: (mobileW * 1) / 100,
               alignSelf: 'center',
               // backgroundColor: 'red'
             }}>
@@ -100,20 +100,20 @@ const DashBoardBox = ({
                 backgroundColor: actionColor,
                 borderRadius: (mobileW * 2.5 ) / 100,
                 marginVertical: 2,
-                paddingVertical: 4
+                paddingVertical: 4,
               }}>
 
                 <Text style={{
                   fontFamily: Font.Regular,
                   fontSize: Font.small,
                   color: actionTextColor,
-                }} allowFontScaling={false}>{actionMessage}</Text>
+                }} allowFontScaling={false} numberOfLines={1}>{actionMessage}</Text>
               </View>
             </View>
 
             <View style={{
               // backgroundColor: 'blue',
-              width: '14%',
+              width: '12%',
               justifyContent: 'center',
               alignItems: 'flex-end',
               paddingRight: (mobileW * 5) / 100,
@@ -122,7 +122,7 @@ const DashBoardBox = ({
                 (rightText) ?
                   <Text style={{
                     fontFamily: Font.Medium,
-                    fontSize: 13,
+                    fontSize: Font.small,
                     color: Colors.textblue
                   }} allowFontScaling={false}>{rightText}</Text> :
                   <Image

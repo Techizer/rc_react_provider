@@ -25,6 +25,7 @@ const ServiceAddress = ({ navigation, route }) => {
     const [defaultAddress, setDefaultAddress] = useState('')
     const [type, setType] = useState('addAddress')
     const [isLoading, setIsLoading] = useState(true)
+    const [isFetchedSuccess, setIsFetchedSuccess] = useState(false)
     const [isEditable, setIsEditable] = useState(false)
     const [isMTrueState, setIsMTrueState] = useState(false)
     const isFocused = useIsFocused()
@@ -61,22 +62,31 @@ const ServiceAddress = ({ navigation, route }) => {
             if (obj.status == true) {
                 setTimeout(() => {
                     setIsLoading(false)
-                    setAddressList(obj?.result)
+                    if (obj?.result?.length > 1) {
+                        var tArr = []
+                        tArr.push(obj?.result[0])
+                        setAddressList(tArr)
+                    } else{
+                        setAddressList(obj?.result)
+                    }
                 }, 250);
                 for (const iterator of obj?.result) {
                     if (iterator?.defult == '0') {
                         setDefaultAddress(iterator?.id)
                     }
                 }
+                setIsFetchedSuccess(true)
             }
             else {
                 setAddressList([])
                 // MessageFunctions.showError(obj.message)
                 setIsLoading(false)
+                setIsFetchedSuccess(false)
             }
         }).catch((error) => {
             setIsLoading(false)
             setAddressList([])
+            setIsFetchedSuccess(false)
             // MessageFunctions.showError(obj.message)
             console.log("getAddresses-error ------- " + error);
         });
@@ -102,7 +112,7 @@ const ServiceAddress = ({ navigation, route }) => {
 
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    data={addressList.length > 1 ? addressList.splice(1, addressList.length): addressList}
+                    data={addressList}
                     ListHeaderComponent={() => {
                         return (
                             <View
@@ -118,7 +128,7 @@ const ServiceAddress = ({ navigation, route }) => {
                                             color: Colors.textblack,
                                         }}>{'Service Address'}</Text>
 
-                                    {(addressList.length === 0) &&
+                                    {(addressList.length === 0 && isFetchedSuccess) &&
                                         <View style={{
                                             alignItems: 'flex-end'
                                         }}>

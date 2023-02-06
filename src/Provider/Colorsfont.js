@@ -33,7 +33,6 @@ export const Colors = {
   //26-02
   statusbarcolor: statusbar,
 
-
   mediabackground: '#FFFFFF',
   mediatextcolor: 'black',
   cancletextcolor: 'black',
@@ -154,6 +153,7 @@ export const Colors = {
   "Success": "#4FB82A",
   "Cancelled": "#FF4E00",
   "Rejected": "#FF4E00",
+  "Refunded": "#FF4E00",
   "Else": "#515C6F",
   Black:'black',
   DarkGrey: '#515C6F',

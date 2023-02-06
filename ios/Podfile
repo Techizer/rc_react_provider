@@ -10,6 +10,8 @@ target 'rootscare' do
   pod 'FirebaseCore', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'Branch'
+  
+  
   $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
@@ -24,6 +26,8 @@ target 'rootscare' do
   #permissions_path = '../node_modules/react-native-permissions/ios'
   #pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse/Permission-LocationWhenInUse.podspec"
 
+
+  pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
 
   target 'rootscareTests' do
     inherit! :complete

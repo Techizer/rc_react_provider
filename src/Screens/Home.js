@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, FlatList, View, Alert, StyleSheet, Image, TouchableOpacity, Platform, BackHandler } from 'react-native';
-import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, localStorage } from '../Helpers/Utils';
 import Styles from '../Styles';
 import messaging from '@react-native-firebase/messaging';
 import { DashBoardBox } from '../Components'
@@ -11,6 +11,7 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';
+import { vs } from 'react-native-size-matters';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
@@ -168,9 +169,8 @@ export default Home = ({ navigation, route }) => {
   }, [])
 
   const logout = async () => {
-    
+    localStorage.setItemString('logout_bit', '100')
     dispatch(onUserLogout())
-
     navigation.reset({
       index: 0,
       routes: [{ name: ScreenReferences.Login }],
@@ -244,7 +244,7 @@ export default Home = ({ navigation, route }) => {
     )
     messaging().onMessage(async remoteMessage => {
 
-      console.log({remoteMessage});
+      console.log({ remoteMessage });
 
       if (remoteMessage.data?.type == "Logout") {
         logout();
@@ -291,7 +291,7 @@ export default Home = ({ navigation, route }) => {
     data.append("toUserName", notidata.fromUserName);
     data.append("type", "doctor_to_patient_video_call_reject");
 
-    
+
     API
       .post(url, data, 1)
       .then((obj) => {
@@ -312,9 +312,9 @@ export default Home = ({ navigation, route }) => {
     var data = new FormData();
     data.append('login_user_id', loginUserData?.user_id)
 
-    
+
     API.post(url, data, 1).then((obj) => {
-      
+
       if (obj.status == true) {
         setState(prev => ({
           ...prev,
@@ -458,7 +458,7 @@ export default Home = ({ navigation, route }) => {
                         strokeLinecap={'butt'}
                         radius={mobileW / 7.5}
                         progressValueColor='#0888D1'
-                        
+
 
                       />
 
@@ -562,35 +562,35 @@ export default Home = ({ navigation, route }) => {
                       <View style={{
                         backgroundColor: '#0168B3',
                         flexDirection: 'row',
-                        padding: 8
+                        padding: 8,
+                        alignItems: 'center'
                       }}>
                         <Text style={{
                           flex: 5,
                           color: Colors.White,
                           fontFamily: Font.Medium,
-                          fontSize: Font.large
+                          fontSize: Font.medium
                         }}>
                           {'Complete Now to Appear In Booking App'}
                         </Text>
 
                         <View style={{
-
                           flex: 1,
                           alignSelf: 'flex-end',
                           alignItems: 'flex-end',
                           paddingHorizontal: 4
                         }}>
                           <View style={{
-                            height: 21,
-                            width: 21,
-                            borderRadius: 21,
+                            height: vs(16),
+                            width: vs(16),
+                            borderRadius: vs(16),
                             backgroundColor: 'white',
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}>
                             <Image source={Icons.RightArrow} style={{
-                              width: 14,
-                              height: 14
+                              width: vs(10),
+                              height: vs(10)
                             }} resizeMethod='scale' resizeMode='contain' />
                           </View>
                         </View>

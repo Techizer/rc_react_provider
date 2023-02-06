@@ -27,6 +27,8 @@
 		<string>comgooglemaps</string>
 		<string>comgooglemaps-x-callback</string>
 		<string>googleMaps</string>
+    <string>fbapi</string>
+    <string>fb-messenger-share-api</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -129,11 +131,22 @@
             <key>CFBundleURLSchemes</key>
             <array>
                 <string>servicerootscare</string>
+                <string>fb255642823428638</string>
+                <string>255642823428638</string>
             </array>
             <key>CFBundleURLName</key>
             <string>io.Branch.servicerootscare</string>
         </dict>
     </array>
+    
+    <key>FacebookAppID</key>
+    <string>255642823428638</string>
+    <key>FacebookClientToken</key>
+    <string>a07d69b4b34ad773ccf6126648037c40</string>
+    <key>FacebookDisplayName</key>
+    <string>Service Rootscare</string>
+    
+    
     <key>branch_key</key>
     <dict>
         <key>live</key>

@@ -151,14 +151,19 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let task_type = ""
+
     if (page == "onlinehomeschedule") {  //doctor
       task_type = "api-doctor-get-timeslot"
+
     } else if (page == "taskschedule") {
       task_type = "provider-nurse-task-base-time-slot"
+
     } else if (page == "labschedule") {
       task_type = "provider-get-time-slot"
+
     } else {
       task_type = "provider-nurse-hour-base-time-slot"
+
     }
     let apiname = task_type
 
@@ -166,7 +171,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     var data = new FormData();
     data.append('user_id', user_id)
     data.append('service_type', user_type)
-    
+
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
 
@@ -195,16 +200,16 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
         setState(
           prev => ({
             ...prev,
-             slotArr: (obj.result.slots.length > 0) ? obj.result.slots : state.slotArr,
-          accept_booking: (obj.result.accept_booking == null) ? '1' : obj.result.accept_booking,
-          accept: (obj.result.accept_booking == null) ? false : (obj.result.accept_booking == '0') ? true : false,
-          hide: (obj.result.accept_booking == null) ? true : (obj.result.accept_booking == '1') ? true : false,
-          service_radius: (obj.result.service_radius == null) ? r : obj.result.service_radius,
-          service_address: (obj.result.service_address == null) ? '' : obj.result.service_address,
-          service_lat: (obj.result.service_lat == null) ? '' : obj.result.service_lat,
-          service_long: (obj.result.service_long == null) ? '' : obj.result.service_long,
-          message: obj.message,
-          shouldShow: true
+            slotArr: (obj.result.slots.length > 0) ? obj.result.slots : state.slotArr,
+            accept_booking: (obj.result.accept_booking == null) ? '1' : obj.result.accept_booking,
+            accept: (obj.result.accept_booking == null) ? false : (obj.result.accept_booking == '0') ? true : false,
+            hide: (obj.result.accept_booking == null) ? true : (obj.result.accept_booking == '1') ? true : false,
+            service_radius: (obj.result.service_radius == null) ? r : obj.result.service_radius,
+            service_address: (obj.result.service_address == null) ? '' : obj.result.service_address,
+            service_lat: (obj.result.service_lat == null) ? '' : obj.result.service_lat,
+            service_long: (obj.result.service_long == null) ? '' : obj.result.service_long,
+            message: obj.message,
+            shouldShow: true
           })
         )
 
@@ -253,31 +258,34 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     let user_details = loginUserData;
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    
+
     let apiname = (page == "onlinehomeschedule") ?
       "api-doctor-add-preferable-time" : "insert-preferable-time"
 
     let url = Configurations.baseURL + apiname;
+    const enabledDaysCount = state.slotArr.filter(slot => slot.slot_day_enable === '1').length
 
-    var myData = JSON.stringify({
-      accept_booking: state.accept_booking,
-      user_id: user_id,
-      service_type: user_type,
-      slots: state.slotArr,
-    });
-    
-    API.postRaw(url, myData).then((obj) => {
-      if (obj.status == true) {
-        MessageFunctions.showSuccess(obj.message)
+    if (state.accept_booking === '0' && enabledDaysCount <= 0) {
+      console.log({ enabledDaysCount });
+      MessageFunctions.showError("You must switch on at list 'One Day' with start and closing time to make yourself available for the booking.")
+    } else {
+      var myData = JSON.stringify({
+        accept_booking: state.accept_booking,
+        user_id: user_id,
+        service_type: user_type,
+        slots: state.slotArr,
+      });
 
-      } else {
-        MessageFunctions.showError(obj.message)
-        return false;
-      }
-    }).catch((error) => {
-
-    });
-
+      API.postRaw(url, myData).then((obj) => {
+        if (obj.status == true) {
+          MessageFunctions.showSuccess(obj.message)
+        } else {
+          MessageFunctions.showError(obj.message)
+          return false;
+        }
+      }).catch((error) => {
+      });
+    }
   }
 
   const GetHours = (d) => {
@@ -338,7 +346,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
         }}>
           <ListBottomSheet
             data={timeArray}
-            onRequestClose={() => { 
+            onRequestClose={() => {
               setState(
                 prev => ({
                   ...prev,
@@ -355,7 +363,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
               var arr = state.slotArr
               if (flag) {
                 validationTime(value, state.slotArr[cIndex].slot_end_time, flag, cIndex)
-                
+
                 arr[cIndex].slot_start_time = value
                 setState(
                   prev => ({
@@ -433,8 +441,8 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                   prev => ({
                                     ...prev,
                                     accept: true,
-                                  hide: false,
-                                  accept_booking: '0'
+                                    hide: false,
+                                    accept_booking: '0'
                                   })
                                 )
                               }}
@@ -482,8 +490,8 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                 prev => ({
                                   ...prev,
                                   accept: false,
-                                hide: true,
-                                accept_booking: '1'
+                                  hide: true,
+                                  accept_booking: '1'
                                 })
                               )
                             }}
@@ -757,9 +765,9 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                             prev => ({
                                               ...prev,
                                               currentIndex: index,
-                                            currentItem: item,
-                                            modalVisible: true,
-                                            flag: true
+                                              currentItem: item,
+                                              modalVisible: true,
+                                              flag: true
                                             })
                                           )
                                         }}
@@ -814,9 +822,9 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                             prev => ({
                                               ...prev,
                                               currentIndex: index,
-                                            currentItem: item,
-                                            modalVisible: true,
-                                            flag: false
+                                              currentItem: item,
+                                              modalVisible: true,
+                                              flag: false
                                             })
                                           )
                                         }}

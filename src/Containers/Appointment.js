@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList } from 'react-native';
 
-import { Font, MessageFunctions, Configurations, mobileW, API } from '../Helpers/Utils';
+import { Font, MessageFunctions, Configurations, mobileW, API, windowWidth } from '../Helpers/Utils';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import AppointmentItem from '../Components/AppointmentItem';
 import { useSelector } from 'react-redux';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {s, vs} from 'react-native-size-matters'
 
 
 export default Appointment = ({ navigation, route, pageName }) => {
@@ -14,6 +16,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
     appointments: [],
     send_id: '',
     message: '',
+    isLoading: true
   })
 
   useEffect(() => {
@@ -113,7 +116,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
     data.append('user_id', user_id)
     data.append('service_type', user_type)
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
       // setState(
       //   prev => ({
       //     ...prev,
@@ -127,8 +130,13 @@ export default Appointment = ({ navigation, route, pageName }) => {
             appointments: obj?.result, message: obj?.message
           })
         )
-      } 
-    });
+      }
+    }).finally(() => {
+      setState(prev => ({
+        ...prev,
+        isLoading: false
+      }))
+    })
 
   }
 
@@ -155,13 +163,13 @@ export default Appointment = ({ navigation, route, pageName }) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let url = Configurations.baseURL + "api-update-provider-appointment-status";
-    
+
     var data = new FormData();
     data.append('id', appointmentID)
     data.append('service_type', user_type)
     data.append('acceptance_status', acceptanceStatus)
 
-    
+
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
         if (listIndex !== -1) {
@@ -189,54 +197,91 @@ export default Appointment = ({ navigation, route, pageName }) => {
         }}>
           {
             (state.appointments != '' && state.appointments != null) ?
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
-                data={state.appointments}
-                renderItem={({ item, index }) => {
-                  if (state.appointments != '' && state.appointments != null) {
-                    return (
-                      <>
-                        <AppointmentItem
-                          item={item}
-                          index={index}
-                          onPressViewDetails={() => {
-                            console.log("props:: ", props);
-                            navigation.navigate(ScreenReferences.AppointmentDetails,
-                              {
-                                status: item.provider_type,
-                                appoinment_id: item.id,
-                                send_id: item.provider_id,
-                                reloadList: reloadList
-                              })
-                          }}
-                          onPressAccept={() => {
-                            updateProviderAppointmentStatus("Accept", item.id, index)
-                          }}
-                          onPressReject={() => {
-                            showConfirmDialogReject("Reject", item.id, index)
+              <>
+                {
+                  !state.isLoading ?
+                    <FlatList
+                      showsVerticalScrollIndicator={false}
+                      contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+                      data={state.appointments}
+                      renderItem={({ item, index }) => {
+                        if (state.appointments != '' && state.appointments != null) {
+                          return (
+                            <>
+                              <AppointmentItem
+                                item={item}
+                                index={index}
+                                onPressViewDetails={() => {
+                                  console.log("props:: ", props);
+                                  navigation.navigate(ScreenReferences.AppointmentDetails,
+                                    {
+                                      status: item.provider_type,
+                                      appoinment_id: item.id,
+                                      send_id: item.provider_id,
+                                      reloadList: reloadList
+                                    })
+                                }}
+                                onPressAccept={() => {
+                                  updateProviderAppointmentStatus("Accept", item.id, index)
+                                }}
+                                onPressReject={() => {
+                                  showConfirmDialogReject("Reject", item.id, index)
 
-                          }}
-                          onPressVideoCall={() => {
-                            setState(
-                              prev => ({
-                                ...prev,
-                                id: item.id,
-                                index: index
-                              })
-                            )
-                            navigation.navigate(ScreenReferences.VideoCall, {
-                              item: item
-                            });
+                                }}
+                                onPressVideoCall={() => {
+                                  setState(
+                                    prev => ({
+                                      ...prev,
+                                      id: item.id,
+                                      index: index
+                                    })
+                                  )
+                                  navigation.navigate(ScreenReferences.VideoCall, {
+                                    item: item
+                                  });
 
 
-                          }}
-                        />
-                      </>
-                    );
-                  }
-                }}
-              /> :
+                                }}
+                              />
+                            </>
+                          );
+                        }
+                      }}
+                    /> :
+                    <FlatList
+                      showsVerticalScrollIndicator={false}
+                      contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+                      data={['', '', '', '', '', '', '', '', '', '', '', '']}
+                      renderItem={({ item, index }) => {
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            width: '100%',
+                            paddingHorizontal: s(11),
+                          }}>
+                          <View style={{ width: "30%", }}>
+                            <SkeletonPlaceholder>
+                              <SkeletonPlaceholder.Item width={s(75)} height={s(75)} borderRadius={s(100)} />
+                            </SkeletonPlaceholder>
+                          </View>
+
+                          <View style={{ justifyContent: 'center' }}>
+                            <SkeletonPlaceholder>
+                              <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                            </SkeletonPlaceholder>
+                            <SkeletonPlaceholder>
+                              <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                            </SkeletonPlaceholder>
+                            <SkeletonPlaceholder>
+                              <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                            </SkeletonPlaceholder>
+                          </View>
+                        </View>
+                      }}
+                    />
+                }
+              </>
+              :
               <View style={{
                 justifyContent: 'center',
                 alignItems: 'center',

@@ -333,32 +333,6 @@ export default EditProfile = ({navigation, route}) => {
     specialityArr: [],
     mediamodal: false,
     showSpeciality: false,
-    showUsertype: false,
-    userType: [{
-      title: "Nurse",
-      value: "nurse"
-    },
-    {
-      title: "Nurse Assistant",
-      value: "caregiver"
-    },
-    {
-      title: "Babysitter",
-      value: "babysitter"
-    },
-    {
-      title: "Physiotherapy",
-      value: "physiotherapy"
-    },
-    {
-      title: "Doctor",
-      value: "doctor"
-    },
-    {
-      title: "Hospital",
-      value: "hospital"
-    }],
-    selectuserType: -1,
 
   })
   const dispatch = useDispatch()
@@ -2365,8 +2339,6 @@ export default EditProfile = ({navigation, route}) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-
-                {/* --------------------------------------------------------------------------- usertype */}
 
                 <View
                   style={{

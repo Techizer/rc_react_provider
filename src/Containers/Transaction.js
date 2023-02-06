@@ -10,7 +10,9 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
   const [classStateData, setClassStateData] = useState({
     message: '',
-    isBottomBoxShow: true,
+    isBottomBoxShow: false,
+    percentage: null,
+    content: null,
     transactionArr: [],
   })
 
@@ -22,47 +24,36 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
     getTransactions()
   }, [])
 
-  
+
   const {
     loginUserData
   } = useSelector(state => state.Auth)
 
 
   const getTransactions = async () => {
-    let user_details = loginUserData
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
-    console.log('pageName:: ', pageName);
-    let currency_symbol = user_details['currency_symbol']
-
-    setState({
-      currency_symbol: currency_symbol
-    })
-
     let apiname = "api-provider-transactions-history"
 
-
-    let apishow = apiname
-
-    let url = Configurations.baseURL + apishow;
+    let url = Configurations.baseURL + apiname;
     console.log("url", url)
 
     var data = new FormData();
-    data.append('user_id', user_id)
-    data.append('service_type', user_type)
+    data.append('user_id', loginUserData?.user_id)
+    data.append('service_type', loginUserData?.user_type)
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
+        console.log({ Transactions: obj?.result?.paymentdetails[0]?.paymentStatus });
         setState({
-          transactionArr: obj.result.paymentdetails,
+          transactionArr: obj?.result?.paymentdetails,
           percentage: obj.result.percentage,
           content: obj.result.content,
-          message: obj.message
+          message: obj.message,
+          isBottomBoxShow: true
         })
       } else {
 
         setState({
-          transactionArr: obj.result.paymentdetails,
+          transactionArr: obj?.result?.paymentdetails,
           percentage: obj.result.percentage,
           content: obj.result.content,
           message: obj.message
@@ -165,7 +156,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                       fontFamily: Font.Regular,
                       fontSize: mobileW * 2.5 / 100,
                     }}>
-                    Fee ({classStateData.currency_symbol})
+                    Fee ({loginUserData?.currency_symbol})
                   </Text>
                 </View>
 
@@ -191,7 +182,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                       fontFamily: Font.Regular,
                       fontSize: mobileW * 2.5 / 100,
                     }}>
-                    Fee ({classStateData.currency_symbol})
+                    Fee ({loginUserData?.currency_symbol})
                   </Text>
                 </View>
 
@@ -217,7 +208,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={classStateData.transactionArr}
+            data={classStateData?.transactionArr}
             scrollEnabled={true}
             nestedScrollEnabled={true}
             renderItem={({ item, index }) => {
@@ -310,15 +301,15 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                             width: '15%',
                           }}>
                           <Text
-                              style={{
-                                color: Colors[item?.paymentStatus],
-                                fontFamily: Font.Medium,
-                                fontSize: mobileW * 2.3 / 100,
-                                textAlign: 'center'
+                            style={{
+                              color: Colors[item?.paymentStatus],
+                              fontFamily: Font.Medium,
+                              fontSize: mobileW * 2.3 / 100,
+                              textAlign: 'center'
 
-                              }}>
-                              {item?.paymentStatus}
-                            </Text>
+                            }}>
+                            {item?.paymentStatus}
+                          </Text>
 
                         </View>
 
@@ -329,7 +320,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                   </View>
                 </>
               )
-            }}/>
+            }} />
 
         </View>
 
@@ -423,9 +414,9 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                     // backgroundColor: 'red'
                   }}>
                   <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <HTMLView
+                    {(classStateData.content?.content != undefined) && <HTMLView
                       value={classStateData.content?.content}
-                    />
+                    />}
                   </View>
 
 

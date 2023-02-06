@@ -33,7 +33,7 @@ export default Login = ({ navigation, route }) => {
       value: "caregiver"
     },
     {
-      title: "Babysitter",
+      title: "Baby Care",
       value: "babysitter"
     },
     {
@@ -356,7 +356,6 @@ export default Login = ({ navigation, route }) => {
                   lableText={(classStateData?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : classStateData?.userType[classStateData?.selectuserType].title}
                   boxPressAction={() => { showUsertypeModal(true) }}
                 />
-
 
                 <Modal
                   animationType="fade"
