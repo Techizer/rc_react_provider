@@ -24,13 +24,13 @@ const AppointmentItem = ({
     onPressViewDetails, onPressAccept, onPressReject, onPressVideoCall,
 }) => {
 
-    const aDate = new Date(item.appointment_date)
+    const aDate = new Date(item?.appointment_date)
     var VideoCallBtn = false
-    var appointmentDate = moment(item.app_date).format(
+    var appointmentDate = moment(item?.app_date).format(
         "YYYY-MM-DD"
     );
     var CurrentDate = moment().unix(); //Wed, 19 Oct 2022
-    var MyDate = moment(appointmentDate + " " + item.app_time, 'YYYY-MM-DD hh:mm A').unix();
+    var MyDate = moment(appointmentDate + " " + item?.app_time, 'YYYY-MM-DD hh:mm A').unix();
     var MyEndDate = moment(appointmentDate + " 11:59 PM", 'YYYY-MM-DD hh:mm A').unix();
 
     if (CurrentDate < MyDate) {
@@ -43,7 +43,8 @@ const AppointmentItem = ({
         VideoCallBtn = true
     }
     if (CurrentDate > MyEndDate) {
-        VideoCallBtn = false
+        // VideoCallBtn = false
+        
     }
 
     return (
@@ -369,10 +370,10 @@ const AppointmentItem = ({
 
                             }}>
 
-                            {((item.acceptance_status == 'Accepted' &&
-                                item.service_type == "Doctor" &&
-                                item.appointment_type === "Online" && VideoCallBtn == true) &&
-                                item.booking_type === 'online_task') &&
+                            {((item?.acceptance_status == 'Accepted' &&
+                                item?.service_type == "Doctor" &&
+                                item?.appointment_type === "Online" && VideoCallBtn == true) &&
+                                item?.booking_type === 'online_task') &&
 
                                 <TouchableOpacity
                                     activeOpacity={0.8}
@@ -398,9 +399,9 @@ const AppointmentItem = ({
 
                             }
 
-                            {item.acceptance_status == 'Pending' ?
+                            {item?.acceptance_status == 'Pending' ?
                                 <TouchableOpacity
-                                    // onPress={() => { this.rescdule_click(), this.get_day(), this.setState({ order_id: item.id, service_status: item.provider_type, send_id: item.provider_id, time_take_data: '', }) }}
+                                    // onPress={() => { this.rescdule_click(), this.get_day(), this.setState({ order_id: item?.id, service_status: item?.provider_type, send_id: item?.provider_id, time_take_data: '', }) }}
                                     onPress={onPressAccept}
                                     style={{
                                         backgroundColor: Colors.buttoncolorhgreen,
@@ -419,13 +420,13 @@ const AppointmentItem = ({
                                             fontSize: mobileW * 3 / 100,
                                         }}>Accept</Text>
                                 </TouchableOpacity> :
-                                (item.acceptance_status == 'Accepted' &&
-                                    item.service_type == "Doctor" && item.appointment_type == "Online") ? null :
+                                (item?.acceptance_status == 'Accepted' &&
+                                    item?.service_type == "Doctor" && item?.appointment_type == "Online") ? null :
                                     <View style={{ width: '28%' }}>
                                     </View>
                             }
 
-                            {item.acceptance_status == 'Pending' &&
+                            {item?.acceptance_status == 'Pending' &&
                                 <TouchableOpacity
                                     onPress={onPressReject}
                                     style={{

@@ -114,8 +114,7 @@ export default Home = ({ navigation, route }) => {
           // Handle notification click
           console.log('PushNotification.configure', notification)
           if (notification.data?.type == "patient_to_doctor_video_call") {
-            let data = (Platform.OS == "ios") ?
-              JSON.parse(notification.data.notidata) : notification.data
+            let data = (Platform.OS == "ios") ? JSON.parse(notification.data.notidata) : notification.data
             Alert.alert(
               "Incoming Video call",
               data.message,

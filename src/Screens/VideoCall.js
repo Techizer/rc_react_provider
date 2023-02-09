@@ -1,63 +1,77 @@
+import React, { useEffect, useState, useRef } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, PermissionsAndroid, Platform, Image } from 'react-native';
+import { TwilioVideoLocalView, TwilioVideoParticipantView, TwilioVideo } from "react-native-twilio-video-webrtc";
 
-import React, { Component, useEffect, useState, useRef } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  PermissionsAndroid,
-  Platform,
-} from 'react-native';
-
-import {
-  Configurations, API,
-} from '../Helpers/Utils';
-
-import {
-  TwilioVideoLocalView,
-  TwilioVideoParticipantView,
-  TwilioVideo,
-} from "react-native-twilio-video-webrtc";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { min } from 'moment-timezone';
 import { useSelector } from 'react-redux';
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
 
+import { Configurations, API } from '../Helpers/Utils';
 
 var countTimeInterval
 var timerId
 
+const CallType = {
+  Incoming: 111,
+  Outgoing: 222,
+  Unknown: -1
+}
+
+/**
+ * Similar Conditions (Calling, Connecting, NotAnswered, Ended)
+ * Other is Room Connected
+ */
+
+const Statuses = {
+  Disconnected: 0,
+  Calling: 1,
+  RoomConnected: 2,
+  ParticipantReceivedCall: 3,
+  Ended: 4,
+  NotAnswered: 5,
+  NoInternet: 6,
+  CallConnected: 7,
+  Connecting: 8,
+  Unknown: -1
+}
+
+const NullTrackData = {
+  trackSid: null,
+  participantSid: null,
+}
+
+const DefaultTime = {
+  minutes: 0,
+  seconds: 0,
+  hours: 0
+}
+
 const VideoCall = (props) => {
-  var ctc = 0
+  var runtimeSecondsToDisconnectOnNoAnswer = 0
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
-  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
-  const [status, setStatus] = useState("disconnected");
-  const [participants, setParticipants] = useState(new Map());
-  const [videoTracks, setVideoTracks] = useState(new Map());
+  const [status, setStatus] = useState(Statuses.Disconnected);
+  const [trackData, setTrackData] = useState(NullTrackData)
   const [token, setToken] = useState("");
   const [callDetails, setCallDetails] = useState({});
   const twilioVideo = useRef(null);
-  const [mins, setMins] = useState(-1)
-  const [secs, setSecs] = useState(0)
+  const [callTime, setCallTime] = useState(DefaultTime)
   const [started, setStarted] = useState(false);
-  const [localtrackVideo, setlocaltrackVideo] = useState(true);
+  const [isMyVideoVisible, setIsMyVideoVisible] = useState(true);
+  const [callType, setCallType] = useState(CallType.Unknown)
 
-
-  const {
-    loginUserData
-  } = useSelector(state => state.Auth)
-
+  const { loginUserData } = useSelector(state => state.Auth)
 
   useEffect(() => {
     if (props.route.params.item.ispage == "accept") {
-      get_incoming_call_token('patient_to_doctor_video_call')
+      getIncomingCallTokenFromAPI('patient_to_doctor_video_call')
+      setStatus(Statuses.Connecting)
+      setCallType(CallType.Incoming)
     } else {
-      get_call_token('doctor_to_patient_video_call')
+      getOutgoingCallTokenFromAPI('doctor_to_patient_video_call')
+      setStatus(Statuses.Calling)
+      setCallType(CallType.Outgoing)
     }
 
     return () => {
@@ -69,7 +83,14 @@ const VideoCall = (props) => {
 
   useEffect(() => {
     if (token != "") {
-      _onConnectButtonPress()
+      try {
+        twilioVideo.current.disconnect()
+      } catch (error) {
+
+      } finally {
+        startCall()
+      }
+
     }
 
   }, [token]);
@@ -78,60 +99,51 @@ const VideoCall = (props) => {
     if (started) {
       timerId = setInterval(() => {
 
-        if (secs > 58) {
-          setStarted(false);
-          setSecs(0);
+        if (callTime.seconds > 58) {
+          setCallTime(time => ({
+            ...time,
+            seconds: 0,
+            minutes: time.minutes + 1
+          }))
+        } else if (callTime.minutes > 58) {
+          setCallTime(time => ({
+            ...time,
+            seconds: time.seconds + 1,
+            minutes: 0,
+            hours: time.hours + 1
+          }))
         } else {
-          setSecs(s => s + 1)
-          console.log('secs:: ', secs);
+          setCallTime(time => ({
+            ...time,
+            seconds: time.seconds + 1,
+          }))
         }
-
       }, 1000);
     } else {
       clearInterval(timerId);
-      setMins(m => m + 1)
-      setStarted(true)
     }
     return () => clearInterval(timerId);
-  }, [started, secs, mins]);
+  }, [started, callTime.seconds, callTime.minutes, callTime.hours]);
 
-  const callTimeCall = () => {
-    setStarted(true)
-  }
+  const startCall = async () => {
+    if (Platform.OS === "android") {
+      await _requestAudioPermission();
+      await _requestCameraPermission();
+    }
+    twilioVideo.current.connect({
+      accessToken: token,
+      enableNetworkQualityReporting: true,
+      dominantSpeakerEnabled: true
+    });
+  };
 
-  const callTimeCallClear = () => {
-    setMins(0)
-    setSecs(0)
-    clearInterval(timerId)
-    props.navigation.goBack()
-  }
-
-  const countTimeCall = () => {
-    countTimeInterval = setInterval(() => {
-      ctc = parseInt(ctc) + parseInt(1)
-      console.log("ctc:: ", ctc);
-      if (ctc > 30) {
-        _onEndButtonPress()
-        clearInterval(countTimeInterval)
-      }
-    }, 1000);
-  }
-
-  const timerClear = () => {
-    props.navigation.goBack()
-  }
-
-  const get_call_token = async (callType) => {
+  const getOutgoingCallTokenFromAPI = async (callType) => {
     let user_details = loginUserData
     let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
 
     let apiname = "api-get-video-access-token-with-push-notification"
 
-    let apishow = apiname
-
-    let url = Configurations.baseURL + apishow;
-    console.log("url", url)
+    let url = Configurations.baseURL + apiname;
 
     var data = new FormData();
     data.append('fromUserId', user_id)
@@ -143,13 +155,12 @@ const VideoCall = (props) => {
     data.append('type', callType)
 
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        console.log('obj.result', obj.result)
+        console.log('obj.result1', obj.result)
         setToken(obj.result.token)
         setCallDetails(obj.result)
       } else {
-        console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
@@ -159,18 +170,11 @@ const VideoCall = (props) => {
 
   }
 
-  const get_incoming_call_token = async (callType) => {
+  const getIncomingCallTokenFromAPI = async (callType) => {
     let user_details = loginUserData
     let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
-    // console.log('this.props.pageName:: ', this.props.pageName);
-
     let apiname = "api-get-video-access-token"
-
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
-
-    let url = Configurations.baseURL + apishow;
-    console.log("url", url)
+    let url = Configurations.baseURL + apiname;
 
     var data = new FormData();
     data.append('identity', user_id)
@@ -182,18 +186,12 @@ const VideoCall = (props) => {
     data.append('toUserName', props.route.params.item.toUserName)
     data.append('type', props.route.params.item.type)
 
-
-
-    API.post(url, data).then((obj) => {
-      // API.postRaw(url, myData).then((obj) => {
-
-      // this.setState({ appoinment_detetails: '' })
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        console.log('obj.result', obj.result)
+        console.log('obj.result2', obj.result)
         setToken(obj.result)
         setCallDetails(obj.result)
       } else {
-        console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
@@ -203,88 +201,11 @@ const VideoCall = (props) => {
 
   }
 
-  const _onConnectButtonPress = async () => {
-    if (Platform.OS === "android") {
-      await _requestAudioPermission();
-      await _requestCameraPermission();
-    }
-    twilioVideo.current.connect({
-      accessToken: token,
-      enableNetworkQualityReporting: true,
-      dominantSpeakerEnabled: true
-    });
-    setStatus("connecting");
-    // countTimeCall()
-  };
-
-  const _onEndButtonPress = () => {
+  const endCall = () => {
     twilioVideo.current.disconnect();
-  };
-
-  const _onMuteButtonPress = () => {
-    twilioVideo.current
-      .setLocalAudioEnabled(!isAudioEnabled)
-      .then((isEnabled) => setIsAudioEnabled(isEnabled));
-  };
-
-  const _onFlipButtonPress = () => {
-    twilioVideo.current.flipCamera();
-  };
-
-  const _onRoomDidConnect = () => {
-    setStatus("connected");
-    countTimeCall()
-  };
-
-  const _onRoomDidDisconnect = ({ error }) => {
-    console.log("ERROR _onRoomDidDisconnect: ", error);
-    timerClear()
-    setStatus("disconnected");
-  };
-
-  const _onRoomDidFailToConnect = (error) => {
-    console.log("ERROR: ", error);
-    // timerClear()
-    setStatus("disconnected");
-  };
-
-  const _onParticipantAddedVideoTrack = ({ participant, track }) => {
-    console.log("onParticipantAddedVideoTrack: ", participant, track);
-
-    setVideoTracks(
-      new Map([
-        ...videoTracks,
-        [
-          track.trackSid,
-          { participantSid: participant.sid, videoTrackSid: track.trackSid },
-        ],
-      ])
-    );
-    setlocaltrackVideo(false)
-
-    clearInterval(countTimeInterval)
-    callTimeCall()
-  };
-
-  const _onParticipantRemovedVideoTrack = ({ participant, track }) => {
-    console.log("onParticipantRemovedVideoTrack: ", participant, track);
-
-    const newVideoTracks = new Map(videoTracks);
-    newVideoTracks.delete(track.trackSid);
-
-    setVideoTracks(newVideoTracks);
-    callTimeCallClear()
-  };
-
-  const _onNetworkLevelChanged = ({ participant, isLocalUser, quality }) => {
-    console.log("Participant", participant, "isLocalUser", isLocalUser, "quality", quality);
-    if (isLocalUser == false && localtrackVideo == false) {
-      setlocaltrackVideo(true)
-    }
-  };
-
-  const _onDominantSpeakerDidChange = ({ roomName, roomSid, participant }) => {
-    console.log("onDominantSpeakerDidChange", `roomName: ${roomName}`, `roomSid: ${roomSid}`, "participant:", participant);
+    setTimeout(() => {
+      props.navigation.pop();
+    }, 1000);
   };
 
   const _requestAudioPermission = () => {
@@ -309,26 +230,75 @@ const VideoCall = (props) => {
     });
   };
 
+  const oponentImage = Configurations.img_url3 + 'I-51-doc-34.jpg'
   return (
-    <View style={style1.container}>
+    <View style={styles.container}>
 
-      {(status === "connected" || status === "connecting") && (
-        <View style={style1.callContainer}>
-
-          {status === "connected" && (
-            <View style={style1.remoteGrid}>
-              {Array.from(videoTracks, ([trackSid, trackIdentifier]) => {
-                return (
-                  <TwilioVideoParticipantView
-                    style={style1.remoteVideo}
-                    key={trackSid}
-                    trackIdentifier={trackIdentifier}
-                  />
-                );
-              })}
+      {
+        (status === Statuses.Calling || status === Statuses.Connecting || status === Statuses.NotAnswered || status === Statuses.Ended) &&
+        <>
+          <Image
+            source={{ uri: oponentImage }}
+            style={{
+              height: 140,
+              width: 140,
+              borderRadius: 140,
+              alignSelf: 'center',
+              marginTop: 50
+            }} />
+          <Text style={{
+            color: "#515C6F",
+            marginTop: 10,
+            alignSelf: 'center'
+          }}>{status === Statuses.Calling ? 'Calling...'
+            :
+            (status === Statuses.Connecting ?
+              'Connecting...'
+              :
+              (status === Statuses.NotAnswered ?
+                'Not answered'
+                :
+                'Call ended'))
+            }</Text>
+          <View style={[styles.optionsContainer, { justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Text style={{
+                color: "#515C6F",
+                alignSelf: 'center',
+                marginBottom: 12
+              }}>Video Consultation {props.route.params.item.order_id}</Text>
+              <TouchableOpacity
+                style={styles.optionButtonEnd}
+                onPress={() => {
+                  setStatus(Statuses.Ended)
+                  endCall()
+                }}>
+                <MaterialIcons style={{ alignSelf: 'center' }}
+                  name={"call-end"}
+                  size={28}
+                  color={'#FFF'} />
+              </TouchableOpacity>
             </View>
-          )}
-          <View style={style1.optionsContainer}>
+          </View>
+        </>
+      }
+
+      {(status === Statuses.CallConnected && trackData.trackSid && trackData.participantSid) &&
+        <View style={styles.callContainer}>
+          <View style={styles.remoteGrid}>
+            <TwilioVideoParticipantView
+              style={styles.remoteVideo}
+              key={trackData?.trackSid}
+              trackIdentifier={{
+                participantSid: trackData?.participantSid,
+                videoTrackSid: trackData?.trackSid
+              }}
+            />
+          </View>
+          <View style={styles.optionsContainer}>
 
             <View style={{
               flexDirection: 'row',
@@ -339,20 +309,22 @@ const VideoCall = (props) => {
               <Text style={{
                 color: "#515C6F"
               }}>Video Consultation {props.route.params.item.order_id}</Text>
-              <View style={{
-                flexDirection: 'row',
-                marginLeft: 15
-              }}>
-                <Entypo style={{ alignSelf: 'center' }}
-                  name={"back-in-time"}
-                  size={15}
-                  color={'#515C6F'} />
-                <Text style={{
-                  color: "#E2E7EE",
-                  marginLeft: 5
-                }}>{mins < 10 && 0}{mins}:{secs < 10 && 0}{secs}</Text>
-              </View>
 
+              {started &&
+                <View style={{
+                  flexDirection: 'row',
+                  marginLeft: 15
+                }}>
+                  <Entypo style={{ alignSelf: 'center' }}
+                    name={"back-in-time"}
+                    size={15}
+                    color={'#515C6F'} />
+                  <Text style={{
+                    color: "#E2E7EE",
+                    marginLeft: 5
+                  }}>{callTime.minutes < 10 && 0}{callTime.minutes}:{callTime.seconds < 10 && 0}{callTime.seconds}</Text>
+                </View>
+              }
             </View>
 
             <View style={{
@@ -360,18 +332,21 @@ const VideoCall = (props) => {
               justifyContent: 'center'
             }}>
               <TouchableOpacity
-                style={style1.optionButton}
-                onPress={_onFlipButtonPress}
+                style={styles.optionButton}
+                onPress={() => {
+                  twilioVideo.current.flipCamera();
+                }}
               >
-                {/* <Text style={{ fontSize: 12 }}>Flip</Text> */}
                 <MaterialCommunityIcons style={{ alignSelf: 'center' }}
                   name={"camera-flip"}
                   size={28}
                   color={'#FFF'} />
               </TouchableOpacity>
               <TouchableOpacity
-                style={style1.optionButton}
-                onPress={_onMuteButtonPress}
+                style={styles.optionButton}
+                onPress={() => {
+                  twilioVideo.current.setLocalAudioEnabled(!isAudioEnabled).then((isEnabled) => setIsAudioEnabled(isEnabled));
+                }}
               >
                 {/* <Text style={{ fontSize: 12 }}>
                   {isAudioEnabled ? "Mute" : "Unmute"}
@@ -382,8 +357,11 @@ const VideoCall = (props) => {
                   color={'#FFF'} />
               </TouchableOpacity>
               <TouchableOpacity
-                style={style1.optionButtonEnd}
-                onPress={_onEndButtonPress}
+                style={styles.optionButtonEnd}
+                onPress={() => {
+                  setStatus(Statuses.Ended)
+                  endCall()
+                }}
               >
                 <MaterialIcons style={{ alignSelf: 'center' }}
                   name={"call-end"}
@@ -392,9 +370,9 @@ const VideoCall = (props) => {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={style1.localVideo}>
+          <View style={styles.localVideo}>
             {
-              (localtrackVideo) &&
+              (isMyVideoVisible) &&
               <TwilioVideoLocalView enabled={true} style={{
                 width: 150,
                 height: 150,
@@ -404,17 +382,152 @@ const VideoCall = (props) => {
 
           </View>
         </View>
-      )}
+      }
+
+      {(status === Statuses.RoomConnected) &&
+        <View style={styles.callContainer}>
+          <View style={styles.remoteGrid}>
+            <TwilioVideoLocalView
+              style={styles.remoteVideo}
+              enabled={true} />
+          </View>
+          <View style={styles.optionsContainer}>
+            <View style={{
+              flexDirection: 'column',
+              justifyContent: 'center',
+              marginTop: 15,
+              marginBottom: 25
+            }}>
+              <Text style={{
+                color: "#515C6F",
+                marginTop: 4,
+                alignSelf: 'center'
+              }}>{`Ringing...`}</Text>
+              <Text style={{
+                color: "#515C6F",
+                alignSelf: 'center'
+              }}>Video Consultation {props.route.params.item.order_id}</Text>
+
+
+            </View>
+
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'center'
+            }}>
+              <TouchableOpacity
+                style={styles.optionButton}
+                onPress={() => {
+                  twilioVideo.current.flipCamera();
+                }}
+              >
+                <MaterialCommunityIcons style={{ alignSelf: 'center' }}
+                  name={"camera-flip"}
+                  size={28}
+                  color={'#FFF'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.optionButton}
+                onPress={() => {
+                  twilioVideo.current.setLocalAudioEnabled(!isAudioEnabled).then((isEnabled) => setIsAudioEnabled(isEnabled));
+                }}>
+                <Ionicons style={{ alignSelf: 'center' }}
+                  name={isAudioEnabled ? "mic" : "mic-off"}
+                  size={28}
+                  color={'#FFF'} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.optionButtonEnd}
+                onPress={() => {
+                  setStatus(Statuses.Ended)
+                  endCall()
+                }}>
+                <MaterialIcons style={{ alignSelf: 'center' }}
+                  name={"call-end"}
+                  size={28}
+                  color={'#FFF'} />
+              </TouchableOpacity>
+            </View>
+
+          </View>
+
+          <View style={[styles.localVideo, { backgroundColor: '#f2f2f2' }]}>
+            <View style={{
+              width: 150,
+              height: 150,
+              backgroundColor: 'black',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              {/* <SvgXml xml={dummyUser} height={55} width={55} /> */}
+              <Image source={{ uri: oponentImage }} style={{
+                height: 75,
+                width: 75,
+                borderRadius: 75
+              }} />
+            </View>
+          </View>
+        </View>
+      }
 
       <TwilioVideo
         ref={twilioVideo}
-        onRoomDidConnect={_onRoomDidConnect}
-        onRoomDidDisconnect={_onRoomDidDisconnect}
-        onRoomDidFailToConnect={_onRoomDidFailToConnect}
-        onParticipantAddedVideoTrack={_onParticipantAddedVideoTrack}
-        onParticipantRemovedVideoTrack={_onParticipantRemovedVideoTrack}
-        onNetworkQualityLevelsChanged={_onNetworkLevelChanged}
-        onDominantSpeakerDidChange={_onDominantSpeakerDidChange}
+        onRoomDidConnect={(props) => {
+          console.log({ VideoCall: '_onRoomDidConnect' });
+          setStatus(Statuses.RoomConnected)
+          countTimeInterval = setInterval(() => {
+            runtimeSecondsToDisconnectOnNoAnswer = parseInt(runtimeSecondsToDisconnectOnNoAnswer) + parseInt(1)
+            if (runtimeSecondsToDisconnectOnNoAnswer > 30) {
+              setStatus(Statuses.NotAnswered)
+              endCall()
+              clearInterval(countTimeInterval)
+            }
+          }, 1000);
+        }}
+        onRoomDidDisconnect={({ error }) => {
+          console.log("ERROR _onRoomDidDisconnect: ", error);
+          if (error) {
+            setStatus(Statuses.Disconnected)
+          }
+          else {
+            setStatus(Statuses.Ended);
+          }
+        }}
+        onRoomDidFailToConnect={(props) => {
+          console.log({ VideoCall: '_onRoomDidFailToConnect' });
+          setStatus(Statuses.Disconnected);
+        }}
+        onParticipantAddedVideoTrack={({ participant, track }) => {
+          console.log({ VideoCall: '_onParticipantAddedVideoTrack' });
+          setStatus(Statuses.CallConnected);
+          setTrackData({
+            trackSid: track.trackSid,
+            participantSid: participant.sid,
+          })
+          clearInterval(countTimeInterval)
+          setStarted(true)
+        }}
+        onParticipantRemovedVideoTrack={() => {
+          console.log({ VideoCall: '_onParticipantRemovedVideoTrack' });
+          setStatus(Statuses.Ended)
+          setTrackData(NullTrackData)
+
+          setCallTime(DefaultTime)
+          clearInterval(timerId)
+
+          setStatus(Statuses.Ended)
+          endCall()
+        }}
+        onNetworkQualityLevelsChanged={({ participant, isLocalUser, quality }) => {
+          if (isLocalUser == false && isMyVideoVisible == false) {
+          }
+        }}
+        onRoomParticipantDidConnect={({ participant, roomName, roomSid }) => {
+          console.log(`Participant ${participant.sid} connected with ${roomName}`);
+        }}
+        onRoomParticipantDidDisconnect={({ participant, roomName, roomSid }) => {
+          console.log(`Participant ${participant.sid} disconnected with ${roomName}`);
+        }}
       />
     </View>
   );
@@ -422,11 +535,11 @@ const VideoCall = (props) => {
 
 export default VideoCall;
 
-const style1 = StyleSheet.create({
+const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "black",
   },
   callContainer: {
     flex: 1,
@@ -459,7 +572,7 @@ const style1 = StyleSheet.create({
     height: 150,
     position: "absolute",
     right: 20,
-    top: 20,
+    top: 30,
     backgroundColor: 'black'
   },
   remoteGrid: {

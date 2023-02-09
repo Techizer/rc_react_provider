@@ -23,11 +23,9 @@ const LabPackageDetails = ({ navigation, route }) => {
   const [currencyData, setCurrency] = useState();
   const [priceData, setPrice] = useState("");
 
-
   const {
     loginUserData
   } = useSelector(state => state.Auth)
-
 
   useEffect(() => {
     getPackageList();
@@ -111,7 +109,7 @@ const LabPackageDetails = ({ navigation, route }) => {
       // workAreasetState({ appoinment_detetails: '' })
       if (obj.status == true) {
         MessageFunctions.showSuccess(obj.message)
-        route.params.reloadPackList()
+        // route.params.reloadPackList()
       } else {
         MessageFunctions.showError(obj.message)
         console.log('obj.result', obj.result)

@@ -117,7 +117,7 @@ export default AddBankInformation = ({ navigation, route }) => {
         console.log('result', obj.result)
         let result = obj.result
         MessageFunctions.showSuccess(obj.message)
-        route.params.reloadList()
+        // route.params.reloadList()
         setTimeout(() => {
           navigation.navigate(ScreenReferences.TransactionTabStack);
         }, 700);

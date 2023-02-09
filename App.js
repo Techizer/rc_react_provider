@@ -47,7 +47,8 @@ const App = (props) => {
     
   }, [])
   
-  const routeNameRef = useNavigationContainerRef()
+  const navigationRef = useRef()
+  const routeNameRef = useRef()
 
   console.log({routeNameRef});
 
@@ -55,22 +56,24 @@ const App = (props) => {
 
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer onStateChange={async (a) => {
-          console.log({key: a});
-          
-          const previousRouteName = routeNameRef.current;
-          const currentRouteName = a.routeNames[a.index]
+        <NavigationContainer ref={navigationRef}
+      onReady={() => {
+        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+      }}
+      onStateChange={async () => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
-          if (previousRouteName !== currentRouteName) {
-            await analytics().logScreenView({
-              screen_name: currentRouteName,
-              screen_class: currentRouteName,
-              app: 'Provider',
-              mode: __DEV__ ? 'Development': 'Production',
-            });
-          }
-          routeNameRef.current = currentRouteName;
-        }}>
+        if (previousRouteName !== currentRouteName) {
+          await analytics().logScreenView({
+            screen_name: currentRouteName,
+            screen_class: currentRouteName,
+            app: 'Provider',
+            mode: __DEV__ ? 'Development': 'Production',
+          });
+        }
+        routeNameRef.current = currentRouteName;
+      }}>
           <ApplicationContainerWrapper {...props}>
             <AppConsumer>
               {funcs => {
