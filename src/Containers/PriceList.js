@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextInput, Switch, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { TextInput, Switch, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   Colors,
@@ -14,11 +14,15 @@ import Styles from '../Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from '../Components'
 import { useSelector } from 'react-redux';
+import { s, vs } from 'react-native-size-matters';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default PriceList = ({ navigation, route, pageName, page }) => {
   const [classStateData, setClassStateData] = useState({
     message: '',
-    taskArr: []
+    taskArr: [],
+    isLoading: true,
+    isLoadingInPostButton: false
   })
 
   const setState = payload => {
@@ -26,16 +30,14 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
   }
 
   useEffect(() => {
-    getServices()
+    getPriceList()
   }, [])
-
 
   const {
     loginUserData
   } = useSelector(state => state.Auth)
 
-
-  const getServices = async () => {
+  const getPriceList = async () => {
     let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
@@ -43,7 +45,8 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
 
     console.log('pageName:: ', pageName);
     setState({
-      currency_symbol: currency_symbol
+      currency_symbol: currency_symbol,
+      isLoading: true
     })
 
     let apiname = (page == "tests") ?
@@ -51,14 +54,9 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
       (page == "onlineconsultation" || page == "homeconsultation") ?
         "api-doctor-get-price" : "api-provider-get-price-list"
 
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
-
-    let url = Configurations.baseURL + apishow;
-    console.log("url", url)
+    let url = Configurations.baseURL + apiname;
 
     var data = new FormData();
-    // data.append('lgoin_user_id', user_id)
-    // { service_type":"nurse","user_id":"39","task_type":"hour_base" }
     data.append('user_id', user_id)
 
     let task_type = ""
@@ -77,30 +75,29 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     data.append('task_type', task_type)
     data.append('service_type', user_type)
 
-
-
-
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
       console.log("obj::: ", task_type, obj)
       if (obj.status == true) {
         setState({
           taskArr: (obj.result == null) ? [] : obj.result,
-          message: obj.message
+          message: obj.message,
+          isLoading: false
         })
         console.log('obj.result', task_type, obj.result)
-
       } else {
-
         setState({
           taskArr: obj.result,
-          message: obj.message
+          message: obj.message,
+          isLoading: false
         })
         console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-
+      setState({
+        isLoading: false
+      })
     });
 
   }
@@ -144,23 +141,19 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     let user_type = user_details['user_type']
     console.log('pageName:: ', pageName);
 
+    setState({
+      isLoadingInPostButton: true
+    })
 
     let apiname = (page == "tests") ?
       "api-add-lab-task_price" :
       (page == "onlineconsultation" || page == "homeconsultation") ?
         "api-doctor-insertupdate-price" : "api-provider-insert-update-price-list"
 
-
-    let apishow = apiname //"api-provider-past-appointment-list" //"api-patient-all-appointment"
-
-    let url = Configurations.baseURL + apishow;
+    let url = Configurations.baseURL + apiname;
     console.log("url", url)
 
     var data = new FormData();
-    // data.append('lgoin_user_id', user_id)
-    // { "user_id":"39","service_type":"nurse",
-    // "task_type":"hour_base","task_id":"1,2,3,4,5","price":"100,200,300,400,600"}
-
     data.append('user_id', user_id)
 
     let task_type = ""
@@ -182,7 +175,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
 
 
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
         MessageFunctions.showSuccess(obj.message)
         console.log('obj.result', obj.result)
@@ -195,7 +188,12 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     }).catch((error) => {
       console.log("-------- error ------- ", error)
 
-    });
+    }).finally(() => {
+
+      setState({
+        isLoadingInPostButton: false
+      })
+    })
 
   }
 
@@ -218,86 +216,95 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     <View style={{
       flex: 1,
     }}>
-      <View
-        style={{
-          flex: 1,
-        }}
-
-      >
+      <View style={{
+        flex: 1,
+        backgroundColor: 'white',
+      }}>
+        <View style={{
+          marginTop: 10,
+          paddingLeft: 15,
+          paddingRight: 15,
+        }}>
+          <Text style={[Styles.textcontent, {
+            marginTop: 6
+          }]}>{text}</Text>
+        </View>
 
         <View style={{
-          flex: 1,
-          backgroundColor: 'white',
-          //  marginBottom: (mobileW * 10) / 100
-        }}>
-          <View style={{
-            marginTop: 10,
-            paddingLeft: 15,
-            paddingRight: 15,
-          }}>
-            <Text style={[Styles.textcontent, {
-              marginTop: 6
-            }]}>{text}</Text>
-          </View>
-          <View style={{
-            marginTop: 12,
-            marginLeft: 15,
-            paddingRight: 15,
-            borderBottomColor: Colors.field_border_color,
-            borderBottomWidth: 1
-          }} />
+          marginTop: 12,
+          marginLeft: 15,
+          paddingRight: 15,
+          borderBottomColor: Colors.field_border_color,
+          borderBottomWidth: 1
+        }} />
 
-          <View style={{
-            marginTop: 10,
-            paddingLeft: 15,
-            paddingRight: 15
-          }}>
+        <View style={{
+          marginTop: 10,
+          paddingLeft: 15,
+          paddingRight: 15
+        }}>
+          <View
+            style={{
+              width: '100%',
+              alignSelf: 'center',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
             <View
               style={{
                 width: '100%',
                 alignSelf: 'center',
-                // marginTop: (mobileW * 3) / 100,
-                // marginBottom: (mobileW * 2 / 100),
                 flexDirection: 'row',
-                alignItems: 'center',
               }}>
+              <View style={{ width: '60%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text
+                  style={{
+                    textAlign: Configurations.textRotate,
+                    color: Colors.placeholder_text,
+                    fontFamily: Font.Regular,
+                    fontSize: mobileW * 3.6 / 100,
+                  }}>
+                  {'Booking duration per service'}
+                </Text>
+              </View>
+
               <View
                 style={{
-                  width: '100%',
+                  width: '40%',
                   alignSelf: 'center',
                   flexDirection: 'row',
-                  // backgroundColor: 'red'
+                  alignItems: 'center',
                 }}>
-                <View style={{ width: '60%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text
-                    style={{
-                      // marginLeft: mobileW * 1.5 / 100,
-                      textAlign: Configurations.textRotate,
-                      color: Colors.placeholder_text,
-                      fontFamily: Font.Regular,
-                      fontSize: mobileW * 3.6 / 100,
-                    }}>
-                    {'Booking duration per service'}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    width: '40%',
-                    alignSelf: 'center',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    // justifyContent:'space-between'
-                    // backgroundColor: 'red',
-                  }}>
-                  <View style={{
-                    width: '100%',
-                    alignSelf: 'center',
-                    // marginLeft: mobileW * 2 / 100
-                  }}>
-                    {/* {classStateData.fbtn == false && */}
-                    {
-                      (page == "tests") ?
+                <View style={{
+                  width: '100%',
+                  alignSelf: 'center',
+                }}>
+                  {
+                    (page == "tests") ?
+                      <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
+                        style={{
+                          width: '100%',
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                        }}>
+                        <Icon style={{ alignSelf: 'center' }}
+                          name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
+                          size={20}
+                          color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+                        <Text
+                          style={{
+                            textAlign: Configurations.textRotate,
+                            marginLeft: mobileW * 1.5 / 100,
+                            color: Colors.placeholder_text,
+                            fontFamily: Font.Regular,
+                            fontSize: mobileW * 3.5 / 100,
+                          }}>
+                          45 Min Slots
+                        </Text>
+                      </TouchableOpacity> :
+                      (page == "onlineconsultation") ?
                         <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
                           style={{
                             width: '100%',
@@ -319,10 +326,10 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                               fontSize: mobileW * 3.5 / 100,
                               // alignSelf: 'center',
                             }}>
-                            45 Min Slots
+                            15 Min Slots
                           </Text>
                         </TouchableOpacity> :
-                        (page == "onlineconsultation") ?
+                        (page == "homeconsultation") ?
                           <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
                             style={{
                               width: '100%',
@@ -344,10 +351,10 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                 fontSize: mobileW * 3.5 / 100,
                                 // alignSelf: 'center',
                               }}>
-                              15 Min Slots
+                              45 Min Slots
                             </Text>
-                          </TouchableOpacity> :
-                          (page == "homeconsultation") ?
+                          </TouchableOpacity>
+                          : (page == "task") ?
                             <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
                               style={{
                                 width: '100%',
@@ -369,134 +376,100 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                   fontSize: mobileW * 3.5 / 100,
                                   // alignSelf: 'center',
                                 }}>
-                                45 Min Slots
+                                30 Min Slots
                               </Text>
-                            </TouchableOpacity>
-                            : (page == "task") ?
-                              <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
-                                style={{
-                                  width: '100%',
-                                  alignSelf: 'center',
-                                  flexDirection: 'row',
-                                  justifyContent: 'flex-end',
-                                  alignItems: 'center',
-                                }}>
-                                <Icon style={{ alignSelf: 'center' }}
-                                  name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
-                                  size={20}
-                                  color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
-                                <Text
-                                  style={{
-                                    textAlign: Configurations.textRotate,
-                                    marginLeft: mobileW * 1.5 / 100,
-                                    color: Colors.placeholder_text,
-                                    fontFamily: Font.Regular,
-                                    fontSize: mobileW * 3.5 / 100,
-                                    // alignSelf: 'center',
-                                  }}>
-                                  30 Min Slots
-                                </Text>
-                              </TouchableOpacity> :
-                              <Text style={{
-                                fontFamily: Font.Regular,
-                                fontSize: Font.medium,
-                                color: Colors.textblue,
-                                textAlign: 'right'
-                              }}>As Selected</Text>
-                    }
+                            </TouchableOpacity> :
+                            <Text style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.medium,
+                              color: Colors.textblue,
+                              textAlign: 'right'
+                            }}>As Selected</Text>
+                  }
 
-                  </View>
                 </View>
               </View>
             </View>
           </View>
+        </View>
 
-          <View style={{
-            marginTop: 10,
-            marginLeft: 15,
-            paddingRight: 15,
-            borderBottomColor: Colors.field_border_color,
-            borderBottomWidth: 1
-          }} />
+        <View style={{
+          marginTop: 10,
+          marginLeft: 15,
+          paddingRight: 15,
+          borderBottomColor: Colors.field_border_color,
+          borderBottomWidth: 1
+        }} />
 
-          <View style={{
-            marginTop: 15,
-            marginBottom: 15,
-            paddingLeft: 15,
-            paddingRight: 15
-          }}>
+        <View style={{
+          marginTop: 15,
+          marginBottom: 15,
+          paddingLeft: 15,
+          paddingRight: 15
+        }}>
 
+          <View
+            style={{
+              width: '100%',
+              alignSelf: 'center',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
             <View
               style={{
                 width: '100%',
                 alignSelf: 'center',
-                // marginTop: (mobileW * 3) / 100,
-                // marginBottom: (mobileW * 2.5 / 100),
                 flexDirection: 'row',
-                alignItems: 'center',
               }}>
-              <View
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  // backgroundColor: 'red'
-                }}>
-                <View style={{ width: '70%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                    {/* {classStateData.mabtn == false && */}
-                    <View style={{ width: '70%', alignSelf: 'center' }}>
-                      <Text
-                        style={{
-                          // marginLeft: mobileW * 1.5 / 100,
-                          textAlign: Configurations.textRotate,
-                          color: Colors.placeholder_text_color,
-                          fontFamily: Font.Medium,
-                          fontSize: mobileW * 3.6 / 100,
-                        }}>
-                        {((page == "onlineconsultation") ?
-                          'Online Consultation' : (page == "homeconsultation") ?
-                            'Home Visit Consultation' : 'List of Tasks')}
-                      </Text>
-                    </View>
+              <View style={{ width: '70%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ width: '70%', alignSelf: 'center' }}>
+                    <Text
+                      style={{
+                        textAlign: Configurations.textRotate,
+                        color: Colors.placeholder_text_color,
+                        fontFamily: Font.Medium,
+                        fontSize: mobileW * 3.6 / 100,
+                      }}>
+                      {((page == "onlineconsultation") ?
+                        'Online Consultation' : (page == "homeconsultation") ?
+                          'Home Visit Consultation' : 'List of Tasks')}
+                    </Text>
                   </View>
                 </View>
+              </View>
 
-                <View
-                  style={{
-                    width: '30%',
-                    flexDirection: 'row',
-                  }}>
+              <View
+                style={{
+                  width: '30%',
+                  flexDirection: 'row',
+                }}>
+                <View style={{
+                  width: '100%',
+                }}>
                   <View style={{
-                    width: '100%',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end'
                   }}>
-                    {/* {classStateData.fbtn == false && */}
-                    <View style={{
-                      justifyContent: 'flex-end',
-                      alignItems: 'flex-end'
-                    }}>
-                      <Text
-                        style={{
-                          textAlign: Configurations.textRotate,
-                          color: Colors.placeholder_text_color,
-                          fontFamily: Font.Medium,
-                          fontSize: mobileW * 3.6 / 100,
-                        }}>
-                        Rate {(classStateData.currency_symbol) ? '(' + classStateData.currency_symbol + ')' : ''}
-                      </Text>
-                    </View>
+                    <Text
+                      style={{
+                        textAlign: Configurations.textRotate,
+                        color: Colors.placeholder_text_color,
+                        fontFamily: Font.Medium,
+                        fontSize: mobileW * 3.6 / 100,
+                      }}>
+                      Rate {(classStateData.currency_symbol) ? '(' + classStateData.currency_symbol + ')' : ''}
+                    </Text>
                   </View>
                 </View>
               </View>
             </View>
-
           </View>
 
+        </View>
 
-          <ScrollView
-            style={{ backgroundColor: 'white', marginTop: 0 }}
-            contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
-            showsVerticalScrollIndicator={false}>
+        {
+          !classStateData.isLoading ?
             <KeyboardAwareScrollView>
               {
                 (classStateData.taskArr.length > 0) &&
@@ -509,8 +482,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                           flexDirection: 'row',
                           alignItems: 'center',
                           width: '100%',
-                          backgroundColor: '#FBFBFB', //Colors.tab_background_color, //'#E5E5E5',
-                          // backgroundColor: (index == taskArr.length - 1) ? '#E5E5E5' : '#FBFBFB',
+                          backgroundColor: '#FBFBFB',
                           height: (mobileW * 12) / 100,
                           paddingLeft: 15,
                           paddingRight: 15,
@@ -519,13 +491,11 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                           <View style={{
                             width: '70%',
                             height: (mobileW * 10) / 100,
-                            // backgroundColor: 'blue',
                           }}>
                             <View style={{
                               flexDirection: 'row',
                               alignItems: 'center',
                               width: '100%',
-                              // backgroundColor: 'red',
                               height: (mobileW * 10) / 100,
                               justifyContent: 'flex-start'
                             }}>
@@ -561,7 +531,6 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                             height: (mobileW * 10) / 100,
                             alignItems: 'flex-end',
                             justifyContent: 'center',
-                            // backgroundColor: 'green',
                           }}>
 
                             <TextInput
@@ -570,15 +539,11 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                 height: (mobileW * 7.3) / 100,
                                 color: Colors.textblack,
                                 fontSize: Font.placeholdersize,
-                                //height: (mobileW * 12) / 100,
                                 fontFamily: Font.placeholderfontfamily,
                                 borderRadius: (mobileW * 1) / 100,
-                                backgroundColor: '#E5E5E5', //Colors.tab_background_color,
+                                backgroundColor: '#E5E5E5',
                                 textAlign: 'center',
                                 padding: 0
-                                // lineHeight: 48
-                                // marginBottom: (mobileW * 4) / 100,
-                                // borderColor: 'red', //Colors.placeholder_border
                               }}
                               placeholder={'Price'}
                               editable={item?.isChecked}
@@ -594,7 +559,6 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                               keyboardType="number-pad"
                               returnKeyLabel="done"
                               returnKeyType="done"
-                            // onSubmitEditing={() => { Keyboard.dismiss() }}
                             />
                           </View>
                         </View>
@@ -604,38 +568,52 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                   )
                 })
               }
+            </KeyboardAwareScrollView> :
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+              data={[1, 2, 3, 4, 5, 6, 7]}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    style={{
+                      width: '100%',
+                      paddingHorizontal: s(11),
+                    }}>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width='100%' height={s(40)} borderRadius={s(2)} />
+                    </SkeletonPlaceholder>
+                  </View>
+                )
+
+              }}
+              ItemSeparatorComponent={() => (
+                <View style={{
+                  marginTop: vs(4)
+                }} />
+              )}
+            />
+        }
 
 
-            </KeyboardAwareScrollView>
-          </ScrollView>
-        </View>
+      </View>
 
-
+      {!classStateData.isLoading &&
         <View style={{
-          // backgroundColor: 'red',
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: 15,
           height: mobileW * 22 / 100,
-
         }}>
           <Button
             text={'SUBMIT'}
-            // onLoading={classStateData.loading}
-            customStyles={
-              {
-                mainContainer: {
-                  marginTop: 0,
-                  // opacity: 0.3
-                }
-              }
-            }
+            onLoading={classStateData.isLoadingInPostButton}
+            customStyles={{ mainContainer: { marginTop: 0 } }}
             onPress={() => submitPress()}
             isDisabled={(classStateData.taskArr.length > 0) ? false : true}
-          // isBlank={false}
           />
         </View>
-      </View>
+      }
     </View>
   );
 

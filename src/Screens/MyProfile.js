@@ -627,152 +627,172 @@ export default MyProfile = ({ navigation, route }) => {
               {
                 (classStateData.user_type == "lab") ?
                   <>
-                    <View style={{
-                      flexDirection: 'row',
-                      marginTop: 20,
-                      justifyContent: 'space-between'
-                    }}>
+
+                    {(classStateData.hosp_moh_lic_no != null && classStateData.hosp_moh_lic_no != '') &&
                       <View style={{
-                        // backgroundColor: 'red'
+                        flexDirection: 'row',
+                        marginTop: 20,
+                        justifyContent: 'space-between'
                       }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.tabtextcolor
-                        }}>Health Registration ID</Text>
+                        <View style={{
+                          // backgroundColor: 'red'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.tabtextcolor
+                          }}>Health Registration ID</Text>
+                        </View>
+                        <View style={{
+                          // backgroundColor: 'blue'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.textblue
+                          }}>{classStateData.hosp_moh_lic_no}</Text>
+                        </View>
                       </View>
+                    }
+                    {(classStateData.hosp_reg_no != null && classStateData.hosp_reg_no != '') &&
                       <View style={{
-                        // backgroundColor: 'blue'
+                        flexDirection: 'row',
+                        marginTop: 20,
+                        justifyContent: 'space-between'
                       }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.textblue
-                        }}>{classStateData.hosp_moh_lic_no}</Text>
+                        <View style={{
+                          // backgroundColor: 'red'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.tabtextcolor
+                          }}>Registration Number</Text>
+                        </View>
+                        <View style={{
+                          // backgroundColor: 'blue'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.textblue
+                          }}>{classStateData.hosp_reg_no}</Text>
+                        </View>
                       </View>
-                    </View>
-                    <View style={{
-                      flexDirection: 'row',
-                      marginTop: 20,
-                      justifyContent: 'space-between'
-                    }}>
-                      <View style={{
-                        // backgroundColor: 'red'
-                      }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.tabtextcolor
-                        }}>Registration Number</Text>
-                      </View>
-                      <View style={{
-                        // backgroundColor: 'blue'
-                      }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.textblue
-                        }}>{classStateData.hosp_reg_no}</Text>
-                      </View>
-                    </View>
+                    }
+
                   </> :
                   <>
-                    <View style={{
-                      flexDirection: 'row',
-                      marginTop: 20,
-                      justifyContent: 'space-between'
-                    }}>
+
+
+                    {(classStateData.speciality != null && classStateData.speciality != '') &&
                       <View style={{
-                        // backgroundColor: 'red'
+                        flexDirection: 'row',
+                        marginTop: 20,
+                        justifyContent: 'space-between'
                       }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.tabtextcolor
-                        }}>Speciality</Text>
+                        <View style={{
+                          // backgroundColor: 'red'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.tabtextcolor
+                          }}>Speciality</Text>
+                        </View>
+                        <View style={{
+                          // backgroundColor: 'blue'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.textblue
+                          }}>{classStateData.speciality}</Text>
+                        </View>
                       </View>
+                    }
+
+                    {(classStateData.id_number != null && classStateData.id_number != '') &&
                       <View style={{
-                        // backgroundColor: 'blue'
+                        flexDirection: 'row',
+                        marginTop: 20,
+                        justifyContent: 'space-between'
                       }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.textblue
-                        }}>{classStateData.speciality}</Text>
+                        <View style={{
+                          // backgroundColor: 'red'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.tabtextcolor
+                          }}>Identity Number</Text>
+                        </View>
+                        <View style={{
+                          // backgroundColor: 'blue'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.textblue
+                          }}>{classStateData.id_number}</Text>
+                        </View>
                       </View>
-                    </View>
-                    <View style={{
-                      flexDirection: 'row',
-                      marginTop: 20,
-                      justifyContent: 'space-between'
-                    }}>
+                    }
+
+                    {(classStateData.qualification != null && classStateData.qualification != '') &&
                       <View style={{
-                        // backgroundColor: 'red'
+                        flexDirection: 'row',
+                        marginTop: 20,
+                        justifyContent: 'space-between'
                       }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.tabtextcolor
-                        }}>Identity Number</Text>
+                        <View style={{
+                          // backgroundColor: 'red'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.tabtextcolor
+                          }}>Qualification</Text>
+                        </View>
+                        <View style={{
+                          // backgroundColor: 'blue'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.textblue
+                          }}>{classStateData.qualification}</Text>
+                        </View>
                       </View>
+                    }
+
+                    {(classStateData.scfhs_number != null && classStateData.scfhs_number != '') &&
                       <View style={{
-                        // backgroundColor: 'blue'
+                        flexDirection: 'row',
+                        marginTop: 20,
+                        justifyContent: 'space-between'
                       }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.textblue
-                        }}>{classStateData.id_number}</Text>
+                        <View style={{
+                          // backgroundColor: 'red'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.tabtextcolor
+                          }}>Health Registration ID</Text>
+                        </View>
+                        <View style={{
+                          // backgroundColor: 'blue'
+                        }}>
+                          <Text style={{
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.textblue
+                          }}>{classStateData?.scfhs_number}</Text>
+                        </View>
                       </View>
-                    </View>
-                    <View style={{
-                      flexDirection: 'row',
-                      marginTop: 20,
-                      justifyContent: 'space-between'
-                    }}>
-                      <View style={{
-                        // backgroundColor: 'red'
-                      }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.tabtextcolor
-                        }}>Qualification</Text>
-                      </View>
-                      <View style={{
-                        // backgroundColor: 'blue'
-                      }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.textblue
-                        }}>{classStateData.qualification}</Text>
-                      </View>
-                    </View>
-                    <View style={{
-                      flexDirection: 'row',
-                      marginTop: 20,
-                      justifyContent: 'space-between'
-                    }}>
-                      <View style={{
-                        // backgroundColor: 'red'
-                      }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.tabtextcolor
-                        }}>SCFHS Registration ID</Text>
-                      </View>
-                      <View style={{
-                        // backgroundColor: 'blue'
-                      }}>
-                        <Text style={{
-                          fontFamily: Font.Regular,
-                          fontSize: 14,
-                          color: Colors.textblue
-                        }}>{classStateData.scfhs_number}</Text>
-                      </View>
-                    </View>
+                    }
+
                   </>
               }
             </View>

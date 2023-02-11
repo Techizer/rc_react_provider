@@ -14,6 +14,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
     percentage: null,
     content: null,
     transactionArr: [],
+    isLoading: true
   })
 
   const setState = payload => {
@@ -32,6 +33,12 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
   const getTransactions = async () => {
     let apiname = "api-provider-transactions-history"
+
+    if (!classStateData.isLoading) {
+      setState({
+        isLoading: false
+      })
+    }
 
     let url = Configurations.baseURL + apiname;
     console.log("url", url)
@@ -64,7 +71,11 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
     }).catch((error) => {
       console.log("-------- error ------- ", error)
 
-    });
+    }).finally(() => {
+      setState({
+        isLoading: false
+      })
+    })
 
   }
 

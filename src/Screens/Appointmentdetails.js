@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Text, TextInput, View, ScrollView, Linking, SafeAreaView, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, Text, TextInput, View, ScrollView, Linking, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl } from 'react-native';
 import { CameraGallery, Media, Colors, Font, mobileH, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import getDirections from 'react-native-google-maps-directions'
-import Slider from '@react-native-community/slider';
 import moment from 'moment-timezone';
 import RNFetchBlob from "rn-fetch-blob";
 import { Button } from '../Components'
@@ -18,37 +17,20 @@ import { s, vs } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
 import { useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-
-var Sound = require('react-native-sound');
+import { AudioPlayer } from '../Components/AudioPlayer';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
   const [classStateData, setClassStateData] = useState({
     showPDetails: false,
-    appoinment_id: route.params.appoinment_id,
-    appoinment_detetails: '',
-    task_details: '',
+    appointmentDetails: '',
     rating: '',
-    ennterOTP: '',
+    otp: '',
     mediamodal: false,
-    playState: 'paused', //playing, paused
-    playSeconds: 0,
-    duration: 0,
     reportModalVisible: false,
-    reportsArr: [],
+    reports: [],
     modalPatientPrescription: false,
     isLoading: true,
-    sound: {
-      //Just for Schema
-      _duration: 0,
-      getDuration: () => 0,
-      setCurrentTime: () => { },
-      isLoaded: () => false,
-      getCurrentTime: () => ({ seconds: 0, isPlaying: false }),
-      pause: () => { }
-
-    },
-    sliderEditing: false
   })
 
   const setState = (payload, resolver = () => { }) => {
@@ -64,141 +46,33 @@ export default AppointmentDetails = ({ navigation, route }) => {
     }
   }
 
-
   const {
     loginUserData
   } = useSelector(state => state.Auth)
 
-  const onRefresh = () => {
+  const onRefresh = useCallback(() => {
     console.log('onRefresh');
-    get_all_details(0)
-    get_day()
-    Sound.setCategory('Playback', true); // true = mixWithOthers
+    getDetails(0)
+    getDay()
     FontAwesome.getImageSource('circle', 20, Colors.theme_color).then(source =>
       setState({ sliderIcon: source })
     );
-  }
+  }, [])
 
   useEffect(() => {
     onRefresh()
   }, [])
 
-  useEffect(() => {
-    loadSoundConfigurations(false)
-  }, [classStateData.appoinment_detetails])
-
-  const loadSoundConfigurations = (isPlay) => {
-    if (classStateData.appoinment_detetails.symptom_recording) {
-      let recordingUrl = Configurations.img_url3 + classStateData.appoinment_detetails.symptom_recording;
-
-      console.log({ recordingUrl });
-
-      setState({
-        sound: new Sound(recordingUrl, '', (error) => {
-          if (error) {
-            console.log('failed to load the sound', error);
-            return;
-          }
-        }),
-        playState: (isPlay) ? 'playing' : 'paused',
-      })
-    }
-  }
-
-  const onSliderEditStart = () => {
-    setState({
-      sliderEditing: true
-    })
-  }
-
-  const onSliderEditEnd = () => {
-    setState({
-      sliderEditing: false
-    })
-  }
-
-  const onSliderEditing = value => {
-    if (Platform.OS == "android") {
-      if (classStateData.sound && classStateData.playState == 'pause' && !classStateData.sliderEditing) {
-        classStateData.sound.setCurrentTime(value);
-        setState({ playSeconds: value });
-      }
-    } else {
-      if (classStateData.sound) {
-        classStateData.sound.setCurrentTime(value);
-
-        setState({ playSeconds: value });
-      }
-    }
-
-
-  }
-
-  const onStartPlay = async (isPlay = false) => {
-    if (classStateData.sound != null) {
-      if (isPlay) {
-        playMusic()
-        classStateData.sound.play(playComplete);
-        setState({ playState: 'playing' });
-      }
-    } else {
-
-      loadSoundConfigurations(isPlay)
-      onStartPlay(isPlay)
-
-    }
-  };
-
-  const playComplete = (success) => {
-    if (success) {
-      if (success) {
-        console.log('successfully finished playing');
-      } else {
-        console.log('playback failed due to audio decoding errors');
-        Alert.alert('Notice', 'audio file error. (Error code : 2)');
-      }
-      if (timeout) {
-        clearInterval(timeout);
-      }
-      setState({ playState: 'paused', playSeconds: 0 });
-      classStateData.sound.setCurrentTime(0);
-
-    } else {
-      console.log('playback failed due to audio decoding errors');
-    }
-  }
-
-  const playMusic = () => {
-    timeout = setInterval(() => {
-
-      if (classStateData.sound != null && classStateData.sound.isLoaded() && !classStateData.sliderEditing) {
-        classStateData.sound.getCurrentTime((seconds, isPlaying) => {
-          setState({
-            playSeconds: seconds
-          });
-        })
-      }
-    }, 100);
-  }
-
-  const pause = () => {
-    if (classStateData.sound != null) {
-      classStateData.sound.pause();
-    }
-
-    setState({ playState: 'paused' });
-  }
-
-  const get_all_details = async () => {
+  const getDetails = async () => {
     let user_id = loginUserData['user_id']
     let user_type = loginUserData['user_type']
     let url = Configurations.baseURL + "api-provider-appointment-details" //"api-patient-appointment-details";  
     setState({
-      appoinment_detetails: '',
+      appointmentDetails: '',
       isLoading: true
     })
     var data = new FormData();
-    data.append('id', classStateData.appoinment_id)
+    data.append('id', route?.params?.appoinment_id)
 
     data.append('service_type', user_type)
 
@@ -206,11 +80,9 @@ export default AppointmentDetails = ({ navigation, route }) => {
       if (obj.status == true) {
         console.log({ AppointmentDetails: obj?.result });
         setState({
-          appoinment_detetails: obj.result,
+          appointmentDetails: obj.result,
           message: obj.message,
           isLoading: false
-        }, () => {
-          onStartPlay(false)
         })
       } else {
 
@@ -227,20 +99,19 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   }
 
-  const handleGetDirections = (lat, long, address) => {
+  const handleGetDirections = async (lat, long, address) => {
     const data = {
       destination: {
-        latitude: lat, //-33.8600024,
-        longitude: long, //18.697459
-        address: address
-      },
-
+        latitude: parseFloat(lat), //-33.8600024,
+        longitude: parseFloat(long), //18.697459
+        // address: address
+      }
     }
 
-    getDirections(data)
+    await getDirections(data)
   }
 
-  const get_day = () => {
+  const getDay = () => {
     var today = new Date();
     var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 28);
     let datenew_show = today.getDate()
@@ -328,7 +199,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
       if (obj.status == true) {
         // route.params.reloadList()
-        get_all_details(0)
+        getDetails(0)
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -339,9 +210,9 @@ export default AppointmentDetails = ({ navigation, route }) => {
     });
   }
 
-  const otpPressed = async (id) => {
+  const onOTP = async (id) => {
 
-    if (classStateData.ennterOTP.length <= 0) {
+    if (classStateData.otp.length <= 0) {
       MessageFunctions.showError("Please enter OTP to continue!")
       return false;
     }
@@ -352,14 +223,14 @@ export default AppointmentDetails = ({ navigation, route }) => {
     var data = new FormData();
     data.append('id', id)
     data.append('service_type', user_type)
-    data.append('otp', classStateData.ennterOTP)
+    data.append('otp', classStateData.otp)
 
 
     API.post(url, data).then((obj) => {
 
       if (obj.status == true) {
         // route.params.reloadList()
-        get_all_details(0)
+        getDetails(0)
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -371,24 +242,24 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   }
 
-  const upload_report_click = async () => {
+  const onUploadReport = async () => {
 
     let url = Configurations.baseURL + "api-upload-lab-report";
     var data = new FormData();
 
-    data.append('appointment_id', classStateData.appoinment_detetails?.id)
-    data.append('patient_id', classStateData.appoinment_detetails?.patient_id)
-    data.append('hospital_id', (classStateData.appoinment_detetails?.hospital_id != "") ?
-      classStateData.appoinment_detetails?.hospital_id : 0)
+    data.append('appointment_id', classStateData.appointmentDetails?.id)
+    data.append('patient_id', classStateData.appointmentDetails?.patient_id)
+    data.append('hospital_id', (classStateData.appointmentDetails?.hospital_id != "") ?
+      classStateData.appointmentDetails?.hospital_id : 0)
 
-    if (classStateData.reportsArr.length > 0) {
-      for (var i = 0; i < classStateData.reportsArr.length; i++) {
+    if (classStateData.reports.length > 0) {
+      for (var i = 0; i < classStateData.reports.length; i++) {
 
         let dataObj = {
-          uri: classStateData.reportsArr[i].path,
-          type: classStateData.reportsArr[i].mime, //'image/jpg',
-          name: (Platform.OS == 'ios') ? classStateData.reportsArr[i].filename : classStateData.reportsArr[i].path !== undefined ?
-            classStateData.reportsArr[i].path.substring(classStateData.reportsArr[i].path.lastIndexOf("/") + 1, classStateData.reportsArr[i].length) : 'image',
+          uri: classStateData.reports[i].path,
+          type: classStateData.reports[i].mime, //'image/jpg',
+          name: (Platform.OS == 'ios') ? classStateData.reports[i].filename : classStateData.reports[i].path !== undefined ?
+            classStateData.reports[i].path.substring(classStateData.reports[i].path.lastIndexOf("/") + 1, classStateData.reports[i].length) : 'image',
         }
         data.append('report[]', dataObj)
       }
@@ -399,12 +270,12 @@ export default AppointmentDetails = ({ navigation, route }) => {
       if (obj.status == true) {
         setState({
           reportModalVisible: false,
-          reportsArr: [],
+          reports: [],
           isFromReportModal: false,
         })
         setTimeout(() => {
           // route.params.reloadList()
-          get_all_details(0)
+          getDetails(0)
           MessageFunctions.showSuccess(obj.message)
         }, 800);
 
@@ -431,7 +302,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
     })
   }
 
-  const Galleryopen = () => {
+  const openGalleryPicker = () => {
     const { imageType } = classStateData;
     Media.launchGellery(false).then((obj) => {
       if (classStateData.isFromReportModal == true) {
@@ -459,7 +330,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
         }
 
         setState({
-          reportsArr: [...classStateData.reportsArr, objF],
+          reports: [...classStateData.reports, objF],
           mediamodal: false,
         }, () => {
           (classStateData.isFromReportModal == true) ? visibleReportModal() : null
@@ -469,7 +340,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
           [imageType]: obj,
           mediamodal: false
         }, () => {
-          upload_prescription_click()
+          onUploadPrescription()
         })
       }
 
@@ -482,22 +353,20 @@ export default AppointmentDetails = ({ navigation, route }) => {
     })
   }
 
-  const DocumentGalleryopen = async () => {
+  const openDocumentPicker = async () => {
     const { imageType } = classStateData;
     Media.launchDocumentGellery(true).then((res) => {
 
       const source = {
-        filename: res.name, //"speech_file.mp3", //(response.fileName != undefined) ? response.fileName : response.uri.substr(response.uri.length - 40),
+        filename: res.name,
         mime: res.type,
         path: res.uri,
-        // serverFileName: "assignmentfile" //"upload_audio" //
-        //imageData: response.data
       };
 
       if (classStateData.isFromReportModal == true) {
 
         setState({
-          reportsArr: [...classStateData.reportsArr, source],
+          reports: [...classStateData.reports, source],
           mediamodal: false,
         }, () => {
           (classStateData.isFromReportModal == true) ? visibleReportModal() : null
@@ -508,7 +377,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
           [imageType]: source,
           mediamodal: false
         }, () => {
-          upload_prescription_click()
+          onUploadPrescription()
         });
       }
 
@@ -521,13 +390,13 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   }
 
-  const upload_prescription_click = async () => {
+  const onUploadPrescription = async () => {
     // Keyboard.dismiss()
 
     let url = Configurations.baseURL + "api-doctor-upload-prescription";
     var data = new FormData();
 
-    data.append('id', classStateData.appoinment_detetails?.id)
+    data.append('id', classStateData.appointmentDetails?.id)
 
     if (classStateData.provider_prescription.path != undefined) {
 
@@ -544,7 +413,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
         setTimeout(() => {
           // route.params.reloadList()
-          get_all_details(0)
+          getDetails(0)
           MessageFunctions.showSuccess(obj.message)
         }, 500);
 
@@ -562,14 +431,14 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   }
 
-  const downloadPrescription = async (imgUrl, filename) => {
+  const onDownloadPrescription = async (imgUrl, filename) => {
     if (Platform.OS == 'ios') {
-      actualDownload(imgUrl, filename);
+      onActualDownload(imgUrl, filename);
     } else {
       try {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          actualDownload(imgUrl, filename);
+          onActualDownload(imgUrl, filename);
         } else {
           MessageFunctions.showError('You need to give storage permission to download the file');
         }
@@ -579,7 +448,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
     }
   }
 
-  const actualDownload = (imgUrl, filename) => {
+  const onActualDownload = (imgUrl, filename) => {
     const { dirs } = RNFetchBlob.fs;
     const dirToSave = Platform.OS == 'ios' ? dirs.DocumentDir : dirs.DownloadDir
     const configfb = {
@@ -620,24 +489,15 @@ export default AppointmentDetails = ({ navigation, route }) => {
       });
   }
 
-  const getAudioTimeString = (seconds) => {
-    const h = parseInt(seconds / (60 * 60));
-    const m = parseInt(seconds % (60 * 60) / 60);
-    const s = parseInt(seconds % 60);
-
-    return ((h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s));
-  }
-
   const windowHeight = Math.round(Dimensions.get("window").height);
   const windowWidth = Math.round(Dimensions.get("window").width);
   const deviceHeight = Dimensions.get('screen').height;
   const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
   let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
   headerHeight += (Platform.OS === 'ios') ? 28 : -60
-  var item = classStateData.appoinment_detetails
-  const durationString = getAudioTimeString((classStateData.sound.getDuration() === -1 ? 0 : classStateData.sound.getDuration()));
+  var item = classStateData.appointmentDetails
 
-  if (classStateData.appoinment_detetails != '' && classStateData.appoinment_detetails != null && !classStateData.isLoading) {
+  if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
 
     var VideoCallBtn = false
     var UploadprecriptionBtn = false
@@ -692,8 +552,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
           showsVerticalScrollIndicator={false}>
           <RefreshControl
             refreshing={classStateData.isLoading}
-            onRefresh={onRefresh} 
-            enabled/>
+            onRefresh={onRefresh}
+            enabled />
           <View
             style={{
               flex: 1,
@@ -762,7 +622,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                         :
                         <Image
                           source={{ uri: Configurations.img_url3 + item.provider_image }}
-                          style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, bordercolor: Colors.Highlight }}
+                          style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, borderColor: Colors.Highlight }}
                         />
                     }
                   </View>
@@ -1003,56 +863,16 @@ export default AppointmentDetails = ({ navigation, route }) => {
                           alignItems: 'center',
                           borderBottomWidth: 1.5,
                           borderColor: Colors.gainsboro,
-                          paddingVertical: vs(5)
                         }}>
 
-                        <Text
+                        <AudioPlayer
+                          url={Configurations.img_url3 + classStateData.appointmentDetails.symptom_recording}
                           style={{
-                            width: '30%',
-                            fontFamily: Font.Medium,
-                            fontSize: Font.small,
-                            color: Colors.detailTitles,
-                            textAlign: 'left',
-                          }}
-                        >
-                          {'Voice Recording'}
-                        </Text>
-                        <View style={{
-                          width: '70%',
-                          flexDirection: "row",
-                          alignItems: 'center'
-                        }}>
-                          <TouchableOpacity onPress={() => {
-                            (classStateData.playState == 'paused') ?
-                              onStartPlay(true) : pause()
-                          }}>
-                            <Image
-                              source={(classStateData.playState == 'paused') ?
-                                Icons.Play : Icons.Pause}
+                            width: '100%',
+                            height: '100%',
 
-                              style={{
-                                width: (mobileW * 8) / 100,
-                                height: (mobileW * 8) / 100,
+                          }} />
 
-                              }}></Image>
-                          </TouchableOpacity>
-                          <Slider
-                            onTouchStart={onSliderEditStart}
-                            onTouchEnd={onSliderEditEnd}
-                            onValueChange={onSliderEditing}
-                            value={classStateData.playSeconds}
-                            maximumValue={(classStateData.sound.getDuration() === -1) ? 0 : classStateData.sound.getDuration()}
-                            maximumTrackTintColor='gray'
-                            minimumTrackTintColor={Colors.theme_color}
-                            thumbImage={classStateData.sliderIcon}
-                            style={{
-                              flex: 1,
-                              alignSelf: "center",
-                              marginHorizontal: Platform.select({ ios: 5 }),
-                              height: (windowWidth * 10) / 100,
-                            }} />
-                          <Text style={{ color: 'black', alignSelf: 'center' }}>{durationString}</Text>
-                        </View>
                       </View>
                     }
                     {
@@ -1271,7 +1091,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                             width: '25%'
                           }} onPress={() => {
                             if (item.provider_prescription != "") {
-                              downloadPrescription(Configurations.img_url3 + item.provider_prescription, item.provider_prescription)
+                              onDownloadPrescription(Configurations.img_url3 + item.provider_prescription, item.provider_prescription)
                             }
 
                           }}>
@@ -1313,7 +1133,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
                     </View>
                   </View>
                 }
-                {/* // report lab */}
                 {
                   ((item.acceptance_status == 'Accepted' || item.acceptance_status == 'Completed') &&
                     item.service_type == "Lab") &&
@@ -1382,7 +1201,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                               }}>{rItem.upload_date}</Text>
                               <TouchableOpacity onPress={() => {
                                 if (item.provider_prescription != "") {
-                                  downloadPrescription(Configurations.img_url3 + rItem.report, rItem.report)
+                                  onDownloadPrescription(Configurations.img_url3 + rItem.report, rItem.report)
                                 }
 
                               }}>
@@ -1433,16 +1252,12 @@ export default AppointmentDetails = ({ navigation, route }) => {
                           transparent={true}
                           visible={classStateData.reportModalVisible}
                           onRequestClose={() => {
-                            // closeButtonFunction()
                           }}
 
                         >
                           <View
                             style={{
-                              // height: '100%',
                               flex: 1,
-                              // marginTop: 'auto',
-                              // backgroundColor: 'red'
                               backgroundColor: '#00000090',
                             }}>
                             <View
@@ -1450,7 +1265,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                 marginTop: 'auto',
                                 minHeight: '25%',
                                 maxHeight: '90%',
-                                // alignSelf: 'flex-end',
                                 backgroundColor: 'white',
                                 borderTopStartRadius: 20,
                                 borderTopEndRadius: 20
@@ -1519,18 +1333,12 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                       paddingRight: 0,
                                       marginRight: 10
                                     }}>
-                                      {/* <Image
-                                      // source={require('../assets/images/close.png')}
-                                      source={Icons.Cross}
-                                      style={{ width: 25, height: 25 }}
-                                    /> */}
                                       <FontAwesome5 style={{ alignSelf: 'center' }}
                                         name={"file-upload"}
                                         size={50}
                                         color={Colors.gainsboro}></FontAwesome5>
                                     </View>
                                     <View style={{
-                                      // backgroundColor: 'yellow',
                                       justifyContent: 'center'
                                     }}>
                                       <Text style={{
@@ -1548,18 +1356,18 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                 </TouchableOpacity>
 
                                 {
-                                  (classStateData.reportsArr.length > 0) &&
+                                  (classStateData.reports.length > 0) &&
                                   <>
                                     <ScrollView
-                                      scrollEnabled={(classStateData.reportsArr.length >= 4) ? true : false}
+                                      scrollEnabled={(classStateData.reports.length >= 4) ? true : false}
                                       style={{
                                         maxHeight: '68%',
-                                        marginBottom: (classStateData.reportsArr.length <= 4) ? 60 : 0
+                                        marginBottom: (classStateData.reports.length <= 4) ? 60 : 0
                                       }}
                                       showsVerticalScrollIndicator={false}
                                     >
                                       {
-                                        classStateData.reportsArr.map((file, index) => {
+                                        classStateData.reports.map((file, index) => {
                                           return (
 
                                             <View style={{
@@ -1572,7 +1380,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                               <View style={{
                                                 width: '18%',
                                                 marginBottom: 10
-                                                // backgroundColor: 'red'
                                               }}>
                                                 <Image
                                                   defaultSource={Icons.Report}
@@ -1584,14 +1391,12 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                               </View>
                                               <View style={{
                                                 width: '82%',
-                                                // backgroundColor: 'blue'
                                               }}>
                                                 <View style={{
                                                   flexDirection: 'row',
                                                   justifyContent: 'space-between',
                                                   alignItems: 'center',
                                                   width: '100%',
-                                                  // backgroundColor: 'red'
                                                 }}>
                                                   <Text
                                                     numberOfLines={2}
@@ -1611,24 +1416,16 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                                       alignContent: 'flex-end',
                                                       alignItems: 'flex-end',
                                                       width: '20%',
-                                                      // backgroundColor: 'blue'
                                                     }}
                                                     onPress={() => {
-                                                      var array = [...classStateData.reportsArr]; // make a separate copy of the array
+                                                      var array = [...classStateData.reports];
                                                       var index = index
                                                       if (index !== -1) {
                                                         array.splice(index, 1);
-                                                        setState({ reportsArr: array });
+                                                        setState({ reports: array });
                                                       }
                                                     }}>
-                                                    {/* <Entypo style={{
-                                                          // alignSelf: 'flex-end'
-                                                        }}
-                                                          name={"cross"}
-                                                          size={30}
-                                                          color={Colors.gray4}></Entypo> */}
                                                     <Image
-                                                      // source={require('../assets/images/close.png')}
                                                       source={Icons.Cross}
                                                       style={{ width: 20, height: 20 }}
                                                     />
@@ -1672,7 +1469,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                               </View>
 
                               {
-                                (classStateData.reportsArr.length > 0) &&
+                                (classStateData.reports.length > 0) &&
                                 <View style={{
                                   position: 'absolute',
                                   bottom: 25,
@@ -1682,13 +1479,9 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                 }}>
                                   <Button
                                     text={'Submit'}
-                                    // onLoading={classStateData.loading}
                                     customStyles={
                                       {
-                                        // mainContainer: styles.butonContainer
                                         mainContainer: {
-                                          // width: '100%',
-
                                         }
                                       }
                                     }
@@ -1696,11 +1489,10 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                       setState({
                                         reportModalVisible: false,
                                       }, () => {
-                                        upload_report_click()
+                                        onUploadReport()
                                       })
 
                                     }}
-                                  // isBlank={false}
                                   />
                                 </View>
                               }
@@ -1932,10 +1724,10 @@ export default AppointmentDetails = ({ navigation, route }) => {
                             }}
                             onChangeText={(text) => {
                               setState({
-                                ennterOTP: text
+                                otp: text
                               })
                             }}
-                            value={classStateData.ennterOTP}
+                            value={classStateData.otp}
                             placeholder='Enter OTP'
                             placeholderTextColor={'#354052'}
                             keyboardType="number-pad"
@@ -1944,7 +1736,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                           />
                           <TouchableOpacity
                             onPress={() => {
-                              otpPressed(item?.id)
+                              onOTP(item?.id)
                             }}
                             style={{
                               width: '25%',
@@ -2251,8 +2043,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
                       isGallery={true}
                       isDocument={true}
                       Camerapopen={() => { Camerapopen() }}
-                      Galleryopen={() => { Galleryopen() }}
-                      DocumentGalleryopen={() => { DocumentGalleryopen() }}
+                      openGalleryPicker={() => { openGalleryPicker() }}
+                      openDocumentPicker={() => { openDocumentPicker() }}
                       Canclemedia={() => {
                         setState({
                           mediamodal: false,
@@ -2289,30 +2081,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
                               fontSize: mobileW * 3 / 100,
                             }}>VIDEO CALL</Text>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity
-                              onPress={() => {
-                                setState({
-                                  id: item.id,
-                                }, () => {
-                                  showConfirmDialogReject("Reject")
-                                })
-                              }}
-                              style={{
-                                // width: '10%',
-                                // alignSelf: 'center',
-                                flexDirection: 'row',
-                                justifyContent: 'flex-end',
-                                alignItems: 'center',
-                                marginLeft: 10
-                              }}>
-                              <Image
-                                source={Icons.Cross}
-                                style={{
-                                  width: mobileW * 6 / 100,
-                                  height: mobileW * 6 / 100,
-                                }}
-                              />
-                            </TouchableOpacity> */}
                       </>
                     }
 
@@ -2422,96 +2190,101 @@ export default AppointmentDetails = ({ navigation, route }) => {
           title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-        <View style={{
-          width: windowWidth,
-          backgroundColor: Colors.White,
-          paddingHorizontal: s(11),
-          paddingVertical: vs(9),
-          marginTop: vs(7),
-        }}>
+        <KeyboardAwareScrollView>
+          <RefreshControl
+            refreshing={classStateData.isLoading} />
+          <View style={{
+            width: windowWidth,
+            backgroundColor: Colors.White,
+            paddingHorizontal: s(11),
+            paddingVertical: vs(9),
+            marginTop: vs(7),
+          }}>
 
-          <View
-            style={{
-              flexDirection: "row",
-              width: '100%',
-              paddingHorizontal: s(11),
-            }}>
-            <View style={{ width: "30%", }}>
-              <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={s(75)} height={s(75)} borderRadius={s(100)} />
-              </SkeletonPlaceholder>
+            <View
+              style={{
+                flexDirection: "row",
+                width: '100%',
+                paddingHorizontal: s(11),
+              }}>
+              <View style={{ width: "30 do you get a note about okay girl? Hello hello hello%", }}>
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={s(75)} height={s(75)} borderRadius={s(100)} />
+                </SkeletonPlaceholder>
+              </View>
+
+              <View style={{ justifyContent: 'center' }}>
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                </SkeletonPlaceholder>
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                </SkeletonPlaceholder>
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                </SkeletonPlaceholder>
+              </View>
             </View>
+            <View style={{ width: '100%', height: 1.5, backgroundColor: Colors.backgroundcolor, marginTop: vs(7), marginBottom: vs(7) }}></View>
 
-            <View style={{ justifyContent: 'center' }}>
+            <View>
               <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                <SkeletonPlaceholder.Item width={(windowWidth * 12) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
               </SkeletonPlaceholder>
+
+              <View style={{ flexDirection: 'row', marginTop: vs(7) }}>
+
+                <View style={{ flex: 1 }}>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                  </SkeletonPlaceholder>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                  </SkeletonPlaceholder>
+                </View>
+
+                <View style={{ flex: 1 }}>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                  </SkeletonPlaceholder>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                  </SkeletonPlaceholder>
+                </View>
+
+                <View style={{ flex: 1 }}>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                  </SkeletonPlaceholder>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                  </SkeletonPlaceholder>
+                </View>
+
+              </View>
+
               <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 20) / 100} borderRadius={s(4)} marginTop={22} />
               </SkeletonPlaceholder>
+
               <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 12) / 100} borderRadius={s(4)} marginTop={12} />
               </SkeletonPlaceholder>
+
+
+              <SkeletonPlaceholder>
+                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 10) / 100} borderRadius={s(4)} marginTop={10} />
+              </SkeletonPlaceholder>
+
+
+              <SkeletonPlaceholder>
+                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 40) / 100} borderRadius={s(4)} marginTop={20} />
+              </SkeletonPlaceholder>
+
             </View>
           </View>
-          <View style={{ width: '100%', height: 1.5, backgroundColor: Colors.backgroundcolor, marginTop: vs(7), marginBottom: vs(7) }}></View>
+        </KeyboardAwareScrollView>
 
-          <View>
-            <SkeletonPlaceholder>
-              <SkeletonPlaceholder.Item width={(windowWidth * 12) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-            </SkeletonPlaceholder>
-
-            <View style={{ flexDirection: 'row', marginTop: vs(7) }}>
-
-              <View style={{ flex: 1 }}>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                </SkeletonPlaceholder>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
-                </SkeletonPlaceholder>
-              </View>
-
-              <View style={{ flex: 1 }}>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                </SkeletonPlaceholder>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
-                </SkeletonPlaceholder>
-              </View>
-
-              <View style={{ flex: 1 }}>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                </SkeletonPlaceholder>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
-                </SkeletonPlaceholder>
-              </View>
-
-            </View>
-
-            <SkeletonPlaceholder>
-              <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 20) / 100} borderRadius={s(4)} marginTop={8} />
-            </SkeletonPlaceholder>
-
-            <SkeletonPlaceholder>
-              <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 12) / 100} borderRadius={s(4)} marginTop={12} />
-            </SkeletonPlaceholder>
-
-
-            <SkeletonPlaceholder>
-              <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 10) / 100} borderRadius={s(4)} marginTop={10} />
-            </SkeletonPlaceholder>
-
-
-            <SkeletonPlaceholder>
-              <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 40) / 100} borderRadius={s(4)} marginTop={20} />
-            </SkeletonPlaceholder>
-
-          </View>
-        </View>
       </View>
     )
   }

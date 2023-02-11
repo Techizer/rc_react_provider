@@ -12,6 +12,7 @@ import {
 import Styles from "../Styles";
 import {ScreenReferences} from '../Stacks/ScreenReferences'
 import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 
 const LabPackageListing = (props) => {
   const { navigation } = props;
@@ -22,9 +23,13 @@ const LabPackageListing = (props) => {
   const [labData, setLabData] = useState([]);
   console.log("providerId ", providerId);
 
+  const isFocused = useIsFocused()
+
   useEffect(() => {
-    getPackageList();
-  }, []);
+    if (isFocused) {
+      getPackageList();
+    }
+  }, [isFocused]);
 
 
   const {

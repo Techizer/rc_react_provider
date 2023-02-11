@@ -103,6 +103,7 @@ export default Home = ({ navigation, route }) => {
   } = useSelector(state => state.Auth)
 
   useEffect(() => {
+    console.log({loginUserData});
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     PushNotification.configure({
       onNotification: function (notification) {
@@ -270,6 +271,7 @@ export default Home = ({ navigation, route }) => {
       "toUserId": data.toUserId,
       "toUserName": data.toUserName,
       "type": data.type,
+      "oImage": data.image,
       "ispage": "accept"
     }
     navigation.navigate(ScreenReferences.VideoCall, {

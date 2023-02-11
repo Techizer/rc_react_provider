@@ -444,7 +444,7 @@ PODS:
     - React
   - react-native-netinfo (9.3.7):
     - React-Core
-  - react-native-pager-view (5.4.25):
+  - react-native-pager-view (6.1.2):
     - React-Core
   - react-native-restart (0.0.23):
     - React-Core
@@ -460,6 +460,11 @@ PODS:
   - react-native-twilio-video-webrtc (3.1.0):
     - React
     - TwilioVideo (~> 4.6)
+  - react-native-video (5.2.1):
+    - React-Core
+    - react-native-video/Video (= 5.2.1)
+  - react-native-video/Video (5.2.1):
+    - React-Core
   - react-native-webview (11.26.1):
     - React-Core
   - React-perflogger (0.68.2)
@@ -595,11 +600,6 @@ PODS:
   - RNSentry (4.14.0):
     - React-Core
     - Sentry/HybridSDK (= 7.31.5)
-  - RNSound (0.11.2):
-    - React-Core
-    - RNSound/Core (= 0.11.2)
-  - RNSound/Core (0.11.2):
-    - React-Core
   - RNSVG (13.7.0):
     - React-Core
   - RNVectorIcons (9.2.0):
@@ -676,6 +676,7 @@ DEPENDENCIES:
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-spinkit (from `../node_modules/react-native-spinkit`)
   - react-native-twilio-video-webrtc (from `../node_modules/react-native-twilio-video-webrtc`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -703,7 +704,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
-  - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -818,6 +818,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-spinkit"
   react-native-twilio-video-webrtc:
     :path: "../node_modules/react-native-twilio-video-webrtc"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-perflogger:
@@ -872,8 +874,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSentry:
     :path: "../node_modules/@sentry/react-native"
-  RNSound:
-    :path: "../node_modules/react-native-sound"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -941,13 +941,14 @@ SPEC CHECKSUMS:
   react-native-maps: 7135a33610202745d08fdf151ce6b0d01952a99c
   react-native-month-year-picker: 948797e981ca502427024a34b17f545eb321bbff
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
-  react-native-pager-view: da490aa1f902c9a5aeecf0909cc975ad0e92e53e
+  react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-restart: aaad36f3ed7031daac3565f4a79d67e4f3884a50
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   react-native-simple-toast: 8ee5d23f0b92b935ab7434cdb65159ce12dfb4b7
   react-native-slider: a0d45ce5ea1be39f149954cae4367afff44d5a32
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
   react-native-twilio-video-webrtc: e2a899018ce860eb8dd703bd51d82903517f47b7
+  react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
@@ -975,7 +976,6 @@ SPEC CHECKSUMS:
   RNReanimated: 73afd1a9b4087e403163e0d300854cb99260c9b6
   RNScreens: ea4cd3a853063cda19a4e3c28d2e52180c80f4eb
   RNSentry: 7e90aec2633d2fdad8aeb839c9915e4376fd27d1
-  RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: d787d64ca06b9158e763ad2638a8c4edce00782a
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Sentry: 4c9babff9034785067c896fd580b1f7de44da020

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
 
 import { Colors, Font, MessageFunctions, Configurations, mobileW, API } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
@@ -7,6 +7,8 @@ import { Button } from '../Components'
 import ListBottomSheet from '../Components/ListBottomSheet';
 import { Arrow } from '../Assets/Icons/SvgIcons/Index';
 import { useSelector } from 'react-redux';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { s, vs } from 'react-native-size-matters';
 
 const radiusArr = [
   {
@@ -123,8 +125,11 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     service_lat: "",
     service_long: "",
     service_radius: "",
-    shouldShow: false,
     currentIndex: 0,
+
+    isLoading: true,
+    isOnButtonLoading: false,
+
     currentItem: { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
 
     slotArr: [
@@ -145,6 +150,8 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
   const {
     loginUserData
   } = useSelector(state => state.Auth)
+
+  const isPartOfHospital = ((loginUserData?.hospital_id != '') && (loginUserData?.hospital_id != null))
 
   const getAvailabilityScheduleData = async () => {
     let user_details = loginUserData;
@@ -172,7 +179,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     data.append('user_id', user_id)
     data.append('service_type', user_type)
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
 
         if (obj.result.service_radius != null) {
@@ -209,22 +216,25 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
             service_lat: (obj.result.service_lat == null) ? '' : obj.result.service_lat,
             service_long: (obj.result.service_long == null) ? '' : obj.result.service_long,
             message: obj.message,
-            shouldShow: true
           })
         )
-
 
       } else {
         return false;
       }
     }).catch((error) => {
-    });
+    }).finally(() => {
+      setState(prev => ({
+        ...prev,
+        isLoading: false
+      }))
+    })
 
   }
 
   const submitPress = () => {
     if (state.accept_booking == '1') {
-      insertUpdatePriceList()
+      onUpdateScheduleData()
     } else {
       var isError = false;
       var arr = state.slotArr
@@ -247,17 +257,22 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
       if (isError) {
         MessageFunctions.showError("End time should be greater than Start time")
       } else {
-        insertUpdatePriceList()
+        onUpdateScheduleData()
       }
     }
 
 
   }
 
-  const insertUpdatePriceList = async () => {
+  const onUpdateScheduleData = async () => {
     let user_details = loginUserData;
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
+
+    setState(prev => ({
+      ...prev,
+      isOnButtonLoading: true
+    }))
 
     let apiname = (page == "onlinehomeschedule") ?
       "api-doctor-add-preferable-time" : "insert-preferable-time"
@@ -276,7 +291,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
         slots: state.slotArr,
       });
 
-      API.postRaw(url, myData).then((obj) => {
+      API.postRaw(url, myData, 1).then((obj) => {
         if (obj.status == true) {
           MessageFunctions.showSuccess(obj.message)
         } else {
@@ -284,7 +299,12 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
           return false;
         }
       }).catch((error) => {
-      });
+      }).finally(() => {
+        setState(prev => ({
+          ...prev,
+          isOnButtonLoading: false
+        }))
+      })
     }
   }
 
@@ -338,276 +358,272 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
   return (
 
-    <>
-      {(state.shouldShow) &&
-        < View style={{
-          flex: 1,
-          //  backgroundColor: 'white',
-        }}>
-          <ListBottomSheet
-            data={timeArray}
-            onRequestClose={() => {
-              setState(
-                prev => ({
-                  ...prev,
-                  modalVisible: false
-                })
-              )
+    < View style={{
+      flex: 1,
+      //  backgroundColor: 'white',
+    }}>
+      <ListBottomSheet
+        data={timeArray}
+        onRequestClose={() => {
+          setState(
+            prev => ({
+              ...prev,
+              modalVisible: false
+            })
+          )
+        }}
+        visible={state.modalVisible}
+        title='Select time'
+        currentIndex={state.currentIndex}
+        currentItem={state.currentItem}
+        flag={state.flag}
+        onSelectTime={(value, cIndex, cItem, flag) => {
+          var arr = state.slotArr
+          if (flag) {
+            validationTime(value, state.slotArr[cIndex].slot_end_time, flag, cIndex)
+
+            arr[cIndex].slot_start_time = value
+            setState(
+              prev => ({
+                ...prev,
+                slotArr: arr
+              })
+            )
+          } else {
+            validationTime(state.slotArr[cIndex].slot_start_time, value, flag, cIndex)
+            arr[cIndex].slot_end_time = value
+            setState(
+              prev => ({
+                ...prev,
+                slotArr: arr
+              })
+            )
+          }
+        }} />
+      {
+        !state.isLoading ?
+          <View
+            style={{
+              flex: 1,
             }}
-            visible={state.modalVisible}
-            title='Select time'
-            currentIndex={state.currentIndex}
-            currentItem={state.currentItem}
-            flag={state.flag}
-            onSelectTime={(value, cIndex, cItem, flag) => {
-              var arr = state.slotArr
-              if (flag) {
-                validationTime(value, state.slotArr[cIndex].slot_end_time, flag, cIndex)
-
-                arr[cIndex].slot_start_time = value
-                setState(
-                  prev => ({
-                    ...prev,
-                    slotArr: arr
-                  })
-                )
-              } else {
-                validationTime(state.slotArr[cIndex].slot_start_time, value, flag, cIndex)
-                arr[cIndex].slot_end_time = value
-                setState(
-                  prev => ({
-                    ...prev,
-                    slotArr: arr
-                  })
-                )
-              }
-            }} />
-          {state.searchPlaceVisible ? (
-            <></>
-          ) :
-            <View
-              style={{
+          >
+            <ScrollView
+              style={{ backgroundColor: 'white', marginTop: 0 }}
+              contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+              showsVerticalScrollIndicator={false}>
+              <View style={{
                 flex: 1,
-                // paddingBottom: (mobileW * 10) / 100
-              }}
-
-            >
-              <ScrollView
-                style={{ backgroundColor: 'white', marginTop: 0 }}
-                contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
-                showsVerticalScrollIndicator={false}>
+                //  marginBottom: (mobileW * 10) / 100
+              }}>
                 <View style={{
-                  flex: 1,
-                  //  marginBottom: (mobileW * 10) / 100
+                  marginTop: 15,
+                  paddingLeft: 15,
+                  paddingRight: 15
                 }}>
-                  <View style={{
-                    marginTop: 15,
-                    paddingLeft: 15,
-                    paddingRight: 15
-                  }}>
-                    <Text style={Styles.textheading}>Add Available Schedule</Text>
-                    <Text style={[Styles.textcontent, {
-                      marginTop: 6
-                    }]}>This refers to your available time slot for patients/users to book you for their appointments.</Text>
-                  </View>
-                  <View style={{
-                    marginTop: 15,
-                    paddingLeft: 15,
-                    paddingRight: 15
-                  }}>
-                    <Text style={Styles.textheading}>Accept or Disable your booking:</Text>
+                  <Text style={Styles.textheading}>Add Available Schedule</Text>
+                  <Text style={[Styles.textcontent, {
+                    marginTop: 6
+                  }]}>This refers to your available time slot for patients/users to book you for their appointments.</Text>
+                </View>
+                <View style={{
+                  marginTop: 15,
+                  paddingLeft: 15,
+                  paddingRight: 15
+                }}>
+                  <Text style={Styles.textheading}>Accept or Disable your booking:</Text>
+                  <View
+                    style={{
+                      width: '100%',
+                      alignSelf: 'center',
+                      marginTop: (mobileW * 3) / 100,
+                      marginBottom: (mobileW * 2 / 100),
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
                     <View
                       style={{
                         width: '100%',
                         alignSelf: 'center',
-                        marginTop: (mobileW * 3) / 100,
-                        marginBottom: (mobileW * 2 / 100),
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        // backgroundColor: 'red'
                       }}>
-                      <View
-                        style={{
-                          width: '100%',
-                          alignSelf: 'center',
-                          flexDirection: 'row',
-                          // backgroundColor: 'red'
-                        }}>
-                        <View style={{ width: '50%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                          <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                            {/* {state.mabtn == false && */}
-                            <TouchableOpacity
-                              onPress={() => {
-                                setState(
-                                  prev => ({
-                                    ...prev,
-                                    accept: true,
-                                    hide: false,
-                                    accept_booking: '0'
-                                  })
-                                )
-                              }}
-                              style={{
-                                width: '100%',
-                                alignSelf: 'center',
-                                flexDirection: 'row',
-                              }}>
-
-                              <View style={{
-                                width: 22,
-                                height: 22,
-                                borderRadius: 22,
-                                borderWidth: (state.accept == false) ? 1 : 6,
-                                borderColor: (state.accept == false) ? 'grey' : Colors.textblue
-                              }} />
-
-                              <View style={{ width: '70%', alignSelf: 'center' }}>
-                                <Text
-                                  style={{
-                                    marginLeft: mobileW * 1.5 / 100,
-                                    textAlign: Configurations.textRotate,
-                                    color: (state.accept == false) ? Colors.placeholder_text : 'black',
-                                    fontFamily: (state.accept == false) ? Font.Regular : Font.Regular,
-                                    fontSize: Font.placeholdersize + 1,
-                                  }}>
-                                  Accept Booking
-                                </Text>
-                              </View>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-
-                        <View
-                          style={{
-                            width: '50%',
-                            alignSelf: 'center',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            // justifyContent:'space-between'
-                          }}>
-                          <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
-                            <TouchableOpacity onPress={() => {
+                      <View style={{ width: '50%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                          {/* {state.mabtn == false && */}
+                          <TouchableOpacity
+                            onPress={() => {
                               setState(
                                 prev => ({
                                   ...prev,
-                                  accept: false,
-                                  hide: true,
-                                  accept_booking: '1'
+                                  accept: true,
+                                  hide: false,
+                                  accept_booking: '0'
                                 })
                               )
                             }}
-                              style={{
-                                width: '100%',
-                                alignSelf: 'center',
-                                flexDirection: 'row',
-                                alignItems: 'center'
-                              }}>
-                              <View style={{
-                                width: 22,
-                                height: 22,
-                                borderRadius: 22,
-                                borderWidth: (state.hide == false) ? 1 : 6,
-                                borderColor: (state.hide == false) ? 'grey' : Colors.textblue
-                              }} />
+                            style={{
+                              width: '100%',
+                              alignSelf: 'center',
+                              flexDirection: 'row',
+                            }}>
+
+                            <View style={{
+                              width: 22,
+                              height: 22,
+                              borderRadius: 22,
+                              borderWidth: (state.accept == false) ? 1 : 6,
+                              borderColor: (state.accept == false) ? 'grey' : Colors.textblue
+                            }} />
+
+                            <View style={{ width: '70%', alignSelf: 'center' }}>
                               <Text
                                 style={{
                                   marginLeft: mobileW * 1.5 / 100,
                                   textAlign: Configurations.textRotate,
-                                  color: (state.hide == false) ? Colors.placeholder_text : 'black',
-                                  fontFamily: (state.hide == false) ? Font.Regular : Font.Regular,
+                                  color: (state.accept == false) ? Colors.placeholder_text : 'black',
+                                  fontFamily: (state.accept == false) ? Font.Regular : Font.Regular,
                                   fontSize: Font.placeholdersize + 1,
                                 }}>
-                                Hide Booking
+                                Accept Booking
                               </Text>
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
 
-                            </TouchableOpacity>
+                      <View
+                        style={{
+                          width: '50%',
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          // justifyContent:'space-between'
+                        }}>
+                        <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
+                          <TouchableOpacity onPress={() => {
+                            setState(
+                              prev => ({
+                                ...prev,
+                                accept: false,
+                                hide: true,
+                                accept_booking: '1'
+                              })
+                            )
+                          }}
+                            style={{
+                              width: '100%',
+                              alignSelf: 'center',
+                              flexDirection: 'row',
+                              alignItems: 'center'
+                            }}>
+                            <View style={{
+                              width: 22,
+                              height: 22,
+                              borderRadius: 22,
+                              borderWidth: (state.hide == false) ? 1 : 6,
+                              borderColor: (state.hide == false) ? 'grey' : Colors.textblue
+                            }} />
+                            <Text
+                              style={{
+                                marginLeft: mobileW * 1.5 / 100,
+                                textAlign: Configurations.textRotate,
+                                color: (state.hide == false) ? Colors.placeholder_text : 'black',
+                                fontFamily: (state.hide == false) ? Font.Regular : Font.Regular,
+                                fontSize: Font.placeholdersize + 1,
+                              }}>
+                              Hide Booking
+                            </Text>
 
-
-
-                          </View>
+                          </TouchableOpacity>
 
 
 
                         </View>
+
+
+
                       </View>
                     </View>
                   </View>
+                </View>
 
-                  {
-                    (state.accept) &&
-                    <>
-                      <View style={{
-                        marginTop: 15,
-                        paddingLeft: 15,
-                        paddingRight: 15
-                      }}>
-                        {
-                          (page == "onlinehomeschedule") &&
+                {
+                  (state.accept) &&
+                  <>
+                    <View style={{
+                      marginTop: 15,
+                      paddingLeft: 15,
+                      paddingRight: 15
+                    }}>
+                      {
+                        (page == "onlinehomeschedule") &&
+                        <View style={{
+                          width: '100%',
+                          flexDirection: 'row'
+                        }}>
+
                           <View style={{
-                            width: '100%',
-                            flexDirection: 'row'
+                            width: '50%'
                           }}>
-
-                            <View style={{
-                              width: '50%'
-                            }}>
-                              <Text style={Styles.textheading}>Online Consultation</Text>
+                            <Text style={Styles.textheading}>Online Consultation</Text>
+                            <View
+                              style={{
+                                width: '100%',
+                                alignSelf: 'center',
+                                marginTop: (mobileW * 3) / 100,
+                                marginBottom: (mobileW * 2 / 100),
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}>
                               <View
                                 style={{
                                   width: '100%',
                                   alignSelf: 'center',
-                                  marginTop: (mobileW * 3) / 100,
-                                  marginBottom: (mobileW * 2 / 100),
                                   flexDirection: 'row',
-                                  alignItems: 'center',
                                 }}>
-                                <View
-                                  style={{
-                                    width: '100%',
-                                    alignSelf: 'center',
-                                    flexDirection: 'row',
-                                  }}>
-                                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                      <TouchableOpacity
-                                        onPress={() => {
-                                        }}
-                                        style={{
-                                          width: '100%',
-                                          alignSelf: 'center',
-                                          flexDirection: 'row',
-                                        }}>
+                                <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                  <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                    <TouchableOpacity
+                                      onPress={() => {
+                                      }}
+                                      style={{
+                                        width: '100%',
+                                        alignSelf: 'center',
+                                        flexDirection: 'row',
+                                      }}>
 
-                                        <View style={{
-                                          width: 22,
-                                          height: 22,
-                                          borderRadius: 22,
-                                          borderWidth: (state.mabtn == false) ? 1 : 6,
-                                          borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
-                                        }} />
-                                        <View style={{ width: '70%', alignSelf: 'center' }}>
-                                          <Text
-                                            style={{
-                                              marginLeft: mobileW * 1.5 / 100,
-                                              textAlign: Configurations.textRotate,
-                                              fontFamily: Font.Regular,
-                                              color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
-                                              fontSize: Font.placeholdersize + 1,
-                                            }}>
-                                            15 Min Slots
-                                          </Text>
-                                        </View>
-                                      </TouchableOpacity>
+                                      <View style={{
+                                        width: 22,
+                                        height: 22,
+                                        borderRadius: 22,
+                                        borderWidth: (state.mabtn == false) ? 1 : 6,
+                                        borderColor: (state.mabtn == false) ? 'grey' : Colors.textblue
+                                      }} />
+                                      <View style={{ width: '70%', alignSelf: 'center' }}>
+                                        <Text
+                                          style={{
+                                            marginLeft: mobileW * 1.5 / 100,
+                                            textAlign: Configurations.textRotate,
+                                            fontFamily: Font.Regular,
+                                            color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
+                                            fontSize: Font.placeholdersize + 1,
+                                          }}>
+                                          15 Min Slots
+                                        </Text>
+                                      </View>
+                                    </TouchableOpacity>
 
-
-
-                                    </View>
 
 
                                   </View>
+
+
                                 </View>
                               </View>
                             </View>
+                          </View>
 
+                          {!isPartOfHospital &&
                             <View style={{
                               width: '50%'
                             }}>
@@ -661,9 +677,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                           </Text>
                                         </View>
                                       </TouchableOpacity>
-
-
-
                                     </View>
 
 
@@ -672,240 +685,289 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                               </View>
                             </View>
 
-                          </View>
-                        }
+                          }
+                        </View>
+                      }
 
 
-                      </View>
+                    </View>
 
-                      <View style={{
-                        marginTop: 15,
-                        paddingLeft: 15,
-                        paddingRight: 15
-                      }}>
-                        <Text style={[Styles.textheading, {
-                          marginBottom: 10
-                        }]}>Point your Availability for Appointment</Text>
-                      </View>
-                      <View>
+                    <View style={{
+                      marginTop: 15,
+                      paddingLeft: 15,
+                      paddingRight: 15
+                    }}>
+                      <Text style={[Styles.textheading, {
+                        marginBottom: 10
+                      }]}>Point your Availability for Appointment</Text>
+                    </View>
+                    <View>
 
-                        {
-                          state.slotArr.map((item, index) => {
+                      {
+                        state.slotArr.map((item, index) => {
 
-                            return (
-                              <>
+                          return (
+                            <>
+                              <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                width: '100%',
+                                backgroundColor: (item?.slot_day_enable == "1") ? '#FBFBFB' : Colors.gray6, //(index == weekArr.length - 1) ? '#E5E5E5' : '#FBFBFB', //Colors.tab_background_color,
+                                height: (mobileW * 14) / 100,
+                                paddingLeft: 15,
+                                paddingRight: 15,
+                                marginBottom: 5
+                              }}>
                                 <View style={{
                                   flexDirection: 'row',
                                   alignItems: 'center',
                                   width: '100%',
-                                  backgroundColor: (item?.slot_day_enable == "1") ? '#FBFBFB' : Colors.gray6, //(index == weekArr.length - 1) ? '#E5E5E5' : '#FBFBFB', //Colors.tab_background_color,
+                                  // backgroundColor: Colors.tab_background_color,
                                   height: (mobileW * 14) / 100,
-                                  paddingLeft: 15,
-                                  paddingRight: 15,
-                                  marginBottom: 5
                                 }}>
                                   <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    width: '100%',
-                                    // backgroundColor: Colors.tab_background_color,
-                                    height: (mobileW * 14) / 100,
+                                    width: '30%',
+                                    height: (mobileW * 12) / 100,
+                                    // backgroundColor: 'blue',
                                   }}>
                                     <View style={{
-                                      width: '30%',
-                                      height: (mobileW * 12) / 100,
-                                      // backgroundColor: 'blue',
-                                    }}>
-                                      <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        width: '100%',
-                                        // backgroundColor: 'white',
-                                        height: (mobileW * 12) / 100,
-                                      }}>
-                                        <Switch
-                                          thumbColor={(item?.slot_day_enable == "1") ? Colors.white_color : "#767577"}
-                                          trackColor={{ false: "#767577", true: Colors.textblue }}
-                                          style={{
-                                            transform: [{ scaleX: .7 }, { scaleY: .7 }],
-                                            marginLeft: -8.5,
-                                            marginRight: -8.5
-                                          }}
-                                          onValueChange={(value) => {
-                                            let arr = [...state.slotArr]
-                                            arr[index].slot_day_enable = (value) ? "1" : "0"
-                                            setState(
-                                              prev => ({
-                                                ...prev,
-                                                slotArr: arr
-                                              })
-                                            )
-                                          }}
-                                          value={(item?.slot_day_enable == "1") ? true : false}
-                                        />
-                                        <Text style={{
-                                          fontFamily: Font.Medium,
-                                          fontSize: mobileW * 4 / 100,
-                                          color: (item?.slot_day_enable == "1") ? Colors.textblue : Colors.placeholder_textcolorlight,
-                                          marginLeft: 10
-                                        }}>{item?.slot_day}</Text>
-                                      </View>
-                                    </View>
-                                    <View style={{
-                                      width: '35%',
-                                      height: (mobileW * 12) / 100,
+                                      flexDirection: 'row',
                                       alignItems: 'center',
-                                      justifyContent: 'center',
-                                      // backgroundColor: 'yellow',
+                                      width: '100%',
+                                      // backgroundColor: 'white',
+                                      height: (mobileW * 12) / 100,
                                     }}>
-
-                                      <TouchableOpacity
-                                        onPress={() => {
+                                      <Switch
+                                        thumbColor={(item?.slot_day_enable == "1") ? Colors.white_color : "#767577"}
+                                        trackColor={{ false: "#767577", true: Colors.textblue }}
+                                        style={{
+                                          transform: [{ scaleX: .7 }, { scaleY: .7 }],
+                                          marginLeft: -8.5,
+                                          marginRight: -8.5
+                                        }}
+                                        onValueChange={(value) => {
+                                          let arr = [...state.slotArr]
+                                          arr[index].slot_day_enable = (value) ? "1" : "0"
                                           setState(
                                             prev => ({
                                               ...prev,
-                                              currentIndex: index,
-                                              currentItem: item,
-                                              modalVisible: true,
-                                              flag: true
+                                              slotArr: arr
                                             })
                                           )
                                         }}
-                                        disabled={(item?.slot_day_enable == "1") ? false : true}
-                                        style={{
-                                          backgroundColor: 'rgb(229,229,229)',
-                                          padding: 6,
-                                          paddingHorizontal: 12,
-                                          flexDirection: 'row',
-                                          justifyContent: 'space-evenly'
-                                        }} >
-                                        <Text style={{
-                                          color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
-                                          fontFamily: Font.Regular,
-                                          fontSize: (mobileW * 3.5) / 100
-                                        }} allowFontScaling={false}>
-                                          {item?.slot_start_time}
-                                        </Text>
-                                        <View style={{
-                                          justifyContent: 'space-evenly',
-                                          paddingHorizontal: 4
-                                        }}>
-                                          <Image source={Arrow} style={{
-                                            width: (mobileW * 2) / 100,
-                                            height: (mobileW * 1) / 100,
-                                            tintColor: 'black',
-                                            transform: [{ rotateX: '180deg' }]
-                                          }} resizeMethod='resize' resizeMode='contain' />
-
-                                          <Image source={Arrow} style={{
-                                            width: (mobileW * 2) / 100,
-                                            height: (mobileW * 1) / 100,
-                                            tintColor: 'black'
-                                          }} resizeMethod='resize' resizeMode='contain' />
-
-                                        </View>
-                                      </TouchableOpacity>
-
-
-                                    </View>
-                                    <View style={{
-                                      width: '35%',
-                                      height: (mobileW * 12) / 100,
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      // backgroundColor: 'yellow',
-                                    }}>
-
-                                      <TouchableOpacity
-                                        onPress={() => {
-                                          setState(
-                                            prev => ({
-                                              ...prev,
-                                              currentIndex: index,
-                                              currentItem: item,
-                                              modalVisible: true,
-                                              flag: false
-                                            })
-                                          )
-                                        }}
-                                        disabled={(item?.slot_day_enable == "1") ? false : true}
-                                        style={{
-                                          backgroundColor: 'rgb(229,229,229)',
-                                          padding: 6,
-                                          paddingHorizontal: 12,
-                                          flexDirection: 'row',
-                                          justifyContent: 'space-evenly'
-                                        }} >
-                                        <Text style={{
-                                          color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
-                                          fontFamily: Font.Regular,
-                                          fontSize: (mobileW * 3.5) / 100
-                                        }} allowFontScaling={false}>
-                                          {item?.slot_end_time}
-                                        </Text>
-                                        <View style={{
-                                          justifyContent: 'space-evenly',
-                                          paddingHorizontal: 4
-                                        }}>
-                                          <Image source={Arrow} style={{
-                                            width: (mobileW * 2) / 100,
-                                            height: (mobileW * 1) / 100,
-                                            tintColor: 'black',
-                                            transform: [{ rotateX: '180deg' }]
-                                          }} resizeMethod='resize' resizeMode='contain' />
-
-                                          <Image source={Arrow} style={{
-                                            width: (mobileW * 2) / 100,
-                                            height: (mobileW * 1) / 100,
-                                            tintColor: 'black'
-                                          }} resizeMethod='resize' resizeMode='contain' />
-
-                                        </View>
-                                      </TouchableOpacity>
-
+                                        value={(item?.slot_day_enable == "1") ? true : false}
+                                      />
+                                      <Text style={{
+                                        fontFamily: Font.Medium,
+                                        fontSize: mobileW * 4 / 100,
+                                        color: (item?.slot_day_enable == "1") ? Colors.textblue : Colors.placeholder_textcolorlight,
+                                        marginLeft: 10
+                                      }}>{item?.slot_day}</Text>
                                     </View>
                                   </View>
+                                  <View style={{
+                                    width: '35%',
+                                    height: (mobileW * 12) / 100,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    // backgroundColor: 'yellow',
+                                  }}>
+
+                                    <TouchableOpacity
+                                      onPress={() => {
+                                        setState(
+                                          prev => ({
+                                            ...prev,
+                                            currentIndex: index,
+                                            currentItem: item,
+                                            modalVisible: true,
+                                            flag: true
+                                          })
+                                        )
+                                      }}
+                                      disabled={(item?.slot_day_enable == "1") ? false : true}
+                                      style={{
+                                        backgroundColor: 'rgb(229,229,229)',
+                                        padding: 6,
+                                        paddingHorizontal: 12,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly'
+                                      }} >
+                                      <Text style={{
+                                        color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
+                                        fontFamily: Font.Regular,
+                                        fontSize: (mobileW * 3.5) / 100
+                                      }} allowFontScaling={false}>
+                                        {item?.slot_start_time}
+                                      </Text>
+                                      <View style={{
+                                        justifyContent: 'space-evenly',
+                                        paddingHorizontal: 4
+                                      }}>
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black',
+                                          transform: [{ rotateX: '180deg' }]
+                                        }} resizeMethod='resize' resizeMode='contain' />
+
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black'
+                                        }} resizeMethod='resize' resizeMode='contain' />
+
+                                      </View>
+                                    </TouchableOpacity>
+
+
+                                  </View>
+                                  <View style={{
+                                    width: '35%',
+                                    height: (mobileW * 12) / 100,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    // backgroundColor: 'yellow',
+                                  }}>
+
+                                    <TouchableOpacity
+                                      onPress={() => {
+                                        setState(
+                                          prev => ({
+                                            ...prev,
+                                            currentIndex: index,
+                                            currentItem: item,
+                                            modalVisible: true,
+                                            flag: false
+                                          })
+                                        )
+                                      }}
+                                      disabled={(item?.slot_day_enable == "1") ? false : true}
+                                      style={{
+                                        backgroundColor: 'rgb(229,229,229)',
+                                        padding: 6,
+                                        paddingHorizontal: 12,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly'
+                                      }} >
+                                      <Text style={{
+                                        color: (item?.slot_day_enable == "1") ? 'black' : Colors.placeholder_text,
+                                        fontFamily: Font.Regular,
+                                        fontSize: (mobileW * 3.5) / 100
+                                      }} allowFontScaling={false}>
+                                        {item?.slot_end_time}
+                                      </Text>
+                                      <View style={{
+                                        justifyContent: 'space-evenly',
+                                        paddingHorizontal: 4
+                                      }}>
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black',
+                                          transform: [{ rotateX: '180deg' }]
+                                        }} resizeMethod='resize' resizeMode='contain' />
+
+                                        <Image source={Arrow} style={{
+                                          width: (mobileW * 2) / 100,
+                                          height: (mobileW * 1) / 100,
+                                          tintColor: 'black'
+                                        }} resizeMethod='resize' resizeMode='contain' />
+
+                                      </View>
+                                    </TouchableOpacity>
+
+                                  </View>
                                 </View>
+                              </View>
 
-                              </>
-                            )
-                          })
-                        }
-
-                      </View>
-                    </>
-                  }
-
-                </View>
-              </ScrollView>
-
-              <View style={{
-                //backgroundColor: 'red',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 15,
-                height: mobileW * 22 / 100
-              }}>
-                <Button
-                  text={'SAVE SCHEDULE'}
-                  // onLoading={state.loading}
-                  customStyles={
-                    {
-                      mainContainer: {
-                        marginTop: 0
+                            </>
+                          )
+                        })
                       }
+
+                    </View>
+                  </>
+                }
+
+              </View>
+            </ScrollView>
+
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 15,
+              height: mobileW * 22 / 100
+            }}>
+              <Button
+                text={'SAVE SCHEDULE'}
+                onLoading={state.isOnButtonLoading}
+                customStyles={
+                  {
+                    mainContainer: {
+                      marginTop: 0
                     }
                   }
-                  onPress={() => submitPress()}
-                // isBlank={false}
-                />
-              </View>
+                }
+                onPress={() => submitPress()}
+              />
             </View>
-          }
-        </View>
+          </View> :
+
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+            data={[1, 2, 3, 4, 5, 6, 7]}
+            ListHeaderComponent={() => (
+              <View
+                style={{
+                  width: '100%',
+                  paddingHorizontal: s(11),
+                }}>
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width='50%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} />
+                  <SkeletonPlaceholder.Item width='98%' height={s(60)} borderRadius={s(2)} marginTop={s(3)} />
+                </SkeletonPlaceholder>
+
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width='70%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} />
+                  <SkeletonPlaceholder.Item width='90%' height={s(50)} borderRadius={s(2)} marginTop={s(3)} />
+                </SkeletonPlaceholder>
+
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width='98%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} />
+                  <SkeletonPlaceholder.Item width='90%' height={s(50)} borderRadius={s(2)} marginTop={s(3)} />
+                </SkeletonPlaceholder>
+
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width='75%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} marginBottom={s(11)} />
+                </SkeletonPlaceholder>
+
+              </View>
+            )}
+            renderItem={({ item, index }) => {
+              return (
+                <View
+                  style={{
+                    width: '100%',
+                    paddingHorizontal: s(11),
+                  }}>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width='100%' height={s(60)} borderRadius={s(2)} marginTop={4} />
+                  </SkeletonPlaceholder>
+                </View>
+              )
+
+            }}
+            ItemSeparatorComponent={() => (
+              <View style={{
+                marginTop: vs(4)
+              }} />
+            )}
+          />
       }
 
-    </>
+    </View>
 
   );
 }

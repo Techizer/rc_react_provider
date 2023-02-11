@@ -94,7 +94,7 @@ export default Splash = ({ navigation, route }) => {
     var data = new FormData();
     data.append('user_id', loginUserData?.user_id)
 
-    API.post(url, data).finally(() => {
+    API.post(url, data, 1).finally(() => {
       dispatch(onUserLogout())
       navigation.reset({
         index: 0,
@@ -140,7 +140,7 @@ export default Splash = ({ navigation, route }) => {
               data.append('fcm_token', fcmToken)
               data.append('user_type', result?.user_type)
 
-              API.post(url, data).then((obj) => {
+              API.post(url, data, 1).then((obj) => {
                 console.log({obj});
                 if (obj.status == true) {
                   console.log('Status is TT');

@@ -43,37 +43,29 @@ export default PriceList = ({ navigation }) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     console.log("user_typeuser_type:: ", user_type);
+    const isPartOfHospital = ((loginUserData?.hospital_id != '' ) && (loginUserData?.hospital_id != null ))
     
     
     if (user_type == "nurse") {
       setRoutes([
         {
           id: 1,
-          name: 'Ongoing',
-          arbic_name: 'الجميع ',
-          pass_status: 'all',
-          status: true,
-          key: 'task', title: 'Task'
+          key: 'task', 
+          title: 'Task'
         },
         {
           id: 2,
-          name: 'Pending',
-          arbic_name: 'ممرضة  ',
-          pass_status: 'nurse',
-          status: false,
-          key: 'hourly', title: 'Hourly'
+          key: 'hourly', 
+          title: 'Hourly'
         },
 
       ])
     } else if (user_type == "caregiver" || user_type == "babysitter") {
       setRoutes([
         {
-          id: 2,
-          name: 'Pending',
-          arbic_name: 'ممرضة  ',
-          pass_status: 'nurse',
-          status: false,
-          key: 'hourly', title: 'Hourly'
+          id: 1,
+          key: 'hourly', 
+          title: 'Hourly'
         },
 
       ])
@@ -81,54 +73,67 @@ export default PriceList = ({ navigation }) => {
       setRoutes([
         {
           id: 1,
-          name: 'Ongoing',
-          arbic_name: 'الجميع ',
-          pass_status: 'all',
-          status: true,
-          key: 'task', title: 'Task'
+          key: 'task', 
+          title: 'Task'
         }
 
       ])
-    }
-    else if (user_type == "doctor") {
-      setRoutes([
-        {
-          id: 1,
-          name: 'Ongoing',
-          arbic_name: 'الجميع ',
-          pass_status: 'all',
-          status: true,
-          key: 'onlineconsultation', title: 'Online Consultation'
-        },
-        {
-          id: 1,
-          name: 'Ongoing',
-          arbic_name: 'الجميع ',
-          pass_status: 'all',
-          status: true,
-          key: 'homeconsultation', title: 'Home Consultation'
-        }
-      ])
+    } else if (user_type == "doctor") {
+      if (isPartOfHospital) {
+        setRoutes([
+          {
+            id: 1,
+            key: 'onlineconsultation', 
+            title: 'Online Consultation'
+          }
+        ])
+      } else {
+        setRoutes([
+          {
+            id: 1,
+            key: 'onlineconsultation', 
+            title: 'Online Consultation'
+          },
+          {
+            id: 2,
+            key: 'homeconsultation', 
+            title: 'Home Consultation'
+          }
+        ])
+      }
+      
     } else if (user_type == "lab") {
       setUserType('Manage Tests & Packages')
-      setRoutes([
-        {
-          id: 1,
-          name: 'Ongoing',
-          arbic_name: 'الجميع ',
-          pass_status: 'all',
-          status: true,
-          key: 'tests', title: 'Tests'
-        },
-        {
-          id: 1,
-          name: 'Ongoing',
-          arbic_name: 'الجميع ',
-          pass_status: 'all',
-          status: true,
-          key: 'packages', title: 'Packages', user_id: user_id
-        }
-      ])
+      if (isPartOfHospital) {
+        setRoutes([
+          {
+            id: 1,
+            key: 'tests', 
+            title: 'Tests'
+          },
+          {
+            id: 2,
+            key: 'packages', 
+            title: 'Packages', 
+            user_id: user_id
+          }
+        ])
+      } else {
+        setRoutes([
+          {
+            id: 1,
+            key: 'tests', 
+            title: 'Tests'
+          },
+          {
+            id: 2,
+            key: 'packages', 
+            title: 'Packages', 
+            user_id: user_id
+          }
+        ])
+      }
+      
     }
   }
 
@@ -159,7 +164,7 @@ const renderTabBar = props => {
     {...props}
     indicatorStyle={{
       backgroundColor: Colors.Theme,
-      height: (routes.length !== 1) ? (mobileW * 0.75) / 100: 0,
+      height: (routes.length !== 1) ? ((mobileW * 0.75) / 100): 0,
     }}
     activeColor={Colors.Theme}
     inactiveColor={'#354052'}

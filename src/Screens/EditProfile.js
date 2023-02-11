@@ -3223,7 +3223,6 @@ export default EditProfile = ({navigation, route}) => {
                   width: '90%', alignSelf: 'center',
                   marginTop: mobileW * 3 / 100,
                   justifyContent: 'flex-start'
-                  // borderColor: classStateData.selectissuefocus == true ? '#0057A5' : Colors.bordercolor, borderWidth: mobileW * 0.3 / 100, borderRadius: mobileW * 2 / 100, height: mobileW * 40 / 100
                 }}>
                   <AuthInputBoxSec
                     mainContainer={{

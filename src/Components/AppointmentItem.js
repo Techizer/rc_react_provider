@@ -43,7 +43,7 @@ const AppointmentItem = ({
         VideoCallBtn = true
     }
     if (CurrentDate > MyEndDate) {
-        // VideoCallBtn = false
+        VideoCallBtn = false
         
     }
 

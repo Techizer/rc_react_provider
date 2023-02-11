@@ -230,7 +230,7 @@ const VideoCall = (props) => {
     });
   };
 
-  const oponentImage = Configurations.img_url3 + 'I-51-doc-34.jpg'
+  const oponentImage = Configurations.img_url3 + props?.route?.params?.item?.oImage
   return (
     <View style={styles.container}>
 
