@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useWindowDimensions, Text, View, Dimensions, StatusBar } from 'react-native';
 import { Colors, Font, mobileW } from '../Helpers/Utils';
 import { TabView, TabBar } from 'react-native-tab-view';
 import TransactionContainer from '../Containers/Transaction';
 import Withdrawal from './Withdrawal';
 import ScreenHeader from '../Components/ScreenHeader';
+import { setLastScreen } from '../Redux/Actions/UserActions';
+import { ScreenReferences } from '../Stacks/ScreenReferences';
+import { useDispatch } from 'react-redux';
 
 const renderTabBar = props => (
   <TabBar
@@ -85,6 +88,7 @@ export default Transaction = ({ navigation }) => {
         return <Withdrawal page={'hourly'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
     }
   };
+  
 
   return (
     <View style={{ flex: 1 }}>

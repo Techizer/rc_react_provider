@@ -12,6 +12,7 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
@@ -97,6 +98,7 @@ export default Home = ({ navigation, route }) => {
   })
 
   const dispatch = useDispatch()
+  const isFocused = useIsFocused()
 
   const {
     loginUserData
@@ -104,7 +106,6 @@ export default Home = ({ navigation, route }) => {
 
   useEffect(() => {
     console.log({loginUserData});
-    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     PushNotification.configure({
       onNotification: function (notification) {
         console.log("NOTIFICATION:", notification);
@@ -163,10 +164,34 @@ export default Home = ({ navigation, route }) => {
 
     });
 
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-    }
   }, [])
+
+  const handleBackPress = () => {
+    Alert.alert(
+      LanguageConfiguration.titleexitapp[Configurations.language],
+      LanguageConfiguration.exitappmessage[Configurations.language], [{
+        text: LanguageConfiguration.no_txt[Configurations.language],
+        onPress: () => console.log('Cancel Pressed'),
+        style: LanguageConfiguration.no_txt[Configurations.language],
+      }, {
+        text: LanguageConfiguration.yes_txt[Configurations.language],
+        onPress: () => BackHandler.exitApp()
+      }], {
+      cancelable: false
+    }
+    );
+    return true;
+  };
+
+  useEffect(() => {
+    navigation.addListener('focus', payload =>
+      BackHandler.addEventListener('hardwareBackPress', handleBackPress)
+    );
+    navigation.addListener('blur', payload =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
+    );
+  }, [])
+
 
   const logout = async () => {
     localStorage.setItemString('logout_bit', '100')
@@ -176,16 +201,6 @@ export default Home = ({ navigation, route }) => {
       routes: [{ name: ScreenReferences.Login }],
     });
   };
-
-  const handleBackButton = () => {
-    console.log('Back button is pressed', route.name);
-    if (route.name == ScreenReferences.Home) {
-      return true;
-    } else {
-      return false;
-    }
-
-  }
 
   const getPercentage = async () => {
     let url = Configurations.baseURL + "api-provider-profile-complete";

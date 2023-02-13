@@ -156,7 +156,6 @@ export default Splash = ({ navigation, route }) => {
                 }
               }).catch((error) => {
                 console.log("-------- error ------- " + error);
-
               });
 
             } else {

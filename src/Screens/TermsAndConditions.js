@@ -17,6 +17,7 @@ export default TermsAndConditions = ({ navigation, route }) => {
   const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
   let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
   headerHeight += (Platform.OS === 'ios') ? 28 : -60
+  
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>

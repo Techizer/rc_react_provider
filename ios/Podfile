@@ -11,7 +11,6 @@ target 'rootscare' do
   pod 'GoogleUtilities', :modular_headers => true
   pod 'Branch'
   
-  
   $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
@@ -22,7 +21,6 @@ target 'rootscare' do
 
   #use_modular_headers!
 
-  pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
   #permissions_path = '../node_modules/react-native-permissions/ios'
   #pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse/Permission-LocationWhenInUse.podspec"
 

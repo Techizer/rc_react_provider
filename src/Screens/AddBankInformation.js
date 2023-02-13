@@ -1,4 +1,4 @@
-import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView } from 'react-native'
+import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView, Dimensions, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Colors, Font, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { AuthInputBoxSec, Button } from '../Components'
@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
+import ScreenHeader from '../Components/ScreenHeader';
 
 
 export default AddBankInformation = ({ navigation, route }) => {
@@ -133,6 +134,15 @@ export default AddBankInformation = ({ navigation, route }) => {
       setState({ loading: false });
     });
   }
+
+
+
+  const windowHeight = Math.round(Dimensions.get("window").height);
+  const windowWidth = Math.round(Dimensions.get("window").width);
+  const deviceHeight = Dimensions.get('screen').height;
+  const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+  let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+  headerHeight += (Platform.OS === 'ios') ? 28 : -60
   
   return (
     <View style={{
@@ -282,30 +292,16 @@ export default AddBankInformation = ({ navigation, route }) => {
 
 
 
-      <View style={{
-        width: '100%', alignSelf: 'center', paddingVertical: mobileW * 3 / 100,
-        shadowOpacity: 0.3,
-        marginBottom: 0.9,
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 1 },
-        elevation: 5,
-        backgroundColor: 'white'
-      }}>
-        <View style={{ alignItems: 'center', width: '90%', alignSelf: 'center', flexDirection: 'row' }}>
-          <View style={{ width: '5%' }}>
-            <TouchableOpacity onPress={() => {
-              navigation.goBack();
-            }}
-              style={{ width: '100%', }}>
-              <Image style={{ width: mobileW * 8 / 100, height: mobileW * 8 / 100, alignSelf: 'center' }}
-                source={Configurations.textalign == 'right' ? Icons.BackRTL : Icons.LeftArrow}></Image>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '95%', alignSelf: 'center', }}>
-            <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 4.5 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, alignSelf: 'center' }}>{LanguageConfiguration.supporttext[Configurations.language]} </Text>
-          </View>
-        </View>
-      </View>
+      <ScreenHeader
+        onBackPress={() => {
+          navigation.goBack();
+        }}
+        leftIcon
+        rightIcon={false}
+        navigation={navigation}
+        title={'Add Bank Information'}
+        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+
 
       <ScrollView style={{
         width: '100%', alignSelf: 'center', flex: 1,

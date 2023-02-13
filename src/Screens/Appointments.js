@@ -93,7 +93,7 @@ export default Appointments = ({ navigation }) => {
         return false;
       }
     }).catch((error) => {
-      this.getProfile()
+      // this.getProfile()
       console.log("-------- error ------- " + error);
     })
 

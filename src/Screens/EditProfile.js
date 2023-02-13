@@ -358,7 +358,7 @@ export default EditProfile = ({navigation, route}) => {
 
   
 
-  get_all_notification = async () => {
+  const get_all_notification = async () => {
     let user_id = loginUserData['user_id']
 
     let url = Configurations.baseURL + "api-notification-count";
@@ -387,7 +387,7 @@ export default EditProfile = ({navigation, route}) => {
 
   }
 
-  get_all_nationlity = async () => {
+  const get_all_nationlity = async () => {
     let user_id = loginUserData['user_id']
 
     let url = Configurations.baseURL + "api-getnationality";
@@ -408,31 +408,31 @@ export default EditProfile = ({navigation, route}) => {
 
   }
 
-  setalergy = (item) => {
+  const setalergy = (item) => {
     console.log('item', item);
     setState({ allergies: item })
   }
-  setcurrentmadiciens = (item) => {
+  const setcurrentmadiciens = (item) => {
     console.log('item', item);
     setState({ current_medication: item })
   }
-  setpastmedician = (item) => {
+  const setpastmedician = (item) => {
     console.log('item', item);
     setState({ past_medication: item })
   }
-  setinjuries = (item) => {
+  const setinjuries = (item) => {
     console.log('item', item);
     setState({ injuries: item })
   }
-  setsurgeries = (item) => {
+  const setsurgeries = (item) => {
     console.log('item', item);
     setState({ surgeries: item })
   }
-  setchronic_diseases = (item) => {
+  const setchronic_diseases = (item) => {
     console.log('item', item);
     setState({ chronic_diseases: item })
   }
-  setdatetwo = (res) => {
+  const setdatetwo = (res) => {
     let check_month
     let check_date
     let date = res.getDate()
@@ -455,7 +455,7 @@ export default EditProfile = ({navigation, route}) => {
     setState({ dob_date: date1, isDatePickerVisibletwo: false, })
   }
 
-  getProfile = async () => {
+  const getProfile = async () => {
     let user_id = loginUserData['user_id']
     let user_type = loginUserData['user_type']
 
@@ -616,7 +616,7 @@ export default EditProfile = ({navigation, route}) => {
     });
   }
 
-  medical_click = async () => {
+  const medical_click = async () => {
     let user_id = loginUserData['user_id']
     let url = Configurations.baseURL + "api-edit-patient-profile-medical";
     console.log("url", url)
@@ -652,7 +652,7 @@ export default EditProfile = ({navigation, route}) => {
 
   }
 
-  Camerapopen = async () => {
+  const Camerapopen = async () => {
     Media.launchCamera(true).then((obj) => {
       console.log(obj);
       console.log(obj.path);
@@ -667,7 +667,7 @@ export default EditProfile = ({navigation, route}) => {
 
     })
   }
-  Galleryopen = () => {
+  const Galleryopen = () => {
     Media.launchGellery(true).then((obj) => {
       console.log(obj);
       console.log(obj.path);
@@ -683,7 +683,7 @@ export default EditProfile = ({navigation, route}) => {
     })
   }
 
-  submit_click = async () => {
+  const submit_click = async () => {
     let user_id = loginUserData['user_id']
 
     Keyboard.dismiss()
@@ -906,7 +906,7 @@ export default EditProfile = ({navigation, route}) => {
     });
 
   }
-  lifestyle_click = async () => {
+  const lifestyle_click = async () => {
     let user_id = loginUserData['user_id']
 
 
@@ -963,7 +963,7 @@ export default EditProfile = ({navigation, route}) => {
 
   }
 
-  get_speciality = async () => {
+  const get_speciality = async () => {
     let user_id = loginUserData['user_id']
     let user_type = loginUserData['user_type']
 
@@ -989,7 +989,7 @@ export default EditProfile = ({navigation, route}) => {
 
   }
 
-  renderIDNumber = () => {
+  const renderIDNumber = () => {
     return (
       <>
         <View
@@ -1105,7 +1105,7 @@ export default EditProfile = ({navigation, route}) => {
     )
   }
 
-  renderSpeExpCer = () => {
+  const renderSpeExpCer = () => {
     return (
       <>
         <View
@@ -1214,7 +1214,7 @@ export default EditProfile = ({navigation, route}) => {
     )
   }
 
-  renderExpRegid = () => {
+  const renderExpRegid = () => {
     return (
       <>
         <View
@@ -1338,7 +1338,7 @@ export default EditProfile = ({navigation, route}) => {
     )
   }
 
-  renderExpCer = () => {
+  const renderExpCer = () => {
     return (
       <>
         <View
@@ -1450,7 +1450,7 @@ export default EditProfile = ({navigation, route}) => {
     )
   }
 
-  renderExp = () => {
+  const renderExp = () => {
     return (
       <>
         <View
@@ -1490,7 +1490,7 @@ export default EditProfile = ({navigation, route}) => {
     )
   }
 
-  renderHealthIDNumber = () => {
+  const renderHealthIDNumber = () => {
     return (
       <>
         <View
@@ -1606,7 +1606,7 @@ export default EditProfile = ({navigation, route}) => {
     )
   }
 
-  renderCRC = () => {
+  const renderCRC = () => {
     return (
       <>
         <View

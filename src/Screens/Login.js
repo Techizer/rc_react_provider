@@ -9,10 +9,37 @@ import { Icons } from '../Assets/Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRememberedEmail, setRememberedPassword, setShouldAutoLogin, setUserFCMToken, setUserLoginData, setUserLoginType } from '../Redux/Actions/UserActions';
+import { useIsFocused } from '@react-navigation/native';
 
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
+
+const UserTypes = [{
+  title: "Nurse",
+  value: "nurse"
+},
+{
+  title: "Nurse Assistant",
+  value: "caregiver"
+},
+{
+  title: "Baby Care",
+  value: "babysitter"
+},
+{
+  title: "Physiotherapy",
+  value: "physiotherapy"
+},
+{
+  title: "Doctor",
+  value: "doctor"
+},
+{
+  title: "Lab",
+  value: "lab"
+}
+]
 
 export default Login = ({ navigation, route }) => {
 
@@ -22,38 +49,10 @@ export default Login = ({ navigation, route }) => {
     password: '',
     device_lang: 'AR',
     isRememberChecked: false,
-    fcm_token: 123456,
     showUsertype: false,
-    userType: [{
-      title: "Nurse",
-      value: "nurse"
-    },
-    {
-      title: "Nurse Assistant",
-      value: "caregiver"
-    },
-    {
-      title: "Baby Care",
-      value: "babysitter"
-    },
-    {
-      title: "Physiotherapy",
-      value: "physiotherapy"
-    },
-    {
-      title: "Doctor",
-      value: "doctor"
-    },
-    // {
-    //   title: "Hospital",
-    //   value: "hospital"
-    // }
-    {
-      title: "Lab",
-      value: "lab"
-    }
-    ],
-    selectuserType: -1
+    selectuserType: -1,
+    isLoadingInButton: false,
+    FCMToken: null
   })
 
   const setState = (payload) => {
@@ -73,8 +72,17 @@ export default Login = ({ navigation, route }) => {
     loginUserData
   } = useSelector(state => state.Auth)
 
+  const isFocused = useIsFocused()
+
+  const setLocalFCM = async () => {
+    const fcm = await FBPushNotifications.getFcmToken()
+    console.log({fcm});
+    setState({ FCMToken: fcm })
+  }
+
   useEffect(() => {
-    const mUserTypeIndex = classStateData.userType.findIndex(u => u.value === userType)
+    const mUserTypeIndex = UserTypes.findIndex(u => u.value === userType)
+    setLocalFCM()
     console.log({
       email: userEmail,
       password: userPassword,
@@ -93,38 +101,6 @@ export default Login = ({ navigation, route }) => {
     }
   }, [])
 
-  useEffect(() => {
-    navigation.addListener(
-      'focus',
-      payload =>
-        BackHandler.addEventListener('hardwareBackPress', handleBackPress),
-    );
-  }, [])
-
-  useEffect(() => {
-    _willBlurSubscription = navigation.addListener(
-      'blur',
-      payload =>
-        BackHandler.removeEventListener(
-          'hardwareBackPress',
-          handleBackPress,
-        ),
-    );
-  }, [])
-
-  useEffect(() => {
-    const setFCM = async () => {
-      const fcm = await FBPushNotifications.getFcmToken()
-      if (fcm) {
-        setState({
-          fcm_token: fcm
-        })
-      }
-    }
-    setFCM()
-
-  }, [])
-
 
   const handleBackPress = () => {
     Alert.alert(
@@ -139,9 +115,44 @@ export default Login = ({ navigation, route }) => {
       }], {
       cancelable: false
     }
-    ); // works best when the goBack is async 
+    );
     return true;
   };
+
+  
+  useEffect(() => {
+
+      
+
+    navigation.addListener('focus', payload =>
+      BackHandler.addEventListener('hardwareBackPress', handleBackPress)
+    );
+    navigation.addListener('blur', payload =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
+    );
+  }, [])
+
+  // useEffect(() => {
+  //   const handleBackPress = () => {
+  //     Alert.alert(
+  //       LanguageConfiguration.titleexitapp[Configurations.language],
+  //       LanguageConfiguration.exitappmessage[Configurations.language], [{
+  //         text: LanguageConfiguration.no_txt[Configurations.language],
+  //         onPress: () => console.log('Cancel Pressed'),
+  //         style: LanguageConfiguration.no_txt[Configurations.language],
+  //       }, {
+  //         text: LanguageConfiguration.yes_txt[Configurations.language],
+  //         onPress: () => BackHandler.exitApp()
+  //       }], {
+  //       cancelable: false
+  //     }
+  //     );
+  //     return true;
+  //   };
+
+    
+  
+  // }, [isFocused])
 
   const onLogin = async () => {
 
@@ -175,44 +186,39 @@ export default Login = ({ navigation, route }) => {
       device_lang = 'AR'
     }
 
+    setState({
+      isLoadingInButton: true
+    })
+
     let url = Configurations.baseURL + "api-service-provider-login";
     var data = new FormData();
     data.append('email', classStateData?.email)
     data.append('password', classStateData?.password)
     data.append('device_type', Configurations.device_type)
     data.append('device_lang', device_lang)
-    data.append('fcm_token', classStateData.fcm_token)
-    data.append('user_type', classStateData?.userType[classStateData?.selectuserType].value)
+    data.append('fcm_token', classStateData.FCMToken)
+    data.append('user_type', UserTypes[classStateData?.selectuserType].value)
 
-    console.log('loginData', data)
+    API.post(url, data, 1).then((obj) => {
 
-    API.post(url, data).then((obj) => {
-
-      console.log("obj", obj.status)
+      console.log({Login: obj?.result})
       if (obj.status == true) {
 
-        var user_details = obj.result;
-
-        // setState(classStateData)
-
-        // console.log('user_details', user_details);
-        const uservalue = {
-          email_phone: classStateData?.email, email: classStateData?.email,
-          password: classStateData?.password
-        };
-        
         dispatch(setUserLoginData(obj?.result))
-        dispatch(setUserFCMToken(classStateData?.fcm_token))
-        dispatch(setUserLoginType(classStateData?.userType[classStateData?.selectuserType].value))
+        dispatch(setUserFCMToken(classStateData?.FCMToken))
+        dispatch(setUserLoginType(UserTypes[classStateData?.selectuserType].value))
         dispatch(setShouldAutoLogin(classStateData?.isRememberChecked))
-        
+
         if (classStateData?.isRememberChecked == true) {
           dispatch(setRememberedEmail(classStateData?.email))
           dispatch(setRememberedPassword(classStateData?.password))
         }
 
         setTimeout(() => {
-          navigation.navigate('Home');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: ScreenReferences.Home }],
+          });
         }, 700);
 
       } else {
@@ -226,7 +232,11 @@ export default Login = ({ navigation, route }) => {
       setState({
         loading: false
       })
-    });
+    }).finally(() => {
+      setState({
+        isLoadingInButton: false
+      })
+    })
 
   }
 
@@ -353,7 +363,7 @@ export default Login = ({ navigation, route }) => {
                   marginTop: (mobileW * 4) / 100,
                 }}>
                 <DropDownboxSec
-                  lableText={(classStateData?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : classStateData?.userType[classStateData?.selectuserType].title}
+                  lableText={(classStateData?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : UserTypes[classStateData?.selectuserType].title}
                   boxPressAction={() => { showUsertypeModal(true) }}
                 />
 
@@ -405,7 +415,7 @@ export default Login = ({ navigation, route }) => {
                         </View>
 
                         {
-                          classStateData?.userType.map((data, index) => {
+                          UserTypes.map((data, index) => {
                             return (
                               <TouchableOpacity style={{
                                 width: '100%',
@@ -419,7 +429,7 @@ export default Login = ({ navigation, route }) => {
                                   width: (Platform.OS == "ios") ? '95%' : '94.5%',
                                   marginLeft: 15,
                                   borderBottomColor: Colors.gray6,
-                                  borderBottomWidth: (index == (classStateData?.userType.length - 1)) ? 0 : 1,
+                                  borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
                                 }}>
                                   <Text style={{
                                     color: '#041A27',
@@ -519,14 +529,14 @@ export default Login = ({ navigation, route }) => {
                   flexDirection: 'row',
                 }}>
 
-                <TouchableOpacity activeOpacity={0.9} style={{ width: '45%', flexDirection: 'row', paddingLeft: mobileW * 1 / 100 }} onPress={() => { 
+                <TouchableOpacity activeOpacity={0.9} style={{ width: '45%', flexDirection: 'row', paddingLeft: mobileW * 1 / 100 }} onPress={() => {
                   setState({
-                    isRememberChecked:!classStateData.isRememberChecked
+                    isRememberChecked: !classStateData.isRememberChecked
                   })
-                 }}>
+                }}>
                   <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ width: '20%' }}>
-                      <Image style={{ height: 23, width: 23, resizeMode: 'contain',  }}
+                      <Image style={{ height: 23, width: 23, resizeMode: 'contain', }}
                         source={classStateData?.isRememberChecked == false ? Icons.BlackBox : Icons.CheckedBox}></Image>
                     </View>
 
@@ -563,11 +573,7 @@ export default Login = ({ navigation, route }) => {
 
               <Button
                 text={LanguageConfiguration.Contiunebtn[Configurations.language]}
-                customStyles={
-                  {
-
-                  }
-                }
+                onLoading={classStateData.isLoadingInButton}
                 onPress={() => onLogin()}
               />
 

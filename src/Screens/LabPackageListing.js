@@ -61,6 +61,7 @@ const LabPackageListing = (props) => {
         
 
         if (obj.status == true) {
+          console.log({LabPackages: obj?.result});
           setLabData(obj.result);
         } else {
           MessageFunctions.showError(obj.message);
@@ -220,7 +221,6 @@ const LabPackageListing = (props) => {
                           navigation.navigate(ScreenReferences.LabPackageDetails, {
                             packageId: item.id,
                             providerId: providerId,
-                            reloadPackList: reloadPackList.bind(this)
                           });
                         }
                         // let arr = [...this.state.slotArr]

@@ -3,9 +3,10 @@ import { Text, View, Alert, Image, TouchableOpacity, FlatList } from 'react-nati
 import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight } from '../Helpers/Utils';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { s } from 'react-native-size-matters';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { setLastScreen } from '../Redux/Actions/UserActions';
 
 export default Withdrawal = ({ navigation, route }) => {
 

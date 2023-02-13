@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Text, TextInput, View, ScrollView, Linking, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl } from 'react-native';
+import { Alert, Text, TextInput, View, Linking, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl } from 'react-native';
 import { CameraGallery, Media, Colors, Font, mobileH, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -18,20 +18,23 @@ import { SvgXml } from 'react-native-svg';
 import { useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
+import AppLoader from '../Components/AppLoader';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
   const [classStateData, setClassStateData] = useState({
     showPDetails: false,
     appointmentDetails: '',
-    rating: '',
     otp: '',
     mediamodal: false,
     reportModalVisible: false,
     reports: [],
     modalPatientPrescription: false,
     isLoading: true,
+    isFromReportModal: false,
   })
+
+  const [explicitLoader, setExplicitLoader] = useState(false)
 
   const setState = (payload, resolver = () => { }) => {
     setClassStateData(prev => ({
@@ -40,11 +43,11 @@ export default AppointmentDetails = ({ navigation, route }) => {
     }))
 
     if (resolver) {
-      setTimeout(() => {
-        resolver()
-      }, 100)
+      resolver()
     }
   }
+
+
 
   const {
     loginUserData
@@ -63,9 +66,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
     onRefresh()
   }, [])
 
+
   const getDetails = async () => {
-    let user_id = loginUserData['user_id']
-    let user_type = loginUserData['user_type']
     let url = Configurations.baseURL + "api-provider-appointment-details" //"api-patient-appointment-details";  
     setState({
       appointmentDetails: '',
@@ -74,9 +76,10 @@ export default AppointmentDetails = ({ navigation, route }) => {
     var data = new FormData();
     data.append('id', route?.params?.appoinment_id)
 
-    data.append('service_type', user_type)
+    data.append('service_type', loginUserData?.user_type)
 
     API.post(url, data, 1).then((obj) => {
+      console.log('In get details 1');
       if (obj.status == true) {
         console.log({ AppointmentDetails: obj?.result });
         setState({
@@ -297,13 +300,10 @@ export default AppointmentDetails = ({ navigation, route }) => {
   const visibleReportModal = () => {
     setState({
       reportModalVisible: (classStateData.isFromReportModal == true) ? true : false
-    }, () => {
-
     })
   }
 
   const openGalleryPicker = () => {
-    const { imageType } = classStateData;
     Media.launchGellery(false).then((obj) => {
       if (classStateData.isFromReportModal == true) {
         var objF = undefined
@@ -332,16 +332,19 @@ export default AppointmentDetails = ({ navigation, route }) => {
         setState({
           reports: [...classStateData.reports, objF],
           mediamodal: false,
-        }, () => {
-          (classStateData.isFromReportModal == true) ? visibleReportModal() : null
         })
+
+        if (classStateData.isFromReportModal == true) visibleReportModal()
+
       } else {
         setState({
-          [imageType]: obj,
           mediamodal: false
-        }, () => {
-          onUploadPrescription()
         })
+
+        setTimeout(() => {
+          onUploadPrescription(obj)
+        }, 800)
+
       }
 
 
@@ -354,7 +357,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
   }
 
   const openDocumentPicker = async () => {
-    const { imageType } = classStateData;
     Media.launchDocumentGellery(true).then((res) => {
 
       const source = {
@@ -368,17 +370,18 @@ export default AppointmentDetails = ({ navigation, route }) => {
         setState({
           reports: [...classStateData.reports, source],
           mediamodal: false,
-        }, () => {
-          (classStateData.isFromReportModal == true) ? visibleReportModal() : null
         })
+        visibleReportModal()
       } else {
 
         setState({
-          [imageType]: source,
           mediamodal: false
-        }, () => {
-          onUploadPrescription()
         });
+
+        setTimeout(() => {
+          onUploadPrescription(source)
+        }, 800)
+
       }
 
     }).catch((error) => {
@@ -390,7 +393,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   }
 
-  const onUploadPrescription = async () => {
+  const onUploadPrescription = async (file) => {
     // Keyboard.dismiss()
 
     let url = Configurations.baseURL + "api-doctor-upload-prescription";
@@ -398,18 +401,27 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
     data.append('id', classStateData.appointmentDetails?.id)
 
-    if (classStateData.provider_prescription.path != undefined) {
-
+    if (file) {
       data.append('provider_prescription', {
-        uri: classStateData.provider_prescription.path,
-        type: classStateData.provider_prescription.mime, //'image/jpg',
-        name: (Platform.OS == 'ios') ? classStateData.provider_prescription.filename : 'image',
+        uri: file?.path,
+        type: file?.mime, //'image/jpg',
+        name: (Platform.OS == 'ios') ? file?.filename : 'image',
       })
     }
+
+    console.log(data);
+
+    console.log('provider_prescription', {
+      uri: file?.path,
+      type: file?.mime, //'image/jpg',
+      name: (Platform.OS == 'ios') ? file?.filename : 'image',
+    })
 
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
+
+        console.log({ AppointmentUpload: obj });
 
         setTimeout(() => {
           // route.params.reloadList()
@@ -426,6 +438,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
+      MessageFunctions.showError(error.message)
       setState({ loading: false });
     });
 
@@ -448,9 +461,10 @@ export default AppointmentDetails = ({ navigation, route }) => {
     }
   }
 
-  const onActualDownload = (imgUrl, filename) => {
+  const onActualDownload = async (imgUrl, filename) => {
     const { dirs } = RNFetchBlob.fs;
     const dirToSave = Platform.OS == 'ios' ? dirs.DocumentDir : dirs.DownloadDir
+    setExplicitLoader(true)
     const configfb = {
       fileCache: true,
       useDownloadManager: true,
@@ -473,100 +487,112 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
     RNFetchBlob.config(configOptions)
       .fetch('GET', imgUrl, {})
-      .then((res) => {
+      .then(async (res) => {
+        console.log('In Download');
         if (Platform.OS === "ios") {
           RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
-          RNFetchBlob.ios.previewDocument(configfb.path);
-        }
-        if (Platform.OS == 'android') {
+          setTimeout(() => {
+            const xsm = RNFetchBlob.ios.previewDocument(configfb.path);
+          }, 500)
+        } else {
           MessageFunctions.showSuccess('File downloaded');
         }
-        console.log('The file saved to ', res);
+
+        console.log('The file saved to ', res.path());
       })
       .catch((e) => {
         MessageFunctions.showError(e.message);
         console.log('The file saved to ERROR', e.message)
-      });
+      }).finally(() => {
+        setExplicitLoader(false)
+        return null
+      })
+
+      return null
   }
 
-  const windowHeight = Math.round(Dimensions.get("window").height);
-  const windowWidth = Math.round(Dimensions.get("window").width);
-  const deviceHeight = Dimensions.get('screen').height;
-  const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
-  let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
-  headerHeight += (Platform.OS === 'ios') ? 28 : -60
-  var item = classStateData.appointmentDetails
 
-  if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
+  try {
 
-    var VideoCallBtn = false
-    var UploadprecriptionBtn = false
-    var UploadReportBtn = false
+    const windowHeight = Math.round(Dimensions.get("window").height);
+    const windowWidth = Math.round(Dimensions.get("window").width);
+    const deviceHeight = Dimensions.get('screen').height;
+    const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+    let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+    headerHeight += (Platform.OS === 'ios') ? 28 : -60
+    var item = classStateData.appointmentDetails
 
-    var CurrentDate = moment().unix();
-    var MyDate = moment(item.appointment_date + " " + item.from_time, 'YYYY-MM-DD hh:mm A').unix();
-    var MyEndDate = moment(item.appointment_date + " 11:59 PM", 'YYYY-MM-DD hh:mm A').unix();
+    if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
+
+      var VideoCallBtn = false
+      var UploadprecriptionBtn = false
+      var UploadReportBtn = false
+
+      var CurrentDate = moment().unix();
+      var MyDate = moment(item.appointment_date + " " + item.from_time, 'YYYY-MM-DD hh:mm A').unix();
+      var MyEndDate = moment(item.appointment_date + " 11:59 PM", 'YYYY-MM-DD hh:mm A').unix();
 
 
-    if (CurrentDate > MyDate) {
-      UploadprecriptionBtn = true
-      UploadReportBtn = true
-      if ((CurrentDate - MyDate) > (24 * 3600 * 7)) {
-        UploadprecriptionBtn = false
-        UploadReportBtn = false
+      console.log({ Hospital: item.hospital_id });
+      if (CurrentDate > MyDate) {
+        UploadprecriptionBtn = true
+        UploadReportBtn = true
+        if ((CurrentDate - MyDate) > (24 * 3600 * 7)) {
+          UploadprecriptionBtn = false
+          UploadReportBtn = false
+        }
       }
-    }
 
-    if (CurrentDate < MyDate) {
-      let diff = (MyDate - CurrentDate) / 60
-      if (diff <= 10) {
+      if (CurrentDate < MyDate) {
+        let diff = (MyDate - CurrentDate) / 60
+        if (diff <= 10) {
+          VideoCallBtn = true
+        }
+      }
+      else if (CurrentDate > MyDate) {
         VideoCallBtn = true
       }
-    }
-    else if (CurrentDate > MyDate) {
-      VideoCallBtn = true
-    }
-    if (CurrentDate > MyEndDate) {
-      VideoCallBtn = false
-    }
+      if (CurrentDate > MyEndDate) {
+        VideoCallBtn = false
+      }
 
-    return (
-      <View style={{ flex: 1 }}>
-        <ScreenHeader
-          onBackPress={() => {
-            navigation.goBack();
-          }}
-          leftIcon
-          rightIcon={false}
-          navigation={navigation}
-          title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
-          style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+      return (
+        <View style={{ flex: 1 }}>
+          <ScreenHeader
+            onBackPress={() => {
+              navigation.goBack();
+            }}
+            leftIcon
+            rightIcon={false}
+            navigation={navigation}
+            title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-        <KeyboardAwareScrollView extraScrollHeight={50}
-          enableOnAndroid={true}
-          keyboardShouldPersistTaps='handled'
-          contentContainerStyle={{
-            justifyContent: 'center',
-            paddingBottom: vs(30),
-          }}
-          showsVerticalScrollIndicator={false}>
-          <RefreshControl
-            refreshing={classStateData.isLoading}
-            onRefresh={onRefresh}
-            enabled />
-          <View
-            style={{
-              flex: 1,
-              marginBottom: (mobileW * 40) / 100,
-              shadowOpacity: 0.3,
-              shadowColor: '#000',
-              shadowOffset: { width: 2, height: 2 },
-              elevation: 2,
-              paddingVertical: vs(9),
-              backgroundColor: Colors.White,
-            }}>
-            <View style={{}}>
+          <AppLoader loading={explicitLoader} />
 
+          <KeyboardAwareScrollView extraScrollHeight={50}
+            enableOnAndroid={true}
+            keyboardShouldPersistTaps='handled'
+            contentContainerStyle={{
+              justifyContent: 'center',
+              paddingBottom: vs(30),
+            }}
+            showsVerticalScrollIndicator={false}>
+            <RefreshControl
+              refreshing={classStateData.isLoading}
+              onRefresh={onRefresh}
+              enabled />
+            <View
+              style={{
+                flex: 1,
+                marginBottom: (mobileW * 40) / 100,
+                shadowOpacity: 0.3,
+                shadowColor: '#000',
+                shadowOffset: { width: 2, height: 2 },
+                elevation: 2,
+                paddingVertical: vs(9),
+                backgroundColor: Colors.White,
+              }}>
               <View>
 
                 {/* Order ID & Status */}
@@ -644,7 +670,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                         }}>
                         {item.service_type}
                       </Text>
-                      {item.hospital_id != "" && (
+                      {item.hospital_id != undefined && item.hospital_id != "" && (
                         <Text
                           style={{
                             color: "#FCFFFE",
@@ -913,22 +939,16 @@ export default AppointmentDetails = ({ navigation, route }) => {
                           paddingTop: vs(9)
                         }}
                       >
-                        <View style={{
-                          width: "90%",
-                          flexDirection: "row",
-                          alignItems: 'center',
-                        }}>
-                          <Image
-                            resizeMode="contain"
-                            source={Icons.FileAttachment}
-                            style={{
-                              width: "5%",
-                              height: 15,
-                              marginRight: (windowWidth * 2) / 100,
-                              borderColor: Colors.Theme,
-                            }}
-                          />
-                        </View>
+                        <Image
+                          resizeMode="contain"
+                          source={Icons.FileAttachment}
+                          style={{
+                            width: "5%",
+                            height: 15,
+                            marginRight: (windowWidth * 2) / 100,
+                            borderColor: Colors.Theme,
+                          }}
+                        />
                         <View style={{
                           width: '74%',
                         }}>
@@ -1087,30 +1107,35 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
 
 
-                          <TouchableOpacity style={{
-                            width: '25%'
-                          }} onPress={() => {
-                            if (item.provider_prescription != "") {
-                              onDownloadPrescription(Configurations.img_url3 + item.provider_prescription, item.provider_prescription)
-                            }
+                          {(item.provider_prescription != "" && item.provider_prescription != null) ?
+                            <TouchableOpacity style={{
+                              width: '25%'
+                            }} onPress={() => {
+                              if (item.provider_prescription != "" && item.provider_prescription != null) {
+                                onDownloadPrescription(Configurations.img_url3 + item.provider_prescription, item.provider_prescription)
+                              } else {
+                                MessageFunctions.showError('Prescription not found')
+                              }
 
-                          }}>
-                            <Text style={{
-                              textAlign: "right",
-                              fontFamily: Font.Regular,
-                              fontSize: Font.xsmall,
-                              color: Colors.Theme,
-                            }}>Download</Text>
-                          </TouchableOpacity>
+                            }}>
+                              <Text style={{
+                                textAlign: "right",
+                                fontFamily: Font.Regular,
+                                fontSize: Font.xsmall,
+                                color: Colors.Theme,
+                              }}>Download</Text>
+                            </TouchableOpacity>: 
+                            <View style={{
+                              width: '25%'
+                            }} >
+                              </View>}
 
                           <TouchableOpacity style={{
                             width: '25%'
                           }} onPress={() => {
                             setState({
-                              imageType: 'provider_prescription',
+                              // imageType: 'provider_prescription',
                               mediamodal: true
-                            }, () => {
-
                             })
                           }}>
                             <Text style={{
@@ -1309,8 +1334,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                     reportModalVisible: false,
                                     isFromReportModal: true,
                                     mediamodal: true
-                                  }, () => {
-
                                   })
                                 }}>
                                   <View style={{
@@ -1355,115 +1378,106 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                   </View>
                                 </TouchableOpacity>
 
-                                {
-                                  (classStateData.reports.length > 0) &&
-                                  <>
-                                    <ScrollView
-                                      scrollEnabled={(classStateData.reports.length >= 4) ? true : false}
-                                      style={{
-                                        maxHeight: '68%',
-                                        marginBottom: (classStateData.reports.length <= 4) ? 60 : 0
-                                      }}
-                                      showsVerticalScrollIndicator={false}
-                                    >
-                                      {
-                                        classStateData.reports.map((file, index) => {
-                                          return (
+                                <KeyboardAwareScrollView style={{
+                                  marginBottom: vs(64)
+                                }} key={'kasw1'}>
+                                  {
+                                    classStateData.reports.map((file, index) => {
+                                      return (
 
+                                        <View style={{
+                                          flexDirection: 'row',
+                                          width: '100%',
+                                          borderBottomWidth: 1,
+                                          borderBottomColor: Colors.gainsboro,
+                                          marginBottom: 10,
+
+                                        }} key={'filee' + index}>
+                                          <View style={{
+                                            width: '18%',
+                                            marginBottom: 10
+                                          }}>
+                                            <Image
+                                              defaultSource={Icons.Report}
+                                              source={Icons.Report}
+                                              style={{
+                                                width: (mobileW * 12) / 100,
+                                                height: (mobileW * 16) / 100,
+                                              }}></Image>
+                                          </View>
+                                          <View style={{
+                                            width: '82%',
+                                          }}>
                                             <View style={{
                                               flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              alignItems: 'center',
                                               width: '100%',
-                                              borderBottomWidth: 1,
-                                              borderBottomColor: Colors.gainsboro,
-                                              marginBottom: 10
                                             }}>
-                                              <View style={{
-                                                width: '18%',
-                                                marginBottom: 10
-                                              }}>
+                                              <Text
+                                                numberOfLines={2}
+                                                lineBreakMode={'tail'}
+                                                style={{
+                                                  width: '80%',
+                                                  fontFamily: Font.Medium,
+                                                  fontSize: Font.headinggray,
+                                                  color: Colors.darkgraytextheading,
+                                                  textAlign: Configurations.textRotate,
+                                                  marginTop: (mobileW * 2) / 100,
+                                                  marginBottom: (mobileW * 2) / 100,
+                                                }}>{file.filename}</Text>
+                                              <TouchableOpacity
+                                                style={{
+                                                  justifyContent: 'flex-end',
+                                                  alignContent: 'flex-end',
+                                                  alignItems: 'flex-end',
+                                                  width: '20%',
+                                                }}
+                                                onPress={() => {
+                                                  var array = [...classStateData.reports];
+                                                  var index = index
+                                                  if (index !== -1) {
+                                                    array.splice(index, 1);
+                                                    setState({ reports: array });
+                                                  }
+                                                }}>
                                                 <Image
-                                                  defaultSource={Icons.Report}
-                                                  source={Icons.Report}
-                                                  style={{
-                                                    width: (mobileW * 12) / 100,
-                                                    height: (mobileW * 16) / 100,
-                                                  }}></Image>
-                                              </View>
-                                              <View style={{
-                                                width: '82%',
-                                              }}>
-                                                <View style={{
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  alignItems: 'center',
-                                                  width: '100%',
-                                                }}>
-                                                  <Text
-                                                    numberOfLines={2}
-                                                    lineBreakMode={'tail'}
-                                                    style={{
-                                                      width: '80%',
-                                                      fontFamily: Font.Medium,
-                                                      fontSize: Font.headinggray,
-                                                      color: Colors.darkgraytextheading,
-                                                      textAlign: Configurations.textRotate,
-                                                      marginTop: (mobileW * 2) / 100,
-                                                      marginBottom: (mobileW * 2) / 100,
-                                                    }}>{file.filename}</Text>
-                                                  <TouchableOpacity
-                                                    style={{
-                                                      justifyContent: 'flex-end',
-                                                      alignContent: 'flex-end',
-                                                      alignItems: 'flex-end',
-                                                      width: '20%',
-                                                    }}
-                                                    onPress={() => {
-                                                      var array = [...classStateData.reports];
-                                                      var index = index
-                                                      if (index !== -1) {
-                                                        array.splice(index, 1);
-                                                        setState({ reports: array });
-                                                      }
-                                                    }}>
-                                                    <Image
-                                                      source={Icons.Cross}
-                                                      style={{ width: 20, height: 20 }}
-                                                    />
-                                                  </TouchableOpacity>
-                                                </View>
-
-                                                <View style={{
-                                                  marginTop: 15,
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  alignItems: 'center'
-                                                }}>
-                                                  <View style={{
-                                                    height: 2,
-                                                    width: '80%',
-                                                    backgroundColor: Colors.theme_color
-                                                  }}>
-
-                                                  </View>
-                                                  <Text style={{
-                                                    fontFamily: Font.Regular,
-                                                    fontSize: Font.smallheadingfont,
-                                                    color: Colors.darkgraytextheading,
-                                                    textAlign: 'right',
-                                                    width: '20%'
-                                                  }}>100%</Text>
-                                                </View>
-
-                                              </View>
+                                                  source={Icons.Cross}
+                                                  style={{ width: 20, height: 20 }}
+                                                />
+                                              </TouchableOpacity>
                                             </View>
 
-                                          )
-                                        })
-                                      }
-                                    </ScrollView>
+                                            <View style={{
+                                              marginTop: 15,
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              alignItems: 'center'
+                                            }}>
+                                              <View style={{
+                                                height: 2,
+                                                width: '80%',
+                                                backgroundColor: Colors.theme_color
+                                              }}>
 
-                                  </>
-                                }
+                                              </View>
+                                              <Text style={{
+                                                fontFamily: Font.Regular,
+                                                fontSize: Font.smallheadingfont,
+                                                color: Colors.darkgraytextheading,
+                                                textAlign: 'right',
+                                                width: '20%'
+                                              }}>100%</Text>
+                                            </View>
+
+                                          </View>
+                                        </View>
+
+                                      )
+                                    })
+                                  }
+
+                                </KeyboardAwareScrollView>
 
 
                               </View>
@@ -1488,10 +1502,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                     onPress={() => {
                                       setState({
                                         reportModalVisible: false,
-                                      }, () => {
-                                        onUploadReport()
                                       })
-
+                                      onUploadReport()
                                     }}
                                   />
                                 </View>
@@ -1811,18 +1823,16 @@ export default AppointmentDetails = ({ navigation, route }) => {
                     </Text>
                     <View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         paddingVertical: (windowWidth * 2) / 100,
                         borderBottomWidth: 1.5,
                         borderColor: '#CCCCCC',
                       }}>
-                      <FlatList
-                        data={item.task_details}
-                        scrollEnabled={true}
-                        nestedScrollEnabled={true}
-                        renderItem={({ item, index }) => {
+
+                      {
+                        item.task_details.map((i, index) => {
                           if (item.task_details != '') {
+                            console.log({i});
                             return (
                               <TouchableOpacity activeOpacity={0.9}
                                 // onPress={() => { check_all(item, index) }}
@@ -1841,7 +1851,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                     fontFamily: Font.Regular,
                                     color: Colors.DarkGrey,
                                   }}>
-                                  {item.name}
+                                  {i?.pname || i?.name}
                                 </Text>
                                 <Text
                                   style={{
@@ -1849,16 +1859,17 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                     fontFamily: Font.Regular,
                                     color: Colors.DarkGrey,
                                   }}>
-                                  {item.price}
+                                  {i.price}
                                 </Text>
                               </TouchableOpacity>
                             );
                           }
-                        }}></FlatList>
+                        })
+                      }
 
                     </View>
                     {
-                      (item.appointment_type != "Online") &&
+                      (item.appointment_type != "Online" || item.service_type == 'Lab') &&
                       <View
                         style={{
                           flexDirection: "row",
@@ -2042,9 +2053,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
                       isCamera={false}
                       isGallery={true}
                       isDocument={true}
-                      Camerapopen={() => { Camerapopen() }}
-                      openGalleryPicker={() => { openGalleryPicker() }}
-                      openDocumentPicker={() => { openDocumentPicker() }}
+                      Galleryopen={() => { openGalleryPicker() }}
+                      DocumentGalleryopen={() => { openDocumentPicker() }}
                       Canclemedia={() => {
                         setState({
                           mediamodal: false,
@@ -2090,10 +2100,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                       <>
                         <TouchableOpacity onPress={() => {
                           setState({
-                            imageType: 'provider_prescription',
                             mediamodal: true
-                          }, () => {
-
                           })
                         }}
 
@@ -2169,124 +2176,140 @@ export default AppointmentDetails = ({ navigation, route }) => {
                   </View>
                 </View>
               </View>
-
             </View>
-          </View>
-        </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
 
-      </View>
-    );
+        </View>
+      );
+    }
+    else {
+      return (
+        <View style={{ flex: 1 }}>
+          <ScreenHeader
+            onBackPress={() => {
+              navigation.goBack();
+            }}
+            leftIcon
+            rightIcon={false}
+            navigation={navigation}
+            title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+
+          <KeyboardAwareScrollView>
+
+            <RefreshControl
+              refreshing={classStateData.isLoading}
+              enabled />
+
+            <View style={{
+              width: windowWidth,
+              backgroundColor: Colors.White,
+              paddingHorizontal: s(11),
+              paddingVertical: vs(9),
+              marginTop: vs(7),
+            }}>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: '100%',
+                  paddingHorizontal: s(11),
+                }}>
+                <View style={{ width: "30%", }}>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={vs(50)} height={vs(50)} borderRadius={vs(50)} />
+                  </SkeletonPlaceholder>
+                </View>
+
+                <View style={{ justifyContent: 'center' }}>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                  </SkeletonPlaceholder>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                  </SkeletonPlaceholder>
+                  <SkeletonPlaceholder>
+                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                  </SkeletonPlaceholder>
+                </View>
+              </View>
+              <View style={{ width: '100%', height: 1.5, backgroundColor: Colors.backgroundcolor, marginTop: vs(7), marginBottom: vs(7) }}></View>
+
+              <View>
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 12) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                </SkeletonPlaceholder>
+
+                <View style={{ flexDirection: 'row', marginTop: vs(7) }}>
+
+                  <View style={{ flex: 1 }}>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                    </SkeletonPlaceholder>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                    </SkeletonPlaceholder>
+                  </View>
+
+                  <View style={{ flex: 1 }}>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                    </SkeletonPlaceholder>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                    </SkeletonPlaceholder>
+                  </View>
+
+                  <View style={{ flex: 1 }}>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                    </SkeletonPlaceholder>
+                    <SkeletonPlaceholder>
+                      <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
+                    </SkeletonPlaceholder>
+                  </View>
+
+                </View>
+
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 20) / 100} borderRadius={s(4)} marginTop={22} />
+                </SkeletonPlaceholder>
+
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 12) / 100} borderRadius={s(4)} marginTop={12} />
+                </SkeletonPlaceholder>
+
+
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 10) / 100} borderRadius={s(4)} marginTop={10} />
+                </SkeletonPlaceholder>
+
+
+                <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 40) / 100} borderRadius={s(4)} marginTop={20} />
+                </SkeletonPlaceholder>
+
+              </View>
+            </View>
+          </KeyboardAwareScrollView>
+
+        </View>
+      )
+    }
+
+  } catch (e) {
+    console.error({ e });
+    return <>
+      <ScreenHeader
+        onBackPress={() => {
+          navigation.goBack();
+        }}
+        leftIcon
+        rightIcon={false}
+        navigation={navigation}
+        title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
+        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+    </>
   }
-  else {
-    return (
-      <View style={{ flex: 1 }}>
-        <ScreenHeader
-          onBackPress={() => {
-            navigation.goBack();
-          }}
-          leftIcon
-          rightIcon={false}
-          navigation={navigation}
-          title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
-          style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-        <KeyboardAwareScrollView>
-          <RefreshControl
-            refreshing={classStateData.isLoading} />
-          <View style={{
-            width: windowWidth,
-            backgroundColor: Colors.White,
-            paddingHorizontal: s(11),
-            paddingVertical: vs(9),
-            marginTop: vs(7),
-          }}>
-
-            <View
-              style={{
-                flexDirection: "row",
-                width: '100%',
-                paddingHorizontal: s(11),
-              }}>
-              <View style={{ width: "30 do you get a note about okay girl? Hello hello hello%", }}>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={s(75)} height={s(75)} borderRadius={s(100)} />
-                </SkeletonPlaceholder>
-              </View>
-
-              <View style={{ justifyContent: 'center' }}>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                </SkeletonPlaceholder>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
-                </SkeletonPlaceholder>
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
-                </SkeletonPlaceholder>
-              </View>
-            </View>
-            <View style={{ width: '100%', height: 1.5, backgroundColor: Colors.backgroundcolor, marginTop: vs(7), marginBottom: vs(7) }}></View>
-
-            <View>
-              <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 12) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-              </SkeletonPlaceholder>
-
-              <View style={{ flexDirection: 'row', marginTop: vs(7) }}>
-
-                <View style={{ flex: 1 }}>
-                  <SkeletonPlaceholder>
-                    <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                  </SkeletonPlaceholder>
-                  <SkeletonPlaceholder>
-                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
-                  </SkeletonPlaceholder>
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <SkeletonPlaceholder>
-                    <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                  </SkeletonPlaceholder>
-                  <SkeletonPlaceholder>
-                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
-                  </SkeletonPlaceholder>
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <SkeletonPlaceholder>
-                    <SkeletonPlaceholder.Item width={(windowWidth * 10) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                  </SkeletonPlaceholder>
-                  <SkeletonPlaceholder>
-                    <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(5) }} />
-                  </SkeletonPlaceholder>
-                </View>
-
-              </View>
-
-              <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 20) / 100} borderRadius={s(4)} marginTop={22} />
-              </SkeletonPlaceholder>
-
-              <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 12) / 100} borderRadius={s(4)} marginTop={12} />
-              </SkeletonPlaceholder>
-
-
-              <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 10) / 100} borderRadius={s(4)} marginTop={10} />
-              </SkeletonPlaceholder>
-
-
-              <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item width={(windowWidth * 99) / 100} height={(windowWidth * 40) / 100} borderRadius={s(4)} marginTop={20} />
-              </SkeletonPlaceholder>
-
-            </View>
-          </View>
-        </KeyboardAwareScrollView>
-
-      </View>
-    )
-  }
-
-}
+} 

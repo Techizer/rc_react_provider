@@ -61,9 +61,10 @@ const VideoCall = (props) => {
   const [isMyVideoVisible, setIsMyVideoVisible] = useState(true);
   const [callType, setCallType] = useState(CallType.Unknown)
 
-  const { loginUserData } = useSelector(state => state.Auth)
+  const { loginUserData, lastScreen } = useSelector(state => state.Auth)
 
   useEffect(() => {
+    console.log({isp: props.route.params.item.ispage});
     if (props.route.params.item.ispage == "accept") {
       getIncomingCallTokenFromAPI('patient_to_doctor_video_call')
       setStatus(Statuses.Connecting)
@@ -86,13 +87,10 @@ const VideoCall = (props) => {
       try {
         twilioVideo.current.disconnect()
       } catch (error) {
-
       } finally {
         startCall()
       }
-
     }
-
   }, [token]);
 
   useEffect(() => {
@@ -138,21 +136,31 @@ const VideoCall = (props) => {
   };
 
   const getOutgoingCallTokenFromAPI = async (callType) => {
-    let user_details = loginUserData
-    let user_id = user_details['user_id']
+
+    console.log({callType});
 
     let apiname = "api-get-video-access-token-with-push-notification"
 
     let url = Configurations.baseURL + apiname;
 
     var data = new FormData();
-    data.append('fromUserId', user_id)
+    data.append('fromUserId', loginUserData?.user_id)
     data.append('fromUserName', props.route.params.item.provider_name)
     data.append('order_id', props.route.params.item.order_id)
-    data.append('room_name', "rootvideo_room_" + props.route.params.item.patient_id + "_" + user_id)
+    data.append('room_name', "rootvideo_room_" + props.route.params.item.patient_id + "_" + loginUserData?.user_id)
     data.append('toUserId', props.route.params.item.patient_id)
     data.append('toUserName', props.route.params.item.patient_name)
     data.append('type', callType)
+
+    console.log({
+      fromUserId: loginUserData?.user_id,
+      fromUserName: props.route.params.item.provider_name,
+      order_id: props.route.params.item.order_id,
+      room_name: "rootvideo_room_" + props.route.params.item.patient_id + "_" + loginUserData?.user_id,
+      toUserId: props.route.params.item.patient_id,
+      toUserName: props.route.params.item.patient_name,
+      type: callType
+    });
 
 
     API.post(url, data, 1).then((obj) => {
@@ -204,7 +212,13 @@ const VideoCall = (props) => {
   const endCall = () => {
     twilioVideo.current.disconnect();
     setTimeout(() => {
-      props.navigation.pop();
+      if (props.navigation) {
+        if (props.navigation.canGoBack()) {
+          props.navigation.goBack()
+        } else {
+          props.navigation.navigate(lastScreen)
+        }
+      }
     }, 1000);
   };
 
@@ -230,7 +244,13 @@ const VideoCall = (props) => {
     });
   };
 
-  const oponentImage = Configurations.img_url3 + props?.route?.params?.item?.oImage
+  console.log({imager: props?.route?.params?.item?.oImage});
+  console.log({imagev: callDetails?.Receiver?.message?.image});
+
+  
+
+  const oponentImage = Configurations.img_url3 + ((props?.route?.params?.item?.oImage != undefined && props?.route?.params?.item?.oImage != '') ? props?.route?.params?.item?.oImage: callDetails?.Receiver?.message?.image)
+  console.log({oponentImage});
   return (
     <View style={styles.container}>
 

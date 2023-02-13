@@ -123,14 +123,33 @@ export default Appointment = ({ navigation, route, pageName }) => {
     data.append('user_id', user_id)
     data.append('service_type', user_type)
 
-
+    console.log({apiname});
 
     API.post(url, data, 1).then((obj) => {
+      if (apiname == "api-provider-ongoing-appointment-list") {
+        console.log({
+          OngoingApps: obj
+        });
+      }
+      if (apiname == "api-provider-upcoming-appointment-list") {
+        console.log({
+          UpcomingApps: obj
+        });
+      }
       if (obj?.status == true) {
+        
         setState(
           prev => ({
             ...prev,
             appointments: obj?.result, message: obj?.message
+          })
+        )
+      }
+      else {
+        setState(
+          prev => ({
+            ...prev,
+            appointments: []
           })
         )
       }
@@ -248,7 +267,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: '90%',
-                    marginTop: windowHeight / 5.5
+                    marginTop: vs(40)
                   }}>
                     <Text style={{
                       fontFamily: Font.Regular,

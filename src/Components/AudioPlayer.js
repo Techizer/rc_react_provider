@@ -40,33 +40,40 @@ export const AudioPlayer = ({ url, style, repeatOnComponent, repeatOffComponent 
 
     const onSeek = (time) => {
         time = Math.round(time);
-        videoRef && videoRef.current.seek(time);
-        setCurrentPosition(time);
-        setPaused(false);
+        if (time != Math.round(currentPosition)) {
+            videoRef && videoRef.current.seek(time);
+            setCurrentPosition(time);
+        } else {
+            console.log('logging');
+        }
+        console.log({ Seektime: time });
+        console.log({ Position: currentPosition });
+
     };
 
     const fixDuration = (data) => {
+        console.log('fixDuration');
         setLoading(false);
         setTotalLength(Math.floor(data.duration));
     };
 
     const setTime = (data) => {
-        // console.log('setTime');
+        // console.log('setTime', data.currentTime);
         setCurrentPosition(Math.floor(data.currentTime) + 0.1);
     };
 
     const togglePlay = () => {
-        setPaused(!paused);
+        setPaused(p => !p);
     };
 
     const toggleRepeat = () => {
-        setRepeat(!repeat);
+        setRepeat(p => !p);
     };
 
     const toggleVolumeControl = () => {
-        setVolumeTimer(!volumeControl);
+        setVolumeTimer(p => !p);
         LayoutAnimation.easeInEaseOut();
-        setVolumeControl(!volumeControl);
+        setVolumeControl(p => !p);
     };
 
     const setVolumeTimer = (setTimer = true) => {
@@ -94,29 +101,49 @@ export const AudioPlayer = ({ url, style, repeatOnComponent, repeatOffComponent 
         }, 350);
     };
 
+    const ta = ('' + url).split('.')
+    const format = ta[ta.length-1]
+
     return (
         <View style={[style && style, {
 
             paddingBottom: 16
         }]}>
             <Video
-                // source={{ uri: 'https://file-examples.com/storage/fe863385e163e3b0f92dc53/2017/11/file_example_MP3_700KB.mp3' }}
-                source={{ uri: url }}
+                // source={{ uri: 'https://file-examples.com/storage/fe3f7d476663e91319de1d9/2017/11/file_example_MP3_700KB.mp3' }}
+                
+                source={{ uri: url, 
+                    type: format ,
+                    headers: {
+                        'Content-Range': 'bytes 0-1053886/1053887'
+                    }
+                }}
                 ref={videoRef}
-                playInBackground={false}
-                audioOnly={true}
+                playInBackground={true}
+                // audioOnly={true}
                 playWhenInactive={false}
                 paused={paused}
                 onEnd={resetAudio}
                 onLoad={fixDuration}
+                
                 onLoadStart={() => setLoading(true)}
+                onError={(error) => {
+                    console.log({error: error});
+                }}
+                allowsExternalPlayback={true}
                 onProgress={setTime}
                 volume={volume}
                 repeat={false}
                 style={{ height: 0, width: 0 }}
+                bufferConfig={{
+                    minBufferMs: 1000
+                }}
+                
+                
+                
             />
 
-            <View style={{  }}>
+            <View style={{}}>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
@@ -150,10 +177,13 @@ export const AudioPlayer = ({ url, style, repeatOnComponent, repeatOffComponent 
                         <Slider
                             style={styles.slider}
                             minimumValue={0}
-                            maximumValue={Math.max(totalLength, 1, currentPosition)}
+                            maximumValue={Math.max(totalLength)}
                             minimumTrackTintColor={Colors.Theme}
                             maximumTrackTintColor={'grey'}
-                            onSlidingComplete={onSeek}
+                            onSlidingComplete={(time) => {
+                                onSeek(time)
+                            }}
+                            allowsExternalPlayback={true}
                             value={currentPosition}
                         />
 

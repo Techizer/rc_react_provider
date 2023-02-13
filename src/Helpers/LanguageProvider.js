@@ -155,7 +155,7 @@ class LanguageProvider {
 
   savebtntext = ['SAVE', 'حفظ  ']
   yes_txt = ['Yes', 'نعم ']
-  no_txt = ['NO', 'لا ']
+  no_txt = ['No', 'لا ']
   yes_txt_new = ['Yes', 'Yes']
   no_txt_new = ['No', 'No']
   //lifestyle

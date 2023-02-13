@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, Modal, Dimensions } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, Modal, Dimensions, Alert } from 'react-native';
 import { Colors, Font, MessageFunctions, Configurations, LanguageConfiguration, API } from '../Helpers/Utils';
 import { DrawerActions } from '@react-navigation/native';
 import { s, vs } from 'react-native-size-matters';
@@ -60,10 +60,6 @@ export default Drawer = ({ navigation, route }) => {
       });
   }
 
-  const confirm_click = async () => {
-    logoutApi()
-  }
-
   const logout = async () => {
     dispatch(onUserLogout())
     setState({ show: false })
@@ -76,7 +72,7 @@ export default Drawer = ({ navigation, route }) => {
     var data = new FormData();
     data.append('user_id', loginUserData?.user_id)
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
         setTimeout(() => {
           logout()
@@ -378,9 +374,20 @@ export default Drawer = ({ navigation, route }) => {
             <DrawerItemContainer
               leftIcon={DrawerIcons.Logout}
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
-                setState({ modalVisible: false })
-                confirm_click()
+                Alert.alert(
+                  'Logout',
+                  'Do you want to logout', [{
+                    text: LanguageConfiguration.no_txt[Configurations.language],
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: LanguageConfiguration.no_txt[Configurations.language],
+                  }, {
+                    text: LanguageConfiguration.yes_txt[Configurations.language],
+                    onPress: () => {
+                      logoutApi()
+                    }
+                  }], {
+                  cancelable: false
+                });
               }}
               title={LanguageConfiguration.Logout[Configurations.language]}
               titleStyle={{
@@ -392,85 +399,6 @@ export default Drawer = ({ navigation, route }) => {
 
 
           </View>
-
-
-
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={classStateData.modalVisible}
-            onRequestClose={() => {
-              setState({ modalVisible: false });
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => {
-                // setState({ modalVisible3: false })
-              }}
-              style={{
-                backgroundColor: "#00000080",
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 20,
-                marginTop: -50,
-              }}
-            >
-
-              <View
-                style={{
-                  borderRadius: 20,
-                  width: (windowWidth * 90) / 100,
-                  position: "absolute",
-                  alignSelf: "center",
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: "#fff",
-                    borderRadius: 2,
-                    width: "100%",
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-around",
-                      width: "40%",
-                      paddingBottom: (windowWidth * 5) / 100,
-                      marginTop: (windowWidth * 9) / 100,
-                      alignSelf: "flex-end",
-                      right: 10,
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setState({ modalVisible: false }),
-                          confirm_click();
-                      }}
-                      activeOpacity={0.8}
-                      style={{
-                        height: (windowWidth * 10) / 100,
-                        width: (windowWidth * 40) / 100,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: Font.Regular,
-                          fontSize: (windowWidth * 4) / 100,
-                          color: Colors.Blue,
-                          alignSelf: "center",
-                        }}
-                      >
-                        {LanguageConfiguration.Logout[Configurations.language]}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </Modal>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -45,6 +45,7 @@ export default Signup = ({ navigation, route }) => {
     country_short_code: '',
     showUsertype: false,
     showSpeciality: false,
+    isLoadingInButton: false,
     imageType: '',
     userType: [{
       title: "Nurse",
@@ -288,6 +289,10 @@ export default Signup = ({ navigation, route }) => {
       }
     }
 
+    setState({
+      isLoadingInButton: true
+    })
+
     let url = Configurations.baseURL + "api-service-provider-registration";
     console.log("url", url)
     var phone_number_send = classStateData.country_code + classStateData.mobile
@@ -345,7 +350,7 @@ export default Signup = ({ navigation, route }) => {
       data.append('scfhs_image', "")
     }
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
 
       console.log('obj mess', obj.message)
       if (obj.status == true) {
@@ -364,7 +369,11 @@ export default Signup = ({ navigation, route }) => {
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-    });
+    }).finally(() => {
+      setState({
+        isLoadingInButton: false
+      })
+    })
 
   }
 
@@ -461,6 +470,8 @@ export default Signup = ({ navigation, route }) => {
     console.log("url", url)
 
     API.get(url, 1).then((obj) => {
+
+      console.log({ Countryarr: obj.result });
 
       if (obj.status == true) {
         setState({ Countryarr: obj.result, country_name: obj.result[0].name, country_code: obj.result[0].country_code, country_short_code: obj.result[0].country_short_code })
@@ -2026,6 +2037,7 @@ export default Signup = ({ navigation, route }) => {
             <Button
               text={LanguageConfiguration.btntext[Configurations.language]}
               onPress={() => signup_click()}
+              onLoading={classStateData.isLoadingInButton}
             />
 
             <View

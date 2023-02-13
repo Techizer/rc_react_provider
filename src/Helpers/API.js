@@ -1,5 +1,6 @@
 import NetInfo from '@react-native-community/netinfo';
 
+import * as Sentry from '@sentry/react-native';
 class ApiContainer {
   get = async (url, loding_status = 0) => {
     return new Promise((resolve, reject) => {
@@ -29,6 +30,18 @@ class ApiContainer {
               if (loding_status == 0) {
                 global.props.hideLoader();
               }
+              
+              Sentry.captureException({
+                Key: 'PROVIDER-APP-API-ISSUES',
+                Url: url,
+                Type: 'GET',
+                Payload: null,
+                PayloadType: 'JSON String - Please Parse',
+                DateTime: 'ISO DateTime: ' + new Date().toISOString(),
+                ApiError: error,
+                ContentType: null
+              })
+
               reject(error);
             });
         } else {
@@ -73,6 +86,18 @@ class ApiContainer {
               if (loding_status == 0) {
                 global.props.hideLoader();
               }
+
+              Sentry.captureException({
+                Key: 'PROVIDER-APP-API-ISSUES',
+                Url: url,
+                Type: 'POST',
+                ContentType: 'application/json',
+                Payload: JSON.stringify(data),
+                PayloadType: 'JSON String - Please Parse',
+                DateTime: 'ISO DateTime: ' + new Date().toISOString(),
+                ApiError: error
+              })
+
               reject(error);
             });
         } else {
@@ -115,6 +140,16 @@ class ApiContainer {
               if (loding_status == 0) {
                 global.props.hideLoader();
               }
+              Sentry.captureException({
+                Key: 'PROVIDER-APP-API-ISSUES',
+                Url: url,
+                Type: 'POST',
+                ContentType: 'multipart/form-data',
+                Payload: JSON.stringify(data),
+                PayloadType: 'JSON String - Please Parse',
+                DateTime: 'ISO DateTime: ' + new Date().toISOString(),
+                ApiError: error
+              })
               reject(error);
             });
         } else {

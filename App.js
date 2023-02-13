@@ -20,13 +20,10 @@ import { Settings } from 'react-native-fbsdk-next';
 import analytics from '@react-native-firebase/analytics';
 
 Sentry.init({
-  dsn: 'https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192',
-  enableNative: false,
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      tracingOrigins: ["localhost", Configurations.baseURL, /^\//],
-    }),
-  ],
+  dsn: "https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192",
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
 });
 
 global.MapAddress = 'NA';
@@ -56,24 +53,7 @@ const App = (props) => {
 
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer ref={navigationRef}
-      onReady={() => {
-        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
-      }}
-      onStateChange={async () => {
-        const previousRouteName = routeNameRef.current;
-        const currentRouteName = navigationRef.current.getCurrentRoute().name;
-
-        if (previousRouteName !== currentRouteName) {
-          await analytics().logScreenView({
-            screen_name: currentRouteName,
-            screen_class: currentRouteName,
-            app: 'Provider',
-            mode: __DEV__ ? 'Development': 'Production',
-          });
-        }
-        routeNameRef.current = currentRouteName;
-      }}>
+        
           <ApplicationContainerWrapper {...props}>
             <AppConsumer>
               {funcs => {
@@ -94,7 +74,6 @@ const App = (props) => {
             // }}
             />
           </ApplicationContainerWrapper>
-        </NavigationContainer>
       </PersistGate>
     </Provider>
 

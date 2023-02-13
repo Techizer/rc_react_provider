@@ -32,10 +32,13 @@ import OTP from '../Screens/OTP';
 import ServiceAddress from '../Screens/ServiceAddress';
 import { ScreenReferences } from './ScreenReferences';
 import { useDispatch } from 'react-redux';
-import { onUserLogout } from '../Redux/Actions/UserActions';
+import { onUserLogout, setLastScreen } from '../Redux/Actions/UserActions';
 import { localStorage } from '../Provider/localStorageProvider';
+import { NavigationContainer } from '@react-navigation/native';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+// throw new Error("Sentry Testing - 13th February 2023 - RootScare Developers!");
 
 function Mydrawer() {
   return (
@@ -91,139 +94,148 @@ const Stacknav = navigation => {
     return () => appStateSubscription.remove()
   }, [])
   return (
-    <Stack.Navigator initialRouteName={ScreenReferences.Splash}>
+    <NavigationContainer onStateChange={(r) => {
+      let sName = r.routes[r.index].name
+      if (sName != ScreenReferences.VideoCall) {
 
-      <Stack.Screen
-        name={ScreenReferences.Splash}
-        component={Splash}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        dispatch(setLastScreen(sName))
+      }
+      console.log(sName);
+    }}>
+      <Stack.Navigator initialRouteName={ScreenReferences.Splash}>
 
-      <Stack.Screen
-        name={ScreenReferences.AppointmentDetails}
-        component={AppointmentDetails}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.NeedSupport}
-        component={NeedSupport}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.Notifications}
-        component={Notifications}
-        options={{ headerShown: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.Splash}
+          component={Splash}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.ForgotPassword}
-        component={ForgetPassword}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.TermsAndConditions}
-        component={TermsAndConditions}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.AppointmentDetails}
+          component={AppointmentDetails}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.NeedSupport}
+          component={NeedSupport}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.Notifications}
+          component={Notifications}
+          options={{ headerShown: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.Login}
-        component={Login}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.Signup}
-        component={Signup}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.ShowProfile}
-        component={MyProfile}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.EditProfile}
-        component={EditProfile}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.Home}
-        component={Mydrawer}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.VideoCall}
-        component={VideoCall}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.AppointmentTabStack}
-        component={Appointments}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.AvailabilityScheduleTabStack}
-        component={AvailabilitySchedule}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.PriceListTabStack}
-        component={PriceList}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.ServiceAddress}
-        component={ServiceAddress}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.SearchPlace}
-        component={SearchPlace}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name={ScreenReferences.LabPackageDetails}
-        component={LabPackageDetails}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.ForgotPassword}
+          component={ForgetPassword}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.TermsAndConditions}
+          component={TermsAndConditions}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.TransactionTabStack}
-        component={Transaction}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.Login}
+          component={Login}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.Signup}
+          component={Signup}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.ShowProfile}
+          component={MyProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.EditProfile}
+          component={EditProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.Home}
+          component={Mydrawer}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.VideoCall}
+          component={VideoCall}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.AppointmentTabStack}
+          component={Appointments}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.AvailabilityScheduleTabStack}
+          component={AvailabilitySchedule}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.PriceListTabStack}
+          component={PriceList}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.ServiceAddress}
+          component={ServiceAddress}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.SearchPlace}
+          component={SearchPlace}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name={ScreenReferences.LabPackageDetails}
+          component={LabPackageDetails}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.Withdrawal}
-        component={Withdrawal}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.TransactionTabStack}
+          component={Transaction}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.AddBankInformation}
-        component={AddBankInformation}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.Withdrawal}
+          component={Withdrawal}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.ReviewRating}
-        component={ReviewRating}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.AddBankInformation}
+          component={AddBankInformation}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.More}
-        component={More}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.ReviewRating}
+          component={ReviewRating}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-      <Stack.Screen
-        name={ScreenReferences.OTP}
-        component={OTP}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+        <Stack.Screen
+          name={ScreenReferences.More}
+          component={More}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
-    </Stack.Navigator>
+        <Stack.Screen
+          name={ScreenReferences.OTP}
+          component={OTP}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 export default Stacknav;

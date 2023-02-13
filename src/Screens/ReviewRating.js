@@ -180,10 +180,10 @@ export default ReviewRating = ({ navigation, route }) => {
                   backgroundColor: Colors.white_color,
                   marginTop: (mobileW * 2) / 100,
                   backgroundColor: '#fff',
-                  shadowOpacity: 0.3,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 1, height: 1 },
-                  elevation: 5,
+                  // shadowOpacity: 0.3,
+                  // shadowColor: '#000',
+                  // shadowOffset: { width: 1, height: 1 },
+                  // elevation: 5,
                 }}>
 
                 <View style={{

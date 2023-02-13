@@ -106,11 +106,9 @@ const LabPackageDetails = ({ navigation, route }) => {
 
 
     API.post(url, data).then((obj) => {
-
-      // workAreasetState({ appoinment_detetails: '' })
       if (obj.status == true) {
+        console.log({UpdatedLabPackage: obj});
         MessageFunctions.showSuccess(obj.message)
-        // route.params.reloadPackList()
       } else {
         MessageFunctions.showError(obj.message)
         console.log('obj.result', obj.result)

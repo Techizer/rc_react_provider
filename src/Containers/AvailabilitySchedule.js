@@ -717,7 +717,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                 paddingLeft: 15,
                                 paddingRight: 15,
                                 marginBottom: 5
-                              }}>
+                              }} key={'slott' + index} >
                                 <View style={{
                                   flexDirection: 'row',
                                   alignItems: 'center',

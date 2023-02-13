@@ -4,7 +4,7 @@ import { Colors, Font, Configurations, LanguageConfiguration } from '../Helpers/
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-export default CameraGallery = ({ navigation, route, mediamodal, Canclemedia, isCamera, Camerapopen, isGallery, Galleryopen, isDocument, DocumentGalleryopen }) => {
+export default CameraGallery = ({ navigation, route, mediamodal, Canclemedia, isCamera, Camerapopen = () => {}, isGallery, Galleryopen = () => {}, isDocument, DocumentGalleryopen = () => {} }) => {
 
     const [modalVisible, setModalVisible] = useState()
 
