@@ -9,7 +9,6 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default Notifications = ({ navigation, route }) => {
   const [classStateData, setClassStateData] = useState({
-    notificationID: '',
     notifications: [],
     isModalVisible: false,
     body: '',
@@ -25,7 +24,7 @@ export default Notifications = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    getNotifications(0)
+    getNotifications(true)
   }, [])
 
 
@@ -34,7 +33,12 @@ export default Notifications = ({ navigation, route }) => {
   } = useSelector(state => state.Auth)
 
 
-  const getNotifications = async () => {
+  const getNotifications = async (loader = false) => {
+    if (loader && !classStateData.isLoading) {
+      setState({
+        isLoading: true
+      })
+    }
     let user_details = loginUserData
     let user_id = user_details['user_id']
     let apishow = "api-get-all-notification"
@@ -65,7 +69,7 @@ export default Notifications = ({ navigation, route }) => {
 
   }
 
-  const updateNotification = async () => {
+  const updateNotification = async (notificationID, isAlreadyRead = 1) => {
     let user_details = loginUserData
     let user_id = user_details['user_id']
     let apishow = "api-update-notification"
@@ -74,27 +78,19 @@ export default Notifications = ({ navigation, route }) => {
     console.log("url", url)
 
     var data = new FormData();
-    data.append('id', classStateData.notificationID)
-    data.append('read', 1)
+    data.append('id', notificationID)
+    data.append('read', isAlreadyRead)
 
     API.post(url, data, 1).then((obj) => {
-
-
-      getNotifications(1);
+      getNotifications(false);
       if (obj.status == true) {
-        // setTimeout(() => {
-
-        //  },100);
 
       } else {
-
-        setState({ appoinment_detetails: obj.result, message: obj.message })
         console.log('obj.result', obj.result)
         return false;
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-
     });
 
   }
@@ -179,17 +175,15 @@ export default Notifications = ({ navigation, route }) => {
                 renderItem={({ item, index }) => {
 
                   return (
-                    <TouchableOpacity activeOpacity={0.9} onPress={() => { updateNotification(), setState({ body: item.body, notificationID: item.id, isModalVisible: true }) }}
+                    <TouchableOpacity activeOpacity={0.9} onPress={async () => {
+                      setState({ body: item.body, isModalVisible: true })
+                      await updateNotification(item.id)
+                    }}
                       style={{
                         flexDirection: 'row',
                         backgroundColor: Colors.white_color,
                         marginTop: (mobileW * 2) / 100,
                         backgroundColor: '#fff',
-                        // shadowOpacity: 0.3,
-                        // shadowColor: '#000',
-                        // shadowOffset: { width: 1, height: 1 },
-                        // elevation: 5,
-                        //   paddingtop: (mobileW * 3) / 100,
                       }}>
                       <View
                         style={[{
@@ -251,57 +245,57 @@ export default Notifications = ({ navigation, route }) => {
             }
           </> :
           <>
-          <FlatList
-            data={['', '', '', '', '', '', '', '', '', '', '']}
-            // contentContainerStyle={{  paddingBottom: insets.bottom }}
-            renderItem={({ item, index }) => {
-              return (
-                <View style={{
-                  // height: vs(100),
-                  width: windowWidth,
-                  backgroundColor: Colors.White,
-                  paddingHorizontal: s(11),
-                  paddingVertical: vs(9),
-                  marginTop: vs(7),
-                }}>
+            <FlatList
+              data={['', '', '', '', '', '', '', '', '', '', '']}
+              // contentContainerStyle={{  paddingBottom: insets.bottom }}
+              renderItem={({ item, index }) => {
+                return (
+                  <View style={{
+                    // height: vs(100),
+                    width: windowWidth,
+                    backgroundColor: Colors.White,
+                    paddingHorizontal: s(11),
+                    paddingVertical: vs(9),
+                    marginTop: vs(7),
+                  }}>
 
-                  <View
-                    style={{
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: 'center',
+                        width: "100%",
+                        alignSelf: "center",
+                        borderBottomWidth: 1.5,
+                        borderBottomColor: Colors.backgroundcolor,
+                        paddingBottom: vs(5)
+                      }} >
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 7) / 100} height={(windowWidth * 7) / 100} borderRadius={s(20)} />
+                      </SkeletonPlaceholder>
+
+                      <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item width={(windowWidth * 70) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginLeft: s(15) }} />
+                      </SkeletonPlaceholder>
+                    </View>
+
+                    <View style={{
                       flexDirection: "row",
                       alignItems: 'center',
                       width: "100%",
                       alignSelf: "center",
-                      borderBottomWidth: 1.5,
-                      borderBottomColor: Colors.backgroundcolor,
-                      paddingBottom: vs(5)
-                    }} >
-                    <SkeletonPlaceholder>
-                      <SkeletonPlaceholder.Item width={(windowWidth * 7) / 100} height={(windowWidth * 7) / 100} borderRadius={s(20)} />
-                    </SkeletonPlaceholder>
-
-                    <SkeletonPlaceholder>
-                      <SkeletonPlaceholder.Item width={(windowWidth * 70) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{marginLeft:s(15)}} />
-                    </SkeletonPlaceholder>
-                  </View>
-
-                  <View style={{
-                    flexDirection: "row",
-                    alignItems: 'center',
-                    width: "100%",
-                    alignSelf: "center",
-                    marginTop: vs(7),
-                  }}>
+                      marginTop: vs(7),
+                    }}>
 
                       <SkeletonPlaceholder>
                         <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
                       </SkeletonPlaceholder>
 
-                    
+
+                    </View>
                   </View>
-                </View>
-              );
-            }}
-          />
+                );
+              }}
+            />
           </>
       }
 

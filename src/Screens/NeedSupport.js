@@ -219,8 +219,8 @@ export default NeedSupport = ({ navigation, route }) => {
                 source={require('../Assets/Icons/ryt_opp.png')}></Image>
             }
             <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, }}>{LanguageConfiguration.thank[Configurations.language]}</Text>
-            <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign }}>{LanguageConfiguration.success[Configurations.language]}</Text>
-            <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, color: Colors.textgray }}>{LanguageConfiguration.text_of_modal[Configurations.language]}</Text>
+            <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign }}>{'Support ticket posted'}</Text>
+            <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, color: Colors.textgray }}>{'Your support ticket is under review by Rootscare resolution team. You will soon receive notification on the status.'}</Text>
 
             <TouchableOpacity onPress={() => {
               setState({ successmodal: false }), navigation.goBack();

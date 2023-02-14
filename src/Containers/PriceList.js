@@ -42,8 +42,6 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
     let currency_symbol = user_details['currency_symbol']
-
-    console.log('pageName:: ', pageName);
     setState({
       currency_symbol: currency_symbol,
       isLoading: true
@@ -139,7 +137,6 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-    console.log('pageName:: ', pageName);
 
     setState({
       isLoadingInPostButton: true
@@ -173,7 +170,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
     data.append('task_id', taskId)
     data.append('price', taskPrice)
 
-
+    console.log('PriceListData is', data);
 
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {

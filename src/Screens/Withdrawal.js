@@ -281,7 +281,7 @@ export default Withdrawal = ({ navigation, route }) => {
                   fontFamily: Font.Regular,
                   fontSize: 16,
                   textTransform: 'capitalize'
-                }}>Withdrawal List Not Found.</Text>
+                }}>No Withdrawals Found</Text>
               </View>
             )}
             ItemSeparatorComponent={() => (

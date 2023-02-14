@@ -11,6 +11,7 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserLoginData } from '../Redux/Actions/UserActions';
+import { vs } from 'react-native-size-matters';
 
 const bloodModal_arr = [
   {
@@ -352,8 +353,11 @@ export default EditProfile = ({navigation, route}) => {
     });
   }, [])
 
-  const setState = payload => {
+  const setState = (payload, resolver = () => {}) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
+    if (resolver) {
+      resolver()
+    }
   }
 
   
@@ -803,44 +807,6 @@ export default EditProfile = ({navigation, route}) => {
     console.log("url", url)
     var phone_number_send = classStateData.country_code + classStateData.mobile
     var data = new FormData();
-
-
-    // {"service _type":"nurse",
-    // "user_id":"39",
-    // "email":"sunidhi@gmail.com",
-    // "first_name": "Sramana",
-    // "last_name": "",
-    // "speciality":"Trainee Nurse",
-    // "image": "profile7.jpg",
-    //  "phone_number": "9636323627",
-    //  "dob": "1999-03-16",
-    //  "gender": "Female",
-    //  "id_number": "00000",
-    //  "id_image": "imagename",
-    //  "description":"Content" 
-    //  "experience": "10", 
-    //  "certificate": image,
-    //  "qualification":"MA",
-    //  "scfhs_number":"00000",
-    //  "scfhs_image":"imagename"}
-
-    // name: result['first_name'],
-    // email: result['email'],
-    // emailfocusget: true,
-    // user_id: result['user_id'],
-    // country_code: result['country_code'],
-    // work_area: result['work_area'],
-    // address: result['address'],
-    // description: result['description'],
-    // id_number: result['id_number'],
-    // speciality: result['speciality'],
-    // qualification: result['qualification'],
-    // experience: result['experience'],
-    // scfhs_number: result['scfhs_number'],
-    // id_image: { filename: result['id_image'] },
-    // certificate: { filename: result['qualification_certificate'] },
-    // scfhs_image: { filename: result['scfhs_image'] },
-
 
     data.append('user_id', user_id)
     data.append("service_type", classStateData.user_type)
@@ -2117,11 +2083,10 @@ export default EditProfile = ({navigation, route}) => {
           notiCount={classStateData.notification_count > 0 ? classStateData.notification_count : false}
           title={LanguageConfiguration.EditProfile[Configurations.language]}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-        <ScrollView
-          style={{ backgroundColor: 'white', marginTop: 10 }}
-          contentContainerStyle={{ paddingBottom: mobileW * 15 / 100 }}
-          showsVerticalScrollIndicator={false}>
-          <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView style={{
+          backgroundColor: Colors.White,
+          paddingBottom: vs(8)
+        }}>
             {/* //----------------------------------------------------------------------------tab */}
             <CameraGallery mediamodal={classStateData.mediamodal}
               isCamera={true}
@@ -2131,122 +2096,6 @@ export default EditProfile = ({navigation, route}) => {
               Galleryopen={() => { Galleryopen() }}
               Canclemedia={() => { setState({ mediamodal: false }) }}
             />
-            {/* <View
-                style={{
-                  backgroundColor: "#F1F2F4",
-                  width: '100%',
-
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setState({ pbtn: true, mbtn: false, lbtn: false });
-                  }}
-                  style={{ width: '33%', alignSelf: 'center', }}>
-                  <View style={{ width: '100%', }}>
-                    <Text
-                      style={
-                        classStateData.pbtn == true
-                          ? {
-                            color: Colors.textblue,
-
-                            fontFamily: Font.blackheadingfontfamily,
-                            fontSize: Font.tabtextsize,
-                            textAlign: Configurations.textalign,
-                            alignSelf: 'center',
-                            paddingVertical: (mobileW * 3) / 100,
-                          }
-                          : {
-                            color: Colors.tablightcolo,
-                            fontFamily: Font.blackheadingfontfamily,
-                            fontSize: Font.tabtextsize,
-                            textAlign: Configurations.textalign,
-                            alignSelf: 'center',
-                          }
-                      }>
-                      {LanguageConfiguration.tabnameprofile[Configurations.language]}
-                    </Text>
-
-
-                    <View style={classStateData.pbtn == true ? { width: mobileW * 28 / 100, alignSelf: 'center', borderWidth: 2.2, borderColor: Colors.bordercolorblue, borderTopLeftRadius: mobileW * 2 / 100, borderTopRightRadius: mobileW * 2 / 100, backgroundColor: Colors.bordercolorblue, alignSelf: 'center' } : { width: mobileW * 30 / 100, alignSelf: 'center', borderColor: Colors.tab_background_color, borderWidth: 2.5 }}></View>
-
-                  </View>
-
-
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setState({ pbtn: false, mbtn: true, lbtn: false });
-                  }}
-                  style={{ width: '33%' }}>
-                  <View style={{ width: '100%' }}>
-                    <Text
-                      style={
-                        classStateData.mbtn == true
-                          ? {
-                            color: Colors.textblue,
-
-                            fontFamily: Font.blackheadingfontfamily,
-                            fontSize: Font.tabtextsize,
-                            textAlign: Configurations.textalign,
-                            alignSelf: 'center',
-                            paddingVertical: (mobileW * 3) / 100,
-                          }
-                          : {
-                            color: Colors.tablightcolo,
-                            fontFamily: Font.blackheadingfontfamily,
-                            fontSize: Font.tabtextsize,
-                            textAlign: Configurations.textalign,
-                            alignSelf: 'center',
-                          }
-                      }>
-                      {LanguageConfiguration.tabnamemedical[Configurations.language]}
-                    </Text>
-                    <View style={classStateData.mbtn == true ? { width: mobileW * 28 / 100, alignSelf: 'center', borderWidth: 2.2, borderColor: Colors.bordercolorblue, borderTopLeftRadius: mobileW * 2 / 100, borderTopRightRadius: mobileW * 2 / 100, backgroundColor: Colors.bordercolorblue, alignSelf: 'center' } : { width: mobileW * 30 / 100, alignSelf: 'center', borderColor: Colors.tab_background_color, borderWidth: 2.5 }}></View>
-
-
-
-                  </View>
-
-
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setState({ pbtn: false, mbtn: false, lbtn: true });
-                  }}
-                  style={{ width: '33%' }}>
-                  <View style={{ width: '100%', }}>
-                    <Text
-                      style={
-                        classStateData.lbtn == true
-                          ? {
-                            color: Colors.textblue,
-
-                            fontFamily: Font.blackheadingfontfamily,
-                            fontSize: Font.tabtextsize,
-                            textAlign: Configurations.textalign,
-                            alignSelf: 'center',
-                            paddingVertical: (mobileW * 3) / 100,
-                          }
-                          : {
-                            color: Colors.tablightcolo,
-                            fontFamily: Font.blackheadingfontfamily,
-                            fontSize: Font.tabtextsize,
-                            textAlign: Configurations.textalign,
-                            alignSelf: 'center',
-                          }
-                      }>
-                      {LanguageConfiguration.tabnamelifestyle[Configurations.language]}
-                    </Text>
-                  </View>
-
-                  <View style={classStateData.lbtn == true ? { width: mobileW * 28 / 100, alignSelf: 'center', borderWidth: 2.2, borderColor: Colors.bordercolorblue, borderTopLeftRadius: mobileW * 2 / 100, borderTopRightRadius: mobileW * 2 / 100, backgroundColor: Colors.bordercolorblue, alignSelf: 'center' } : { width: mobileW * 30 / 100, alignSelf: 'center', borderColor: Colors.tab_background_color, borderWidth: 2.5 }}></View>
-                </TouchableOpacity>
-              </View> */}
-
 
             {/* -------------------------------personal-------------------------- */}
             {classStateData.pbtn == true && (
@@ -4830,7 +4679,6 @@ export default EditProfile = ({navigation, route}) => {
               </View>
             )}
           </KeyboardAwareScrollView>
-        </ScrollView>
       </View>
 
     </View>

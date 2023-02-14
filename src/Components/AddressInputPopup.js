@@ -13,7 +13,7 @@ import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
 import { TextInput } from "react-native-paper";
 
-const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () => { },
+const AddressInputPopup = ({ visible, onRequestClose, type='addAddress', editedAddress = () => { },
     navigation,
     addressIDParam = -1,
     addressTitleParam = '',
@@ -110,6 +110,8 @@ const AddressInputPopup = ({ visible, onRequestClose, type, editedAddress = () =
 
 
         setIsLoading(true)
+
+        console.log('addData...',data);
         API
             .post(url, data, 1)
             .then((obj) => {

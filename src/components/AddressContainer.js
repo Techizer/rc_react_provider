@@ -56,15 +56,15 @@ const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = 
                                 <SvgXml xml={Address} />
                             </View>
 
-                            <View style={{ width: '36%' }}>
+                            <View style={{ width: '43%' }}>
                                 <Text numberOfLines={1} style={{ textAlign: Configurations.textRotate, fontSize: Font.medium, fontFamily: Font.Regular, color: Colors.darkText }}>{addressDetails.title ? addressDetails.title : 'Unnamed'}</Text>
                             </View>
 
-                            <View style={{ width: '47%', }}>
+                            <View style={{ width: '40%', }}>
                                 {
                                     (addressDetails.default === '0') &&
                                     (
-                                        <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', width: '33%', margin: vs(2) }}>
+                                        <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', width: '40%', margin: vs(2) }}>
                                             <SvgXml xml={roundCheck} />
                                             <Text style={{ textAlign: Configurations.textRotate, fontSize: Font.xsmall, fontFamily: Font.Medium, color: Colors.theme_color }}>{'Default'}</Text>
                                         </View>

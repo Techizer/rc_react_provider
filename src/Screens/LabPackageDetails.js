@@ -16,6 +16,7 @@ import {
 import Styles from "../Styles";
 import { Icons } from "../Assets/Icons/IReferences";
 import { useSelector } from "react-redux";
+import { vs } from "react-native-size-matters";
 
 const LabPackageDetails = ({ navigation, route }) => {
   const { packageId, providerId } = route.params;
@@ -285,7 +286,9 @@ const LabPackageDetails = ({ navigation, route }) => {
                     }}
                   />
                   {labDetailsData.task_content != null && (
-                    <>
+                    <View style={{
+                      marginVertical: vs(16)
+                    }}>
                       <Text
                         style={{
                           fontFamily: Font.Regular,
@@ -310,15 +313,15 @@ const LabPackageDetails = ({ navigation, route }) => {
                           },
                         }}
                       />
-                    </>
+                    </View>
                   )}
                   {labDetailsData.task_sub_content != null && (
                     <View
-                      style={{
-                        width: "100%",
-                        alignSelf: "flex-start",
-                        backgroundColor: "#FFF2D9",
-                      }}
+                    style={{
+                      width: "100%",
+                      alignSelf: "flex-start",
+                      backgroundColor: "#FFF2D9",
+                    }}
                     >
                       <Text
                         style={{
@@ -328,6 +331,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                           paddingHorizontal: (mobileW * 4) / 100,
                           marginTop: (mobileW * 2) / 100,
                           textAlign: Configurations.textRotate,
+                          paddingVertical: vs(4),
                         }}
                       >
                         {labDetailsData.task_sub_heading}
@@ -341,6 +345,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                             color: Colors.lightgraytext,
                             marginTop: (mobileW * 2) / 100,
                             fontFamily: Font.Regular,
+                            paddingBottom: vs(16)
                           },
                         }}
                       />

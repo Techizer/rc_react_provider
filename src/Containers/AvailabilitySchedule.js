@@ -112,6 +112,16 @@ const timeArray = [
   { value: '11:30 PM' }
 ]
 
+const BookingStatus = {
+  Accept: '0',
+  Hide: '1'
+}
+
+const DaysEnability = {
+  On: '1',
+  Off: '0'
+}
+
 export default AvailabilitySchedule = ({ navigation, route, page }) => {
   const [state, setState] = useState({
     modalVisible: false,
@@ -120,11 +130,11 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     flag: true,
     accept: true,
     hide: false,
-    accept_booking: '0',
-    service_address: "",
-    service_lat: "",
-    service_long: "",
-    service_radius: "",
+    accept_booking: BookingStatus.Accept,
+    // service_address: "",
+    // service_lat: "",
+    // service_long: "",
+    // service_radius: "",
     currentIndex: 0,
 
     isLoading: true,
@@ -133,13 +143,13 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     currentItem: { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
 
     slotArr: [
-      { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-      { "slot_day": "TUE", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-      { "slot_day": "WED", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-      { "slot_day": "THU", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-      { "slot_day": "FRI", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-      { "slot_day": "SAT", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-      { "slot_day": "SUN", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }]
+      { "slot_day": "MON", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
+      { "slot_day": "TUE", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
+      { "slot_day": "WED", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
+      { "slot_day": "THU", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
+      { "slot_day": "FRI", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
+      { "slot_day": "SAT", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
+      { "slot_day": "SUN", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }]
   })
 
   useEffect(() => {
@@ -182,39 +192,15 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
 
-        if (obj.result.service_radius != null) {
-          let arr = [...radiusArr]
-          arr.map((v, i) => {
-            if (obj.result.service_radius == v.value) {
-              v.status = true
-            } else {
-              v.status = false
-            }
-          });
-        } else {
-          let arr = [...radiusArr]
-          var r = 0
-          arr.map((v, i) => {
-            if (i == 0) {
-              v.status = true
-              r = v.value
-            } else {
-              v.status = false
-            }
-          });
-        }
+        console.log('ScheduleStatus...',obj.result.accept_booking);
 
         setState(
           prev => ({
             ...prev,
             slotArr: (obj.result.slots.length > 0) ? obj.result.slots : state.slotArr,
-            accept_booking: (obj.result.accept_booking == null) ? '1' : obj.result.accept_booking,
-            accept: (obj.result.accept_booking == null) ? false : (obj.result.accept_booking == '0') ? true : false,
-            hide: (obj.result.accept_booking == null) ? true : (obj.result.accept_booking == '1') ? true : false,
-            service_radius: (obj.result.service_radius == null) ? r : obj.result.service_radius,
-            service_address: (obj.result.service_address == null) ? '' : obj.result.service_address,
-            service_lat: (obj.result.service_lat == null) ? '' : obj.result.service_lat,
-            service_long: (obj.result.service_long == null) ? '' : obj.result.service_long,
+            accept_booking: (obj.result.accept_booking == null) ? BookingStatus.Accept : obj.result.accept_booking,
+            accept: (obj.result.accept_booking == null) ? true : (obj.result.accept_booking == BookingStatus.Accept) ? true : false,
+            hide: (obj.result.accept_booking == null) ? false : (obj.result.accept_booking == BookingStatus.Hide) ? true : false,
             message: obj.message,
           })
         )
@@ -233,7 +219,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
   }
 
   const submitPress = () => {
-    if (state.accept_booking == '1') {
+    if (state.accept_booking == BookingStatus.Hide) {
       onUpdateScheduleData()
     } else {
       var isError = false;
@@ -280,9 +266,13 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     let url = Configurations.baseURL + apiname;
     const enabledDaysCount = state.slotArr.filter(slot => slot.slot_day_enable === '1').length
 
-    if (state.accept_booking === '0' && enabledDaysCount <= 0) {
+    if (state.accept_booking === BookingStatus.Accept && enabledDaysCount <= 0) {
       console.log({ enabledDaysCount });
       MessageFunctions.showError("You must switch on at list 'One Day' with start and closing time to make yourself available for the booking.")
+      setState(prev => ({
+        ...prev,
+        isOnButtonLoading: false
+      }))
     } else {
       var myData = JSON.stringify({
         accept_booking: state.accept_booking,
@@ -290,6 +280,8 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
         service_type: user_type,
         slots: state.slotArr,
       });
+
+      console.log('myData...', myData);
 
       API.postRaw(url, myData, 1).then((obj) => {
         if (obj.status == true) {
@@ -457,7 +449,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                   ...prev,
                                   accept: true,
                                   hide: false,
-                                  accept_booking: '0'
+                                  accept_booking: BookingStatus.Accept
                                 })
                               )
                             }}
@@ -506,7 +498,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                 ...prev,
                                 accept: false,
                                 hide: true,
-                                accept_booking: '1'
+                                accept_booking: BookingStatus.Hide
                               })
                             )
                           }}
@@ -691,7 +683,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
 
                     </View>
-
                     <View style={{
                       marginTop: 15,
                       paddingLeft: 15,
@@ -705,7 +696,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
                       {
                         state.slotArr.map((item, index) => {
-
                           return (
                             <>
                               <View style={{

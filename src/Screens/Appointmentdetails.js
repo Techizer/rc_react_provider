@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
 import AppLoader from '../Components/AppLoader';
+import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
@@ -305,30 +306,31 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   const openGalleryPicker = () => {
     Media.launchGellery(false).then((obj) => {
-      if (classStateData.isFromReportModal == true) {
-        var objF = undefined
-        if (Platform.OS == "ios") {
-          objF = {
-            uri: obj.path,
-            type: obj.mime, //'image/jpg',
-            name: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
-              obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
-            filename: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
-              obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
-          }
-        } else {
-          objF = {
-            uri: obj.path,
-            type: obj.mime,
-            path: obj.path,
-            mime: obj.mime, //'image/jpg',
-            name: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
-              obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
-            filename: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
-              obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
-          }
-        }
 
+      var objF = undefined
+      if (Platform.OS == "ios") {
+        objF = {
+          uri: obj.path,
+          type: obj.mime, //'image/jpg',
+          name: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
+            obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
+          filename: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
+            obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
+        }
+      } else {
+        objF = {
+          uri: obj.path,
+          type: obj.mime,
+          path: obj.path,
+          mime: obj.mime, //'image/jpg',
+          name: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
+            obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
+          filename: (Platform.OS == 'ios') ? obj.filename : obj.path !== undefined ?
+            obj.path.substring(obj.path.lastIndexOf("/") + 1, obj.length) : 'image',
+        }
+      }
+
+      if (classStateData.isFromReportModal == true) {
         setState({
           reports: [...classStateData.reports, objF],
           mediamodal: false,
@@ -342,7 +344,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
         })
 
         setTimeout(() => {
-          onUploadPrescription(obj)
+          onUploadPrescription(Platform.OS === 'android' ? objF: obj)
         }, 800)
 
       }
@@ -405,16 +407,14 @@ export default AppointmentDetails = ({ navigation, route }) => {
       data.append('provider_prescription', {
         uri: file?.path,
         type: file?.mime, //'image/jpg',
-        name: (Platform.OS == 'ios') ? file?.filename : 'image',
+        name: file?.filename,
       })
     }
-
-    console.log(data);
 
     console.log('provider_prescription', {
       uri: file?.path,
       type: file?.mime, //'image/jpg',
-      name: (Platform.OS == 'ios') ? file?.filename : 'image',
+      name: file?.filename,
     })
 
 
@@ -508,18 +508,19 @@ export default AppointmentDetails = ({ navigation, route }) => {
         return null
       })
 
-      return null
+    return null
   }
 
+  const windowHeight = Math.round(Dimensions.get("window").height);
+  const windowWidth = Math.round(Dimensions.get("window").width);
+  const deviceHeight = Dimensions.get('screen').height;
+  const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
+  let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
+  headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
   try {
 
-    const windowHeight = Math.round(Dimensions.get("window").height);
-    const windowWidth = Math.round(Dimensions.get("window").width);
-    const deviceHeight = Dimensions.get('screen').height;
-    const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
-    let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
-    headerHeight += (Platform.OS === 'ios') ? 28 : -60
+   
     var item = classStateData.appointmentDetails
 
     if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
@@ -641,7 +642,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                   <View style={{ width: "28%", alignSelf: "center" }}>
                     {
                       (item.provider_image == "NA" || item.provider_image == null || item.provider_image == "") ?
-                        <SvgXml xml={dummyUser = ''} style={{
+                        <SvgXml xml={dummyUser} style={{
                           alignSelf: "center",
                           marginTop: vs(5)
                         }} />
@@ -1124,11 +1125,11 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                 fontSize: Font.xsmall,
                                 color: Colors.Theme,
                               }}>Download</Text>
-                            </TouchableOpacity>: 
+                            </TouchableOpacity> :
                             <View style={{
                               width: '25%'
                             }} >
-                              </View>}
+                            </View>}
 
                           <TouchableOpacity style={{
                             width: '25%'
@@ -1832,7 +1833,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                       {
                         item.task_details.map((i, index) => {
                           if (item.task_details != '') {
-                            console.log({i});
+                            console.log({ i });
                             return (
                               <TouchableOpacity activeOpacity={0.9}
                                 // onPress={() => { check_all(item, index) }}

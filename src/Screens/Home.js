@@ -23,7 +23,6 @@ export default Home = ({ navigation, route }) => {
 
   const [state, setState] = useState({
     notification_count: '',
-    profileCompletionData: null,
     HomeHealthcareServiceAppointments: [
       {
         img: Icons.AppointmentArt,
@@ -94,18 +93,47 @@ export default Home = ({ navigation, route }) => {
         goTo: ScreenReferences.More
       },
     ]
-
   })
+
+  const [profilePercentage, setProfilePercentage] = useState(0)
+  const [sectionsData, setSectionsData] = useState(null)
+  const [isSectionsLoading, setIsSectionsLoading] = useState(false)
 
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
+
+  // useEffect(() => {
+  //   let interval;
+  //   interval = setInterval(() => {
+  //     setTimeout(() => {
+  //       refreshDashboardData(0)
+  //     }, 2000)
+  //   }, 8000)
+
+  //   return () => { clearInterval(interval) }
+  // }, [])
+
+  const refreshDashboardData = async (shouldLoadOnTop) => {
+    console.log('refreshDashboardData');
+    if (shouldLoadOnTop === 1) {
+      setIsSectionsLoading(true)
+    } else if (shouldLoadOnTop === 0 && isSectionsLoading) {
+      setIsSectionsLoading(false)
+    }
+    // return new Promise(async () => {
+    //   await getPercentage()
+    //   await getNotificationCount()
+    // })
+    return new Promise((res, rej) => {
+      getPercentage().finally(getNotificationCount).finally(() => { res() })
+    })
+  }
 
   const {
     loginUserData
   } = useSelector(state => state.Auth)
 
   useEffect(() => {
-    console.log({loginUserData});
     PushNotification.configure({
       onNotification: function (notification) {
         console.log("NOTIFICATION:", notification);
@@ -155,15 +183,41 @@ export default Home = ({ navigation, route }) => {
         notification.finish(PushNotificationIOS.FetchResult.NoData);
       },
     });
-    messageListener();
+    PushNotification.createChannel(
+      {
+        channelId: "rootscares1", // (required)
+        channelName: "rootscare messasge", // (required)
 
-    navigation.addListener('focus', () => {
+        importance: 4, // (optional) default: 4. Int value of the Android notification importance
+        vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+      },
+      (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+    )
+    messaging().onMessage(async remoteMessage => {
 
-      get_all_count()
-      getPercentage()
+      console.log({ remoteMessage });
 
-    });
+      let shouldRefreshHome = false
 
+      if (remoteMessage.data?.type == "Logout") {
+        shouldRefreshHome = false
+        logout();
+      } else {
+        shouldRefreshHome = true
+      }
+
+      PushNotification.localNotification({
+        channelId: 'rootscares1', //his must be same with channelid in createchannel
+        title: remoteMessage.data.title, //'Appointment Booking',
+        message: remoteMessage.data.body,
+        userInfo: remoteMessage.data
+      })
+      if (shouldRefreshHome && isFocused) {
+        refreshDashboardData(0)
+      }
+      // MessageFunctions.showSuccess("yes call coming")
+    }
+    )
   }, [])
 
   const handleBackPress = () => {
@@ -192,6 +246,15 @@ export default Home = ({ navigation, route }) => {
     );
   }, [])
 
+  useEffect(() => {
+    if (isFocused) {
+      console.log('IsFocusing');
+      refreshDashboardData(0)
+    }
+  }, [isFocused])
+
+  
+
 
   const logout = async () => {
     localStorage.setItemString('logout_bit', '100')
@@ -203,6 +266,7 @@ export default Home = ({ navigation, route }) => {
   };
 
   const getPercentage = async () => {
+    console.log('getPercentage');
     let url = Configurations.baseURL + "api-provider-profile-complete";
 
     var data = new FormData();
@@ -211,70 +275,71 @@ export default Home = ({ navigation, route }) => {
     API
       .post(url, data, 1)
       .then((completionData) => {
-        state.HomeHealthcareServiceAppointments[0].actionColor = '#FFD553'
-        state.HomeHealthcareServiceAppointments[0].actionTextColor = '#886701'
-        state.HomeHealthcareServiceAppointments[0].actionMessage = completionData?.result?.pending_appointment
+        console.log({ completionData });
 
-        state.HomeHealthcareServiceAppointments[1].actionColor = completionData?.result?.availability_schedule == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[1].actionTextColor = completionData?.result?.availability_schedule == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[1].actionMessage = completionData?.result?.availability_schedule == 0 ? 'Incomplete Setup' : 'Completed'
+        if (profilePercentage !== completionData?.result?.total_complete) {
+          console.log('PP Updating');
+          setProfilePercentage(completionData?.result?.total_complete)
+        }
+        if (sectionsData?.address !== completionData?.result?.address ||
+          sectionsData?.availability_schedule !== completionData?.result?.availability_schedule ||
+          sectionsData?.pending_appointment !== completionData?.result?.pending_appointment ||
+          sectionsData?.price_section !== completionData?.result?.price_section ||
+          sectionsData?.profile_section !== completionData?.result?.profile_section) {
 
-        state.HomeHealthcareServiceAppointments[2].actionColor = completionData?.result?.price_section == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[2].actionTextColor = completionData?.result?.price_section == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[2].actionMessage = completionData?.result?.price_section == 0 ? 'Incomplete Setup' : 'Completed'
+          console.log([
+            sectionsData?.address != completionData?.result?.address,
+            sectionsData?.availability_schedule != completionData?.result?.availability_schedule,
+            sectionsData?.pending_appointment != completionData?.result?.pending_appointment,
+            sectionsData?.price_section != completionData?.result?.price_section,
+            sectionsData?.profile_section != completionData?.result?.profile_section
+          ]);
 
-        state.HomeHealthcareServiceAppointments[3].actionColor = completionData?.result?.address == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[3].actionTextColor = completionData?.result?.address == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[3].actionMessage = completionData?.result?.address == 0 ? 'Incomplete Setup' : 'Completed'
+          console.log('Home Updating');
+          console.log('Value Check', `${sectionsData?.address}, ${completionData?.result?.address}`);
 
-        state.HomeHealthcareServiceAppointments[5].actionColor = completionData?.result?.profile_section == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[5].actionTextColor = completionData?.result?.profile_section == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[5].actionMessage = completionData?.result?.profile_section == 0 ? 'Incomplete Setup' : 'Completed'
 
-        setState(prev => ({
-          ...prev,
-          profileCompletionData: completionData?.result,
-          HomeHealthcareServiceAppointments: [...state.HomeHealthcareServiceAppointments]
 
-        }))
+          setSectionsData({
+            address: completionData?.result?.address,
+            availability_schedule: completionData?.result?.availability_schedule,
+            pending_appointment: completionData?.result?.pending_appointment,
+            price_section: completionData?.result?.price_section,
+            profile_section: completionData?.result?.profile_section,
+          })
+          
+
+          state.HomeHealthcareServiceAppointments[0].actionColor = '#FFD553'
+          state.HomeHealthcareServiceAppointments[0].actionTextColor = '#886701'
+          state.HomeHealthcareServiceAppointments[0].actionMessage = completionData?.result?.pending_appointment
+
+          state.HomeHealthcareServiceAppointments[1].actionColor = completionData?.result?.availability_schedule == 0 ? '#EB8C8C' : '#86D348'
+          state.HomeHealthcareServiceAppointments[1].actionTextColor = completionData?.result?.availability_schedule == 0 ? '#900000' : '#347401'
+          state.HomeHealthcareServiceAppointments[1].actionMessage = completionData?.result?.availability_schedule == 0 ? 'Incomplete Setup' : 'Completed'
+
+          state.HomeHealthcareServiceAppointments[2].actionColor = completionData?.result?.price_section == 0 ? '#EB8C8C' : '#86D348'
+          state.HomeHealthcareServiceAppointments[2].actionTextColor = completionData?.result?.price_section == 0 ? '#900000' : '#347401'
+          state.HomeHealthcareServiceAppointments[2].actionMessage = completionData?.result?.price_section == 0 ? 'Incomplete Setup' : 'Completed'
+
+          state.HomeHealthcareServiceAppointments[3].actionColor = completionData?.result?.address == 0 ? '#EB8C8C' : '#86D348'
+          state.HomeHealthcareServiceAppointments[3].actionTextColor = completionData?.result?.address == 0 ? '#900000' : '#347401'
+          state.HomeHealthcareServiceAppointments[3].actionMessage = completionData?.result?.address == 0 ? 'Incomplete Setup' : 'Completed'
+
+          state.HomeHealthcareServiceAppointments[5].actionColor = completionData?.result?.profile_section == 0 ? '#EB8C8C' : '#86D348'
+          state.HomeHealthcareServiceAppointments[5].actionTextColor = completionData?.result?.profile_section == 0 ? '#900000' : '#347401'
+          state.HomeHealthcareServiceAppointments[5].actionMessage = completionData?.result?.profile_section == 0 ? 'Incomplete Setup' : 'Completed'
+
+
+          setState(prev => ({
+            ...prev,
+            HomeHealthcareServiceAppointments: [...state.HomeHealthcareServiceAppointments]
+          }))
+        }
+
       })
       .catch((error) => {
         console.log({ errorz: error });
       });
-  }
-
-  const messageListener = async () => {
-
-    //alert('come')
-    // console.log('inside message listener ****** ')
-    PushNotification.createChannel(
-      {
-        channelId: "rootscares1", // (required)
-        channelName: "rootscare messasge", // (required)
-
-        importance: 4, // (optional) default: 4. Int value of the Android notification importance
-        vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-      },
-      (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-    )
-    messaging().onMessage(async remoteMessage => {
-
-      console.log({ remoteMessage });
-
-      if (remoteMessage.data?.type == "Logout") {
-        logout();
-      }
-
-      PushNotification.localNotification({
-        channelId: 'rootscares1', //his must be same with channelid in createchannel
-        title: remoteMessage.data.title, //'Appointment Booking',
-        message: remoteMessage.data.body,
-        userInfo: remoteMessage.data
-      })
-      // MessageFunctions.showSuccess("yes call coming")
-    }
-    )
-
   }
 
   const showVideoCallAlert = (data) => {
@@ -322,7 +387,7 @@ export default Home = ({ navigation, route }) => {
       });
   };
 
-  const get_all_count = async () => {
+  const getNotificationCount = async () => {
     let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();
@@ -332,15 +397,18 @@ export default Home = ({ navigation, route }) => {
     API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
-        setState(prev => ({
-          ...prev,
-          notification_count: obj.result
-        }))
+        if (state.notification_count != obj.result) {
+          setState(prev => ({
+            ...prev,
+            notification_count: obj.result
+          }))
+        }
+
       } else {
         return false;
       }
     }).catch((error) => {
-      getProfile()
+      // getProfile()
       setState(prev => ({
         ...prev,
         notification_count: 0
@@ -423,243 +491,245 @@ export default Home = ({ navigation, route }) => {
             </View>
           </View>
         </View>
-        <View style={{
-          //paddingBottom: 120
-        }}>
-          <FlatList
-            style={{
-              backgroundColor: Colors.backgroundcolor,
-            }}
-            contentContainerStyle={{ paddingBottom: 120 }}
-            showsVerticalScrollIndicator={false}
-            horizontal={false}
-            ListHeaderComponent={(state?.profileCompletionData && state?.notification_count !== '') ? () => {
-              const cProgress = (state?.profileCompletionData) ? state?.profileCompletionData?.total_complete : 25
-              return (
+
+        <FlatList style={{
+          backgroundColor: Colors.backgroundcolor,
+        }}
+          contentContainerStyle={{ paddingBottom: 120 }}
+          showsVerticalScrollIndicator={false}
+          horizontal={false}
+          ListHeaderComponent={(sectionsData) ? () => {
+            const cProgress = (profilePercentage) ? profilePercentage : 0
+            return (
+              <View style={{
+                width: mobileW,
+                flexDirection: 'column',
+                marginTop: 8,
+                backgroundColor: 'white'
+              }}>
                 <View style={{
                   width: mobileW,
-                  flexDirection: 'column',
-                  marginTop: 8,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 8,
                   backgroundColor: 'white'
                 }}>
                   <View style={{
-                    width: mobileW,
-                    flexDirection: 'row',
+                    width: mobileW / 3,
                     alignItems: 'center',
-                    marginBottom: 8,
-                    backgroundColor: 'white'
+                    justifyContent: 'center',
+                    padding: 16,
+                    height: 'auto'
+                    //backgroundColor: 'pink'
                   }}>
+
+                    <CircularProgress
+                      duration={400}
+                      activeStrokeColor={'#0888D1'}
+                      inActiveStrokeColor='#E2E7EE'
+                      maxValue={100}
+                      titleStyle={{ fontWeight: 'bold' }}
+                      value={cProgress}
+                      showProgressValue={true}
+                      valueSuffix={'%'}
+                      progressValueFontSize={Font.large}
+                      activeStrokeWidth={20}
+                      inActiveStrokeWidth={16}
+                      strokeLinecap={'butt'}
+                      radius={mobileW / 7.5}
+                      progressValueColor='#0888D1'
+
+
+                    />
+
                     <View style={{
-                      width: mobileW / 3,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: 16,
-                      height: 'auto'
-                      //backgroundColor: 'pink'
+                      width: 24,
+                      height: 2,
+                      position: 'absolute',
+                      right: 8,
+                      top: mobileW / 6,
+                      bottom: mobileW / 6,
+                      backgroundColor: (cProgress >= 25) ? '#0888D1' : '#E2E7EE'
                     }}>
-
-                      <CircularProgress
-                        duration={400}
-                        activeStrokeColor={'#0888D1'}
-                        inActiveStrokeColor='#E2E7EE'
-                        maxValue={100}
-                        titleStyle={{ fontWeight: 'bold' }}
-                        // value={state?.profileCompletionData?.total_complete}
-                        value={cProgress}
-                        showProgressValue={true}
-                        valueSuffix={'%'}
-                        progressValueFontSize={Font.large}
-                        activeStrokeWidth={20}
-                        inActiveStrokeWidth={16}
-                        strokeLinecap={'butt'}
-                        radius={mobileW / 7.5}
-                        progressValueColor='#0888D1'
-
-
-                      />
-
-                      <View style={{
-                        width: 24,
-                        height: 2,
-                        position: 'absolute',
-                        right: 8,
-                        top: mobileW / 6,
-                        bottom: mobileW / 6,
-                        backgroundColor: (cProgress >= 25) ? '#0888D1' : '#E2E7EE'
-                      }}>
-                      </View>
-
-                      <View style={{
-                        width: 24,
-                        height: 2,
-                        position: 'absolute',
-                        left: 8,
-                        top: mobileW / 6,
-                        bottom: mobileW / 6,
-                        backgroundColor: (cProgress >= 75) ? '#0888D1' : '#E2E7EE'
-                      }}>
-                      </View>
-
-                      <View style={{
-                        width: 2,
-                        height: 24,
-                        position: 'absolute',
-                        bottom: 12,
-                        left: mobileW / 6,
-                        right: mobileW / 6,
-                        backgroundColor: (cProgress >= 50) ? '#0888D1' : '#E2E7EE'
-                      }}>
-                      </View>
-
-                      <View style={{
-                        width: 2,
-                        height: 24,
-                        position: 'absolute',
-                        top: 12,
-                        left: mobileW / 6,
-                        right: mobileW / 6,
-                        backgroundColor: (cProgress >= 100 || cProgress === 0) ? '#0888D1' : '#E2E7EE'
-                      }}>
-                      </View>
-
                     </View>
-                    <View style={{
-                      width: (mobileW * 2) / 3,
-                      justifyContent: 'center',
-                      padding: 16,
-                    }}>
 
+                    <View style={{
+                      width: 24,
+                      height: 2,
+                      position: 'absolute',
+                      left: 8,
+                      top: mobileW / 6,
+                      bottom: mobileW / 6,
+                      backgroundColor: (cProgress >= 75) ? '#0888D1' : '#E2E7EE'
+                    }}>
+                    </View>
+
+                    <View style={{
+                      width: 2,
+                      height: 24,
+                      position: 'absolute',
+                      bottom: 12,
+                      left: mobileW / 6,
+                      right: mobileW / 6,
+                      backgroundColor: (cProgress >= 50) ? '#0888D1' : '#E2E7EE'
+                    }}>
+                    </View>
+
+                    <View style={{
+                      width: 2,
+                      height: 24,
+                      position: 'absolute',
+                      top: 12,
+                      left: mobileW / 6,
+                      right: mobileW / 6,
+                      backgroundColor: (cProgress >= 100 || cProgress === 0) ? '#0888D1' : '#E2E7EE'
+                    }}>
+                    </View>
+
+                  </View>
+                  <View style={{
+                    width: (mobileW * 2) / 3,
+                    justifyContent: 'center',
+                    padding: 16,
+                  }}>
+
+                    <Text style={{
+                      color: Colors.textblack,
+                      fontFamily: Font.Medium,
+                      fontSize: Font.medium
+                    }}>
+                      {cProgress >= 100 ? `Profile Complete` : 'Profile In Progress'}
+                    </Text>
+
+                    <Text style={{
+                      color: '#0888D1',
+                      fontFamily: Font.Light,
+                      fontSize: Font.medium,
+                      marginVertical: 4
+                    }}>
+                      {`${cProgress}% completed`}
+                    </Text>
+
+                    <Text style={{
+                      color: '#8F98A7',
+                      fontFamily: Font.Regular,
+                      fontSize: Font.small,
+                      marginVertical: 4
+                    }}>
+                      {`One must complete Profile, Service Address, Schedule Availability & Price List, etc steps`}
+                    </Text>
+
+
+
+                  </View>
+                </View>
+                {
+                  (sectionsData?.availability_schedule === 0 ||
+                    sectionsData?.price_section === 0 ||
+                    sectionsData?.address === 0 ||
+                    sectionsData?.profile_section === 0) &&
+                  <TouchableOpacity onPress={() => {
+                    if (sectionsData?.availability_schedule === 0) {
+                      navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
+                    } else if (sectionsData?.price_section === 0) {
+                      navigation.navigate(ScreenReferences.PriceListTabStack)
+                    } else if (sectionsData?.address === 0) {
+                      navigation.navigate(ScreenReferences.ServiceAddress)
+                    } else if (sectionsData?.profile_section === 0) {
+                      navigation.navigate(ScreenReferences.ShowProfile)
+                    }
+                  }} >
+                    <View style={{
+                      backgroundColor: '#0168B3',
+                      flexDirection: 'row',
+                      padding: 8,
+                      alignItems: 'center'
+                    }}>
                       <Text style={{
-                        color: Colors.textblack,
+                        flex: 5,
+                        color: Colors.White,
                         fontFamily: Font.Medium,
                         fontSize: Font.medium
                       }}>
-                        {cProgress >= 100 ? `Profile Complete` : 'Profile In Progress'}
+                        {'Complete Now to Appear In Booking App'}
                       </Text>
 
-                      <Text style={{
-                        color: '#0888D1',
-                        fontFamily: Font.Light,
-                        fontSize: Font.medium,
-                        marginVertical: 4
+                      <View style={{
+                        flex: 1,
+                        alignSelf: 'flex-end',
+                        alignItems: 'flex-end',
+                        paddingHorizontal: 4
                       }}>
-                        {`${cProgress}% completed`}
-                      </Text>
-
-                      <Text style={{
-                        color: '#8F98A7',
-                        fontFamily: Font.Regular,
-                        fontSize: Font.small,
-                        marginVertical: 4
-                      }}>
-                        {`One must complete Profile, Service Address, Schedule Availability & Price List, etc steps`}
-                      </Text>
+                        <View style={{
+                          height: vs(16),
+                          width: vs(16),
+                          borderRadius: vs(16),
+                          backgroundColor: 'white',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                          <Image source={Icons.RightArrow} style={{
+                            width: vs(10),
+                            height: vs(10)
+                          }} resizeMethod='scale' resizeMode='contain' />
+                        </View>
+                      </View>
 
 
 
                     </View>
-                  </View>
-                  {
-                    (state?.profileCompletionData?.availability_schedule === 0 ||
-                      state?.profileCompletionData?.price_section === 0 ||
-                      state?.profileCompletionData?.address === 0 ||
-                      state?.profileCompletionData?.profile_section === 0) &&
-                    <TouchableOpacity onPress={() => {
-                      if (state?.profileCompletionData?.availability_schedule === 0) {
-                        navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
-                      } else if (state?.profileCompletionData?.price_section === 0) {
-                        navigation.navigate(ScreenReferences.PriceListTabStack)
-                      } else if (state?.profileCompletionData?.address === 0) {
-                        navigation.navigate(ScreenReferences.ServiceAddress)
-                      } else if (state?.profileCompletionData?.profile_section === 0) {
-                        navigation.navigate(ScreenReferences.ShowProfile)
-                      }
-                    }} >
-                      <View style={{
-                        backgroundColor: '#0168B3',
-                        flexDirection: 'row',
-                        padding: 8,
-                        alignItems: 'center'
-                      }}>
-                        <Text style={{
-                          flex: 5,
-                          color: Colors.White,
-                          fontFamily: Font.Medium,
-                          fontSize: Font.medium
-                        }}>
-                          {'Complete Now to Appear In Booking App'}
-                        </Text>
+                  </TouchableOpacity>
+                }
 
-                        <View style={{
-                          flex: 1,
-                          alignSelf: 'flex-end',
-                          alignItems: 'flex-end',
-                          paddingHorizontal: 4
-                        }}>
-                          <View style={{
-                            height: vs(16),
-                            width: vs(16),
-                            borderRadius: vs(16),
-                            backgroundColor: 'white',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}>
-                            <Image source={Icons.RightArrow} style={{
-                              width: vs(10),
-                              height: vs(10)
-                            }} resizeMethod='scale' resizeMode='contain' />
-                          </View>
-                        </View>
-
-
-
-                      </View>
-                    </TouchableOpacity>
-                  }
-
-                </View>
-              )
-            } : () => {
-              return (
-                <></>
-              )
-            }}
-            data={state.HomeHealthcareServiceAppointments}
-            renderItem={({ item, index }) => {
-              return (
-                <DashBoardBox
-                  textTitle={(loginUserData?.user_type == 'lab' && index == 2) ? item?.titleL : item?.title}
-                  textInfo={(loginUserData?.user_type == 'lab' && index == 2) ? item?.detailsL : item?.details}
-                  infoIcon={item?.img}
-                  actionColor={item.actionColor}
-                  actionTextColor={item?.actionTextColor}
-                  actionMessage={item?.actionMessage}
-                  rightIcon={Icons.RightArrow}
-                  isBorder={(item?.title == "About Rootscare") ? false : true}
-                  isMargin={(item?.title == "Help & Support") ? false : true}
-                  onPress={() => {
-                    if (item?.goTo != undefined) {
-                      if (item?.title == "About Rootscare") {
-                        navigation.navigate(item?.goTo,
-                          {
-                            contantpage: 0,
-                            content: Configurations.about_url_eng,
-                            content_ar: Configurations.about_url_ar
-                          })
-                      } else if (item?.title == 'My Appointment') {
-                        navigation.navigate(item?.goTo)
-                        // { title: LanguageConfiguration.upcoming_heading[Configurations.language], api_status: 0 })
-                      } else {
-                        navigation.navigate(item?.goTo);
-                      }
-
+              </View>
+            )
+          } : () => {
+            return (
+              <></>
+            )
+          }}
+          refreshing={isSectionsLoading}
+          onRefresh={() => {
+            refreshDashboardData(1).finally(() => {
+              setIsSectionsLoading(false)
+            })
+          }}
+          data={state.HomeHealthcareServiceAppointments}
+          renderItem={({ item, index }) => {
+            return (
+              <DashBoardBox
+                textTitle={(loginUserData?.user_type == 'lab' && index == 2) ? item?.titleL : item?.title}
+                textInfo={(loginUserData?.user_type == 'lab' && index == 2) ? item?.detailsL : item?.details}
+                infoIcon={item?.img}
+                actionColor={item.actionColor}
+                actionTextColor={item?.actionTextColor}
+                actionMessage={item?.actionMessage}
+                rightIcon={Icons.RightArrow}
+                isBorder={(item?.title == "About Rootscare") ? false : true}
+                isMargin={(item?.title == "Help & Support") ? false : true}
+                onPress={() => {
+                  if (item?.goTo != undefined) {
+                    if (item?.title == "About Rootscare") {
+                      navigation.navigate(item?.goTo,
+                        {
+                          contantpage: 0,
+                          content: Configurations.about_url_eng,
+                          content_ar: Configurations.about_url_ar
+                        })
+                    } else if (item?.title == 'My Appointment') {
+                      navigation.navigate(item?.goTo)
+                      // { title: LanguageConfiguration.upcoming_heading[Configurations.language], api_status: 0 })
+                    } else {
+                      navigation.navigate(item?.goTo);
                     }
 
-                  }}
-                />
-              );
-            }} />
-        </View>
+                  }
+
+                }}
+              />
+            );
+          }}
+        />
       </View>
     </View>
   );

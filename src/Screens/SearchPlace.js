@@ -18,6 +18,7 @@ import {
     Configurations,
     localStorage,
     LanguageConfiguration,
+    deviceHeight,
 } from '../Helpers/Utils';
 import { s, vs } from 'react-native-size-matters';
 import ScreenHeader from '../Components/ScreenHeader';
@@ -29,6 +30,7 @@ import { useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 let ScreenHeight = Dimensions.get('window').height;
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default SearchPlaceScreen = ({ navigation, route }) => {
 
@@ -55,8 +57,8 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     } = useSelector(state => state.Auth)
 
 
-    address_id = route?.params?.address_id;
-    isNew = route?.params?.isNew;
+    const address_id = route?.params?.address_id;
+    const isNew = (route?.params?.isNew !== null && route?.params?.isNew !== '' ) ? route?.params?.isNew: true;
 
     useEffect(() => {
         const countryKey = (loginUserData?.work_area === 'UAE') ? 'AE' : 'SA'
@@ -292,12 +294,10 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     const lRot = Configurations.textRotate
 
     const windowHeight = Math.round(Dimensions.get("window").height);
-    const windowWidth = Math.round(Dimensions.get("window").width);
-    const deviceHeight = Dimensions.get('screen').height;
     const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
-
     let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
     headerHeight += (Platform.OS === 'ios') ? 28 : -60
+
 
     return (
         <Modal
@@ -308,14 +308,17 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
             coverScreen={true}
             onRequestClose={() => {
             }}>
-            <View style={{
+            <SafeAreaView style={{
                 flex: 1,
                 alignItems: "center",
             }}>
 
                 <ScreenHeader navigation={navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
-                    navigation.replace(ScreenReferences.ServiceAddress)
-                }} />
+                    navigation.canGoBack() && navigation.goBack() 
+                }} style={{
+                    paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0,
+                    height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight
+                }}/>
                 <AddressInputPopup
                     navigation={navigation}
                     visible={classStateData.isVisible}
@@ -346,7 +349,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                         paddingHorizontal: 10,
                         paddingTop: 8,
                         justifyContent: 'center',
-                        marginTop: headerHeight + StatusbarHeight,
+                        marginTop: headerHeight + StatusbarHeight + vs(16),
                         width: '100%',
                     }}>
                     <GooglePlacesAutocomplete
@@ -520,7 +523,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                     </View>
                 </View>
 
-            </View>
+            </SafeAreaView>
             {/* </ScrollView> */}
         </Modal>
     );

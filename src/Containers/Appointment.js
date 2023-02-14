@@ -273,7 +273,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
                       fontFamily: Font.Regular,
                       fontSize: 16,
                       textTransform: 'capitalize'
-                    }}>{pageName} Appointment List Not Found.</Text>
+                    }}>{`No ${pageName} Appointment Found`}</Text>
                   </View>
                 )
               }}

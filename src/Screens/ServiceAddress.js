@@ -33,10 +33,10 @@ const ServiceAddress = ({ navigation, route }) => {
 
     const { isMTrue, lat, lng, id, googleAddress } = route?.params || { isMTrue: false, lat: 0, lng: 0, id: 0, googleAddress: '' }
 
-    
-  const {
-    loginUserData
-  } = useSelector(state => state.Auth)
+
+    const {
+        loginUserData
+    } = useSelector(state => state.Auth)
 
 
     useEffect(() => {
@@ -57,39 +57,36 @@ const ServiceAddress = ({ navigation, route }) => {
 
 
         API.post(url, data, 1).then((obj) => {
-            console.log({ results: obj?.result });
+            console.log({ results: obj });
 
             if (obj.status == true) {
-                setTimeout(() => {
-                    setIsLoading(false)
-                    if (obj?.result?.length > 1) {
-                        var tArr = []
-                        tArr.push(obj?.result[0])
-                        setAddressList(tArr)
-                    } else{
-                        setAddressList(obj?.result)
+                if (obj?.result?.length > 1) {
+                    var tArr = []
+                    tArr.push(obj?.result[0])
+                    setAddressList(tArr)
+                    for (const iterator of obj?.result) {
+                        if (iterator?.defult == '0') {
+                            setDefaultAddress(iterator?.id)
+                        }
                     }
-                }, 250);
-                for (const iterator of obj?.result) {
-                    if (iterator?.defult == '0') {
-                        setDefaultAddress(iterator?.id)
-                    }
+                } else {
+                    setAddressList((obj?.result == null ? [] : obj?.result))
                 }
+
                 setIsFetchedSuccess(true)
             }
             else {
                 setAddressList([])
-                // MessageFunctions.showError(obj.message)
-                setIsLoading(false)
-                setIsFetchedSuccess(false)
+                setIsFetchedSuccess(true)
             }
         }).catch((error) => {
-            setIsLoading(false)
             setAddressList([])
             setIsFetchedSuccess(false)
             // MessageFunctions.showError(obj.message)
             console.log("getAddresses-error ------- " + error);
-        });
+        }).finally(() => {
+            setIsLoading(false)
+        })
     }
 
     return (
@@ -128,7 +125,7 @@ const ServiceAddress = ({ navigation, route }) => {
                                             color: Colors.textblack,
                                         }}>{'Service Address'}</Text>
 
-                                    {(addressList.length === 0 && isFetchedSuccess) &&
+                                    {(addressList.length == 0 && isFetchedSuccess) &&
                                         <View style={{
                                             alignItems: 'flex-end'
                                         }}>
@@ -191,7 +188,7 @@ const ServiceAddress = ({ navigation, route }) => {
             </View>
 
 
-            
+
             <AddressInputPopup
                 navigation={navigation}
                 visible={addressSheet || isMTrueState}

@@ -811,137 +811,141 @@ export default MyProfile = ({ navigation, route }) => {
               }}>
                 {
                   (classStateData.user_type == "lab") ?
-                    <>
-                      <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 8,
-                        borderColor: '#DFDFDF',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        marginLeft: 10
-                      }}>
-                        <Image
-                          style={{
-                            width: (mobileW * 20) / 100,
-                            height: (mobileW * 20) / 100,
-                            // borderRadius: mobileW * 10 / 100,
-                            marginBottom: 10,
-                            alignSelf: 'center',
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                      <>
+                        {(classStateData.hosp_moh_lic_no != '' && classStateData.hosp_moh_lic_no != null) && <View style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: 8,
+                          borderColor: '#DFDFDF',
+                          borderWidth: 1,
+                          borderRadius: 10,
+                          marginLeft: 10
+                        }}>
+                          <Image
+                            style={{
+                              width: (mobileW * 20) / 100,
+                              height: (mobileW * 20) / 100,
+                              // borderRadius: mobileW * 10 / 100,
+                              marginBottom: 10,
+                              alignSelf: 'center',
 
-                          }}
-                          source={classStateData.moh_lic_image == 'NA' ||
-                            classStateData.moh_lic_image == null ||
-                            classStateData.moh_lic_image == '' ? Icons.Prescription :
-                            { uri: Configurations.img_url3 + classStateData.moh_lic_image.filename }}
-                        ></Image>
-                        <Text>{classStateData.hosp_moh_lic_no}</Text>
-                      </View>
+                            }}
+                            source={classStateData.moh_lic_image == 'NA' ||
+                              classStateData.moh_lic_image == null ||
+                              classStateData.moh_lic_image == '' ? Icons.Prescription :
+                              { uri: Configurations.img_url3 + classStateData.moh_lic_image.filename }}
+                          ></Image>
+                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.hosp_moh_lic_no}</Text>
+                        </View>}
 
-                      <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 8,
-                        borderColor: '#DFDFDF',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        marginLeft: 10
-                      }}>
-                        <Image
-                          style={{
-                            width: (mobileW * 20) / 100,
-                            height: (mobileW * 20) / 100,
-                            // borderRadius: mobileW * 10 / 100,
-                            marginBottom: 10,
-                            alignSelf: 'center',
+                        {(classStateData.hosp_reg_no != '' && classStateData.hosp_reg_no != null) && <View style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: 8,
+                          borderColor: '#DFDFDF',
+                          borderWidth: 1,
+                          borderRadius: 10,
+                          marginLeft: 10
+                        }}>
+                          <Image
+                            style={{
+                              width: (mobileW * 20) / 100,
+                              height: (mobileW * 20) / 100,
+                              // borderRadius: mobileW * 10 / 100,
+                              marginBottom: 10,
+                              alignSelf: 'center',
 
-                          }}
-                          source={classStateData.hosp_reg_image == 'NA' ||
-                            classStateData.hosp_reg_image == null ||
-                            classStateData.hosp_reg_image == '' ? Icons.Prescription :
-                            { uri: Configurations.img_url3 + classStateData.hosp_reg_image.filename }}
-                        ></Image>
-                        <Text>{classStateData.hosp_reg_no}</Text>
-                      </View>
-                    </> :
-                    <>
-                      <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 8,
-                        borderColor: '#DFDFDF',
-                        borderWidth: 1,
-                        borderRadius: 10
-                      }}>
-                        <Image
-                          style={{
-                            width: (mobileW * 20) / 100,
-                            height: (mobileW * 20) / 100,
-                            // borderRadius: mobileW * 10 / 100,
-                            marginBottom: 10,
-                            alignSelf: 'center',
+                            }}
+                            source={classStateData.hosp_reg_image == 'NA' ||
+                              classStateData.hosp_reg_image == null ||
+                              classStateData.hosp_reg_image == '' ? Icons.Prescription :
+                              { uri: Configurations.img_url3 + classStateData.hosp_reg_image.filename }}
+                          ></Image>
+                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.hosp_reg_no}</Text>
+                        </View>}
+                      </>
+                    </ScrollView> :
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                      <>
+                        <View style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: 8,
+                          borderColor: '#DFDFDF',
+                          borderWidth: 1,
+                          borderRadius: 10
+                        }}>
+                          <Image
+                            style={{
+                              width: (mobileW * 20) / 100,
+                              height: (mobileW * 20) / 100,
+                              // borderRadius: mobileW * 10 / 100,
+                              marginBottom: 10,
+                              alignSelf: 'center',
 
-                          }}
-                          source={classStateData.id_image == 'NA' ||
-                            classStateData.id_image == null ||
-                            classStateData.id_image == '' ? Icons.Prescription :
-                            { uri: Configurations.img_url3 + classStateData.id_image.filename }}
-                        ></Image>
-                        <Text>{classStateData.id_number}</Text>
-                      </View>
+                            }}
+                            source={classStateData.id_image == 'NA' ||
+                              classStateData.id_image == null ||
+                              classStateData.id_image == '' ? Icons.Prescription :
+                              { uri: Configurations.img_url3 + classStateData.id_image.filename }}
+                          ></Image>
+                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.id_number}</Text>
+                        </View>
 
-                      <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 8,
-                        borderColor: '#DFDFDF',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        marginLeft: 10
-                      }}>
-                        <Image
-                          style={{
-                            width: (mobileW * 20) / 100,
-                            height: (mobileW * 20) / 100,
-                            // borderRadius: mobileW * 10 / 100,
-                            marginBottom: 10,
-                            alignSelf: 'center',
+                        <View style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: 8,
+                          borderColor: '#DFDFDF',
+                          borderWidth: 1,
+                          borderRadius: 10,
+                          marginLeft: 10
+                        }}>
+                          <Image
+                            style={{
+                              width: (mobileW * 20) / 100,
+                              height: (mobileW * 20) / 100,
+                              // borderRadius: mobileW * 10 / 100,
+                              marginBottom: 10,
+                              alignSelf: 'center',
 
-                          }}
-                          source={classStateData.certificate == 'NA' ||
-                            classStateData.certificate == null ||
-                            classStateData.certificate == '' ? Icons.Prescription :
-                            { uri: Configurations.img_url3 + classStateData.certificate.filename }}
-                        ></Image>
-                        <Text>{classStateData.qualification}</Text>
-                      </View>
+                            }}
+                            source={classStateData.certificate == 'NA' ||
+                              classStateData.certificate == null ||
+                              classStateData.certificate == '' ? Icons.Prescription :
+                              { uri: Configurations.img_url3 + classStateData.certificate.filename }}
+                          ></Image>
+                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.qualification}</Text>
+                        </View>
+                        {(classStateData.scfhs_number != '' && classStateData.scfhs_number != null) &&
+                          <View style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: 8,
+                            borderColor: '#DFDFDF',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            marginLeft: 10
+                          }}>
+                            <Image
+                              style={{
+                                width: (mobileW * 20) / 100,
+                                height: (mobileW * 20) / 100,
+                                // borderRadius: mobileW * 10 / 100,
+                                marginBottom: 10,
+                                alignSelf: 'center',
 
-                      <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 8,
-                        borderColor: '#DFDFDF',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        marginLeft: 10
-                      }}>
-                        <Image
-                          style={{
-                            width: (mobileW * 20) / 100,
-                            height: (mobileW * 20) / 100,
-                            // borderRadius: mobileW * 10 / 100,
-                            marginBottom: 10,
-                            alignSelf: 'center',
-
-                          }}
-                          source={classStateData.scfhs_image == 'NA' ||
-                            classStateData.scfhs_image == null ||
-                            classStateData.scfhs_image == '' ? Icons.Prescription :
-                            { uri: Configurations.img_url3 + classStateData.scfhs_image.filename }}
-                        ></Image>
-                        <Text>{classStateData.scfhs_number}</Text>
-                      </View>
-                    </>
+                              }}
+                              source={classStateData.scfhs_image == 'NA' ||
+                                classStateData.scfhs_image == null ||
+                                classStateData.scfhs_image == '' ? Icons.Prescription :
+                                { uri: Configurations.img_url3 + classStateData.scfhs_image.filename }}
+                            ></Image>
+                            <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.scfhs_number}</Text>
+                          </View>}
+                      </>
+                    </ScrollView>
                 }
 
 
