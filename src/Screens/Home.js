@@ -10,7 +10,7 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { onUserLogout } from '../Redux/Actions/UserActions';
+import { onUserLogout, setLastScreen } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 global.current_lat_long = 'NA';
@@ -28,7 +28,7 @@ export default Home = ({ navigation, route }) => {
         img: Icons.AppointmentArt,
         title: 'My Appointment',
         details: 'Pending Appointment \n\nUpcoming Appointment \n\nOngoing Appointment \n\nPast Appointment',
-        goTo: ScreenReferences.AppointmentTabStack,
+        goTo: ScreenReferences.AppointmentsTabStack,
         actionColor: '',
         actionMessage: '',
         actionTextColor: ''
@@ -122,10 +122,10 @@ export default Home = ({ navigation, route }) => {
     }
     // return new Promise(async () => {
     //   await getPercentage()
-    //   await getNotificationCount()
+    //   await getNotificationsCount()
     // })
     return new Promise((res, rej) => {
-      getPercentage().finally(getNotificationCount).finally(() => { res() })
+      getPercentage().finally(getNotificationsCount).finally(() => { res() })
     })
   }
 
@@ -238,6 +238,7 @@ export default Home = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    dispatch(setLastScreen(ScreenReferences.Home))
     navigation.addListener('focus', payload =>
       BackHandler.addEventListener('hardwareBackPress', handleBackPress)
     );
@@ -387,7 +388,7 @@ export default Home = ({ navigation, route }) => {
       });
   };
 
-  const getNotificationCount = async () => {
+  const getNotificationsCount = async () => {
     let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();

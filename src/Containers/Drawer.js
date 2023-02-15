@@ -221,7 +221,7 @@ export default Drawer = ({ navigation, route }) => {
 
               onPress={() => {
                 navigation.dispatch(DrawerActions.closeDrawer()),
-                  navigation.navigate(ScreenReferences.AppointmentTabStack)
+                  navigation.navigate(ScreenReferences.AppointmentsTabStack)
               }}
 
               title={LanguageConfiguration.MyAppointments[Configurations.language]}

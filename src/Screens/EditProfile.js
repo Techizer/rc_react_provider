@@ -348,7 +348,7 @@ export default EditProfile = ({navigation, route}) => {
       getProfile()
 
       get_all_nationlity()
-      get_all_notification()
+      getNotificationsCount()
       get_speciality()
     });
   }, [])
@@ -362,7 +362,7 @@ export default EditProfile = ({navigation, route}) => {
 
   
 
-  const get_all_notification = async () => {
+  const getNotificationsCount = async () => {
     let user_id = loginUserData['user_id']
 
     let url = Configurations.baseURL + "api-notification-count";

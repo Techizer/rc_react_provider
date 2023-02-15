@@ -15,6 +15,8 @@ import { Configurations } from "../Provider/configProvider";
 import { mobileW, windowHeight, windowWidth } from "../Helpers/Utils";
 import { VideoCall } from "../Assets/Icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
+import StarRating from "react-native-star-rating";
+import { Icons } from "../Assets/Icons/IReferences";
 
 const AppointmentItem = ({
     item,
@@ -44,7 +46,7 @@ const AppointmentItem = ({
     }
     if (CurrentDate > MyEndDate) {
         VideoCallBtn = false
-        
+
     }
 
     return (
@@ -449,6 +451,63 @@ const AppointmentItem = ({
                                     </Text>
                                 </TouchableOpacity>
                             }
+
+                            {(
+                                (item?.acceptance_status == 'Completed') &&
+                                (VideoCallBtn == false)) &&
+                                <View
+                                    style={{
+                                        width: '40%',
+                                        justifyContent: 'center',
+                                        paddingVertical: mobileW * 0.25 / 100,
+                                    }}>
+                                    {(item?.avg_rating !== '' && item?.avg_rating !== 0 && item?.avg_rating != null) ?
+                                        <View style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-evenly'
+                                        }}>
+
+                                            {/* <Text
+                                                style={{
+                                                    alignSelf: 'center',
+                                                    textAlign: 'center',
+                                                    color: Colors.DarkGrey,
+                                                    fontFamily: Font.Regular,
+                                                    fontSize: mobileW * 3 / 100,
+                                                    paddingRight: vs(8)
+                                                }}>{'Rated'}
+
+                                            </Text> */}
+
+
+                                            <StarRating
+                                                disabled={false}
+                                                fullStar={Icons.YellowStar}
+                                                emptyStar={Icons.UnfilledStar}
+                                                maxStars={5}
+                                                starSize={15}
+                                                rating={item?.avg_rating}
+
+
+                                            />
+
+                                        </View>
+                                        : <Text
+                                            style={{
+                                                alignSelf: 'center',
+                                                textAlign: 'center',
+                                                color: Colors.DarkGrey,
+                                                fontFamily: Font.MediumItalic,
+                                                fontSize: mobileW * 3 / 100,
+                                            }}>{'Not rated yet'}
+
+                                        </Text>
+
+                                    }
+                                </View>
+                            }
+
                         </View>
                     </View>
                 </TouchableOpacity>

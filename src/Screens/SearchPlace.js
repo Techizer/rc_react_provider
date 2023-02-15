@@ -19,6 +19,7 @@ import {
     localStorage,
     LanguageConfiguration,
     deviceHeight,
+    windowWidth,
 } from '../Helpers/Utils';
 import { s, vs } from 'react-native-size-matters';
 import ScreenHeader from '../Components/ScreenHeader';
@@ -31,6 +32,8 @@ import Geolocation from '@react-native-community/geolocation';
 let ScreenHeight = Dimensions.get('window').height;
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default SearchPlaceScreen = ({ navigation, route }) => {
 
@@ -43,6 +46,10 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
         service_long: '',
         service_address: '',
     })
+
+    const [isVisible, setIsVisible] = useState(true)
+
+    const isFocused = useIsFocused()
 
 
     const setState = (payload, cb = () => { }) => {
@@ -58,7 +65,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
 
 
     const address_id = route?.params?.address_id;
-    const isNew = (route?.params?.isNew !== null && route?.params?.isNew !== '' ) ? route?.params?.isNew: true;
+    const isNew = (route?.params?.isNew !== null && route?.params?.isNew !== '') ? route?.params?.isNew : true;
 
     useEffect(() => {
         const countryKey = (loginUserData?.work_area === 'UAE') ? 'AE' : 'SA'
@@ -67,6 +74,15 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
             countryKey: countryKey
         })
     }, [])
+
+    useEffect(() => {
+        if (!isVisible) {
+            setIsVisible(true)
+        }
+        else if (!isFocused) {
+            setIsVisible(false)
+        }
+    }, [isFocused])
 
 
     const selectGooglePlace = ({
@@ -300,159 +316,156 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
 
 
     return (
-        <Modal
-            propagateSwipe={50}
-            animationType="fade"
-            transparent={false}
-            visible={true}
-            coverScreen={true}
-            onRequestClose={() => {
+        <View style={{
+            flex: 1,
+            alignItems: "center",
+            backgroundColor: Colors.White
+        }}>
+
+            <ScreenHeader navigation={navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
+                navigation.canGoBack() && navigation.goBack()
+            }} style={{
+                paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0,
+                height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight
+            }} />
+            <AddressInputPopup
+                navigation={navigation}
+                visible={classStateData.isVisible}
+                onRequestClose={() => {
+                    setState({
+                        isVisible: false
+                    })
+                }}
+                shouldShowEditParam={false}
+                addressIDParam={address_id}
+                addressTitleParam={''}
+                buildingNameParam={''}
+                nearestLandmarkParam={''}
+                latitudeParam={classStateData.service_lat}
+                longitudeParam={classStateData.service_long}
+                googleAddressParam={classStateData.service_address}
+                navToBackThen={true}
+                type={isNew ? 'addAddress' : 'editAddress'}
+                editedAddress={(val) => {
+                }}
+            />
+
+
+            <View style={{
+                position: 'absolute',
+                zIndex: 999,
+                width: '96%',
+                alignSelf: 'center',
+                top: (Platform.OS === 'ios') ? headerHeight + StatusbarHeight-(StatusbarHeight/1.5) : headerHeight + StatusbarHeight,
             }}>
-            <SafeAreaView style={{
-                flex: 1,
-                alignItems: "center",
-            }}>
-
-                <ScreenHeader navigation={navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
-                    navigation.canGoBack() && navigation.goBack() 
-                }} style={{
-                    paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0,
-                    height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight
-                }}/>
-                <AddressInputPopup
-                    navigation={navigation}
-                    visible={classStateData.isVisible}
-                    onRequestClose={() => {
-                        setState({
-                            isVisible: false
-                        })
+                <GooglePlacesAutocomplete
+                    ref={instance => {
+                        locationRef = instance;
                     }}
-                    shouldShowEditParam={false}
-                    addressIDParam={address_id}
-                    addressTitleParam={''}
-                    buildingNameParam={''}
-                    nearestLandmarkParam={''}
-                    latitudeParam={classStateData.service_lat}
-                    longitudeParam={classStateData.service_long}
-                    googleAddressParam={classStateData.service_address}
-                    navToBackThen={true}
-                    type={isNew ? 'addAddress' : 'editAddress'}
-                    editedAddress={(val) => {
+
+                    clearButtonMode={'while-editing'}
+                    currentLocation
+                    currentLocationLabel='Current'
+                    placeholder='Search for area, street name..'
+                    placeholderTextColor="#7C7C7C"
+                    minLength={2}
+                    autoFocus={true}
+                    returnKeyType={'default'}
+                    fetchDetails={true}
+                    enablePoweredByContainer={false}
+                    renderLeftButton={() => (
+                        <View style={{
+                            justifyContent: 'center',
+                            alignItems: 'flex-end',
+
+                        }}>
+                            <Image
+                                source={require('../Assets/Icons/search.png')}
+                                style={{
+                                    width: 18,
+                                    height: 18,
+                                }} resizeMethod='scale' resizeMode='contain' >
+                            </Image>
+                        </View>
+
+                    )}
+                    query={{
+                        key: classStateData.place_key,
+                        language: 'en',
+                        components: `country:${classStateData.countryKey}`
+                        // types: 'geocode', //<=== use this to only show country cities
+                        // components: 'country:uk', //, <=== use this to restrict to country
                     }}
-                />
-
-                <View
-                    style={{
-                        flex: 0.5,
-                        position: 'absolute',
-                        zIndex: 999,
-                        paddingHorizontal: 10,
-                        paddingTop: 8,
-                        justifyContent: 'center',
-                        marginTop: headerHeight + StatusbarHeight + vs(16),
-                        width: '100%',
-                    }}>
-                    <GooglePlacesAutocomplete
-                        ref={instance => {
-                            locationRef = instance;
-                        }}
-
-                        clearButtonMode={'while-editing'}
-                        currentLocation
-                        currentLocationLabel='Current'
-                        placeholder='Search for area, street name..'
-                        placeholderTextColor="#7C7C7C"
-                        minLength={2}
-                        autoFocus={true}
-                        returnKeyType={'default'}
-                        fetchDetails={true}
-                        enablePoweredByContainer={false}
-                        renderLeftButton={() => (
-                            <View style={{
-                                justifyContent: 'center',
-                                alignItems: 'flex-end',
-
-                            }}>
-                                <Image
-                                    source={require('../Assets/Icons/search.png')}
-                                    style={{
-                                        width: 18,
-                                        height: 18,
-                                    }} resizeMethod='scale' resizeMode='contain' >
-                                </Image>
-                            </View>
-
-                        )}
-                        query={{
-                            key: classStateData.place_key,
-                            language: 'en',
-                            components: `country:${classStateData.countryKey}`
-                            // types: 'geocode', //<=== use this to only show country cities
-                            // components: 'country:uk', //, <=== use this to restrict to country
-                        }}
-                        GooglePlacesDetailsQuery={{
-                            fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
-                        }}
-                        textInputProps={{
-
-                            placeholderTextColor: '#7C7C7C',
-                            backgroundColor: '#F2F3F2',
-                            fontFamily: Font.Regular,
-                            fontSize: 14,
-                            color: Colors.textblack,
-                        }}
-                        onFail={error => {
-                        }}
-                        onPress={(data, details = null) => {
-                            console.log({ data, details })
-                            setState(
-                                {
+                    GooglePlacesDetailsQuery={{
+                        fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
+                    }}
+                    textInputProps={{
+                        placeholderTextColor: '#7C7C7C',
+                        backgroundColor: '#F2F3F2',
+                        fontFamily: Font.Regular,
+                        fontSize: 14,
+                        color: Colors.textblack,
+                    }}
+                    onFail={error => {
+                    }}
+                    onPress={(data, details = null) => {
+                        console.log({ data, details })
+                        setState(
+                            {
+                                latitude: details.geometry.location.lat,
+                                longitude: details.geometry.location.lng,
+                            },
+                            () => {
+                                console.log({ data });
+                                selectGooglePlace({
+                                    data,
+                                    details,
                                     latitude: details.geometry.location.lat,
                                     longitude: details.geometry.location.lng,
-                                },
-                                () => {
-                                    console.log({ data });
-                                    selectGooglePlace({
-                                        data,
-                                        details,
-                                        latitude: details.geometry.location.lat,
-                                        longitude: details.geometry.location.lng,
-                                    });
-                                },
-                            );
-                        }}
-                        styles={{
-                            textInputContainer: {
-                                width: '100%',
-                                backgroundColor: '#F2F3F2',
-                                justifyContent: 'center',
-                                paddingHorizontal: 8,
+                                });
+                            },
+                        );
+                    }}
+                    styles={{
+                        textInputContainer: {
+                            width: '100%',
+                            backgroundColor: '#F2F3F2',
+                            justifyContent: 'center',
+                            paddingHorizontal: 8,
 
-                            },
-                            textInput: {
-                                color: Colors.blackColor,
-                                textAlignVertical: 'center',
-                                justifyContent: 'center',
-                                paddingBottom: -(windowHeight / 300)
-                            },
-                            predefinedPlacesDescription: {
-                                color: '#000',
-                            },
-                            separator: {
-                                height: 0.5,
-                            },
-                            loader: {
-                                flexDirection: 'row',
-                                justifyContent: 'flex-end',
-                                height: 20,
-                            },
-                        }}
-                    />
+                        },
+                        textInput: {
+                            color: Colors.blackColor,
+                            textAlignVertical: 'center',
+                            justifyContent: 'center',
+                            paddingBottom: -(windowHeight / 300),
+                        },
+                        predefinedPlacesDescription: {
+                            color: '#000',
+                        },
+                        separator: {
+                            height: 0.5,
+                        },
+                        loader: {
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            height: 20,
+                        },
+                        listView: {
+                            zIndex: 2000
+                        }
+                    }}
+                />
+            </View>
 
-                </View>
-
+            <KeyboardAwareScrollView
+                contentContainerStyle={{
+                    width: '100%',
+                }}>
                 <View style={{
-                    marginTop: (Platform.OS === 'ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8
+                    marginTop: (Platform.OS === 'ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8,
+                    paddingTop: (windowWidth * 2) / 100,
+                    zIndex: 0
                 }}>
                     <TouchableOpacity onPress={() => {
                         getlatlong()
@@ -522,10 +535,8 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                         }
                     </View>
                 </View>
-
-            </SafeAreaView>
-            {/* </ScrollView> */}
-        </Modal>
+            </KeyboardAwareScrollView>
+        </View>
     );
 
 }

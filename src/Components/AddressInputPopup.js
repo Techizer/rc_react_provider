@@ -253,7 +253,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type='addAddress', editedA
                                             onPress={shouldShowEditParam ? () => {
                                                 onRequestClose()
                                                 setTimeout(() => {
-                                                    navigation.replace(ScreenReferences.SearchPlace, {
+                                                    navigation.navigate(ScreenReferences.SearchPlace, {
                                                         address_id: addressIDParam,
                                                         isNew: false
                                                     })

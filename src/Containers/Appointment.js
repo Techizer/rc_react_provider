@@ -55,13 +55,13 @@ export default Appointment = ({ navigation, route, pageName }) => {
       show_get_date = datenew_show
     }
     let date1_show = year_show + '-' + show_month1 + '-' + show_get_date
-    setState(
-      prev => ({
-        ...prev,
-        set_date: date1_show,
-        check_currentdate: date1_show
-      })
-    )
+    // setState(
+    //   prev => ({
+    //     ...prev,
+    //     set_date: date1_show,
+    //     check_currentdate: date1_show
+    //   })
+    // )
 
     for (var arr = [], dt = new Date(today); dt <= new Date(nextweek); dt.setDate(dt.getDate() + 1)) {
 
@@ -95,12 +95,6 @@ export default Appointment = ({ navigation, route, pageName }) => {
   };
 
   const getApppointments = async () => {
-    setState(
-      prev => ({
-        ...prev,
-        isLoading: true
-      })
-    )
 
     let user_details = loginUserData;
     let user_id = user_details['user_id']
@@ -154,12 +148,13 @@ export default Appointment = ({ navigation, route, pageName }) => {
         )
       }
     }).finally(() => {
-      setState(prev => ({
-        ...prev,
-        isLoading: false
-      }))
+      if (state.isLoading) {
+        setState(prev => ({
+          ...prev,
+          isLoading: false
+        }))
+      }
     })
-
   }
 
   const showConfirmDialogReject = (acceptanceStatus, appointmentID, listIndex) => {

@@ -192,7 +192,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
 
-        console.log('ScheduleStatus...',obj.result.accept_booking);
+        console.log('ScheduleStatus...', obj.result.accept_booking);
 
         setState(
           prev => ({
@@ -915,22 +915,38 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                   paddingHorizontal: s(11),
                 }}>
                 <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width='50%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} />
-                  <SkeletonPlaceholder.Item width='98%' height={s(60)} borderRadius={s(2)} marginTop={s(3)} />
+                  <SkeletonPlaceholder.Item width='50%' height={s(20)} borderRadius={s(6)} marginTop={s(11)} />
+                  <SkeletonPlaceholder.Item width='98%' height={s(25)} borderRadius={s(6)} marginTop={s(3)} />
                 </SkeletonPlaceholder>
 
                 <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width='70%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} />
-                  <SkeletonPlaceholder.Item width='90%' height={s(50)} borderRadius={s(2)} marginTop={s(3)} />
+                  <SkeletonPlaceholder.Item width='90%' height={s(20)} borderRadius={s(6)} marginTop={s(20)} />
+
+                  <View style={{
+                    flexDirection: 'row',
+                    marginTop: s(8)
+                  }} >
+                    <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} />
+                    <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} marginLeft={'10%'} />
+                  </View>
                 </SkeletonPlaceholder>
 
-                <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width='98%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} />
-                  <SkeletonPlaceholder.Item width='90%' height={s(50)} borderRadius={s(2)} marginTop={s(3)} />
+                {(page == "onlinehomeschedule") &&
+                  <SkeletonPlaceholder>
+                  <SkeletonPlaceholder.Item width='90%' height={s(20)} borderRadius={s(6)} marginTop={s(20)} />
+
+                  <View style={{
+                    flexDirection: 'row',
+                    marginTop: s(8)
+                  }} >
+                    <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} />
+                    <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} marginLeft={'10%'} />
+                  </View>
                 </SkeletonPlaceholder>
+                }
 
                 <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width='75%' height={s(25)} borderRadius={s(2)} marginTop={s(11)} marginBottom={s(11)} />
+                  <SkeletonPlaceholder.Item width='75%' height={s(22)} borderRadius={s(6)} marginTop={s(20)} marginBottom={s(10)} />
                 </SkeletonPlaceholder>
 
               </View>
@@ -943,7 +959,22 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                     paddingHorizontal: s(11),
                   }}>
                   <SkeletonPlaceholder>
-                    <SkeletonPlaceholder.Item width='100%' height={s(60)} borderRadius={s(2)} marginTop={4} />
+
+                    <View style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      width: '100%',
+                      backgroundColor: (item?.slot_day_enable == "1") ? '#FBFBFB' : Colors.gray6, //(index == weekArr.length - 1) ? '#E5E5E5' : '#FBFBFB', //Colors.tab_background_color,
+                      height: (mobileW * 14) / 100,
+                      marginBottom: 5
+                    }} key={'slott' + index} >
+
+                      <SkeletonPlaceholder.Item width='10%' height={(mobileW * 10) / 100} borderRadius={s(6)} marginTop={vs(2)} />
+                      <SkeletonPlaceholder.Item width='18%' height={(mobileW * 10) / 100} borderRadius={s(6)} marginTop={vs(2)} marginLeft={'1%'} />
+                      <SkeletonPlaceholder.Item width='28%' height={(mobileW * 10) / 100} borderRadius={s(6)} marginTop={vs(2)} marginLeft={'6%'} />
+                      <SkeletonPlaceholder.Item width='28%' height={(mobileW * 10) / 100} borderRadius={s(6)} marginTop={vs(2)} marginLeft={'6%'} />
+
+                    </View>
                   </SkeletonPlaceholder>
                 </View>
               )
@@ -951,7 +982,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
             }}
             ItemSeparatorComponent={() => (
               <View style={{
-                marginTop: vs(4)
+                marginTop: vs(8)
               }} />
             )}
           />

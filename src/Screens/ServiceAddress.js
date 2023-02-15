@@ -105,7 +105,7 @@ const ServiceAddress = ({ navigation, route }) => {
                 }}
                 navigation={navigation} />
 
-            <View style={{ backgroundColor: Colors.White, marginTop: vs(7), paddingHorizontal: s(13), paddingVertical: vs(15) }}>
+            <View style={{ backgroundColor: Colors.White, marginTop: vs(1), paddingHorizontal: s(13), paddingVertical: vs(15), flex: 1 }}>
 
                 <FlatList
                     showsVerticalScrollIndicator={false}

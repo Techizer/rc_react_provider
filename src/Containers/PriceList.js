@@ -578,7 +578,14 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                       paddingHorizontal: s(11),
                     }}>
                     <SkeletonPlaceholder>
-                      <SkeletonPlaceholder.Item width='100%' height={s(40)} borderRadius={s(2)} />
+                      <View style={{
+                        flexDirection: 'row'
+                      }}>
+                        <SkeletonPlaceholder.Item width='11%' height={s(28)} borderRadius={s(4)} />
+                        <SkeletonPlaceholder.Item width='56%' height={s(28)} borderRadius={s(4)} marginLeft={'3%'}/>
+                        <SkeletonPlaceholder.Item width='16%' height={s(28)} borderRadius={s(4)} marginLeft={'14%'}/>
+                      </View>
+
                     </SkeletonPlaceholder>
                   </View>
                 )
@@ -586,7 +593,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
               }}
               ItemSeparatorComponent={() => (
                 <View style={{
-                  marginTop: vs(4)
+                  marginTop: vs(6)
                 }} />
               )}
             />

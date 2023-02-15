@@ -50,36 +50,36 @@ const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = 
                     style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingTop: (index === 0 && defaultAdd == addressDetails?.id) ? 18 : (index === 0) ? 0 : vs(18), backgroundColor: defaultAdd == addressDetails?.id ? Colors.appointmentdetaillightblue : 'transparent' }}>
 
                     <View style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', paddingBottom: vs(12) }}>
-                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
 
                             <View style={{ width: '9%', }}>
                                 <SvgXml xml={Address} />
                             </View>
 
-                            <View style={{ width: '43%' }}>
+                            <View style={{ maxWidth: '38%' }}>
                                 <Text numberOfLines={1} style={{ textAlign: Configurations.textRotate, fontSize: Font.medium, fontFamily: Font.Regular, color: Colors.darkText }}>{addressDetails.title ? addressDetails.title : 'Unnamed'}</Text>
                             </View>
 
-                            <View style={{ width: '40%', }}>
+                            <View style={{ width: '42%', marginLeft: '3%' }}>
                                 {
                                     (addressDetails.default === '0') &&
                                     (
-                                        <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', width: '40%', margin: vs(2) }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginHorizontal: vs(2) }}>
                                             <SvgXml xml={roundCheck} />
-                                            <Text style={{ textAlign: Configurations.textRotate, fontSize: Font.xsmall, fontFamily: Font.Medium, color: Colors.theme_color }}>{'Default'}</Text>
+                                            <Text style={{ textAlign: Configurations.textRotate, fontSize: Font.xsmall, fontFamily: Font.Medium, color: Colors.theme_color, marginLeft: vs(4) }}>{'Default'}</Text>
                                         </View>
                                     )
                                 }
                             </View>
 
-                            <View style={{ width: '8%', }}>
+                            <View style={{ flex: 1, alignItems: 'flex-end'}}>
                                 <TouchableHighlight
                                     onPress={() => {
                                         showModal(true)
                                         selectedAddress(index)
                                     }}
                                     underlayColor={Colors.Highlight}
-                                    style={{ width: '100%', height: vs(22), borderRadius: 4, alignItems: 'center', justifyContent: 'center' }}>
+                                    style={{ minWidth: '35%', height: vs(22), borderRadius: 4, alignItems: 'flex-end', justifyContent: 'center' }}>
                                     <SvgXml xml={Edit} style={{
                                         height: vs(17),
                                         width: vs(17)
@@ -92,7 +92,7 @@ const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = 
                         <View style={{ width: '100%', flexDirection: 'row', marginTop: 4 }}>
                             <View style={{ width: '9%', }}>
                             </View>
-                            <Text style={{ textAlign: Configurations.textRotate, fontSize: (windowWidth * 3.2) / 100, fontFamily: Font.Regular, color: '#6D737E', marginTop: vs(4) }}>{addressDetails.service_address ? addressDetails?.service_address : '-'}</Text>
+                            <Text style={{ textAlign: Configurations.textRotate, fontSize: (windowWidth * 3.2) / 100, fontFamily: Font.Regular, color: '#6D737E', marginTop: vs(4), width: '85%' }}>{addressDetails.service_address ? addressDetails?.service_address : '-'}</Text>
                         </View>
                     </View>
                 </View>

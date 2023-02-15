@@ -63,6 +63,8 @@ const VideoCall = (props) => {
 
   const { loginUserData, lastScreen } = useSelector(state => state.Auth)
 
+  console.log({lastScreen});
+
   useEffect(() => {
     console.log({isp: props.route.params.item.ispage});
     if (props.route.params.item.ispage == "accept") {
@@ -212,12 +214,15 @@ const VideoCall = (props) => {
   const endCall = () => {
     twilioVideo.current.disconnect();
     setTimeout(() => {
+      
       if (props.navigation) {
-        if (props.navigation.canGoBack()) {
-          props.navigation.goBack()
-        } else {
-          props.navigation.navigate(lastScreen)
-        }
+        // if (props.navigation.canGoBack()) {
+        //   props.navigation.goBack()
+        // } else {
+        //   props.navigation.navigate(lastScreen)
+        // }
+        props.navigation.navigate(lastScreen)
+        // props.navigation.navigate(lastScreen)
       }
     }, 1000);
   };

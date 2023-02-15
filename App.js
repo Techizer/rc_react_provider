@@ -3,7 +3,7 @@
 import React, { Component, useRef } from 'react';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { ApplicationContainerWrapper, AppConsumer } from './src/Containers/ApplicationContainerWrapper';
-import Stacknav from './src/Stacks/Routenavigation';
+import MainStack from './src/Stacks/MainStack';
 import { FBPushNotifications } from './src/Helpers/FirebasePushNotifications';
 import { Configurations } from './src/Helpers/Utils';
 import FlashMessage from "react-native-flash-message";
@@ -58,7 +58,7 @@ const App = (props) => {
             <AppConsumer>
               {funcs => {
                 global.props = { ...funcs };
-                return <Stacknav {...funcs} />;
+                return <MainStack {...funcs} />;
               }}
 
             </AppConsumer>

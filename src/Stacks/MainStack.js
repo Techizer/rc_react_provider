@@ -10,7 +10,7 @@ import Signup from '../Screens/Signup';
 import MyProfile from '../Screens/MyProfile';
 import EditProfile from '../Screens/EditProfile';
 import Home from '../Screens/Home';
-import Appointments from '../Screens/Appointments';
+import AppointmentsTabStack from './TabStacks/AppointmentsTabStack';
 import VideoCall from '../Screens/VideoCall';
 import AvailabilitySchedule from '../Screens/AvailabilitySchedule';
 import PriceList from '../Screens/PriceList';
@@ -61,7 +61,7 @@ function Mydrawer() {
     </Drawer.Navigator>
   );
 }
-const Stacknav = navigation => {
+const MainStack = navigation => {
   const dispatch = useDispatch()
   useEffect(() => {
     appStateSubscription = AppState.addEventListener(
@@ -96,7 +96,7 @@ const Stacknav = navigation => {
   return (
     <NavigationContainer onStateChange={(r) => {
       let sName = r.routes[r.index].name
-      if (sName != ScreenReferences.VideoCall) {
+      if (sName != ScreenReferences.VideoCall && sName != ScreenReferences.Home) {
 
         dispatch(setLastScreen(sName))
       }
@@ -168,8 +168,8 @@ const Stacknav = navigation => {
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
-          name={ScreenReferences.AppointmentTabStack}
-          component={Appointments}
+          name={ScreenReferences.AppointmentsTabStack}
+          component={AppointmentsTabStack}
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
@@ -238,4 +238,4 @@ const Stacknav = navigation => {
     </NavigationContainer>
   );
 };
-export default Stacknav;
+export default MainStack;

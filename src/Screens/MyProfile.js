@@ -12,6 +12,7 @@ import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
+import { vs } from 'react-native-size-matters';
 
 export default MyProfile = ({ navigation, route }) => {
 
@@ -72,7 +73,7 @@ export default MyProfile = ({ navigation, route }) => {
       getProfile()
 
       // getNationalities()
-      getNotifications()
+      getNotificationsCount()
 
     });
   }, [])
@@ -87,7 +88,7 @@ export default MyProfile = ({ navigation, route }) => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
 
-  const getNotifications = async () => {
+  const getNotificationsCount = async () => {
     let user_details = loginUserData
     console.log('user_details user_details', user_details)
     let user_id = user_details['user_id']
@@ -103,8 +104,6 @@ export default MyProfile = ({ navigation, route }) => {
       if (obj.status == true) {
         setState({ notification_count: obj.result })
         console.log('obj nationaltity', obj)
-
-
 
       } else {
 
@@ -304,7 +303,7 @@ export default MyProfile = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1, }}>
       <SafeAreaView
-        style={{ backgroundColor: Colors.statusbar_color, flex: 0 }}
+        style={{ backgroundColor: Colors.statusbarcolor, flex: 0 }}
       />
 
       <StatusBar
@@ -337,16 +336,10 @@ export default MyProfile = ({ navigation, route }) => {
           title={'My Profile'}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-        <ScrollView
-          style={{
-            marginTop: 10
-          }}
-          contentContainerStyle={{ paddingBottom: mobileW * 15 / 100 }}
-          showsVerticalScrollIndicator={false}>
-
-          <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView contentContainerStyle={{ paddingBottom: mobileW * 15 / 100 }} showsVerticalScrollIndicator={false}>
             <View style={{
               backgroundColor: 'white',
+              marginTop: vs(1)
             }}>
               <View
                 style={{
@@ -543,7 +536,7 @@ export default MyProfile = ({ navigation, route }) => {
                         fontFamily: Font.Regular,
                         fontSize: 12, //(mobileW * 3) / 100,
                         textAlign: Configurations.textRotate,
-                      }}>{(classStateData.user_type == "lab") ? 'Lab Test' : 'Bookings'}
+                      }}>{(classStateData.user_type == "lab") ? 'Bookings' : 'Bookings'}
                     </Text>
                     <Text
                       style={{
@@ -552,7 +545,9 @@ export default MyProfile = ({ navigation, route }) => {
                         fontFamily: Font.Medium,
                         fontSize: 16, //(mobileW * 3) / 100,
                         textAlign: Configurations.textRotate,
-                      }}>{(classStateData.user_type == "lab") ? classStateData.lab_test_count : classStateData.booking_count}
+                      }}>
+                        {/* {(classStateData.user_type == "lab") ? ((classStateData?.lab_test_count != null && classStateData?.lab_test_count != 'N/A') ? classStateData?.lab_test_count: '0') : classStateData.booking_count} */}
+                        {classStateData.booking_count}
                     </Text>
                   </View>
                   <View style={{
@@ -588,7 +583,7 @@ export default MyProfile = ({ navigation, route }) => {
                           fontFamily: Font.Medium,
                           fontSize: 16, //(mobileW * 3) / 100,
                           textAlign: Configurations.textRotate,
-                        }}>{classStateData.avg_rating}.0
+                        }}>{parseFloat(classStateData.avg_rating).toFixed(1)}
                       </Text>
                     </View>
 
@@ -976,7 +971,6 @@ export default MyProfile = ({ navigation, route }) => {
             />
 
           </KeyboardAwareScrollView>
-        </ScrollView>
       </View>
 
     </View>
