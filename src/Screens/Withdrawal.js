@@ -32,22 +32,17 @@ export default Withdrawal = ({ navigation, route }) => {
 
 
   useEffect(() => {
-    getServices()
+    getWithdrawalList()
   }, [])
 
   const reloadList = () => {
-    console.log('reloadListreloadListreloadListreloadList');
-    getServices()
+    getWithdrawalList()
   }
 
-  const getServices = async () => {
+  const getWithdrawalList = async () => {
     let user_details = loginUserData
     let user_id = user_details['user_id']
     let user_type = user_details['user_type']
-
-    if (!classStateData.isLoading) {
-      setState({ isLoading: true })
-    }
 
     let apiname = "api-provider-withdrawal-history"
 
@@ -63,6 +58,7 @@ export default Withdrawal = ({ navigation, route }) => {
     API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
+        console.log('Bank details', obj?.result?.bankdetails)
         setState({
           withdrawalArr: obj.result.withdrawal,
           abal: obj.result.abal,
@@ -307,8 +303,7 @@ export default Withdrawal = ({ navigation, route }) => {
             }
             ItemSeparatorComponent={() => (
               <View style={{ marginVertical: s(1) }} />
-            )}
-            refreshing={false} />
+            )}/>
 
       }
       {!classStateData.isLoading &&
@@ -512,7 +507,7 @@ export default Withdrawal = ({ navigation, route }) => {
                                 textAlign: Configurations.textRotate,
                                 color: Colors.placeholdertextcolor,
                                 fontFamily: Font.Regular,
-                                fontSize: mobileW * 3.3 / 100,
+                                fontSize: mobileW * 3.2 / 100,
                               }}>
                               {classStateData.bankdetails?.bank_name}
                             </Text>
@@ -533,7 +528,7 @@ export default Withdrawal = ({ navigation, route }) => {
                                 textAlign: Configurations.textRotate,
                                 color: Colors.placeholdertextcolor,
                                 fontFamily: Font.Regular,
-                                fontSize: mobileW * 3.3 / 100,
+                                fontSize: mobileW * 3.2 / 100,
                               }}>
                               {classStateData.bankdetails?.acname}
                             </Text>
@@ -554,7 +549,7 @@ export default Withdrawal = ({ navigation, route }) => {
                                 textAlign: Configurations.textRotate,
                                 color: Colors.placeholdertextcolor,
                                 fontFamily: Font.Regular,
-                                fontSize: mobileW * 3.3 / 100,
+                                fontSize: mobileW * 3.2 / 100,
                               }}>
                               {classStateData.bankdetails?.account_no}
                             </Text>
@@ -584,7 +579,7 @@ export default Withdrawal = ({ navigation, route }) => {
                             flexDirection: 'row',
                           }}>
                           <View style={{
-                            width: '100%',
+                            width: '33%',
                             alignSelf: 'center',
                           }}>
                             <Text
@@ -599,14 +594,60 @@ export default Withdrawal = ({ navigation, route }) => {
                                 textAlign: Configurations.textRotate,
                                 color: Colors.placeholder_border,
                                 fontFamily: Font.Regular,
-                                fontSize: mobileW * 3.6 / 100,
+                                fontSize: mobileW * 3.2 / 100,
                               }}>
                               {classStateData.bankdetails?.address}
                             </Text>
                           </View>
 
+                          <View style={{
+                            width: '33%',
+                            alignSelf: 'center',
+                          }}>
+                            <Text
+                              style={{
+                                textAlign: Configurations.textRotate,
+                                color: Colors.textblue,
+                                fontFamily: Font.Medium,
+                                fontSize: mobileW * 2.5 / 100,
+                              }}>IBAN No:</Text>
+                            <Text
+                              style={{
+                                textAlign: Configurations.textRotate,
+                                color: Colors.placeholder_border,
+                                fontFamily: Font.Regular,
+                                fontSize: mobileW * 3.2 / 100,
+                              }}>
+                              {classStateData.bankdetails?.iban_no}
+                            </Text>
+                          </View>
+
+                          <View style={{
+                            width: '33%',
+                            alignSelf: 'center',
+                          }}>
+                            <Text
+                              style={{
+                                textAlign: Configurations.textRotate,
+                                color: Colors.textblue,
+                                fontFamily: Font.Medium,
+                                fontSize: mobileW * 2.5 / 100,
+                              }}>Swift Code:</Text>
+                            <Text
+                              style={{
+                                textAlign: Configurations.textRotate,
+                                color: Colors.placeholder_border,
+                                fontFamily: Font.Regular,
+                                fontSize: mobileW * 3.2 / 100,
+                              }}>
+                              {classStateData.bankdetails?.swift_no}
+                            </Text>
+                          </View>
+
+                          
 
                         </View>
+                        
                       </View>
                     </View>
                   </View> :

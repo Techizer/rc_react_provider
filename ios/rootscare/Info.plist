@@ -132,7 +132,7 @@
             <array>
                 <string>servicerootscare</string>
                 <string>fb255642823428638</string>
-                <string>255642823428638</string>
+<!--                <string>255642823428638</string>-->
             </array>
             <key>CFBundleURLName</key>
             <string>io.Branch.servicerootscare</string>

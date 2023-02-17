@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
 import AppLoader from '../Components/AppLoader';
-import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
+import { VideoCall, dummyUser } from '../Assets/Icons/SvgIcons/Index';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
@@ -344,7 +344,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
         })
 
         setTimeout(() => {
-          onUploadPrescription(Platform.OS === 'android' ? objF: obj)
+          onUploadPrescription(Platform.OS === 'android' ? objF : obj)
         }, 800)
 
       }
@@ -520,7 +520,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   try {
 
-   
+
     var item = classStateData.appointmentDetails
 
     if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
@@ -1706,17 +1706,18 @@ export default AppointmentDetails = ({ navigation, route }) => {
                   (item?.OTP == "") ?
                     <>
                       <View style={{
-                        width: '90%',
-                        alignSelf: 'center', paddingVertical: mobileW * 2 / 100,
-                        flexDirection: 'row', borderTopWidth: 1,
+                        width: '92%',
+                        alignSelf: 'center', 
+                        paddingVertical: mobileW * 2 / 100,
+                        flexDirection: 'row', 
+                        borderTopWidth: 1,
                         borderTopColor: Colors.bordercolor,
                         alignItems: 'center'
                       }}>
                         <View style={{
-                          // backgroundColor: '#F7F8FA'
-                          width: '60%'
+                          width: '60%',
                         }}>
-                          <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>Enter OTP to complete</Text>
+                          <Text allowFontScaling={false} style={{ fontSize: Font.medium, color: Colors.lightgraytext, width: '96%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>Enter OTP to complete</Text>
                         </View>
                         <View style={{
                           backgroundColor: '#F7F8FA',
@@ -2068,21 +2069,21 @@ export default AppointmentDetails = ({ navigation, route }) => {
                       item.appointment_type == "Online" && VideoCallBtn == true) &&
                       item.booking_type === 'online_task' &&
                       <>
-                        <TouchableOpacity onPress={() => {
-                          navigation.navigate(ScreenReferences.VideoCall, {
-                            item: item
-                          });
-                        }}
-
+                        <TouchableOpacity
+                          activeOpacity={0.8}
+                          onPress={() => {
+                            navigation.navigate(ScreenReferences.VideoCall, {
+                              item: item
+                            });
+                          }}
                           style={{
-                            backgroundColor: Colors.buttoncolorhgreen,
-                            // width: mobileW * 22 / 100,
+                            backgroundColor: Colors.Green,
                             borderRadius: (mobileW * 1) / 100,
-                            // paddingVertical: (mobileW * 1.5) / 100,
                             padding: (mobileW * 2) / 100,
-                            justifyContent: 'center',
-
-                          }}>
+                            alignItems: 'center',
+                            flexDirection: 'row'
+                          }} >
+                          <SvgXml xml={VideoCall} />
                           <Text
                             style={{
                               textAlign: 'center',
@@ -2090,8 +2091,11 @@ export default AppointmentDetails = ({ navigation, route }) => {
                               textTransform: 'uppercase',
                               fontFamily: Font.SemiBold,
                               fontSize: mobileW * 3 / 100,
-                            }}>VIDEO CALL</Text>
+                              marginLeft: s(7)
+                            }}
+                          >VIDEO CALL</Text>
                         </TouchableOpacity>
+
                       </>
                     }
 

@@ -330,7 +330,7 @@ const AppointmentItem = ({
                                     alignSelf: 'flex-start',
                                     marginTop: vs(3)
                                 }}
-                            >{item?.appointment_type}</Text>
+                            >{item?.task_type}</Text>
                         </View>
 
                     </View>
