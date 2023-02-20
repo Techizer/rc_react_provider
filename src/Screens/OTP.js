@@ -283,7 +283,7 @@ export default OTP = ({ navigation, route }) => {
               iconName={classStateData.isSecurePassword ? 'eye-off' : 'eye'}
               iconPressAction={changePwdType}
               onSubmitEditing={() => {
-                loginbtn();
+                otpVerify();
               }}
             />
 

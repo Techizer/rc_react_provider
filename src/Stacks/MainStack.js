@@ -35,6 +35,7 @@ import { useDispatch } from 'react-redux';
 import { onUserLogout, setLastScreen } from '../Redux/Actions/UserActions';
 import { localStorage } from '../Provider/localStorageProvider';
 import { NavigationContainer } from '@react-navigation/native';
+import { useRef } from 'react';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -63,6 +64,7 @@ function Mydrawer() {
 }
 const MainStack = navigation => {
   const dispatch = useDispatch()
+  const navRef = useRef()
   useEffect(() => {
     appStateSubscription = AppState.addEventListener(
       "change",
@@ -77,6 +79,7 @@ const MainStack = navigation => {
           if (logoutBit === '100') {
             localStorage.setItemString('logout_bit', '200')
             dispatch(onUserLogout())
+            // navRef.current.
             navigation.reset({
               index: 0,
               routes: [{ name: ScreenReferences.Login }],
@@ -101,7 +104,7 @@ const MainStack = navigation => {
         dispatch(setLastScreen(sName))
       }
       console.log(sName);
-    }}>
+    }} ref={navRef}>
       <Stack.Navigator initialRouteName={ScreenReferences.Splash}>
 
         <Stack.Screen

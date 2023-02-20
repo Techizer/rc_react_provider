@@ -1,4 +1,4 @@
-import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking, Platform } from 'react-native'
+import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking, Platform, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 global.add_location = 'NA';
