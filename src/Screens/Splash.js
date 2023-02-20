@@ -1,4 +1,4 @@
-import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking } from 'react-native'
+import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 global.add_location = 'NA';
@@ -49,12 +49,50 @@ export default Splash = ({ navigation, route }) => {
 
   const checkAppVersion = async () => {
     let lang = (state?.loanguage == 1) ? "ENG" : "ENG"
-    let url = Configurations.baseURL + "api-ios-provider-update" + "?divice_lang=" + lang;
+    let url = Configurations.baseURL + ((Platform.OS === 'ios') ? ("api-ios-provider-update?divice_lang=" + lang) : ("api-android-provider-update?divice_lang=" + lang))
     console.log("url", url, Configurations.language)
     API.get(url, 1).then((obj) => {
 
       if (obj.status == true) {
-        if (parseFloat(obj.result.appVer) > parseFloat(appVersion)) {
+
+        console.log({
+          MyVersion: appVersion,
+          FromApiVersion: obj?.result?.appVer,
+          Platform: Platform.OS
+        });
+
+        // const fetchedVersionCodes = obj?.result?.appVer?.split('.') //[3,3,6]
+        // const myAppVersionCodes = appVersion.split('.') //[3,3,7]
+        // for (let index = 0; index < fetchedVersionCodes.length; index++) {
+        //   if (parseInt(fetchedVersionCodes[index]) > parseInt(myAppVersionCodes[index])) {
+        //     setState(prev => ({
+        //       ...prev,
+        //       appVer: obj.result.appVer,
+        //       updTitle: '<h3>' + obj.result.updTitle + '</h3>',
+        //       updText: '<p>' + obj.result.updText + '</p>',
+        //       skipFlag: obj.result.skipFlag,
+        //       skipText: obj.result.skipText,
+        //       rdrTo: obj.result.rdrTo,
+        //       rdrUrl: obj.result.rdrUrl,
+        //       showHelp: obj.result.showHelp,
+        //       helpTitle: obj.result.helpTitle,
+        //       helpUrl: obj.result.helpUrl,
+        //       modalVisible3: true
+        //     }))
+        //     return;
+        //   }
+        // }
+
+        // setTimeout(() => {
+        //   createNewLoginSession()
+        // }, 1000);
+
+        const newCode = obj?.result?.appVer?.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
+        const myCode = appVersion.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
+
+        console.log({ newCode, myCode });
+
+        if (parseInt(newCode) > parseInt(myCode)) {
           setState(prev => ({
             ...prev,
             appVer: obj.result.appVer,
@@ -69,12 +107,12 @@ export default Splash = ({ navigation, route }) => {
             helpUrl: obj.result.helpUrl,
             modalVisible3: true
           }))
-
         } else {
           setTimeout(() => {
             createNewLoginSession()
           }, 1000);
         }
+
 
       } else {
         setTimeout(() => {
@@ -82,6 +120,7 @@ export default Splash = ({ navigation, route }) => {
         }, 1000);
         return false;
       }
+
     }).catch((error) => {
       createNewLoginSession()
       console.log("-------- error ------- " + error);
@@ -141,7 +180,7 @@ export default Splash = ({ navigation, route }) => {
               data.append('user_type', result?.user_type)
 
               API.post(url, data, 1).then((obj) => {
-                console.log({obj});
+                console.log({ obj });
                 if (obj.status == true) {
                   console.log('Status is TT');
                   dispatch(setUserLoginData(obj.result))
