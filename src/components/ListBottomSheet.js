@@ -5,8 +5,9 @@ import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
-import { Configurations, LanguageConfiguration, mobileH, } from "../Helpers/Utils";
+import { Configurations, LanguageConfiguration, mobileH, windowHeight, } from "../Helpers/Utils";
 import { Cross } from "../Assets/Icons/SvgIcons/Index";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 
 const windowWidth = Dimensions.get('window').width
@@ -15,7 +16,7 @@ const deviceHeight = mobileH
 const Days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 const ListBottomSheet = ({
-    visible,
+    ref,
     onRequestClose,
     data,
     title,
@@ -26,24 +27,13 @@ const ListBottomSheet = ({
 }) => {
 
     return (
-        <Modal
-            isVisible={visible}
-            animationIn='fadeInUpBig'
-            animationOut='fadeOutDownBig'
-            deviceWidth={windowWidth}
-            animationInTiming={350}
-            animationOutTimixng={350}
-            // onBackButtonPress={onRequestClose}
-            hasBackdrop={true}
-            useNativeDriver={true}
-            useNativeDriverForBackdrop={true}
-            // backdropColor='rgba(0,0,0,0.8)'
-            style={{ margin: 0 }} >
-
-
-            <View style={styles.modalContainer}>
-
-                <View style={{
+        <RBSheet ref={ref} animationType='slide' height={windowHeight / 1.75} customStyles={{
+            container: {
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            }
+          }}>
+            <View style={{
                     flexDirection: 'row',
 
                 }}>
@@ -103,11 +93,7 @@ const ListBottomSheet = ({
                         );
                     }}
                 />
-            </View>
-
-        </Modal>
-
-
+          </RBSheet>
 
     )
 }

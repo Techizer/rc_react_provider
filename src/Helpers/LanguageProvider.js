@@ -76,7 +76,7 @@ class LanguageProvider {
   allreadyhaveaccounttext = ['Already have an account?', 'هل لديك حساب؟ '];
   loginheretext = ['Login Here', 'تسجيل الدخول هنا '];
   CC_code = ['CC', 'CC'];
-  Country_code = ['Country Code', 'الرقم الدولي']
+  Country_code = ['Country', 'الرقم الدولي']
 
   opt = ['OTP Verification Code', 'رمز التحقق لمرة واحدة  '];
   opttext = ['We have sent the code verification to your email', 'لقد أرسلنا رمز التحقق إلى بريدك الإلكتروني  '];

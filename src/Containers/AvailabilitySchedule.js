@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
+import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList, TouchableHighlight } from 'react-native';
 
-import { Colors, Font, MessageFunctions, Configurations, mobileW, API } from '../Helpers/Utils';
+import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
 import { Button } from '../Components'
 import ListBottomSheet from '../Components/ListBottomSheet';
-import { Arrow } from '../Assets/Icons/SvgIcons/Index';
-import { useSelector } from 'react-redux';
+import { Arrow, Cross } from '../Assets/Icons/SvgIcons/Index';
+import { useDispatch, useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { s, vs } from 'react-native-size-matters';
+import { setScheduleAvailabilityData } from '../Redux/Actions/UserActions';
+import { useRef } from 'react';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import { SvgXml } from 'react-native-svg';
 
 const radiusArr = [
   {
@@ -112,6 +116,9 @@ const timeArray = [
   { value: '11:30 PM' }
 ]
 
+
+const Days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 const BookingStatus = {
   Accept: '0',
   Hide: '1'
@@ -123,50 +130,46 @@ const DaysEnability = {
 }
 
 export default AvailabilitySchedule = ({ navigation, route, page }) => {
+
+  const {
+    loginUserData,
+    scheduleAvailability
+  } = useSelector(state => state.Auth)
+
   const [state, setState] = useState({
-    modalVisible: false,
     message: '',
-    searchPlaceVisible: false,
     flag: true,
-    accept: true,
-    hide: false,
-    accept_booking: BookingStatus.Accept,
-    // service_address: "",
-    // service_lat: "",
-    // service_long: "",
-    // service_radius: "",
+    accept: (scheduleAvailability === null) ? true : scheduleAvailability?.accept,
+    hide: (scheduleAvailability === null) ? false : scheduleAvailability?.hide,
+    accept_booking: (scheduleAvailability === null) ? BookingStatus.Accept : scheduleAvailability?.accept_booking,
     currentIndex: 0,
-
-    isLoading: true,
+    isLoading: (scheduleAvailability === null) ? true : false,
     isOnButtonLoading: false,
-
     currentItem: { "slot_day": "MON", "slot_day_enable": "1", "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-
-    slotArr: [
+    slotArr: (scheduleAvailability === null) ? [
       { "slot_day": "MON", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
       { "slot_day": "TUE", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
       { "slot_day": "WED", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
       { "slot_day": "THU", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
       { "slot_day": "FRI", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
       { "slot_day": "SAT", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" },
-      { "slot_day": "SUN", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }]
+      { "slot_day": "SUN", "slot_day_enable": DaysEnability.Off, "slot_end_time": "08:30 PM", "slot_start_time": "08:30 AM" }
+    ] : scheduleAvailability?.slotArr
   })
 
+  const timeSheetRef = useRef()
+
   useEffect(() => {
-    getAvailabilityScheduleData()
+    getAvailabilityScheduleData(scheduleAvailability === null ? true : false)
   }, [])
 
-
-  const {
-    loginUserData
-  } = useSelector(state => state.Auth)
+  const dispatch = useDispatch()
 
   const isPartOfHospital = ((loginUserData?.hospital_id != '') && (loginUserData?.hospital_id != null))
 
-  const getAvailabilityScheduleData = async () => {
-    let user_details = loginUserData;
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+  const getAvailabilityScheduleData = async (showLoading) => {
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
     let task_type = ""
 
     if (page == "onlinehomeschedule") {  //doctor
@@ -180,8 +183,8 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
     } else {
       task_type = "provider-nurse-hour-base-time-slot"
-
     }
+
     let apiname = task_type
 
     let url = Configurations.baseURL + apiname;
@@ -189,10 +192,21 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     data.append('user_id', user_id)
     data.append('service_type', user_type)
 
+    // if (showLoading) {
+    //   setState(prev => ({isLoading: true}))
+    // }
+
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
 
         console.log('ScheduleStatus...', obj.result.accept_booking);
+
+        dispatch(setScheduleAvailabilityData({
+          slotArr: (obj.result.slots.length > 0) ? obj.result.slots : state.slotArr,
+          accept_booking: (obj.result.accept_booking == null) ? BookingStatus.Accept : obj.result.accept_booking,
+          accept: (obj.result.accept_booking == null) ? true : (obj.result.accept_booking == BookingStatus.Accept) ? true : false,
+          hide: (obj.result.accept_booking == null) ? false : (obj.result.accept_booking == BookingStatus.Hide) ? true : false,
+        }))
 
         setState(
           prev => ({
@@ -246,8 +260,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
         onUpdateScheduleData()
       }
     }
-
-
   }
 
   const onUpdateScheduleData = async () => {
@@ -286,16 +298,24 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
       API.postRaw(url, myData, 1).then((obj) => {
         if (obj.status == true) {
           MessageFunctions.showSuccess(obj.message)
+          dispatch(setScheduleAvailabilityData({
+            slotArr: state.slotArr,
+            accept_booking: state.accept_booking,
+            accept: state.accept,
+            hide: state.hide,
+          }))
         } else {
           MessageFunctions.showError(obj.message)
           return false;
         }
       }).catch((error) => {
       }).finally(() => {
+
         setState(prev => ({
           ...prev,
           isOnButtonLoading: false
         }))
+
       })
     }
   }
@@ -307,6 +327,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
     }
     return h;
   }
+
   const GetMinutes = (d) => {
     return parseInt(d.split(':')[1].split(' ')[0]);
   }
@@ -349,49 +370,108 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
   }
 
   return (
-
-    < View style={{
+    <View style={{
       flex: 1,
-      //  backgroundColor: 'white',
     }}>
-      <ListBottomSheet
-        data={timeArray}
-        onRequestClose={() => {
-          setState(
-            prev => ({
-              ...prev,
-              modalVisible: false
-            })
-          )
-        }}
-        visible={state.modalVisible}
-        title='Select time'
-        currentIndex={state.currentIndex}
-        currentItem={state.currentItem}
-        flag={state.flag}
-        onSelectTime={(value, cIndex, cItem, flag) => {
-          var arr = state.slotArr
-          if (flag) {
-            validationTime(value, state.slotArr[cIndex].slot_end_time, flag, cIndex)
 
-            arr[cIndex].slot_start_time = value
-            setState(
-              prev => ({
-                ...prev,
-                slotArr: arr
-              })
-            )
-          } else {
-            validationTime(state.slotArr[cIndex].slot_start_time, value, flag, cIndex)
-            arr[cIndex].slot_end_time = value
-            setState(
-              prev => ({
-                ...prev,
-                slotArr: arr
-              })
-            )
-          }
-        }} />
+
+      <RBSheet ref={timeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+        container: {
+          borderTopLeftRadius: vs(12),
+          borderTopRightRadius: vs(12),
+        }
+      }} closeOnPressBack>
+        <View style={{
+          width: '100%',
+          backgroundColor: "white",
+          height: '100%',
+          borderTopLeftRadius: vs(12),
+          borderTopRightRadius: vs(12),
+        }}>
+          <View style={{
+            backgroundColor: Colors.textblue,
+            borderTopLeftRadius: vs(12),
+            borderTopRightRadius: vs(12),
+            paddingVertical: vs(14),
+            width: '100%'
+          }}>
+            <Text style={{
+              paddingLeft: 15,
+              color: Colors.white_color,
+              fontSize: Font.large,
+              fontFamily: Font.SemiBold,
+            }}>{`Select ${state.flag ? 'start' : 'end'} time for ${Days[state.currentIndex]}`}</Text>
+          </View>
+          <FlatList
+            data={state.flag ? timeArray : timeArray.filter((t, i) => i > timeArray.findIndex(v => v.value === state.slotArr[state.currentIndex]?.slot_start_time))}
+            contentContainerStyle={{ paddingTop: vs(10) }}
+            renderItem={({ item, index }) => {
+              return (
+                <View style={{
+                  justifyContent: 'center',
+                }}>
+                  <TouchableOpacity style={{
+                    alignSelf: 'center',
+                    backgroundColor: '#DEF7FF',
+                    padding: vs(6),
+                    paddingHorizontal: vs(12),
+                    marginVertical: vs(8),
+                    borderRadius: vs(16)
+                  }}
+                    onPress={() => {
+                      var arr = state.slotArr
+                      if (state.flag) {
+                        validationTime(item.value, state.slotArr[state.currentIndex].slot_end_time, state.flag, state.currentIndex)
+
+                        arr[state.currentIndex].slot_start_time = item.value
+                        setState(
+                          prev => ({
+                            ...prev,
+                            slotArr: arr
+                          })
+                        )
+                      } else {
+                        validationTime(state.slotArr[state.currentIndex].slot_start_time, item.value, state.flag, state.currentIndex)
+                        arr[state.currentIndex].slot_end_time = item.value
+                        setState(
+                          prev => ({
+                            ...prev,
+                            slotArr: arr
+                          })
+                        )
+                      }
+                      timeSheetRef.current.close()
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.textblack_new,
+                        textAlign: Configurations.textRotate,
+                        fontSize: Font.large
+                      }} >
+                      {item.value}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+            keyExtractor={(item, index) => 'kyi' + index}
+            showsVerticalScrollIndicator={false}
+            numColumns={3}
+            ListFooterComponent={() => (
+              <View style={{ marginVertical: vs(16) }} />
+            )}
+            columnWrapperStyle={{
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+            }}
+          />
+        </View>
+
+
+
+      </RBSheet>
+
+
       {
         !state.isLoading ?
           <View
@@ -489,7 +569,6 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                           alignSelf: 'center',
                           flexDirection: 'row',
                           alignItems: 'center',
-                          // justifyContent:'space-between'
                         }}>
                         <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
                           <TouchableOpacity onPress={() => {
@@ -718,13 +797,11 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                   <View style={{
                                     width: '30%',
                                     height: (mobileW * 12) / 100,
-                                    // backgroundColor: 'blue',
                                   }}>
                                     <View style={{
                                       flexDirection: 'row',
                                       alignItems: 'center',
                                       width: '100%',
-                                      // backgroundColor: 'white',
                                       height: (mobileW * 12) / 100,
                                     }}>
                                       <Switch
@@ -770,10 +847,11 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                             ...prev,
                                             currentIndex: index,
                                             currentItem: item,
-                                            modalVisible: true,
                                             flag: true
                                           })
+
                                         )
+                                        timeSheetRef.current.open()
                                       }}
                                       disabled={(item?.slot_day_enable == "1") ? false : true}
                                       style={{
@@ -827,10 +905,10 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                             ...prev,
                                             currentIndex: index,
                                             currentItem: item,
-                                            modalVisible: true,
                                             flag: false
                                           })
                                         )
+                                        timeSheetRef.current.open()
                                       }}
                                       disabled={(item?.slot_day_enable == "1") ? false : true}
                                       style={{
@@ -933,16 +1011,16 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
 
                 {(page == "onlinehomeschedule") &&
                   <SkeletonPlaceholder>
-                  <SkeletonPlaceholder.Item width='90%' height={s(20)} borderRadius={s(6)} marginTop={s(20)} />
+                    <SkeletonPlaceholder.Item width='90%' height={s(20)} borderRadius={s(6)} marginTop={s(20)} />
 
-                  <View style={{
-                    flexDirection: 'row',
-                    marginTop: s(8)
-                  }} >
-                    <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} />
-                    <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} marginLeft={'10%'} />
-                  </View>
-                </SkeletonPlaceholder>
+                    <View style={{
+                      flexDirection: 'row',
+                      marginTop: s(8)
+                    }} >
+                      <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} />
+                      <SkeletonPlaceholder.Item width='40%' height={s(30)} borderRadius={s(6)} marginLeft={'10%'} />
+                    </View>
+                  </SkeletonPlaceholder>
                 }
 
                 <SkeletonPlaceholder>

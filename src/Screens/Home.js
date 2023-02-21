@@ -130,7 +130,8 @@ export default Home = ({ navigation, route }) => {
   }
 
   const {
-    loginUserData
+    loginUserData, 
+    scheduleAvailability
   } = useSelector(state => state.Auth)
 
   useEffect(() => {
@@ -254,8 +255,9 @@ export default Home = ({ navigation, route }) => {
     }
   }, [isFocused])
 
-  
+  const getScheduleAvailabilityData = async () => {
 
+  }
 
   const logout = async () => {
     localStorage.setItemString('logout_bit', '100')

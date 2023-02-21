@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, LAST_SCREEN, LOGGEDIN_USER_TYPE, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from '../Types';
+import { ALL_USER_LOGIN_DATA, LAST_SCREEN, LOGGEDIN_USER_TYPE, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from '../Types';
 import { LOGGEDIN_USER_DATA, LOGOUT, FCM_DEVICE_TOKEN } from '../Types';
 import { ScreenReferences } from '../../Stacks/ScreenReferences'
 
@@ -9,6 +9,7 @@ const initialState = {
     shouldAutoLogin: false,
     userEmail: '',
     userPassword: '',
+    scheduleAvailability: null,
     lastScreen: ScreenReferences.Splash
 };
 
@@ -67,6 +68,12 @@ const Authentication = (state = initialState, action = {}) => {
             return {
                 ...state,
                 lastScreen: action.payload,
+            };
+
+        case SCHEDULE_AVAILABILITY:
+            return {
+                ...state,
+                scheduleAvailability: action.payload,
             };
         default:
             return state;

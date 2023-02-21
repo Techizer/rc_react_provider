@@ -19,12 +19,12 @@ import { AppState } from 'react-native';
 import { Settings } from 'react-native-fbsdk-next';
 import analytics from '@react-native-firebase/analytics';
 
-Sentry.init({
-  dsn: "https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192",
-  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-  // We recommend adjusting this value in production.
-  tracesSampleRate: 1.0,
-});
+// Sentry.init({
+//   dsn: "https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192",
+//   // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+//   // We recommend adjusting this value in production.
+//   tracesSampleRate: 1.0,
+// });
 
 global.MapAddress = 'NA';
 global.screens = ScreenReferences.Splash;
@@ -83,4 +83,5 @@ const App = (props) => {
 
 console.log({ DEV: __DEV__ });
 
-export default Sentry.wrap(App);
+// export default Sentry.wrap(App);
+export default App;

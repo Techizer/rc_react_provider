@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, FCM_DEVICE_TOKEN, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from "../Types";
+import { ALL_USER_LOGIN_DATA, FCM_DEVICE_TOKEN, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from "../Types";
 
 export const setUserLoginData = payload => ({
     type: LOGGEDIN_USER_DATA,
@@ -37,6 +37,11 @@ export const setRememberedPassword = payload => ({
 
 export const setLastScreen = payload => ({
     type: LAST_SCREEN,
+    payload
+})
+
+export const setScheduleAvailabilityData = payload => ({
+    type: SCHEDULE_AVAILABILITY,
     payload
 })
 

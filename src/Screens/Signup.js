@@ -1,7 +1,7 @@
 import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { CameraGallery, Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media, windowHeight } from '../Helpers/Utils';
+import { CameraGallery, Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, Media, windowHeight } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -12,36 +12,7 @@ import { SvgXml } from 'react-native-svg';
 import { leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import RBSheet from "react-native-raw-bottom-sheet";
-
-const UserTypes = [{
-  title: "Nurse",
-  value: "nurse"
-},
-{
-  title: "Nurse Assistant",
-  value: "caregiver"
-},
-{
-  title: "Baby Care",
-  value: "babysitter"
-},
-{
-  title: "Physiotherapy",
-  value: "physiotherapy"
-},
-{
-  title: "Doctor",
-  value: "doctor"
-},
-// {
-//   title: "Hospital",
-//   value: "hospital"
-// },
-{
-  title: "Lab",
-  value: "lab"
-}
-]
+import { UserTypes } from '../Helpers/Constants';
 
 export default Signup = ({ navigation, route }) => {
 
@@ -60,9 +31,7 @@ export default Signup = ({ navigation, route }) => {
     country_name: '',
     password: '',
     confirm: '',
-    device_lang: 'AR',
     mobile: '',
-    fcm_token: '',
     country_code: '',
     country_short_code: '',
     showUsertype: false,
@@ -100,19 +69,10 @@ export default Signup = ({ navigation, route }) => {
   const countrySheetRef = useRef()
   const specialitySheetRef = useRef()
 
-  const setLocalFCMToken = async () => {
-    const fcm = await FBPushNotifications.getFcmToken()
-    setState({
-      fcm_token: fcm
-    })
-  }
-
   useEffect(() => {
     navigation.addListener('focus', () => {
       getServiceCountries()
     });
-    setLocalFCMToken()
-
   }, [])
 
   const setState = (payload, resolver) => {
@@ -122,12 +82,9 @@ export default Signup = ({ navigation, route }) => {
     }
   }
 
-  const onSignup = async () => {
-    Keyboard.dismiss()
+  const checkIsValid = () => {
 
-    var email = classStateData.email.trim()
-    var num = classStateData.id;
-    var digits = num.toString().split('');
+    var digits = classStateData.id.toString().split('');
     var realDigits = digits.map(Number)
 
     if (classStateData.selectuserType == -1) {
@@ -138,14 +95,12 @@ export default Signup = ({ navigation, route }) => {
       MessageFunctions.showError(MessageTexts.emptyName[Configurations.language])
       return false;
     }
-
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    if (email <= 0) {
+    if (classStateData.email.trim() <= 0) {
       MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
     }
-
-    if (regemail.test(email) !== true) {
+    if (regemail.test(classStateData.email.trim()) !== true) {
       MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
       return false
     }
@@ -153,25 +108,21 @@ export default Signup = ({ navigation, route }) => {
       MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
       return false;
     }
-
     if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
       MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
       return false;
     }
-
     if (classStateData.country_short_code == 'UAE') {
       if (realDigits[0] == 0 || realDigits[0] == 1 || realDigits[0] == 2 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 8 || realDigits[0] == 9) {
         MessageFunctions.showError(MessageTexts.validIDnumberUAE[Configurations.language])
         return false
       }
-    }
-    else {
+    } else {
       if (realDigits[0] == 0 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 7 || realDigits[0] == 8 || realDigits[0] == 9) {
         MessageFunctions.showError(MessageTexts.validIDnumber[Configurations.language])
         return false
       }
     }
-
     if (UserTypes[classStateData.selectuserType].value != "lab") {
       if (classStateData.dob_date.length <= 0 || classStateData.dob_date.trim().length <= 0) {
         MessageFunctions.showError("Please choose your date of birth")
@@ -182,31 +133,26 @@ export default Signup = ({ navigation, route }) => {
         return false;
       }
     }
-
-    let password = classStateData.password;
-    if (password.length <= 0) {
+    if (classStateData.password.length <= 0) {
       MessageFunctions.showError(MessageTexts.validataionnewpass[Configurations.language])
       return false;
     }
-    if (password.length <= 7) {
+    if (classStateData.password.length <= 7) {
       MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
       return false;
     }
-    let confirmpass = classStateData.confirm;
-    if (confirmpass.length <= 0) {
+    if (classStateData.confirm.length <= 0) {
       MessageFunctions.showError(MessageTexts.emptyconfirmPassword[Configurations.language])
       return false;
     }
-    if (confirmpass.length <= 7) {
+    if (classStateData.confirm.length <= 7) {
       MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
       return false;
     }
-
-    if (confirmpass != password) {
+    if (classStateData.confirm != classStateData.password) {
       MessageFunctions.showError(MessageTexts.Password_notmatch[Configurations.language])
       return false;
     }
-
     if (UserTypes[classStateData.selectuserType].value != "lab") {
       if ((classStateData.id_number.length < 10 || classStateData.id_number.trim().length < 10)) {
         MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
@@ -232,12 +178,10 @@ export default Signup = ({ navigation, route }) => {
         return false;
       }
     }
-
     if (classStateData.id_image.path == '') {
       MessageFunctions.showError("Please upload ID image")
       return false;
     }
-
     if (UserTypes[classStateData.selectuserType].value != "lab") {
       if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
         if (classStateData.speciality.length <= 0 || classStateData.speciality.trim().length <= 0) {
@@ -266,12 +210,10 @@ export default Signup = ({ navigation, route }) => {
         return false;
       }
     }
-
     if (classStateData.certificate.path == '') {
       MessageFunctions.showError("Please upload cerificate image")
       return false;
     }
-
     if (UserTypes[classStateData.selectuserType].value != "lab") {
       if (classStateData.experience.length <= 0 || classStateData.experience.trim().length <= 0) {
         MessageFunctions.showError("Please enter your years of experience")
@@ -295,9 +237,20 @@ export default Signup = ({ navigation, route }) => {
       }
     }
 
+    return true
+  }
+
+  const onSignup = async () => {
+    Keyboard.dismiss()
+    const isValid = checkIsValid()
+
+    if (isValid) {
+      
     setState({
       isLoadingInButton: true
     })
+
+    const localFCM = await FBPushNotifications.getFcmToken()
 
     let url = Configurations.baseURL + "api-service-provider-registration";
     console.log("url", url)
@@ -306,18 +259,16 @@ export default Signup = ({ navigation, route }) => {
 
     data.append('service_type', UserTypes[classStateData.selectuserType].value)
     data.append('name', classStateData.name)
-    data.append('email', classStateData.email)
+    data.append('email', classStateData.email.trim())
     data.append('mobile_number', phone_number_send)
     data.append('work_area', classStateData.country_name)
-    // data.append('id_number', classStateData.id)
-    // data.append('last_name', '')
     data.append('dob', classStateData.dob_date)
     data.append('gender', classStateData.gender)
     data.append('password', classStateData.password)
     data.append('confirm_password', classStateData.confirm)
     data.append('device_type', Configurations.device_type)
-    data.append('device_lang', classStateData.device_lang)
-    data.append('fcm_token', classStateData.fcm_token)
+    data.append('device_lang', 'ENG')
+    data.append('fcm_token', localFCM)
 
     data.append('id_number', classStateData.id_number)
     data.append('speciality', classStateData.speciality)
@@ -382,6 +333,7 @@ export default Signup = ({ navigation, route }) => {
       })
     })
 
+    } else return isValid
   }
 
   const Galleryopen = () => {
@@ -488,7 +440,7 @@ export default Signup = ({ navigation, route }) => {
     })
   }
 
-  const setdatetwo = (res) => {
+  const setDate = (res) => {
     let check_month
     let check_date
     let date = res.getDate()
@@ -508,10 +460,8 @@ export default Signup = ({ navigation, route }) => {
       check_date = date
     }
     let date1 = year + '-' + check_month + '-' + check_date
-    setState({ date_new: new Date(date1) })
-    setState({ dob_date: date1, isDatePickerVisibletwo: false, })
+    setState({ date_new: new Date(date1), dob_date: date1, isDatePickerVisibletwo: false, })
   }
-
 
   const renderIDNumber = () => {
     return (
@@ -652,12 +602,12 @@ export default Signup = ({ navigation, route }) => {
             }}
           />
 
-          <RBSheet ref={specialitySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+          <RBSheet closeOnPressBack ref={specialitySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
             container: {
               borderTopLeftRadius: vs(12),
               borderTopRightRadius: vs(12),
             }
-          }}>
+          }} >
 
             <View style={{
               width: '100%',
@@ -1305,7 +1255,7 @@ export default Signup = ({ navigation, route }) => {
             Canclemedia={() => { setState({ mediamodal: false }) }}
           />
 
-          <RBSheet ref={countrySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+          <RBSheet closeOnPressBack ref={countrySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
             container: {
               borderTopLeftRadius: vs(12),
               borderTopRightRadius: vs(12),
@@ -1449,7 +1399,7 @@ export default Signup = ({ navigation, route }) => {
               boxPressAction={() => { userTypeSheetRef.current.open() }}
             />
 
-            <RBSheet ref={userTypeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+            <RBSheet closeOnPressBack ref={userTypeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
               container: {
                 borderTopLeftRadius: vs(12),
                 borderTopRightRadius: vs(12),
@@ -1717,14 +1667,11 @@ export default Signup = ({ navigation, route }) => {
                     value={classStateData.date_new}
                     maximumDate={new Date()}
                     onConfirm={(date) => {
-                      console.log(date);
-                      setdatetwo(date),
+                      setDate(date),
                         setState({ isDatePickerVisibletwo: false })
                     }}
                     onCancel={() => { setState({ isDatePickerVisibletwo: false }) }}
                   />
-
-                  {/* -----------------------------------radiobtn------------------------------- */}
 
                   <View
                     style={{

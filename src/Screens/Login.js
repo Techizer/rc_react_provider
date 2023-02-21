@@ -1,7 +1,7 @@
 import { Modal, Text, Dimensions, View, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions, windowHeight } from '../Helpers/Utils';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
@@ -10,36 +10,14 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRememberedEmail, setRememberedPassword, setShouldAutoLogin, setUserFCMToken, setUserLoginData, setUserLoginType } from '../Redux/Actions/UserActions';
 import { useIsFocused } from '@react-navigation/native';
+import { useRef } from 'react';
+import { UserTypes } from '../Helpers/Constants';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import { vs } from 'react-native-size-matters';
 
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
-
-const UserTypes = [{
-  title: "Nurse",
-  value: "nurse"
-},
-{
-  title: "Nurse Assistant",
-  value: "caregiver"
-},
-{
-  title: "Baby Care",
-  value: "babysitter"
-},
-{
-  title: "Physiotherapy",
-  value: "physiotherapy"
-},
-{
-  title: "Doctor",
-  value: "doctor"
-},
-{
-  title: "Lab",
-  value: "lab"
-}
-]
 
 export default Login = ({ navigation, route }) => {
 
@@ -49,11 +27,11 @@ export default Login = ({ navigation, route }) => {
     password: '',
     device_lang: 'AR',
     isRememberChecked: false,
-    showUsertype: false,
     selectuserType: -1,
     isLoadingInButton: false,
-    FCMToken: null
   })
+
+  const userTypeSheetRef = useRef()
 
   const setState = (payload) => {
     setClassStateData(prev => ({
@@ -74,15 +52,8 @@ export default Login = ({ navigation, route }) => {
 
   const isFocused = useIsFocused()
 
-  const setLocalFCM = async () => {
-    const fcm = await FBPushNotifications.getFcmToken()
-    console.log({fcm});
-    setState({ FCMToken: fcm })
-  }
-
   useEffect(() => {
     const mUserTypeIndex = UserTypes.findIndex(u => u.value === userType)
-    setLocalFCM()
     console.log({
       email: userEmail,
       password: userPassword,
@@ -119,11 +90,8 @@ export default Login = ({ navigation, route }) => {
     return true;
   };
 
-  
+
   useEffect(() => {
-
-      
-
     navigation.addListener('focus', payload =>
       BackHandler.addEventListener('hardwareBackPress', handleBackPress)
     );
@@ -132,44 +100,19 @@ export default Login = ({ navigation, route }) => {
     );
   }, [])
 
-  // useEffect(() => {
-  //   const handleBackPress = () => {
-  //     Alert.alert(
-  //       LanguageConfiguration.titleexitapp[Configurations.language],
-  //       LanguageConfiguration.exitappmessage[Configurations.language], [{
-  //         text: LanguageConfiguration.no_txt[Configurations.language],
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: LanguageConfiguration.no_txt[Configurations.language],
-  //       }, {
-  //         text: LanguageConfiguration.yes_txt[Configurations.language],
-  //         onPress: () => BackHandler.exitApp()
-  //       }], {
-  //       cancelable: false
-  //     }
-  //     );
-  //     return true;
-  //   };
-
-    
-  
-  // }, [isFocused])
-
-  const onLogin = async () => {
-
-    Keyboard.dismiss()
-    var email = classStateData?.email.trim()
+  const checkIsValid = () => {
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (classStateData?.selectuserType == -1) {
       MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
       return false;
     }
 
-    if (email.length <= 0) {
+    if (classStateData?.email.trim().length <= 0) {
       MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
     }
 
-    if (regemail.test(email) !== true) {
+    if (regemail.test(classStateData?.email.trim()) !== true) {
       MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
       return false
     }
@@ -178,72 +121,73 @@ export default Login = ({ navigation, route }) => {
       MessageFunctions.showError(MessageTexts.emptyPassword[Configurations.language])
       return false
     }
-    var device_lang
-    if (Configurations.language == 0) {
-      device_lang = 'ENG'
-    }
-    else {
-      device_lang = 'AR'
-    }
 
-    setState({
-      isLoadingInButton: true
-    })
-
-    let url = Configurations.baseURL + "api-service-provider-login";
-    var data = new FormData();
-    data.append('email', classStateData?.email)
-    data.append('password', classStateData?.password)
-    data.append('device_type', Configurations.device_type)
-    data.append('device_lang', device_lang)
-    data.append('fcm_token', classStateData.FCMToken)
-    data.append('user_type', UserTypes[classStateData?.selectuserType].value)
-
-    API.post(url, data, 1).then((obj) => {
-
-      console.log({Login: obj?.result})
-      if (obj.status == true) {
-
-        dispatch(setUserLoginData(obj?.result))
-        dispatch(setUserFCMToken(classStateData?.FCMToken))
-        dispatch(setUserLoginType(UserTypes[classStateData?.selectuserType].value))
-        dispatch(setShouldAutoLogin(classStateData?.isRememberChecked))
-
-        if (classStateData?.isRememberChecked == true) {
-          dispatch(setRememberedEmail(classStateData?.email))
-          dispatch(setRememberedPassword(classStateData?.password))
-        }
-
-        setTimeout(() => {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: ScreenReferences.Home }],
-          });
-        }, 700);
-
-      } else {
-        setTimeout(() => {
-          MessageFunctions.showError(obj.message)
-        }, 700);
-        return false;
-      }
-    }).catch((error) => {
-      console.log("-------- error ------- ", error)
-      setState({
-        loading: false
-      })
-    }).finally(() => {
-      setState({
-        isLoadingInButton: false
-      })
-    })
-
+    return true
   }
 
-  const showUsertypeModal = (status) => {
-    setState({
-      showUsertype: status
-    })
+  const onLogin = async () => {
+
+    Keyboard.dismiss()
+    const isValid = checkIsValid()
+
+    if (!isValid) return isValid
+    else {
+      setState({
+        isLoadingInButton: true
+      })
+
+      let url = Configurations.baseURL + "api-service-provider-login";
+      var data = new FormData();
+
+      const fcm = await FBPushNotifications.getFcmToken()
+
+      data.append('email', classStateData?.email)
+      data.append('password', classStateData?.password)
+      data.append('device_type', Configurations.device_type)
+      data.append('device_lang', 'ENG')
+      data.append('fcm_token', fcm)
+      data.append('user_type', UserTypes[classStateData?.selectuserType].value)
+
+      API.post(url, data, 1).then((obj) => {
+
+        console.log({ Login: obj?.result })
+        if (obj.status == true) {
+
+          dispatch(setUserLoginData(obj?.result))
+          dispatch(setUserFCMToken(fcm))
+          dispatch(setUserLoginType(UserTypes[classStateData?.selectuserType].value))
+          dispatch(setShouldAutoLogin(classStateData?.isRememberChecked))
+
+          if (classStateData?.isRememberChecked == true) {
+            dispatch(setRememberedEmail(classStateData?.email))
+            dispatch(setRememberedPassword(classStateData?.password))
+          }
+
+          setTimeout(() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: ScreenReferences.Home }],
+            });
+          }, 700);
+
+        } else {
+          setTimeout(() => {
+            MessageFunctions.showError(obj.message)
+          }, 700);
+          return false;
+        }
+      }).catch((error) => {
+        console.log("-------- error ------- ", error)
+        setState({
+          loading: false
+        })
+      }).finally(() => {
+        setState({
+          isLoadingInButton: false
+        })
+      })
+
+    }
   }
 
   const onSwipeLeft = (gestureState) => {
@@ -364,91 +308,74 @@ export default Login = ({ navigation, route }) => {
                 }}>
                 <DropDownboxSec
                   lableText={(classStateData?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : UserTypes[classStateData?.selectuserType].title}
-                  boxPressAction={() => { showUsertypeModal(true) }}
+                  boxPressAction={() => { userTypeSheetRef.current.open() }}
                 />
 
-                <Modal
-                  animationType="fade"
-                  transparent={true}
-                  visible={classStateData?.showUsertype}
-                  onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                  }}
-                >
-                  <TouchableOpacity activeOpacity={0.9} onPress={() => { showUsertypeModal(false) }} style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: '#00000080', width: '100%' }}>
-                    <View style={{
-                      flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      //marginTop: 22
-                    }}>
-                      <View style={{
-                        //margin: 20,
-                        width: mobileW / 1.3,
-                        backgroundColor: "white",
-                        borderRadius: 5,
-                        //padding: 35,
-                        alignItems: "center",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 4,
-                        elevation: 5
-                      }}>
-                        <View style={{
-                          backgroundColor: Colors.textblue,
-                          borderTopLeftRadius: 5,
-                          borderTopRightRadius: 5,
-                          paddingTop: 14,
-                          paddingBottom: 14,
-                          width: '100%'
-                        }}>
-                          <Text style={{
-                            paddingLeft: 15,
-                            color: Colors.white_color,
-                            fontSize: 15,
-                            fontFamily: Font.headingfontfamily,
-                          }}>{LanguageConfiguration.UserTypeText[Configurations.language]}</Text>
-                        </View>
+                <RBSheet closeOnPressBack ref={userTypeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+                  container: {
+                    borderTopLeftRadius: vs(12),
+                    borderTopRightRadius: vs(12),
+                  },
 
-                        {
-                          UserTypes.map((data, index) => {
-                            return (
-                              <TouchableOpacity style={{
-                                width: '100%',
-                              }} onPress={() => {
-                                setState({
-                                  selectuserType: index
-                                })
-                                showUsertypeModal(false)
-                              }}>
-                                <View style={{
-                                  width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                                  marginLeft: 15,
-                                  borderBottomColor: Colors.gray6,
-                                  borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
-                                }}>
-                                  <Text style={{
-                                    color: '#041A27',
-                                    fontSize: 15,
-                                    fontFamily: Font.headingfontfamily,
-                                    // marginLeft: 15,
-                                    paddingTop: 15,
-                                    paddingBottom: 15,
-                                    width: '94.5%',
-                                  }}>{data.title}</Text>
-                                </View>
-                              </TouchableOpacity>
-                            )
-                          })
-                        }
-                      </View>
+                }} >
+                  <View style={{
+                    width: '100%',
+                    backgroundColor: "white",
+                    height: '100%',
+                    borderTopLeftRadius: vs(12),
+                    borderTopRightRadius: vs(12),
+                  }}>
+                    <View style={{
+                      backgroundColor: Colors.textblue,
+                      borderTopLeftRadius: vs(12),
+                      borderTopRightRadius: vs(12),
+                      paddingVertical: vs(14),
+                      width: '100%'
+                    }}>
+                      <Text style={{
+                        paddingLeft: 15,
+                        color: Colors.white_color,
+                        fontSize: Font.large,
+                        fontFamily: Font.SemiBold,
+                      }}>Select User Type</Text>
                     </View>
-                  </TouchableOpacity>
-                </Modal>
+
+                    <KeyboardAwareScrollView contentContainerStyle={{
+                    }}>
+                      {
+                        UserTypes.map((data, index) => {
+                          return (
+                            <TouchableOpacity style={{
+                              width: '100%',
+                            }} onPress={() => {
+                              setState({
+                                selectuserType: index
+                              })
+                              userTypeSheetRef.current.close()
+                            }} key={'utol' + index}>
+                              <View style={{
+                                width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                                marginLeft: 15,
+                                borderBottomColor: Colors.gray6,
+                                borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
+                              }}>
+                                <Text style={{
+                                  color: '#041A27',
+                                  fontSize: 15,
+                                  fontFamily: Font.headingfontfamily,
+                                  paddingTop: 15,
+                                  paddingBottom: 15,
+                                  width: '94.5%',
+                                }}>{data.title}</Text>
+                              </View>
+                            </TouchableOpacity>
+                          )
+                        })
+                      }
+                    </KeyboardAwareScrollView>
+                  </View>
+                </RBSheet>
+                
               </View>
 
               <View

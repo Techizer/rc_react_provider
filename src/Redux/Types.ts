@@ -10,6 +10,7 @@ const ALL_USER_LOGIN_DATA = 'ALlUserLoginData'
 const USER_REMEMBERED_EMAIL = 'Email'
 const USER_REMEMBERED_PASSWORD = 'Password'
 const LAST_SCREEN = 'LastScreen'
+const SCHEDULE_AVAILABILITY = 'ScheduleAvailability'
 
 export {
     ReducerType,
@@ -21,5 +22,6 @@ export {
     ALL_USER_LOGIN_DATA,
     USER_REMEMBERED_EMAIL,
     USER_REMEMBERED_PASSWORD,
-    LAST_SCREEN
+    LAST_SCREEN,
+    SCHEDULE_AVAILABILITY
 }
