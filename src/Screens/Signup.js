@@ -1,7 +1,7 @@
 import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { CameraGallery, Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Helpers/Utils';
+import { CameraGallery, Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media, windowHeight } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -10,19 +10,47 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { vs, s } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
 import { leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
+import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
+import RBSheet from "react-native-raw-bottom-sheet";
+
+const UserTypes = [{
+  title: "Nurse",
+  value: "nurse"
+},
+{
+  title: "Nurse Assistant",
+  value: "caregiver"
+},
+{
+  title: "Baby Care",
+  value: "babysitter"
+},
+{
+  title: "Physiotherapy",
+  value: "physiotherapy"
+},
+{
+  title: "Doctor",
+  value: "doctor"
+},
+// {
+//   title: "Hospital",
+//   value: "hospital"
+// },
+{
+  title: "Lab",
+  value: "lab"
+}
+]
 
 export default Signup = ({ navigation, route }) => {
 
   const [classStateData, setClassStateData] = useState({
     isSecurePassword: true,
     isSecurePassword1: true,
-    namefocus: false,
     name: '',
-    emailfocus: false,
     email: '',
-    numberfocus: false,
     number: '',
-    idfocus: false,
     id: '',
     id_number: '',
     speciality: '',
@@ -30,52 +58,17 @@ export default Signup = ({ navigation, route }) => {
     experience: '',
     scfhs_number: '',
     country_name: '',
-    passwordfocus: false,
     password: '',
-    confirmpasswordfocus: false,
     confirm: '',
     device_lang: 'AR',
     mobile: '',
-    fcm_token: 123456,
-    modalVisible3: false,
-    error_msg: '',
-    country_codefocus: false,
+    fcm_token: '',
     country_code: '',
-    bloodModal: false,
     country_short_code: '',
     showUsertype: false,
     showSpeciality: false,
     isLoadingInButton: false,
     imageType: '',
-    userType: [{
-      title: "Nurse",
-      value: "nurse"
-    },
-    {
-      title: "Nurse Assistant",
-      value: "caregiver"
-    },
-    {
-      title: "Baby Care",
-      value: "babysitter"
-    },
-    {
-      title: "Physiotherapy",
-      value: "physiotherapy"
-    },
-    {
-      title: "Doctor",
-      value: "doctor"
-    },
-    // {
-    //   title: "Hospital",
-    //   value: "hospital"
-    // },
-    {
-      title: "Lab",
-      value: "lab"
-    }
-    ],
     selectuserType: -1,
     isDatePickerVisibletwo: false,
     dob_date: '',
@@ -103,10 +96,23 @@ export default Signup = ({ navigation, route }) => {
     },
   })
 
+  const userTypeSheetRef = useRef()
+  const countrySheetRef = useRef()
+  const specialitySheetRef = useRef()
+
+  const setLocalFCMToken = async () => {
+    const fcm = await FBPushNotifications.getFcmToken()
+    setState({
+      fcm_token: fcm
+    })
+  }
+
   useEffect(() => {
     navigation.addListener('focus', () => {
-      get_all_count()
+      getServiceCountries()
     });
+    setLocalFCMToken()
+
   }, [])
 
   const setState = (payload, resolver) => {
@@ -116,7 +122,7 @@ export default Signup = ({ navigation, route }) => {
     }
   }
 
-  const signup_click = async () => {
+  const onSignup = async () => {
     Keyboard.dismiss()
 
     var email = classStateData.email.trim()
@@ -166,7 +172,7 @@ export default Signup = ({ navigation, route }) => {
       }
     }
 
-    if (classStateData.userType[classStateData.selectuserType].value != "lab") {
+    if (UserTypes[classStateData.selectuserType].value != "lab") {
       if (classStateData.dob_date.length <= 0 || classStateData.dob_date.trim().length <= 0) {
         MessageFunctions.showError("Please choose your date of birth")
         return false;
@@ -201,7 +207,7 @@ export default Signup = ({ navigation, route }) => {
       return false;
     }
 
-    if (classStateData.userType[classStateData.selectuserType].value != "lab") {
+    if (UserTypes[classStateData.selectuserType].value != "lab") {
       if ((classStateData.id_number.length < 10 || classStateData.id_number.trim().length < 10)) {
         MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
         return false;
@@ -232,7 +238,7 @@ export default Signup = ({ navigation, route }) => {
       return false;
     }
 
-    if (classStateData.userType[classStateData.selectuserType].value != "lab") {
+    if (UserTypes[classStateData.selectuserType].value != "lab") {
       if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
         if (classStateData.speciality.length <= 0 || classStateData.speciality.trim().length <= 0) {
           MessageFunctions.showError("Please select speciality")
@@ -266,7 +272,7 @@ export default Signup = ({ navigation, route }) => {
       return false;
     }
 
-    if (classStateData.userType[classStateData.selectuserType].value != "lab") {
+    if (UserTypes[classStateData.selectuserType].value != "lab") {
       if (classStateData.experience.length <= 0 || classStateData.experience.trim().length <= 0) {
         MessageFunctions.showError("Please enter your years of experience")
         return false;
@@ -298,7 +304,7 @@ export default Signup = ({ navigation, route }) => {
     var phone_number_send = classStateData.country_code + classStateData.mobile
     var data = new FormData();
 
-    data.append('service_type', classStateData.userType[classStateData.selectuserType].value)
+    data.append('service_type', UserTypes[classStateData.selectuserType].value)
     data.append('name', classStateData.name)
     data.append('email', classStateData.email)
     data.append('mobile_number', phone_number_send)
@@ -346,7 +352,8 @@ export default Signup = ({ navigation, route }) => {
           name: (Platform.OS == 'ios') ? classStateData.scfhs_image.filename : 'image',
         })
       }
-    } else {
+    }
+    else {
       data.append('scfhs_image', "")
     }
 
@@ -444,11 +451,11 @@ export default Signup = ({ navigation, route }) => {
     })
   }
 
-  const get_speciality = async (i) => {
+  const getSpecialities = async (i) => {
 
     let url = Configurations.baseURL + "api-provider-get-speciality";
     var data = new FormData();
-    data.append('service_type', classStateData.userType[i].value)
+    data.append('service_type', UserTypes[i].value)
 
 
     API.post(url, data, 1).then((obj) => {
@@ -465,28 +472,19 @@ export default Signup = ({ navigation, route }) => {
 
   }
 
-  const get_all_count = async () => {
+  const getServiceCountries = async () => {
     let url = Configurations.baseURL + "api-medical-service-area";
     console.log("url", url)
 
     API.get(url, 1).then((obj) => {
 
-      console.log({ Countryarr: obj.result });
-
       if (obj.status == true) {
         setState({ Countryarr: obj.result, country_name: obj.result[0].name, country_code: obj.result[0].country_code, country_short_code: obj.result[0].country_short_code })
-        console.log('get area', obj.result)
       } else {
         return false;
       }
     }).catch((error) => {
       console.log("-------- error ------- " + error);
-    })
-  }
-
-  const showUsertypeModal = (status) => {
-    setState({
-      showUsertype: status
     })
   }
 
@@ -650,107 +648,79 @@ export default Signup = ({ navigation, route }) => {
           <DropDownboxSec
             lableText={(classStateData.speciality == '') ? 'Speciality' : classStateData.speciality}
             boxPressAction={() => {
-              setState({
-                showSpeciality: true
-              })
+              specialitySheetRef.current.open()
             }}
           />
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={classStateData.showSpeciality}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              //setModalVisible(!modalVisible);
-            }}
-          >
-            <TouchableOpacity activeOpacity={0.9} onPress={() => {
-              setState({
-                showSpeciality: false
-              })
-            }} style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: '#00000080', width: '100%' }}>
-              <View style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                //marginTop: 22
-              }}>
-                <View style={{
-                  //margin: 20,
-                  maxHeight: mobileH - 250,
-                  width: mobileW / 1.3,
-                  backgroundColor: "white",
-                  borderRadius: 5,
-                  //padding: 35,
-                  alignItems: "center",
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 2
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5
-                }}>
-                  <View style={{
-                    backgroundColor: Colors.textblue,
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5,
-                    paddingTop: 14,
-                    paddingBottom: 14,
-                    width: '100%'
-                  }}>
-                    <Text style={{
-                      paddingLeft: 15,
-                      color: Colors.white_color,
-                      fontSize: 15,
-                      fontFamily: Font.headingfontfamily,
-                    }}>Speciality</Text>
-                  </View>
-                  <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    scrollEnabled={(classStateData.specialityArr.length > 10) ? true : false}
-                    style={{
-                      width: '100%',
-                    }}>
-                    {
-                      classStateData.specialityArr.map((data, index) => {
-                        return (
-                          <TouchableOpacity style={{
-                            width: '100%',
-                          }} onPress={() => {
-                            setState({
-                              speciality: data.name,
-                              showSpeciality: false
-                            })
-                          }}>
-                            <View style={{
-                              width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                              marginLeft: 15,
-                              borderBottomColor: Colors.gray6,
-                              borderBottomWidth: (index == (classStateData.userType.length - 1)) ? 0 : 1,
-                            }}>
-                              <Text style={{
-                                color: '#041A27',
-                                fontSize: 15,
-                                fontFamily: Font.headingfontfamily,
-                                // marginLeft: 15,
-                                paddingTop: 15,
-                                paddingBottom: 15,
-                                width: '94.5%',
 
-                                // backgroundColor: 'red'
-                              }}>{data.name}</Text>
-                            </View>
-                          </TouchableOpacity>
-                        )
-                      })
-                    }
-                  </ScrollView>
+          <RBSheet ref={specialitySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+            container: {
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            }
+          }}>
+
+            <View style={{
+              width: '100%',
+              backgroundColor: "white",
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            }}>
+              <View style={{
+                  backgroundColor: Colors.textblue,
+                  borderTopLeftRadius: vs(12),
+                  borderTopRightRadius: vs(12),
+                  paddingVertical: vs(14),
+                  width: '100%'
+                }}>
+                  <Text style={{
+                    paddingLeft: 15,
+                    color: Colors.white_color,
+                    fontSize: Font.large,
+                    fontFamily: Font.SemiBold,
+                  }}>Speciality</Text>
                 </View>
-              </View>
-            </TouchableOpacity>
-          </Modal>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  height: '100%'
+                }}>
+                {
+                  classStateData.specialityArr.map((data, index) => {
+                    return (
+                      <TouchableOpacity style={{
+                        width: '100%',
+                      }} onPress={() => {
+                        setState({
+                          speciality: data.name
+                        })
+                        specialitySheetRef.current.close()
+                      }}>
+                        <View style={{
+                          width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                          marginLeft: 15,
+                          borderBottomColor: Colors.gray6,
+                          borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
+                        }}>
+                          <Text style={{
+                            color: '#041A27',
+                            fontSize: 15,
+                            fontFamily: Font.headingfontfamily,
+                            // marginLeft: 15,
+                            paddingTop: 15,
+                            paddingBottom: 15,
+                            width: '94.5%',
+
+                            // backgroundColor: 'red'
+                          }}>{data.name}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  })
+                }
+              </ScrollView>
+            </View>
+          </RBSheet>
+
         </View>
         <View
           style={{
@@ -1060,9 +1030,6 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -1225,9 +1192,6 @@ export default Signup = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -1340,76 +1304,74 @@ export default Signup = ({ navigation, route }) => {
             DocumentGalleryopen={() => { DocumentGalleryopen() }}
             Canclemedia={() => { setState({ mediamodal: false }) }}
           />
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={classStateData.bloodModal}
-            onRequestClose={() => { }}>
-            <TouchableOpacity activeOpacity={0.9} onPress={() => { setState({ bloodModal: false }) }} style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: '#00000080', width: '100%' }}>
+
+          <RBSheet ref={countrySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+            container: {
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            }
+          }}>
+            <View style={{
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+              width: '100%',
+              backgroundColor: 'white'
+            }}>
+
               <View style={{
-                borderTopLeftRadius: 5,
-                borderTopRightRadius: 5, width: '70%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignSelf: 'center'
-              }}>
-                <View style={{
                   backgroundColor: Colors.textblue,
-                  borderTopLeftRadius: 5,
-                  borderTopRightRadius: 5,
-                  paddingTop: 14,
-                  paddingBottom: 14,
+                  borderTopLeftRadius: vs(12),
+                  borderTopRightRadius: vs(12),
+                  paddingVertical: vs(14),
                   width: '100%'
                 }}>
-
                   <Text style={{
                     paddingLeft: 15,
                     color: Colors.white_color,
-                    fontSize: 15,
-                    fontFamily: Font.headingfontfamily,
+                    fontSize: Font.large,
+                    fontFamily: Font.SemiBold,
                   }}>{LanguageConfiguration.Country_code[Configurations.language]}</Text>
-
                 </View>
 
-                <View style={{ width: '100%', alignSelf: 'center' }}>
-                  <FlatList
-                    data={classStateData.Countryarr}
-                    renderItem={({ item, index }) => {
-                      if (classStateData.Countryarr != '' || classStateData.Countryarr != null) {
-                        return (
-                          <TouchableOpacity style={{
-                            width: '100%',
-                          }}
-                            onPress={() => { setState({ bloodModal: false, country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code }); }}
-                          >
-                            <View style={{
-                              width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                              marginLeft: 15,
-                              borderBottomColor: Colors.gray6,
-                              borderBottomWidth: (index == (classStateData.Countryarr.length - 1)) ? 0 : 1,
-                            }}>
-                              <Text style={{
-                                color: '#041A27',
-                                fontSize: 15,
-                                fontFamily: Font.headingfontfamily,
-                                paddingTop: 15,
-                                paddingBottom: 15,
-                                width: '94.5%',
-                              }}>{item.name}</Text>
-                            </View>
-                          </TouchableOpacity>
-                        )
-                      }
-                    }}
-                    keyExtractor={(item, index) => index.toString()}>
+              <FlatList
+                data={classStateData.Countryarr}
+                renderItem={({ item, index }) => {
+                  if (classStateData.Countryarr != '' || classStateData.Countryarr != null) {
+                    return (
+                      <TouchableOpacity style={{
+                        width: '100%',
+                      }}
+                        onPress={() => {
+                          setState({ country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code });
+                          countrySheetRef.current.close()
+                        }}
+                      >
+                        <View style={{
+                          width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                          marginLeft: 15,
+                          borderBottomColor: Colors.gray6,
+                          borderBottomWidth: (index == (classStateData.Countryarr.length - 1)) ? 0 : 1,
+                        }}>
+                          <Text style={{
+                            color: '#041A27',
+                            fontSize: 15,
+                            fontFamily: Font.headingfontfamily,
+                            paddingTop: 15,
+                            paddingBottom: 15,
+                            width: '94.5%',
+                          }}>{item.name}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  }
+                }}
+                keyExtractor={(item, index) => index.toString()}>
 
 
-                  </FlatList>
-                </View>
-              </View>
+              </FlatList>
+            </View>
 
-
-
-            </TouchableOpacity>
-
-          </Modal>
+          </RBSheet>
 
           <View style={{ paddingBottom: (mobileW * 14) / 100 }}>
 
@@ -1483,93 +1445,76 @@ export default Signup = ({ navigation, route }) => {
             </View>
 
             <DropDownboxSec
-              lableText={(classStateData.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : classStateData.userType[classStateData.selectuserType].title}
-              boxPressAction={() => { showUsertypeModal(true) }}
+              lableText={(classStateData.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : UserTypes[classStateData.selectuserType].title}
+              boxPressAction={() => { userTypeSheetRef.current.open() }}
             />
 
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={classStateData.showUsertype}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                //setModalVisible(!modalVisible);
-              }}
-            >
-              <TouchableOpacity activeOpacity={0.9} onPress={() => { showUsertypeModal(false) }} style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', backgroundColor: '#00000080', width: '100%' }}>
+            <RBSheet ref={userTypeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
+              container: {
+                borderTopLeftRadius: vs(12),
+                borderTopRightRadius: vs(12),
+              }
+            }}>
+              <View style={{
+                width: '100%',
+                backgroundColor: "white",
+                height: '100%',
+                borderTopLeftRadius: vs(12),
+                borderTopRightRadius: vs(12),
+              }}>
                 <View style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
+                  backgroundColor: Colors.textblue,
+                  borderTopLeftRadius: vs(12),
+                  borderTopRightRadius: vs(12),
+                  paddingVertical: vs(14),
+                  width: '100%'
                 }}>
-                  <View style={{
-                    width: mobileW / 1.3,
-                    backgroundColor: "white",
-                    borderRadius: 5,
-                    alignItems: "center",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 2
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 4,
-                    elevation: 5
-                  }}>
-                    <View style={{
-                      backgroundColor: Colors.textblue,
-                      borderTopLeftRadius: 5,
-                      borderTopRightRadius: 5,
-                      paddingTop: 14,
-                      paddingBottom: 14,
-                      width: '100%'
-                    }}>
-                      <Text style={{
-                        paddingLeft: 15,
-                        color: Colors.white_color,
-                        fontSize: 15,
-                        fontFamily: Font.headingfontfamily,
-                      }}>Select User Type</Text>
-                    </View>
-
-                    {
-                      classStateData.userType.map((data, index) => {
-                        return (
-                          <TouchableOpacity style={{
-                            width: '100%',
-                          }} onPress={() => {
-                            setState({
-                              selectuserType: index,
-                              showUsertype: false
-                            })
-                            console.log({ index });
-                            if (index == 0 || index == 3 || index == 4) {
-                              get_speciality(index)
-                            }
-                          }}>
-                            <View style={{
-                              width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                              marginLeft: 15,
-                              borderBottomColor: Colors.gray6,
-                              borderBottomWidth: (index == (classStateData.userType.length - 1)) ? 0 : 1,
-                            }}>
-                              <Text style={{
-                                color: '#041A27',
-                                fontSize: 15,
-                                fontFamily: Font.headingfontfamily,
-                                paddingTop: 15,
-                                paddingBottom: 15,
-                                width: '94.5%',
-                              }}>{data.title}</Text>
-                            </View>
-                          </TouchableOpacity>
-                        )
-                      })
-                    }
-                  </View>
+                  <Text style={{
+                    paddingLeft: 15,
+                    color: Colors.white_color,
+                    fontSize: Font.large,
+                    fontFamily: Font.SemiBold,
+                  }}>Select User Type</Text>
                 </View>
-              </TouchableOpacity>
-            </Modal>
+
+                <KeyboardAwareScrollView contentContainerStyle={{
+                }}>
+                  {
+                    UserTypes.map((data, index) => {
+                      return (
+                        <TouchableOpacity style={{
+                          width: '100%',
+                        }} onPress={() => {
+                          setState({
+                            selectuserType: index,
+                          })
+                          if (index == 0 || index == 3 || index == 4) {
+                            getSpecialities(index)
+                          }
+                          userTypeSheetRef.current.close()
+                        }} key={'ddd' + index}>
+                          <View style={{
+                            width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                            marginLeft: 15,
+                            borderBottomColor: Colors.gray6,
+                            borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
+                          }}>
+                            <Text style={{
+                              color: '#041A27',
+                              fontSize: 15,
+                              fontFamily: Font.headingfontfamily,
+                              paddingTop: 15,
+                              paddingBottom: 15,
+                              width: '94.5%',
+                            }}>{data.title}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    })
+                  }
+                </KeyboardAwareScrollView>
+              </View>
+            </RBSheet>
 
             <View
               style={{
@@ -1582,7 +1527,7 @@ export default Signup = ({ navigation, route }) => {
                   width: '100%',
                 }}
                 // icon={layer9_icon}
-                lableText={(classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType]?.value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[Configurations.language]}
+                lableText={(classStateData.selectuserType != -1 && UserTypes[classStateData.selectuserType]?.value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[Configurations.language]}
                 inputRef={(ref) => {
                   nameInput = ref;
                 }}
@@ -1648,7 +1593,7 @@ export default Signup = ({ navigation, route }) => {
 
             <DropDownboxSec
               lableText={classStateData.country_name.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.country_name}
-              boxPressAction={() => { setState({ bloodModal: true }); }}
+              boxPressAction={() => { countrySheetRef.current.open() }}
             />
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '90%', alignSelf: 'center' }}>
@@ -1732,7 +1677,7 @@ export default Signup = ({ navigation, route }) => {
             </View>
 
             {
-              (classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType].value == "lab") ?
+              (classStateData.selectuserType != -1 && UserTypes[classStateData.selectuserType].value == "lab") ?
                 null :
                 <>
                   {/* ------------------------------------------------------------dob-----------      */}
@@ -1896,15 +1841,11 @@ export default Signup = ({ navigation, route }) => {
                 alignSelf: 'center',
                 marginTop: (mobileW * 2) / 100,
                 flexDirection: 'row',
-                // borderColor: classStateData.passwordfocus == true ? '#0057A5' : Colors.placeholder_border,
-                // borderWidth: 1,
-                // borderRadius: (mobileW * 1) / 100,
               }}>
               <AuthInputBoxSec
                 mainContainer={{
                   width: '100%',
                 }}
-                // icon={layer9_icon}
                 lableText={LanguageConfiguration.password[Configurations.language]}
                 inputRef={(ref) => {
                   passwordInput = ref;
@@ -1955,15 +1896,11 @@ export default Signup = ({ navigation, route }) => {
                 alignSelf: 'center',
                 marginTop: (mobileW * 2) / 100,
                 flexDirection: 'row',
-                // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-                // borderWidth: 1,
-                // borderRadius: (mobileW * 1) / 100,
               }}>
               <AuthInputBoxSec
                 mainContainer={{
                   width: '100%',
                 }}
-                // icon={layer9_icon}
                 lableText={LanguageConfiguration.confirmpassword1[Configurations.language]}
                 inputRef={(ref) => {
                   confirmInput = ref;
@@ -1985,7 +1922,6 @@ export default Signup = ({ navigation, route }) => {
                   });
                 }}
                 onSubmitEditing={() => {
-                  // signup_click()
                 }}
               />
 
@@ -2027,7 +1963,7 @@ export default Signup = ({ navigation, route }) => {
             }
 
             {
-              (classStateData.selectuserType != -1 && classStateData.userType[classStateData.selectuserType].value == "lab") &&
+              (classStateData.selectuserType != -1 && UserTypes[classStateData.selectuserType].value == "lab") &&
               <>
                 {renderHealthIDNumber()}
                 {renderCRC()}
@@ -2036,7 +1972,7 @@ export default Signup = ({ navigation, route }) => {
 
             <Button
               text={LanguageConfiguration.btntext[Configurations.language]}
-              onPress={() => signup_click()}
+              onPress={() => onSignup()}
               onLoading={classStateData.isLoadingInButton}
             />
 
@@ -2159,54 +2095,6 @@ export default Signup = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={classStateData.modalVisible3}
-
-            onRequestClose={() => { setState({ modalVisible3: false }) }}>
-            <View style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
-              <StatusBar backgroundColor={'#fff'} barStyle='default' hidden={false} translucent={false}
-                networkActivityIndicatorVisible={true} />
-              <View style={{ borderRadius: 20, width: mobileW * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
-
-                <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
-
-                  <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={Icons.Logo}></Image>
-                    <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.registration[Configurations.language]}</Text>
-                  </View>
-
-                  <View style={{ alignSelf: 'flex-start', paddingLeft: mobileW * 4 / 100, width: '90%', marginTop: mobileW * 1.5 / 100 }}>
-                    <Text style={{ fontFamily: Font.Light, color: '#000', fontSize: mobileW * 4 / 100, }}>{classStateData.error_msg}</Text>
-                  </View>
-
-                  <View style={{
-                    paddingBottom: mobileW * 5 / 100, marginTop: mobileW * 9 / 100,
-                    alignSelf: 'flex-end',
-                  }}>
-                    <TouchableOpacity onPress={() => {
-                      if (classStateData.status_new == true) {
-                        // setTimeout(() => { setState({ modalVisible3: false }), navigation.navigate('Optpage', { country_name: classStateData.country_name }) }, 200)
-                        setTimeout(() => { setState({ modalVisible3: false }) }, 200)
-
-                      }
-                      else {
-                        setState({ modalVisible3: false })
-                      }
-                    }}
-                      style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                      <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.theme_color, alignSelf: 'center', textAlign: Configurations.textalign }}>{LanguageConfiguration.OK[Configurations.language]}</Text>
-                    </TouchableOpacity>
-
-
-                  </View>
-
-                </View>
-
-              </View>
-            </View>
-          </Modal>
         </View>
       </KeyboardAwareScrollView>
     </ScrollView>
