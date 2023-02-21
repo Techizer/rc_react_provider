@@ -54,6 +54,7 @@
         <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />     <!-- Set to true to use Branch_Test_Key (useful when simulating installs and/or switching between debug and production flavors) -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+<!--        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDy01zIxPpweSuXDx9Bs4g0GZR9ygB46Zw"/>-->
 
     </application>
 

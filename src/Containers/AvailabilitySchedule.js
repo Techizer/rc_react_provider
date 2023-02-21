@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList, TouchableHighlight } from 'react-native';
+import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
 
 import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
 import { Button } from '../Components'
-import ListBottomSheet from '../Components/ListBottomSheet';
 import { Arrow, Cross } from '../Assets/Icons/SvgIcons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -12,58 +11,6 @@ import { s, vs } from 'react-native-size-matters';
 import { setScheduleAvailabilityData } from '../Redux/Actions/UserActions';
 import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { SvgXml } from 'react-native-svg';
-
-const radiusArr = [
-  {
-    id: 1,
-    value: '15',
-    symbol: 'km',
-    status: true,
-  },
-  {
-    id: 1,
-    value: '30',
-    symbol: 'km',
-    status: false,
-  },
-  {
-    id: 1,
-    value: '50',
-    symbol: 'km',
-    status: false,
-  },
-  {
-    id: 1,
-    value: '75',
-    symbol: 'km',
-    status: false,
-  },
-  {
-    id: 1,
-    value: '100',
-    symbol: 'km',
-    status: false,
-  },
-  {
-    id: 1,
-    value: '125',
-    symbol: 'km',
-    status: false,
-  },
-  {
-    id: 1,
-    value: '150',
-    symbol: 'km',
-    status: false,
-  },
-  {
-    id: 1,
-    value: '200',
-    symbol: 'km',
-    status: false,
-  },
-]
 
 const timeArray = [
   { value: '00:00 AM' },
@@ -115,7 +62,6 @@ const timeArray = [
   { value: '11:00 PM' },
   { value: '11:30 PM' }
 ]
-
 
 const Days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 

@@ -79,10 +79,8 @@ export default MyProfile = ({ navigation, route }) => {
   }
 
   const getProfile = async () => {
-    let user_details = loginUserData
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
+    let user_id = loginUserData['user_id']
+    let user_type = loginUserData['user_type']
 
     let url = Configurations.baseURL + "api-get-provider-profile";
     console.log("url", url)

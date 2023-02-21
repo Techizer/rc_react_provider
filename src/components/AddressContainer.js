@@ -49,7 +49,7 @@ const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = 
                 <View
                     style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingTop: (index === 0 && defaultAdd == addressDetails?.id) ? 18 : (index === 0) ? 0 : vs(18), backgroundColor: defaultAdd == addressDetails?.id ? Colors.appointmentdetaillightblue : 'transparent' }}>
 
-                    <View style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', paddingBottom: vs(12) }}>
+                    <View style={{ width: '100%', paddingBottom: vs(12) }}>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
 
                             <View style={{ width: '9%', }}>

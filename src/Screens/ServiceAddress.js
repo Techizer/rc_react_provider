@@ -12,6 +12,8 @@ import AddressInputPopup from "../Components/AddressInputPopup";
 import AddressContainer from "../Components/AddressContainer";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
+// import MapView, { Marker } from 'react-native-maps';
+import { useRef } from "react";
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
@@ -29,7 +31,8 @@ const ServiceAddress = ({ navigation, route }) => {
     const [isEditable, setIsEditable] = useState(false)
     const [isMTrueState, setIsMTrueState] = useState(false)
     const isFocused = useIsFocused()
-    const sheetRef = React.useRef(null);
+    const sheetRef = useRef(null);
+    const mapRef = useRef()
 
     const { isMTrue, lat, lng, id, googleAddress } = route?.params || { isMTrue: false, lat: 0, lng: 0, id: 0, googleAddress: '' }
 
@@ -57,7 +60,7 @@ const ServiceAddress = ({ navigation, route }) => {
 
 
         API.post(url, data, 1).then((obj) => {
-            console.log({ results: obj });
+            console.log({ results: obj?.result[0] });
 
             if (obj.status == true) {
                 if (obj?.result?.length > 1) {
@@ -106,85 +109,109 @@ const ServiceAddress = ({ navigation, route }) => {
                 navigation={navigation} />
 
             <View style={{ backgroundColor: Colors.White, marginTop: vs(1), paddingHorizontal: s(13), paddingVertical: vs(15), flex: 1 }}>
+                <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingBottom: vs(20) }}>
 
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={addressList}
-                    ListHeaderComponent={() => {
-                        return (
-                            <View
-                                style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingBottom: vs(20) }}>
+                    <View style={{ width: '2%' }} />
+                    <View style={{ width: '98%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Text
+                            style={{
+                                textAlign: Configurations.textRotate,
+                                fontSize: Font.regulartext_size,
+                                fontFamily: Font.SemiBold,
+                                color: Colors.textblack,
+                            }}>{'Service Address'}</Text>
 
-                                <View style={{ width: '2%' }} />
-                                <View style={{ width: '98%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        {(addressList.length == 0 && isFetchedSuccess) &&
+                            <View style={{
+                                alignItems: 'flex-end'
+                            }}>
+                                <TouchableOpacity
+                                    style={{ flexDirection: 'row', alignItems: 'center', }}
+                                    onPress={() => {
+                                        // setIsBottomSheet(true)
+                                        // setType('addAddress')
+                                        navigation.navigate(ScreenReferences.SearchPlace, {
+                                            isNew: true,
+                                            address_id: '',
+                                        })
+                                    }}>
+                                    <SvgXml xml={Add} />
                                     <Text
                                         style={{
                                             textAlign: Configurations.textRotate,
-                                            fontSize: Font.regulartext_size,
-                                            fontFamily: Font.SemiBold,
-                                            color: Colors.textblack,
-                                        }}>{'Service Address'}</Text>
-
-                                    {(addressList.length == 0 && isFetchedSuccess) &&
-                                        <View style={{
-                                            alignItems: 'flex-end'
-                                        }}>
-                                            <TouchableOpacity
-                                                style={{ flexDirection: 'row', alignItems: 'center', }}
-                                                onPress={() => {
-                                                    // setIsBottomSheet(true)
-                                                    // setType('addAddress')
-                                                    navigation.navigate(ScreenReferences.SearchPlace, {
-                                                        isNew: true,
-                                                        address_id: '',
-                                                    })
-                                                }}>
-                                                <SvgXml xml={Add} />
-                                                <Text
-                                                    style={{
-                                                        textAlign: Configurations.textRotate,
-                                                        fontSize: Font.sregulartext_size,
-                                                        fontFamily: Font.Medium,
-                                                        color: '#0888D1',
-                                                        marginLeft: s(5)
-                                                    }}>{'Add new address'.toUpperCase()}</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    }
-
-                                </View>
+                                            fontSize: Font.sregulartext_size,
+                                            fontFamily: Font.Medium,
+                                            color: '#0888D1',
+                                            marginLeft: s(5)
+                                        }}>{'Add new address'.toUpperCase()}</Text>
+                                </TouchableOpacity>
                             </View>
+                        }
 
-                        )
+                    </View>
+                </View>
+
+                <AddressContainer
+                    index={0}
+                    addressDetails={addressList[0]}
+                    showModal={(val) => {
+                        setAddressSheet(val)
                     }}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <AddressContainer
-                                index={index}
-                                addressDetails={item}
-                                showModal={(val) => {
-                                    setAddressSheet(val)
-                                    // sheetRef.current.snapTo(0)
-                                }}
-                                navigation={navigation}
-                                selected={selectedAddress}
-                                selectedAddress={(val) => {
-                                    console.log('..............', addressList[val]);
-                                    setSelectedAddress(val)
-                                }}
-                                editable={(val) => {
-                                    setIsEditable(val)
-                                    setType('editAddress')
-                                }}
-                                isLoading={isLoading}
-                                defaultAdd={defaultAddress}
-
-
-                            />
-                        );
+                    navigation={navigation}
+                    selected={selectedAddress}
+                    selectedAddress={(val) => {
+                        setSelectedAddress(val)
                     }}
-                    contentContainerStyle={{ paddingBottom: addressList.length > 5 ? (windowWidth * 40) / 100 : 0 }}
+                    editable={(val) => {
+                        setIsEditable(val)
+                        setType('editAddress')
+                    }}
+                    isLoading={isLoading}
+                    defaultAdd={defaultAddress}
                 />
+
+                {/* {addressList.length > 0 && <View style={{
+                    flex: 1,
+                    borderRadius: vs(16)
+                }}>
+                    <MapView
+                    
+                        ref={mapRef}
+                        style={{
+                            flex: 1,
+                            borderRadius: vs(16),
+                            marginVertical: vs(16)
+                        }}
+                        initialRegion={{
+                            latitude: addressList[0]?.service_lat ? addressList[0]?.service_lat: 100,
+                            longitude: addressList[0]?.service_long? addressList[0]?.service_long: 100
+                        }}
+                        zoomEnabled
+                        zoomControlEnabled
+                        zoomTapEnabled
+                        // minZoomLevel={1}
+                        maxZoomLevel={20}
+                        loadingEnabled
+                        loadingIndicatorColor={Colors.textblue}
+                        onLayout={() => {
+                            console.log('OnP');
+                            mapRef.current.animateToRegion({
+                                latitude: addressList[0]?.service_lat,
+                                longitude: addressList[0]?.service_long,
+                                latitudeDelta: 0.025,
+                                longitudeDelta: 0.025,
+                            }, 1000)
+                        }}>
+                        <Marker
+                            coordinate={{ latitude: addressList[0]?.service_lat, longitude: addressList[0]?.service_long, latitudeDelta: 1, longitudeDelta: 1, }}
+                            title={addressList[0]?.service_address}
+                            description={`${addressList[0]?.building_name}, Landmark: ${addressList[0]?.landmark}`}
+                            
+                            // { (loginUserData?.image != null && loginUserData?.image != '') ? {...{}}: {...{}} }
+                            // image={(loginUserData?.image != null && loginUserData?.image != '') ? ({ uri: Configurations.img_url3 + loginUserData?.image }) : undefined}
+                        />
+                    </MapView>
+                </View>} */}
             </View>
 
 

@@ -61,4 +61,7 @@ export const Icons = {
 
     InformationButton: require('./ic_information_button.png'),
     BlackBox: require('./ic_black_box.png'),
+
+    Gallery: require('./gallery.png'),
+    Documents: require('./documents.png'),
 }

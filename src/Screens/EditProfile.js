@@ -1,7 +1,7 @@
-import { Text, View, StatusBar, SafeAreaView, TouchableOpacity, Image, Modal, Keyboard, Platform, Dimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Text, View, StatusBar, SafeAreaView, TouchableOpacity, Image, Modal, Keyboard, Platform, Dimensions, StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, CameraGallery, Media } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, CameraGallery, Media } from '../Helpers/Utils';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import MonthPicker from 'react-native-month-year-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -12,6 +12,7 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserLoginData } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 export default EditProfile = ({ navigation, route }) => {
 
@@ -20,33 +21,18 @@ export default EditProfile = ({ navigation, route }) => {
     mabtn: false,
     country_code: '',
     febtn: false,
-    allergies: 'No',
     work_area: '',
-    yesNoModal: false,
-    smoking_btn: true,
-    smoking: '',
-    alcohol: '',
-
-    nationality_arr: "",
-    activity_level: '',
-    food: '',
-    // occupation: '',
     name: '',
-    emailfocus: false,
     email: '',
-    numberfocus: false,
     number: '',
     dobfocus: false,
     dob: '',
     address: '',
     id_number: '',
-    blood_group: '',
-
     mobile: '',
     hosp_moh_lic_no: '',
     hosp_reg_no: '',
     profile_img: 'NA',
-    id_number: '',
     mediamodal: false,
     isDatePickerVisibletwo: false,
     dob_date: '',
@@ -56,7 +42,8 @@ export default EditProfile = ({ navigation, route }) => {
 
   })
   const dispatch = useDispatch()
-  const screens = ScreenReferences.EditProfile;
+
+  const attachmentOptionSheetRef = useRef()
 
   const {
     loginUserData
@@ -65,8 +52,6 @@ export default EditProfile = ({ navigation, route }) => {
   useEffect(() => {
     navigation.addListener('focus', () => {
       getProfile()
-
-      get_all_nationlity()
       getNotificationsCount()
     });
   }, [])
@@ -91,38 +76,11 @@ export default EditProfile = ({ navigation, route }) => {
 
       if (obj.status == true) {
         setState({ notification_count: obj.result })
-        console.log('obj nationaltity', obj)
-
-
-
-      } else {
-
-
-        return false;
-      }
-    }).catch((error) => {
-
-      console.log("-------- error ------- " + error);
-    })
-
-  }
-
-  const get_all_nationlity = async () => {
-    let user_id = loginUserData['user_id']
-
-    let url = Configurations.baseURL + "api-getnationality";
-    console.log("url", url)
-    var data = new FormData();
-    data.append('login_user_id', user_id)
-
-
-    API.post(url, data, 1).then((obj) => {
-      if (obj.status == true) {
-        setState({ nationality_arr: obj.result })
       } else {
         return false;
       }
     }).catch((error) => {
+
       console.log("-------- error ------- " + error);
     })
 
@@ -158,7 +116,7 @@ export default EditProfile = ({ navigation, route }) => {
     let url = Configurations.baseURL + "api-get-provider-profile";
     console.log("url", url)
     var data = new FormData();
-    // data.append('user_id', user_id)
+    
     data.append('id', user_id)
     data.append('service_type', user_type)
 
@@ -175,7 +133,6 @@ export default EditProfile = ({ navigation, route }) => {
           email: result['email'],
           display_user_type: result['display_user_type'],
           user_type: result['user_type'],
-          emailfocusget: true,
           user_id: result['user_id'],
           country_code: result['country_code'],
           work_area: result['work_area'],
@@ -195,14 +152,10 @@ export default EditProfile = ({ navigation, route }) => {
           hosp_reg_image: { filename: result['hosp_reg_image'] },
           moh_lic_image: { filename: result['moh_lic_image'] },
 
-        }, () => {
-          console.log("id_image:: ", classStateData.id_image);
-          console.log("certificate:: ", classStateData.certificate);
-          console.log("scfhs_image:: ", classStateData.scfhs_image);
         })
 
         if (result['phone_number'] != null && result['phone_number'] != '') {
-          setState({ mobile: result['phone_number'], numberfocus: true })
+          setState({ mobile: result['phone_number'] })
         }
 
         if (result['dob'] != null && result['dob'] != '') {
@@ -214,30 +167,6 @@ export default EditProfile = ({ navigation, route }) => {
             febtn: (result['gender'] == 'Female') ? true : false,
             mabtn: (result['gender'] == 'Male') ? true : false,
           })
-        }
-        if (result['smoking'] != null && result['smoking'] != '') {
-          setState({ smoking: result['smoking'] })
-        }
-        if (result['blood_group'] != null) {
-          setState({ blood_group: result['blood_group'] })
-        }
-        if (result['food_preference'] != null) {
-          setState({ food: result['food_preference'] })
-        }
-        if (result['alcohol'] != null) {
-          setState({ alcohol: result['alcohol'] })
-        }
-        // if (result['occupation'] != null) {
-        //   setState({ occupation: result['occupation'] })
-        // }
-        if (result['activity_level'] != null) {
-          setState({ activity_level: result['activity_level'] })
-        }
-        if (result['allergies_data'] != null && result['allergies_data'] != '') {
-          setState({ allergies_data: result['allergies_data'] })
-        }
-        if (result['allergies'] != null && result['allergies'] != '') {
-          setState({ allergies: result['allergies'] })
         }
         if (result.image != null) {
           setState({
@@ -264,14 +193,13 @@ export default EditProfile = ({ navigation, route }) => {
       console.log(obj);
       console.log(obj.path);
       if (classStateData.img_type == 0) {
-        setState({ cover_img: obj.path, mediamodal: false })
+        setState({ cover_img: obj.path })
       }
       else {
-        setState({ profile_img: obj.path, mediamodal: false, profile_image: obj.path })
+        setState({ profile_img: obj.path, profile_image: obj.path })
       }
-    }).catch((error) => {
-      setState({ mediamodal: false })
-
+    }).finally(() => {
+      attachmentOptionSheetRef.current.close()
     })
   }
   const Galleryopen = () => {
@@ -280,13 +208,13 @@ export default EditProfile = ({ navigation, route }) => {
       console.log(obj.path);
       // editImage(obj.path);
       if (classStateData.img_type == 0) {
-        setState({ cover_img: obj.path, mediamodal: false })
+        setState({ cover_img: obj.path })
       }
       else {
-        setState({ profile_img: obj.path, mediamodal: false, profile_image: obj.path })
+        setState({ profile_img: obj.path, profile_image: obj.path })
       }
-    }).catch((error) => {
-      setState({ mediamodal: false })
+    }).finally(() => {
+      attachmentOptionSheetRef.current.close()
     })
   }
 
@@ -444,7 +372,6 @@ export default EditProfile = ({ navigation, route }) => {
       data.append('scfhs_image', classStateData.scfhs_image.filename)
     }
     if (classStateData.profile_image != '') {
-      console.log('classStateData.profile_img123409', classStateData.profile_img)
       data.append('image', {
         uri: classStateData.profile_img,
         type: 'image/jpg',
@@ -728,35 +655,6 @@ export default EditProfile = ({ navigation, route }) => {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          {/* <TouchableOpacity activeOpacity={0.9}
-            style={{
-              width: '55%', flexDirection: 'row',
-              paddingLeft: mobileW * 1 / 100
-            }}
-            onPress={() => {
-              // setState({
-              //   imageType: 'scfhs_image',
-              //   mediamodal: true
-              // }, () => {
-              //   // Galleryopen()
-              // });
-            }}
-          >
-            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-              <Text
-                style={{
-                  color: Colors.textblue,
-                  fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: Configurations.textalign,
-                  fontSize: Font.Remember,
-                }}>
-                Upload Photocopy of Reg. ID
-              </Text>
-            </View>
-          </TouchableOpacity> */}
-
 
           <View style={{ width: '45%', alignSelf: 'center', }}>
 
@@ -841,34 +739,6 @@ export default EditProfile = ({ navigation, route }) => {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          {/* <TouchableOpacity activeOpacity={0.9}
-            style={{
-              width: '45%', flexDirection: 'row',
-              paddingLeft: mobileW * 1 / 100
-            }}
-            onPress={() => {
-              // setState({
-              //   imageType: 'certificate',
-              //   mediamodal: true
-              // }, () => {
-              //   //Galleryopen()
-              // });
-            }}
-          >
-            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-              <Text
-                style={{
-                  color: Colors.textblue,
-                  fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: Configurations.textalign,
-                  fontSize: Font.Remember,
-                }}>
-                Upload Certificate
-              </Text>
-            </View>
-          </TouchableOpacity> */}
 
           <View style={{ width: '45%', alignSelf: 'center', }}>
 
@@ -994,36 +864,6 @@ export default EditProfile = ({ navigation, route }) => {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          {/* <TouchableOpacity activeOpacity={0.9}
-            style={{
-              width: '45%', flexDirection: 'row',
-              paddingLeft: mobileW * 1 / 100
-            }}
-            onPress={() => {
-              // setState({
-              //   imageType: 'id_image',
-              //   mediamodal: true
-              // }, () => {
-              //   // Galleryopen()
-              //   // uploadVoiceFile()
-              // });
-
-            }}
-          >
-            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-              <Text
-                style={{
-                  color: Colors.textblue,
-                  fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: Configurations.textalign,
-                  fontSize: Font.Remember,
-                }}>
-                Upload Photocopy of ID
-              </Text>
-            </View>
-          </TouchableOpacity> */}
 
           <View style={{ width: '45%', alignSelf: 'center', }}>
 
@@ -1110,37 +950,6 @@ export default EditProfile = ({ navigation, route }) => {
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
           }}>
-          {/* <TouchableOpacity activeOpacity={0.9}
-            style={{
-              width: '45%', flexDirection: 'row',
-              paddingLeft: mobileW * 1 / 100
-            }}
-            onPress={() => {
-              // setState({
-              //   imageType: 'certificate',
-              //   mediamodal: true
-              // }, () => {
-              //   // Galleryopen()
-              //   // uploadVoiceFile()
-              // });
-
-            }}
-          >
-            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-              <Text
-                style={{
-                  color: Colors.textblue,
-                  fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: Configurations.textalign,
-                  fontSize: Font.Remember,
-                }}>
-                Upload Certificate
-              </Text>
-            </View>
-
-          </TouchableOpacity> */}
 
           <View style={{ width: '45%', alignSelf: 'center', }}>
 
@@ -1216,114 +1025,6 @@ export default EditProfile = ({ navigation, route }) => {
       }
 
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={classStateData.yesNoModal}
-        onRequestClose={() => { }}>
-        <TouchableOpacity activeOpacity={0.9} onPress={() => { setState({ yesNoModal: false }) }}
-          style={{
-            flex: 1,
-            alignSelf: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#00000080',
-            width: '100%',
-          }}>
-          <View
-            style={{
-              width: '70%',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-            }}>
-            <View
-              style={{
-                width: '100%',
-                backgroundColor: Colors.backgroundcolorblue,
-              }}>
-              <View
-                style={{ width: '55%', paddingVertical: (mobileW * 3) / 100 }}>
-                <Text
-                  style={{
-                    textAlign: Configurations.textRotate,
-                    fontFamily: Font.Regular,
-                    fontSize: (mobileW * 4) / 100,
-                    alignSelf: 'center',
-                    color: Colors.textwhite,
-                  }}>
-                  {classStateData.smoking_btn == true
-                    ? LanguageConfiguration.smoking[Configurations.language]
-                    : LanguageConfiguration.Alcohol[Configurations.language]}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  if (classStateData.smoking_btn == true) {
-                    setState({ yesNoModal: false, smoking: 'Yes' });
-                  } else {
-                    setState({ yesNoModal: false, alcohol: 'Yes' });
-                  }
-                }}
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-
-                  flexDirection: 'row',
-                  borderBottomColor: '#0000001F',
-                  borderBottomWidth: 1,
-                  paddingVertical: (mobileW * 3) / 100,
-                }}>
-                <View style={{ width: '87%', alignSelf: 'center' }}>
-                  <Text
-                    style={{
-                      color: Colors.textblack,
-                      fontSize: (mobileW * 4) / 100,
-                      textAlign: Configurations.textRotate
-                    }}>
-                    {LanguageConfiguration.yes_txt_new[Configurations.language]}
-                  </Text>
-
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  if (classStateData.smoking_btn == true) {
-                    setState({ yesNoModal: false, smoking: 'No' });
-                  } else {
-                    setState({ yesNoModal: false, alcohol: 'No' });
-                  }
-                }}
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 3) / 100,
-                  flexDirection: 'row',
-                  borderBottomColor: '#0000001F',
-                  borderBottomWidth: 1,
-                  paddingVertical: (mobileW * 3) / 100,
-                }}>
-                <View style={{ width: '100%', alignSelf: 'center' }}>
-                  <View style={{ width: '87%', alignSelf: 'center' }}>
-                    <Text
-                      style={{
-                        color: Colors.textblack,
-                        fontSize: (mobileW * 4) / 100,
-                        textAlign: Configurations.textRotate
-                      }}>
-                      {LanguageConfiguration.no_txt_new[Configurations.language]}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-
-
       <View style={{ flex: 1, }}>
         <ScreenHeader
           onBackPress={() => {
@@ -1341,14 +1042,71 @@ export default EditProfile = ({ navigation, route }) => {
           paddingBottom: vs(8)
         }}>
 
-          <CameraGallery mediamodal={classStateData.mediamodal}
-            isCamera={true}
-            isGallery={true}
-            isDocument={false}
-            Camerapopen={() => { Camerapopen() }}
-            Galleryopen={() => { Galleryopen() }}
-            Canclemedia={() => { setState({ mediamodal: false }) }}
-          />
+
+          <RBSheet closeOnPressBack ref={attachmentOptionSheetRef} animationType='slide' height={windowHeight / 3.75} customStyles={{
+            container: {
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            },
+
+          }} >
+            <View style={{
+              width: '100%',
+              backgroundColor: "white",
+              height: '100%',
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            }}>
+              <View style={{
+                backgroundColor: Colors.textblue,
+                borderTopLeftRadius: vs(12),
+                borderTopRightRadius: vs(12),
+                paddingVertical: vs(14),
+                width: '100%'
+              }}>
+                <Text style={{
+                  paddingLeft: 15,
+                  color: Colors.white_color,
+                  fontSize: Font.large,
+                  fontFamily: Font.SemiBold,
+                }}>Choose your option!</Text>
+              </View>
+
+              <View style={{
+                paddingVertical: vs(16),
+                width: '100%',
+                flexDirection: 'row'
+              }}>
+                <TouchableOpacity onPress={() => {
+                  Camerapopen()
+                }} style={styles.roundButtonAttachmentContainer}>
+                  <Image source={Icons.Camera} style={{
+                    marginVertical: vs(4),
+                    width: vs(16),
+                    height: vs(16),
+                    tintColor: Colors.textblue
+                  }} resizeMode='contain' resizeMethod='scale' />
+                  <Text style={{
+                  }}>Camera</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                  Galleryopen()
+                }} style={styles.roundButtonAttachmentContainer}>
+                  <Image source={Icons.Gallery} style={{
+                    marginVertical: vs(4),
+                    width: vs(16),
+                    height: vs(16),
+                    tintColor: Colors.textblue
+                  }} resizeMode='contain' resizeMethod='scale' />
+                  <Text>Gallery</Text>
+                </TouchableOpacity>
+
+
+              </View>
+
+            </View>
+          </RBSheet>
 
           <View>
             <View
@@ -1426,7 +1184,7 @@ export default EditProfile = ({ navigation, route }) => {
                   borderColor: Colors.bordercolor_light_blue,
                   backgroundColor: 'white'
                 }}>
-                <TouchableOpacity onPress={() => { setState({ mediamodal: true }) }}>
+                <TouchableOpacity onPress={() => { attachmentOptionSheetRef.current.open() }}>
                   <Image
                     style={{
                       height: (mobileW * 3.5) / 100,
@@ -1938,3 +1696,19 @@ export default EditProfile = ({ navigation, route }) => {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  roundButtonAttachmentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: vs(8),
+    margin: vs(8),
+    borderRadius: vs(8),
+    backgroundColor: Colors.White,
+    elevation: 4,
+    shadowColor: Colors.lightGrey,
+    shadowOpacity: 0.5,
+    shadowOffset: { height: 1 },
+    width: vs(80)
+  }
+})

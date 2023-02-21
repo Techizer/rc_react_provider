@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Text, TextInput, View, Linking, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl } from 'react-native';
+import { Alert, Text, TextInput, View, Linking, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl, StyleSheet } from 'react-native';
 import { CameraGallery, Media, Colors, Font, mobileH, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -20,6 +20,8 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
 import AppLoader from '../Components/AppLoader';
 import { VideoCall, dummyUser } from '../Assets/Icons/SvgIcons/Index';
+import { useRef } from 'react';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
@@ -27,7 +29,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
     showPDetails: false,
     appointmentDetails: '',
     otp: '',
-    mediamodal: false,
     reportModalVisible: false,
     reports: [],
     modalPatientPrescription: false,
@@ -48,7 +49,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
     }
   }
 
-
+  const attachmentOptionSheetRef = useRef()
 
   const {
     loginUserData
@@ -300,7 +301,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
   const visibleReportModal = () => {
     setState({
-      reportModalVisible: (classStateData.isFromReportModal == true) ? true : false
+      reportModalVisible: true
     })
   }
 
@@ -333,16 +334,9 @@ export default AppointmentDetails = ({ navigation, route }) => {
       if (classStateData.isFromReportModal == true) {
         setState({
           reports: [...classStateData.reports, objF],
-          mediamodal: false,
         })
-
-        if (classStateData.isFromReportModal == true) visibleReportModal()
 
       } else {
-        setState({
-          mediamodal: false
-        })
-
         setTimeout(() => {
           onUploadPrescription(Platform.OS === 'android' ? objF : obj)
         }, 800)
@@ -351,10 +345,13 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
 
     }).catch((error) => {
-      setState({
-        mediamodal: false,
-        reportModalVisible: (classStateData.isFromReportModal == true) ? true : false
-      })
+
+    }).finally(() => {
+      console.log({ RM: classStateData.isFromReportModal });
+      attachmentOptionSheetRef.current.close()
+      setTimeout(()=>{
+        if (classStateData.isFromReportModal == true) visibleReportModal()
+      }, 1000)
     })
   }
 
@@ -371,14 +368,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
         setState({
           reports: [...classStateData.reports, source],
-          mediamodal: false,
         })
-        visibleReportModal()
       } else {
-
-        setState({
-          mediamodal: false
-        });
 
         setTimeout(() => {
           onUploadPrescription(source)
@@ -386,11 +377,11 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
       }
 
-    }).catch((error) => {
-      setState({
-        mediamodal: false,
-        reportModalVisible: (classStateData.isFromReportModal == true) ? true : false
-      })
+    }).finally(() => {
+      attachmentOptionSheetRef.current.close()
+      setTimeout(()=>{
+        if (classStateData.isFromReportModal == true) visibleReportModal()
+      }, 1000)
     })
 
   }
@@ -1134,10 +1125,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                           <TouchableOpacity style={{
                             width: '25%'
                           }} onPress={() => {
-                            setState({
-                              // imageType: 'provider_prescription',
-                              mediamodal: true
-                            })
+                            attachmentOptionSheetRef.current.open()
                           }}>
                             <Text style={{
                               textAlign: "right",
@@ -1260,7 +1248,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                           }}
                             onPress={() => {
                               setState({
-                                reportModalVisible: !classStateData.reportModalVisible
+                                reportModalVisible: true
                               })
                             }}
                           >
@@ -1318,7 +1306,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                     }}
                                     onPress={() => {
                                       setState({
-                                        reportModalVisible: !classStateData.reportModalVisible
+                                        reportModalVisible: false
                                       })
                                     }}>
                                     <Image
@@ -1334,8 +1322,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                   setState({
                                     reportModalVisible: false,
                                     isFromReportModal: true,
-                                    mediamodal: true
                                   })
+                                  attachmentOptionSheetRef.current.open()
                                 }}>
                                   <View style={{
                                     padding: 10,
@@ -1707,9 +1695,9 @@ export default AppointmentDetails = ({ navigation, route }) => {
                     <>
                       <View style={{
                         width: '92%',
-                        alignSelf: 'center', 
+                        alignSelf: 'center',
                         paddingVertical: mobileW * 2 / 100,
-                        flexDirection: 'row', 
+                        flexDirection: 'row',
                         borderTopWidth: 1,
                         borderTopColor: Colors.bordercolor,
                         alignItems: 'center'
@@ -2051,19 +2039,73 @@ export default AppointmentDetails = ({ navigation, route }) => {
                         </TouchableOpacity>
                       </>
                     }
-                    <CameraGallery mediamodal={classStateData.mediamodal}
-                      isCamera={false}
-                      isGallery={true}
-                      isDocument={true}
-                      Galleryopen={() => { openGalleryPicker() }}
-                      DocumentGalleryopen={() => { openDocumentPicker() }}
-                      Canclemedia={() => {
-                        setState({
-                          mediamodal: false,
-                          reportModalVisible: (classStateData.isFromReportModal == true) ? true : false
-                        })
-                      }}
-                    />
+
+                    <RBSheet closeOnPressBack ref={attachmentOptionSheetRef} animationType='slide' height={windowHeight / 3.75} customStyles={{
+                      container: {
+                        borderTopLeftRadius: vs(12),
+                        borderTopRightRadius: vs(12),
+                      },
+
+                    }} >
+                      <View style={{
+                        width: '100%',
+                        backgroundColor: "white",
+                        height: '100%',
+                        borderTopLeftRadius: vs(12),
+                        borderTopRightRadius: vs(12),
+                      }}>
+                        <View style={{
+                          backgroundColor: Colors.textblue,
+                          borderTopLeftRadius: vs(12),
+                          borderTopRightRadius: vs(12),
+                          paddingVertical: vs(14),
+                          width: '100%'
+                        }}>
+                          <Text style={{
+                            paddingLeft: 15,
+                            color: Colors.white_color,
+                            fontSize: Font.large,
+                            fontFamily: Font.SemiBold,
+                          }}>Choose your option!</Text>
+                        </View>
+
+                        <View style={{
+                          paddingVertical: vs(16),
+                          width: '100%',
+                          flexDirection: 'row'
+                        }}>
+                          <TouchableOpacity onPress={() => {
+                            openGalleryPicker()
+                          }} style={styles.roundButtonAttachmentContainer}>
+                            <Image source={Icons.Gallery} style={{
+                              marginVertical: vs(4),
+                              width: vs(16),
+                              height: vs(16),
+                              tintColor: Colors.textblue
+                            }} resizeMode='contain' resizeMethod='scale' />
+                            <Text>Gallery</Text>
+                          </TouchableOpacity>
+
+                          <TouchableOpacity onPress={() => {
+                            openDocumentPicker()
+                          }} style={styles.roundButtonAttachmentContainer}>
+                            <Image source={Icons.Documents} style={{
+                              marginVertical: vs(4),
+                              width: vs(16),
+                              height: vs(16),
+                              tintColor: Colors.textblue
+                            }} resizeMode='contain' resizeMethod='scale' />
+                            <Text style={{
+                            }}>Documents</Text>
+                          </TouchableOpacity>
+                        </View>
+
+                      </View>
+                    </RBSheet>
+
+
+
+
                     {(item.acceptance_status == 'Accepted' &&
                       item.service_type == "Doctor" &&
                       item.appointment_type == "Online" && VideoCallBtn == true) &&
@@ -2104,9 +2146,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
                         item.service_type == "Doctor" && item.provider_prescription == null) &&
                       <>
                         <TouchableOpacity onPress={() => {
-                          setState({
-                            mediamodal: true
-                          })
+
+                          attachmentOptionSheetRef.current.open()
                         }}
 
                           style={{
@@ -2317,4 +2358,20 @@ export default AppointmentDetails = ({ navigation, route }) => {
     </>
   }
 
-} 
+}
+
+const styles = StyleSheet.create({
+  roundButtonAttachmentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: vs(8),
+    margin: vs(8),
+    borderRadius: vs(8),
+    backgroundColor: Colors.White,
+    elevation: 4,
+    shadowColor: Colors.lightGrey,
+    shadowOpacity: 0.5,
+    shadowOffset: { height: 1 },
+    width: vs(80)
+  }
+})
