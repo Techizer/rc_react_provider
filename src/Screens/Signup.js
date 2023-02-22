@@ -1,7 +1,7 @@
-import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform } from 'react-native';
+import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform, StyleSheet } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { CameraGallery, Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, Media, windowHeight } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, Media, windowHeight } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -45,7 +45,6 @@ export default Signup = ({ navigation, route }) => {
     mabtn: false,
     febtn: false,
     specialityArr: [],
-    mediamodal: false,
     hosp_moh_lic_no: '',
     hosp_reg_no: '',
     id_image: {
@@ -68,6 +67,7 @@ export default Signup = ({ navigation, route }) => {
   const userTypeSheetRef = useRef()
   const countrySheetRef = useRef()
   const specialitySheetRef = useRef()
+  const attachmentOptionSheetRef = useRef()
 
   useEffect(() => {
     navigation.addListener('focus', () => {
@@ -245,93 +245,93 @@ export default Signup = ({ navigation, route }) => {
     const isValid = checkIsValid()
 
     if (isValid) {
-      
-    setState({
-      isLoadingInButton: true
-    })
 
-    const localFCM = await FBPushNotifications.getFcmToken()
-
-    let url = Configurations.baseURL + "api-service-provider-registration";
-    console.log("url", url)
-    var phone_number_send = classStateData.country_code + classStateData.mobile
-    var data = new FormData();
-
-    data.append('service_type', UserTypes[classStateData.selectuserType].value)
-    data.append('name', classStateData.name)
-    data.append('email', classStateData.email.trim())
-    data.append('mobile_number', phone_number_send)
-    data.append('work_area', classStateData.country_name)
-    data.append('dob', classStateData.dob_date)
-    data.append('gender', classStateData.gender)
-    data.append('password', classStateData.password)
-    data.append('confirm_password', classStateData.confirm)
-    data.append('device_type', Configurations.device_type)
-    data.append('device_lang', 'ENG')
-    data.append('fcm_token', localFCM)
-
-    data.append('id_number', classStateData.id_number)
-    data.append('speciality', classStateData.speciality)
-    data.append('qualification', classStateData.qualification)
-    data.append('experience', classStateData.experience)
-    data.append('scfhs_number', classStateData.scfhs_number)
-    data.append('hosp_moh_lic_no', classStateData.hosp_moh_lic_no)
-    data.append('hosp_reg_no', classStateData.hosp_reg_no)
-
-    if (classStateData.id_image.path != '') {
-
-      data.append('id_image', {
-        uri: classStateData.id_image.path,
-        type: classStateData.id_image.mime, //'image/jpg',
-        name: (Platform.OS == 'ios') ? classStateData.id_image.filename : 'image',
+      setState({
+        isLoadingInButton: true
       })
-    }
-    if (classStateData.certificate.path != '') {
 
-      data.append('certificate', {
-        uri: classStateData.certificate.path,
-        type: classStateData.certificate.mime, //'image/jpg',
-        name: (Platform.OS == 'ios') ? classStateData.certificate.filename : 'image',
-      })
-    }
-    if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
-      if (classStateData.scfhs_image.path != '') {
+      const localFCM = await FBPushNotifications.getFcmToken()
 
-        data.append('scfhs_image', {
-          uri: classStateData.scfhs_image.path,
-          type: classStateData.scfhs_image.mime, //'image/jpg',
-          name: (Platform.OS == 'ios') ? classStateData.scfhs_image.filename : 'image',
+      let url = Configurations.baseURL + "api-service-provider-registration";
+      console.log("url", url)
+      var phone_number_send = classStateData.country_code + classStateData.mobile
+      var data = new FormData();
+
+      data.append('service_type', UserTypes[classStateData.selectuserType].value)
+      data.append('name', classStateData.name)
+      data.append('email', classStateData.email.trim())
+      data.append('mobile_number', phone_number_send)
+      data.append('work_area', classStateData.country_name)
+      data.append('dob', classStateData.dob_date)
+      data.append('gender', classStateData.gender)
+      data.append('password', classStateData.password)
+      data.append('confirm_password', classStateData.confirm)
+      data.append('device_type', Configurations.device_type)
+      data.append('device_lang', 'ENG')
+      data.append('fcm_token', localFCM)
+
+      data.append('id_number', classStateData.id_number)
+      data.append('speciality', classStateData.speciality)
+      data.append('qualification', classStateData.qualification)
+      data.append('experience', classStateData.experience)
+      data.append('scfhs_number', classStateData.scfhs_number)
+      data.append('hosp_moh_lic_no', classStateData.hosp_moh_lic_no)
+      data.append('hosp_reg_no', classStateData.hosp_reg_no)
+
+      if (classStateData.id_image.path != '') {
+
+        data.append('id_image', {
+          uri: classStateData.id_image.path,
+          type: classStateData.id_image.mime, //'image/jpg',
+          name: (Platform.OS == 'ios') ? classStateData.id_image.filename : 'image',
         })
       }
-    }
-    else {
-      data.append('scfhs_image', "")
-    }
+      if (classStateData.certificate.path != '') {
 
-    API.post(url, data, 1).then((obj) => {
-
-      console.log('obj mess', obj.message)
-      if (obj.status == true) {
-
-        setTimeout(() => {
-          navigation.goBack()
-          MessageFunctions.showSuccess(obj.message)
-        }, 500);
-
-      } else {
-        setTimeout(() => {
-          MessageFunctions.showError(obj.message)
-        }, 200)
-        // }
-        return false;
+        data.append('certificate', {
+          uri: classStateData.certificate.path,
+          type: classStateData.certificate.mime, //'image/jpg',
+          name: (Platform.OS == 'ios') ? classStateData.certificate.filename : 'image',
+        })
       }
-    }).catch((error) => {
-      console.log("-------- error ------- ", error)
-    }).finally(() => {
-      setState({
-        isLoadingInButton: false
+      if (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) {
+        if (classStateData.scfhs_image.path != '') {
+
+          data.append('scfhs_image', {
+            uri: classStateData.scfhs_image.path,
+            type: classStateData.scfhs_image.mime, //'image/jpg',
+            name: (Platform.OS == 'ios') ? classStateData.scfhs_image.filename : 'image',
+          })
+        }
+      }
+      else {
+        data.append('scfhs_image', "")
+      }
+
+      API.post(url, data, 1).then((obj) => {
+
+        console.log('obj mess', obj.message)
+        if (obj.status == true) {
+
+          setTimeout(() => {
+            navigation.goBack()
+            MessageFunctions.showSuccess(obj.message)
+          }, 500);
+
+        } else {
+          setTimeout(() => {
+            MessageFunctions.showError(obj.message)
+          }, 200)
+          // }
+          return false;
+        }
+      }).catch((error) => {
+        console.log("-------- error ------- ", error)
+      }).finally(() => {
+        setState({
+          isLoadingInButton: false
+        })
       })
-    })
 
     } else return isValid
   }
@@ -350,22 +350,19 @@ export default Signup = ({ navigation, route }) => {
 
       if (classStateData.imageType === 'id_image') {
         setState({
-          id_image: source,
-          mediamodal: false
+          id_image: source
         });
       } else if (classStateData.imageType === 'certificate') {
         setState({
-          certificate: source,
-          mediamodal: false
+          certificate: source
         });
       } else if (classStateData.imageType === 'scfhs_image') {
         setState({
-          scfhs_image: source,
-          mediamodal: false
+          scfhs_image: source
         });
       }
-    }).catch((error) => {
-      setState({ mediamodal: false })
+    }).finally(() => {
+      attachmentOptionSheetRef.current.close()
     })
   }
 
@@ -382,24 +379,21 @@ export default Signup = ({ navigation, route }) => {
 
       if (classStateData.imageType === 'id_image') {
         setState({
-          id_image: source,
-          mediamodal: false
+          id_image: source
         });
       } else if (classStateData.imageType === 'certificate') {
         setState({
-          certificate: source,
-          mediamodal: false
+          certificate: source
         });
       } else if (classStateData.imageType === 'scfhs_image') {
         setState({
-          scfhs_image: source,
-          mediamodal: false
+          scfhs_image: source
         });
       }
 
 
-    }).catch((error) => {
-      setState({ mediamodal: false })
+    }).finally(() => {
+      attachmentOptionSheetRef.current.close()
     })
   }
 
@@ -527,13 +521,10 @@ export default Signup = ({ navigation, route }) => {
             }}
             onPress={() => {
               setState({
-                imageType: 'id_image',
-                mediamodal: true
-              }, () => {
-                // Galleryopen()
-                // uploadVoiceFile()
+                imageType: 'id_image'
               });
 
+              attachmentOptionSheetRef.current.open()
             }}
           >
             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
@@ -616,19 +607,19 @@ export default Signup = ({ navigation, route }) => {
               borderTopRightRadius: vs(12),
             }}>
               <View style={{
-                  backgroundColor: Colors.textblue,
-                  borderTopLeftRadius: vs(12),
-                  borderTopRightRadius: vs(12),
-                  paddingVertical: vs(14),
-                  width: '100%'
-                }}>
-                  <Text style={{
-                    paddingLeft: 15,
-                    color: Colors.white_color,
-                    fontSize: Font.large,
-                    fontFamily: Font.SemiBold,
-                  }}>Speciality</Text>
-                </View>
+                backgroundColor: Colors.textblue,
+                borderTopLeftRadius: vs(12),
+                borderTopRightRadius: vs(12),
+                paddingVertical: vs(14),
+                width: '100%'
+              }}>
+                <Text style={{
+                  paddingLeft: 15,
+                  color: Colors.white_color,
+                  fontSize: Font.large,
+                  fontFamily: Font.SemiBold,
+                }}>Speciality</Text>
+              </View>
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
@@ -716,9 +707,10 @@ export default Signup = ({ navigation, route }) => {
             }}
             onPress={() => {
               setState({
-                imageType: 'certificate',
-                mediamodal: true
+                imageType: 'certificate'
               });
+
+              attachmentOptionSheetRef.current.open()
             }}
           >
             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
@@ -827,9 +819,10 @@ export default Signup = ({ navigation, route }) => {
             }}
             onPress={() => {
               setState({
-                imageType: 'scfhs_image',
-                mediamodal: true
+                imageType: 'scfhs_image'
               });
+
+              attachmentOptionSheetRef.current.open()
             }}
           >
             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
@@ -929,10 +922,9 @@ export default Signup = ({ navigation, route }) => {
             onPress={() => {
               setState({
                 imageType: 'certificate',
-                mediamodal: true
-              }, () => {
-                //Galleryopen()
               });
+
+              attachmentOptionSheetRef.current.open()
             }}
           >
             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
@@ -1073,12 +1065,9 @@ export default Signup = ({ navigation, route }) => {
             onPress={() => {
               setState({
                 imageType: 'id_image',
-                mediamodal: true
-              }, () => {
-                // Galleryopen()
-                // uploadVoiceFile()
               });
 
+              attachmentOptionSheetRef.current.open()
             }}
           >
             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
@@ -1181,13 +1170,9 @@ export default Signup = ({ navigation, route }) => {
             }}
             onPress={() => {
               setState({
-                imageType: 'certificate',
-                mediamodal: true
-              }, () => {
-                // Galleryopen()
-                // uploadVoiceFile()
+                imageType: 'certificate'
               });
-
+              attachmentOptionSheetRef.current.open()
             }}
           >
             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
@@ -1245,15 +1230,70 @@ export default Signup = ({ navigation, route }) => {
             translucent={false}
             networkActivityIndicatorVisible={true}
           />
-          <CameraGallery mediamodal={classStateData.mediamodal}
-            isCamera={false}
-            isGallery={true}
-            isDocument={true}
-            Camerapopen={() => { Camerapopen() }}
-            Galleryopen={() => { Galleryopen() }}
-            DocumentGalleryopen={() => { DocumentGalleryopen() }}
-            Canclemedia={() => { setState({ mediamodal: false }) }}
-          />
+
+
+          <RBSheet closeOnPressBack ref={attachmentOptionSheetRef} animationType='slide' height={windowHeight / 3.75} customStyles={{
+            container: {
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            },
+
+          }} >
+            <View style={{
+              width: '100%',
+              backgroundColor: "white",
+              height: '100%',
+              borderTopLeftRadius: vs(12),
+              borderTopRightRadius: vs(12),
+            }}>
+              <View style={{
+                backgroundColor: Colors.textblue,
+                borderTopLeftRadius: vs(12),
+                borderTopRightRadius: vs(12),
+                paddingVertical: vs(14),
+                width: '100%'
+              }}>
+                <Text style={{
+                  paddingLeft: 15,
+                  color: Colors.white_color,
+                  fontSize: Font.large,
+                  fontFamily: Font.SemiBold,
+                }}>Choose your option!</Text>
+              </View>
+
+              <View style={{
+                paddingVertical: vs(16),
+                width: '100%',
+                flexDirection: 'row'
+              }}>
+                <TouchableOpacity onPress={() => {
+                  Galleryopen()
+                }} style={styles.roundButtonAttachmentContainer}>
+                  <Image source={Icons.Gallery} style={{
+                    marginVertical: vs(4),
+                    width: vs(16),
+                    height: vs(16),
+                    tintColor: Colors.textblue
+                  }} resizeMode='contain' resizeMethod='scale' />
+                  <Text>Gallery</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                  DocumentGalleryopen()
+                }} style={styles.roundButtonAttachmentContainer}>
+                  <Image source={Icons.Documents} style={{
+                    marginVertical: vs(4),
+                    width: vs(16),
+                    height: vs(16),
+                    tintColor: Colors.textblue
+                  }} resizeMode='contain' resizeMethod='scale' />
+                  <Text style={{
+                  }}>Documents</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+          </RBSheet>
 
           <RBSheet closeOnPressBack ref={countrySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
             container: {
@@ -1269,19 +1309,19 @@ export default Signup = ({ navigation, route }) => {
             }}>
 
               <View style={{
-                  backgroundColor: Colors.textblue,
-                  borderTopLeftRadius: vs(12),
-                  borderTopRightRadius: vs(12),
-                  paddingVertical: vs(14),
-                  width: '100%'
-                }}>
-                  <Text style={{
-                    paddingLeft: 15,
-                    color: Colors.white_color,
-                    fontSize: Font.large,
-                    fontFamily: Font.SemiBold,
-                  }}>{LanguageConfiguration.Country_code[Configurations.language]}</Text>
-                </View>
+                backgroundColor: Colors.textblue,
+                borderTopLeftRadius: vs(12),
+                borderTopRightRadius: vs(12),
+                paddingVertical: vs(14),
+                width: '100%'
+              }}>
+                <Text style={{
+                  paddingLeft: 15,
+                  color: Colors.white_color,
+                  fontSize: Font.large,
+                  fontFamily: Font.SemiBold,
+                }}>{LanguageConfiguration.Country_code[Configurations.language]}</Text>
+              </View>
 
               <FlatList
                 data={classStateData.Countryarr}
@@ -2047,3 +2087,19 @@ export default Signup = ({ navigation, route }) => {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  roundButtonAttachmentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: vs(8),
+    margin: vs(8),
+    borderRadius: vs(8),
+    backgroundColor: Colors.White,
+    elevation: 4,
+    shadowColor: Colors.lightGrey,
+    shadowOpacity: 0.5,
+    shadowOffset: { height: 1 },
+    width: vs(80)
+  }
+})

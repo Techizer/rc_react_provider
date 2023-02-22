@@ -10,6 +10,7 @@ const initialState = {
     userEmail: '',
     userPassword: '',
     scheduleAvailability: null,
+    profileData: null,
     lastScreen: ScreenReferences.Splash
 };
 

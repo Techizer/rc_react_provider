@@ -7,7 +7,6 @@ import {
   MessageHeadings,
   MessageTexts
 } from './Message';
-import CameraGallery from '../Components/CameraGallery';
 import {Media} from './MediaProvider';
 import {API} from './API';
 import {Colors, Font} from '../Provider/Colorsfont';
@@ -23,14 +22,12 @@ const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : Status
 
 export {
   Configurations,
-  
   API,
   Colors,
   Font,
   mobileH,
   mobileW,
   Media,
-  CameraGallery,
   localStorage,
   LanguageConfiguration,
   MessageFunctions,
