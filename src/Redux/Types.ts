@@ -12,6 +12,7 @@ const USER_REMEMBERED_PASSWORD = 'Password'
 const LAST_SCREEN = 'LastScreen'
 const SCHEDULE_AVAILABILITY = 'ScheduleAvailability'
 const PROFILE_DATA = 'ProfileData'
+const PROFILE_COMPLETION_DATA = 'ProfileCompletionData'
 
 export {
     ReducerType,
@@ -25,5 +26,6 @@ export {
     USER_REMEMBERED_PASSWORD,
     LAST_SCREEN,
     SCHEDULE_AVAILABILITY,
-    PROFILE_DATA
+    PROFILE_DATA,
+    PROFILE_COMPLETION_DATA
 }

@@ -9,10 +9,11 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { vs, s } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
-import { leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
+import { _Cross, leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { UserTypes } from '../Helpers/Constants';
+import { BottomSheetProps, BottomSheetStyles, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 
 export default Signup = ({ navigation, route }) => {
 
@@ -593,73 +594,66 @@ export default Signup = ({ navigation, route }) => {
             }}
           />
 
-          <RBSheet closeOnPressBack ref={specialitySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
-            container: {
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-            }
-          }} >
-
-            <View style={{
-              width: '100%',
-              backgroundColor: "white",
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-            }}>
-              <View style={{
-                backgroundColor: Colors.textblue,
-                borderTopLeftRadius: vs(12),
-                borderTopRightRadius: vs(12),
-                paddingVertical: vs(14),
-                width: '100%'
-              }}>
-                <Text style={{
-                  paddingLeft: 15,
-                  color: Colors.white_color,
-                  fontSize: Font.large,
-                  fontFamily: Font.SemiBold,
-                }}>Speciality</Text>
-              </View>
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  height: '100%'
+          <RBSheet
+            ref={specialitySheetRef}
+            {...BottomSheetProps}
+            customStyles={BottomSheetStyles} >
+            <View style={BottomSheetViewStyles.MainView}>
+              <View style={BottomSheetViewStyles.ButtonContainer}>
+                <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                  specialitySheetRef.current.close()
                 }}>
-                {
-                  classStateData.specialityArr.map((data, index) => {
-                    return (
-                      <TouchableOpacity style={{
-                        width: '100%',
-                      }} onPress={() => {
-                        setState({
-                          speciality: data.name
-                        })
-                        specialitySheetRef.current.close()
-                      }}>
-                        <View style={{
-                          width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                          marginLeft: 15,
-                          borderBottomColor: Colors.gray6,
-                          borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
-                        }}>
-                          <Text style={{
-                            color: '#041A27',
-                            fontSize: 15,
-                            fontFamily: Font.headingfontfamily,
-                            // marginLeft: 15,
-                            paddingTop: 15,
-                            paddingBottom: 15,
-                            width: '94.5%',
+                  <SvgXml xml={_Cross}
+                    width={windowHeight / 26}
+                    height={windowHeight / 26}
+                  />
+                </TouchableOpacity>
+              </View>
 
-                            // backgroundColor: 'red'
-                          }}>{data.name}</Text>
-                        </View>
-                      </TouchableOpacity>
-                    )
-                  })
-                }
-              </ScrollView>
+              <View style={BottomSheetViewStyles.Body}>
+
+                <View style={BottomSheetViewStyles.TitleBar}>
+                  <Text style={BottomSheetViewStyles.Title}>Speciality</Text>
+                </View>
+
+                <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                  {
+                    classStateData.specialityArr.map((data, index) => {
+                      return (
+                        <TouchableOpacity style={{
+                          width: '100%',
+                        }} onPress={() => {
+                          setState({
+                            speciality: data.name
+                          })
+                          specialitySheetRef.current.close()
+                        }}>
+                          <View style={{
+                            width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                            marginLeft: 15,
+                            borderBottomColor: Colors.gray6,
+                            borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
+                          }}>
+                            <Text style={{
+                              color: '#041A27',
+                              fontSize: 15,
+                              fontFamily: Font.headingfontfamily,
+                              // marginLeft: 15,
+                              paddingTop: 15,
+                              paddingBottom: 15,
+                              width: '94.5%',
+
+                              // backgroundColor: 'red'
+                            }}>{data.name}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    })
+                  }
+                </KeyboardAwareScrollView>
+              </View>
             </View>
+
           </RBSheet>
 
         </View>
@@ -1231,134 +1225,127 @@ export default Signup = ({ navigation, route }) => {
             networkActivityIndicatorVisible={true}
           />
 
-
-          <RBSheet closeOnPressBack ref={attachmentOptionSheetRef} animationType='slide' height={windowHeight / 3.75} customStyles={{
-            container: {
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-            },
-
-          }} >
-            <View style={{
-              width: '100%',
-              backgroundColor: "white",
-              height: '100%',
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-            }}>
-              <View style={{
-                backgroundColor: Colors.textblue,
-                borderTopLeftRadius: vs(12),
-                borderTopRightRadius: vs(12),
-                paddingVertical: vs(14),
-                width: '100%'
-              }}>
-                <Text style={{
-                  paddingLeft: 15,
-                  color: Colors.white_color,
-                  fontSize: Font.large,
-                  fontFamily: Font.SemiBold,
-                }}>Choose your option!</Text>
-              </View>
-
-              <View style={{
-                paddingVertical: vs(16),
-                width: '100%',
-                flexDirection: 'row'
-              }}>
-                <TouchableOpacity onPress={() => {
-                  Galleryopen()
-                }} style={styles.roundButtonAttachmentContainer}>
-                  <Image source={Icons.Gallery} style={{
-                    marginVertical: vs(4),
-                    width: vs(16),
-                    height: vs(16),
-                    tintColor: Colors.textblue
-                  }} resizeMode='contain' resizeMethod='scale' />
-                  <Text>Gallery</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => {
-                  DocumentGalleryopen()
-                }} style={styles.roundButtonAttachmentContainer}>
-                  <Image source={Icons.Documents} style={{
-                    marginVertical: vs(4),
-                    width: vs(16),
-                    height: vs(16),
-                    tintColor: Colors.textblue
-                  }} resizeMode='contain' resizeMethod='scale' />
-                  <Text style={{
-                  }}>Documents</Text>
+          <RBSheet
+            ref={attachmentOptionSheetRef}
+            {...BottomSheetProps}
+            customStyles={BottomSheetStylesForSmall} >
+            <View style={BottomSheetViewStyles.MainView}>
+              <View style={BottomSheetViewStyles.ButtonContainerSmall}>
+                <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                  attachmentOptionSheetRef.current.close()
+                }}>
+                  <SvgXml xml={_Cross}
+                    width={windowHeight / 26}
+                    height={windowHeight / 26}
+                  />
                 </TouchableOpacity>
               </View>
 
+              <View style={BottomSheetViewStyles.Body}>
+
+                <View style={BottomSheetViewStyles.TitleBar}>
+                  <Text style={BottomSheetViewStyles.Title}>Choose your option!</Text>
+                </View>
+
+                <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                  <View style={{
+                    paddingVertical: vs(16),
+                    width: '100%',
+                    flexDirection: 'row'
+                  }}>
+                    <TouchableOpacity onPress={() => {
+                      Galleryopen()
+                    }} style={styles.roundButtonAttachmentContainer}>
+                      <Image source={Icons.Gallery} style={{
+                        marginVertical: vs(4),
+                        width: vs(16),
+                        height: vs(16),
+                        tintColor: Colors.textblue
+                      }} resizeMode='contain' resizeMethod='scale' />
+                      <Text>Gallery</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                      DocumentGalleryopen()
+                    }} style={styles.roundButtonAttachmentContainer}>
+                      <Image source={Icons.Documents} style={{
+                        marginVertical: vs(4),
+                        width: vs(16),
+                        height: vs(16),
+                        tintColor: Colors.textblue
+                      }} resizeMode='contain' resizeMethod='scale' />
+                      <Text style={{
+                      }}>Documents</Text>
+                    </TouchableOpacity>
+                  </View>
+                </KeyboardAwareScrollView>
+              </View>
             </View>
+
           </RBSheet>
 
-          <RBSheet closeOnPressBack ref={countrySheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
-            container: {
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-            }
-          }}>
-            <View style={{
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-              width: '100%',
-              backgroundColor: 'white'
-            }}>
 
-              <View style={{
-                backgroundColor: Colors.textblue,
-                borderTopLeftRadius: vs(12),
-                borderTopRightRadius: vs(12),
-                paddingVertical: vs(14),
-                width: '100%'
-              }}>
-                <Text style={{
-                  paddingLeft: 15,
-                  color: Colors.white_color,
-                  fontSize: Font.large,
-                  fontFamily: Font.SemiBold,
-                }}>{LanguageConfiguration.Country_code[Configurations.language]}</Text>
+          <RBSheet
+            ref={countrySheetRef}
+            {...BottomSheetProps}
+            customStyles={BottomSheetStyles} >
+            <View style={BottomSheetViewStyles.MainView}>
+              <View style={BottomSheetViewStyles.ButtonContainer}>
+                <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                  countrySheetRef.current.close()
+                }}>
+                  <SvgXml xml={_Cross}
+                    width={windowHeight / 26}
+                    height={windowHeight / 26}
+                  />
+                </TouchableOpacity>
               </View>
 
-              <FlatList
-                data={classStateData.Countryarr}
-                renderItem={({ item, index }) => {
-                  if (classStateData.Countryarr != '' || classStateData.Countryarr != null) {
-                    return (
-                      <TouchableOpacity style={{
-                        width: '100%',
-                      }}
-                        onPress={() => {
-                          setState({ country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code });
-                          countrySheetRef.current.close()
+              <View style={BottomSheetViewStyles.Body}>
+
+                <View style={BottomSheetViewStyles.TitleBar}>
+                  <Text style={BottomSheetViewStyles.Title}>{LanguageConfiguration.Country_code[Configurations.language]}</Text>
+                </View>
+
+
+                <FlatList
+                  data={classStateData.Countryarr}
+                  contentContainerStyle={BottomSheetViewStyles.FlatListChild}
+                  renderItem={({ item, index }) => {
+                    if (classStateData.Countryarr != '' || classStateData.Countryarr != null) {
+                      return (
+                        <TouchableOpacity style={{
+                          width: '100%',
                         }}
-                      >
-                        <View style={{
-                          width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                          marginLeft: 15,
-                          borderBottomColor: Colors.gray6,
-                          borderBottomWidth: (index == (classStateData.Countryarr.length - 1)) ? 0 : 1,
-                        }}>
-                          <Text style={{
-                            color: '#041A27',
-                            fontSize: 15,
-                            fontFamily: Font.headingfontfamily,
-                            paddingTop: 15,
-                            paddingBottom: 15,
-                            width: '94.5%',
-                          }}>{item.name}</Text>
-                        </View>
-                      </TouchableOpacity>
-                    )
-                  }
-                }}
-                keyExtractor={(item, index) => index.toString()}>
+                          onPress={() => {
+                            setState({ country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code });
+                            countrySheetRef.current.close()
+                          }}
+                        >
+                          <View style={{
+                            width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                            marginLeft: 15,
+                            borderBottomColor: Colors.gray6,
+                            borderBottomWidth: (index == (classStateData.Countryarr.length - 1)) ? 0 : 1,
+                          }}>
+                            <Text style={{
+                              color: '#041A27',
+                              fontSize: 15,
+                              fontFamily: Font.headingfontfamily,
+                              paddingTop: 15,
+                              paddingBottom: 15,
+                              width: '94.5%',
+                            }}>{item.name}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    }
+                  }}
+                  keyExtractor={(item, index) => index.toString()}>
 
 
-              </FlatList>
+                </FlatList>
+              </View>
             </View>
 
           </RBSheet>
@@ -1439,71 +1426,67 @@ export default Signup = ({ navigation, route }) => {
               boxPressAction={() => { userTypeSheetRef.current.open() }}
             />
 
-            <RBSheet closeOnPressBack ref={userTypeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
-              container: {
-                borderTopLeftRadius: vs(12),
-                borderTopRightRadius: vs(12),
-              }
-            }}>
-              <View style={{
-                width: '100%',
-                backgroundColor: "white",
-                height: '100%',
-                borderTopLeftRadius: vs(12),
-                borderTopRightRadius: vs(12),
-              }}>
-                <View style={{
-                  backgroundColor: Colors.textblue,
-                  borderTopLeftRadius: vs(12),
-                  borderTopRightRadius: vs(12),
-                  paddingVertical: vs(14),
-                  width: '100%'
-                }}>
-                  <Text style={{
-                    paddingLeft: 15,
-                    color: Colors.white_color,
-                    fontSize: Font.large,
-                    fontFamily: Font.SemiBold,
-                  }}>Select User Type</Text>
+
+            <RBSheet
+              ref={userTypeSheetRef}
+              {...BottomSheetProps}
+              customStyles={BottomSheetStyles} >
+              <View style={BottomSheetViewStyles.MainView}>
+                <View style={BottomSheetViewStyles.ButtonContainer}>
+                  <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                    userTypeSheetRef.current.close()
+                  }}>
+                    <SvgXml xml={_Cross}
+                      width={windowHeight / 26}
+                      height={windowHeight / 26}
+                    />
+                  </TouchableOpacity>
                 </View>
 
-                <KeyboardAwareScrollView contentContainerStyle={{
-                }}>
-                  {
-                    UserTypes.map((data, index) => {
-                      return (
-                        <TouchableOpacity style={{
-                          width: '100%',
-                        }} onPress={() => {
-                          setState({
-                            selectuserType: index,
-                          })
-                          if (index == 0 || index == 3 || index == 4) {
-                            getSpecialities(index)
-                          }
-                          userTypeSheetRef.current.close()
-                        }} key={'ddd' + index}>
-                          <View style={{
-                            width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                            marginLeft: 15,
-                            borderBottomColor: Colors.gray6,
-                            borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
-                          }}>
-                            <Text style={{
-                              color: '#041A27',
-                              fontSize: 15,
-                              fontFamily: Font.headingfontfamily,
-                              paddingTop: 15,
-                              paddingBottom: 15,
-                              width: '94.5%',
-                            }}>{data.title}</Text>
-                          </View>
-                        </TouchableOpacity>
-                      )
-                    })
-                  }
-                </KeyboardAwareScrollView>
+                <View style={BottomSheetViewStyles.Body}>
+
+                  <View style={BottomSheetViewStyles.TitleBar}>
+                    <Text style={BottomSheetViewStyles.Title}>Select User Type</Text>
+                  </View>
+
+                  <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                    {
+                      UserTypes.map((data, index) => {
+                        return (
+                          <TouchableOpacity style={{
+                            width: '100%',
+                          }} onPress={() => {
+                            setState({
+                              selectuserType: index,
+                            })
+                            if (index == 0 || index == 3 || index == 4) {
+                              getSpecialities(index)
+                            }
+                            userTypeSheetRef.current.close()
+                          }} key={'ddd' + index}>
+                            <View style={{
+                              width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                              marginLeft: 15,
+                              borderBottomColor: Colors.gray6,
+                              borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
+                            }}>
+                              <Text style={{
+                                color: '#041A27',
+                                fontSize: 15,
+                                fontFamily: Font.headingfontfamily,
+                                paddingTop: 15,
+                                paddingBottom: 15,
+                                width: '94.5%',
+                              }}>{data.title}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        )
+                      })
+                    }
+                  </KeyboardAwareScrollView>
+                </View>
               </View>
+
             </RBSheet>
 
             <View

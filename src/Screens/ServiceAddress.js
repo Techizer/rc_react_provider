@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View, StyleSheet, Dimensions, Platform, StatusBar, FlatList, } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Dimensions, Platform, StatusBar, FlatList, Image, } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
-import { windowWidth, deviceHeight, Configurations, localStorage, API } from "../Helpers/Utils";
+import { windowWidth, deviceHeight, Configurations, localStorage, API, LanguageConfiguration } from "../Helpers/Utils";
 import { Add } from "../Assets/Icons/SvgIcons/Index";
 import ScreenHeader from "../Components/ScreenHeader";
 import { useIsFocused } from "@react-navigation/native";
@@ -14,6 +14,7 @@ import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
 // import MapView, { Marker } from 'react-native-maps';
 import { useRef } from "react";
+import { Icons } from "../Assets/Icons/IReferences";
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
@@ -41,6 +42,7 @@ const ServiceAddress = ({ navigation, route }) => {
         loginUserData
     } = useSelector(state => state.Auth)
 
+    const lRot = Configurations.textRotate
 
     useEffect(() => {
         console.log({ isMTrue, lat, lng, id, googleAddress });
@@ -169,6 +171,40 @@ const ServiceAddress = ({ navigation, route }) => {
                     isLoading={isLoading}
                     defaultAdd={defaultAddress}
                 />
+
+                <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingVertical: 16, paddingHorizontal: 10, backgroundColor: '#E5E5E58D', borderRadius: 6, marginTop: vs(8) }}>
+                    {
+                        (Configurations.language == 0) &&
+                        <View style={{ width: '12%', alignItems: 'center', }}>
+                            <Image
+                                source={Icons.InformationButton}
+                                style={{
+                                    width: 18,
+                                    height: 18,
+                                    tintColor: '#17181A'
+                                }} resizeMethod='scale' resizeMode='contain' >
+                            </Image>
+                        </View>
+                    }
+                    <View style={{ width: '88%' }}>
+                        <Text style={{ textAlign: lRot, fontSize: s(11), fontFamily: Font.Regular, color: '#6D737E', lineHeight: 16 }}>
+                            {LanguageConfiguration.SearchScreenNote[Configurations.language]}
+                        </Text>
+                    </View>
+                    {
+                        (Configurations.language == 1) &&
+                        <View style={{ width: '12%', alignItems: 'center', }}>
+                            <Image
+                                source={Icons.InformationButton}
+                                style={{
+                                    width: 18,
+                                    height: 18,
+                                    tintColor: '#17181A'
+                                }} resizeMethod='scale' resizeMode='contain' >
+                            </Image>
+                        </View>
+                    }
+                </View>
 
                 {/* {addressList.length > 0 && <View style={{
                     flex: 1,

@@ -359,3 +359,13 @@ export const Arrow = require('./arrow.png')
 export const VideoCall=`<svg xmlns="http://www.w3.org/2000/svg" width="12.308" height="12" viewBox="0 0 12.308 12">
 <path id="video_call" data-name="video call" d="M3421.385,8811.461l1.846-1.384v3.692l-1.846-1.385v1.385h-4.308v-3.692h4.308Zm-5.071,4.154h8.763v-7.385h-9.846v8.24Zm.425,1.23L3414,8819v-11.385a.61.61,0,0,1,.615-.615h11.077a.61.61,0,0,1,.615.615v8.615a.609.609,0,0,1-.615.615Z" transform="translate(-3414 -8807)" fill="#fff"/>
 </svg>`
+
+export const _Cross = `<svg xmlns="http://www.w3.org/2000/svg" width="18.546" height="19" viewBox="0 0 18.546 19">
+<g id="Group_1088" data-name="Group 1088" transform="translate(1 1)">
+  <g id="Rectangle_2" data-name="Rectangle 2" transform="translate(-1 -1)">
+    <rect width="18.546" height="19" rx="9.273" stroke="none"/>
+    <rect x="0.5" y="0.5" width="17.546" height="18" rx="8.773" fill="none"/>
+  </g>
+  <path id="Union_3" data-name="Union 3" d="M3.511,4.149.638,7.022,0,6.383,2.872,3.511,0,.638.638,0,3.511,2.872,6.383,0l.639.638L4.149,3.511,7.022,6.383l-.639.639Z" transform="translate(5.072 5.072)" fill="#ffffff"/>
+</g>
+</svg>`

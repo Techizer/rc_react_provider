@@ -10,147 +10,68 @@ import { DashBoardBox } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { vs } from 'react-native-size-matters';
+import { setProfileData } from '../Redux/Actions/UserActions';
 
 export default MyProfile = ({ navigation, route }) => {
 
-  const [classStateData, setClassStateData] = useState({
-    name: '',
-    email: '',
-    id_number: '',
-    chronic: '',
-    blood_group: '',
-    mobile: '',
-    profile_img: 'NA',
-    notification_count: '',
-    id_image: '',
-    certificate: '',
-    scfhs_image: '',
-  }, [])
+  const {
+    loginUserData,
+    profileData
+  } = useSelector(state => state.Auth)
+
+  const [notificationsCount, setNotificationsCount] = useState(0)
+
+  const dispatch = useDispatch()
+
+  console.log({profileData});
 
   useEffect(() => {
     navigation.addListener('focus', () => {
       getProfile()
-
-      // getNationalities()
       getNotificationsCount()
-
     });
   }, [])
 
-
-  const {
-    loginUserData
-  } = useSelector(state => state.Auth)
-
-
-  const setState = payload => {
-    setClassStateData(prev => ({ ...prev, ...payload }))
-  }
-
   const getNotificationsCount = async () => {
-    let user_details = loginUserData
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-
     let url = Configurations.baseURL + "api-notification-count";
     console.log("url", url)
     var data = new FormData();
-    data.append('login_user_id', user_id)
+    data.append('login_user_id', loginUserData['user_id'])
 
 
     API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
-        setState({ notification_count: obj.result })
-        console.log('obj nationaltity', obj)
-
+        setNotificationsCount(obj?.result)
       } else {
-
-
         return false;
       }
     }).catch((error) => {
 
-      console.log("-------- error ------- " + error);
+      console.log("-------- error nc------- " + error);
     })
 
   }
 
   const getProfile = async () => {
-    let user_id = loginUserData['user_id']
-    let user_type = loginUserData['user_type']
-
     let url = Configurations.baseURL + "api-get-provider-profile";
     console.log("url", url)
     var data = new FormData();
-    data.append('id', user_id)
-    data.append('service_type', user_type)
+    data.append('id', loginUserData['user_id'])
+    data.append('service_type', loginUserData['user_type'])
 
-
-
-    API.post(url, data).then((obj) => {
-
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        console.log('result123456', obj.result)
-
-        let result = obj.result
-        setState({
-          name: result['first_name'],
-          email: result['email'],
-          phone_number: result['phone_number'],
-          emailfocusget: true,
-          user_id: result['user_id'],
-          user_type: result['user_type'],
-          description: result['description'],
-          id_number: result['id_number'],
-          speciality: result['speciality'],
-          qualification: result['qualification'],
-          experience: (result['experience'] != '' ? result['user_type'] == "lab"? `${result['experience']}` : `${result['experience']} YR`: ''),
-          lab_test_count: result['lab_test_count'],
-          scfhs_number: result['scfhs_number'],
-          hosp_moh_lic_no: result['hosp_moh_lic_no'],
-          hosp_reg_no: result['hosp_reg_no'],
-          avg_rating: result['avg_rating'],
-          booking_count: result['booking_count'],
-          id_image: { filename: result['id_image'] },
-          certificate: { filename: result['qualification_certificate'] },
-          scfhs_image: { filename: result['scfhs_image'] },
-          hosp_reg_image: { filename: result['hosp_reg_image'] },
-          moh_lic_image: { filename: result['moh_lic_image'] },
-
-        })
-
-        if (result['phone_number'] != null && result['phone_number'] != '') {
-          setState({ mobile: result['phone_number'] })
-        }
-        if (result['gender'] != null && result['gender'] != '') {
-          setState({
-            gender: result['gender'],
-          })
-        }
-        if (result['blood_group'] != null) {
-          setState({ blood_group: result['blood_group'] })
-        }
-        if (result['allergies_data'] != null && result['allergies_data'] != '') {
-          setState({ allergies_data: result['allergies_data'] })
-        }
-        if (result.image != null) {
-          setState({
-            profile_img: Configurations.img_url3 + result['image'],
-          })
-        }
-
+        dispatch(setProfileData({ ...obj?.result }))
       }
       else {
         MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
-
         return false;
       }
     }).catch((error) => {
-      console.log("-------- error ------- ", error)
-      setState({ loading: false });
+      console.log("-------- error gp------- ", error)
     });
   }
 
@@ -184,7 +105,7 @@ export default MyProfile = ({ navigation, route }) => {
           leftIcon
           rightIcon={true}
           navigation={navigation}
-          notiCount={classStateData.notification_count > 0 ? classStateData.notification_count : false}
+          notiCount={notificationsCount > 0 ? notificationsCount : false}
           title={'My Profile'}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
@@ -222,20 +143,20 @@ export default MyProfile = ({ navigation, route }) => {
                       alignSelf: 'center',
 
                     }}
-                    source={classStateData.profile_img == 'NA' ||
-                      classStateData.profile_img == null ||
-                      classStateData.profile_img == '' ? Icons.ProfileImage :
-                      { uri: classStateData.profile_img }}
+                    source={profileData?.image == 'NA' ||
+                      profileData?.image == null ||
+                      profileData?.image == 'null' ||
+                      profileData?.image == '' ? Icons.ProfileImage :
+                      { uri: Configurations.img_url3 + profileData?.image }}
                   ></Image>
                 </View>
               </View>
 
               <View style={{ width: '70%', alignSelf: 'center', }}>
                 <View style={{
-                  width: '100%', 
+                  width: '100%',
                   alignSelf: 'center',
                   flexDirection: 'row',
-                  // backgroundColor: 'red',
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
@@ -244,7 +165,7 @@ export default MyProfile = ({ navigation, route }) => {
                     fontFamily: Font.Medium, fontSize: 18,
                     textAlign: Configurations.textRotate,
                     width: '75%'
-                  }}>{classStateData.name}</Text>
+                  }}>{profileData?.first_name}</Text>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate(ScreenReferences.EditProfile);
@@ -256,7 +177,6 @@ export default MyProfile = ({ navigation, route }) => {
                       borderRadius: 8,
                       width: (mobileW * 18) / 100,
                       height: (mobileW * 6.5) / 100,
-                      // alignItems: 'flex-end'
                       justifyContent: 'center',
                       alignItems: 'center'
                     }}>
@@ -264,9 +184,7 @@ export default MyProfile = ({ navigation, route }) => {
                       style={{
                         width: (mobileW * 3.2) / 100,
                         height: (mobileW * 3.2) / 100,
-                        marginRight: (mobileW * 1.5) / 100,
-                        // borderRadius: mobileW * 10 / 100,
-                        // alignSelf: 'center',
+                        marginRight: (mobileW * 1.5) / 100
                       }}
                       source={Icons.EditIcon}
                     ></Image>
@@ -276,21 +194,22 @@ export default MyProfile = ({ navigation, route }) => {
                     }}>Edit</Text>
                   </TouchableOpacity>
                 </View>
-
-                <View style={{ width: '100%', alignSelf: 'center', marginTop: mobileW * 1 / 100 }}>
-                  <Text
-                    style={{
-                      color: Colors.textblue,
-                      fontFamily: Font.Regular,
-                      fontSize: 14, //(mobileW * 3) / 100,
-                      textAlign: Configurations.textRotate,
-                    }}>{classStateData.speciality}</Text>
-                </View>
-
+                {(profileData.speciality != 'null' && profileData?.speciality != null && profileData?.speciality != '') &&
+                  <View style={{ width: '100%', alignSelf: 'center', marginTop: mobileW * 1 / 100 }}>
+                    <Text
+                      style={{
+                        color: Colors.textblue,
+                        fontFamily: Font.Regular,
+                        fontSize: 14,
+                        textAlign: Configurations.textRotate,
+                      }}>{profileData?.speciality}</Text>
+                  </View>
+                }
                 <View style={{
                   width: '100%',
                   marginTop: mobileW * 2 / 100,
                 }}>
+
                   <View style={{
                     flexDirection: 'row',
                     alignItems: 'center'
@@ -301,18 +220,17 @@ export default MyProfile = ({ navigation, route }) => {
                       name={"email-outline"}
                       size={(mobileW * 4.5) / 100}
                       color={Colors.placeholder_textcolorlight} />
-
-
-                    <Text
+                      <Text
                       style={{
                         color: Colors.placeholder_textcolorlight,
                         fontFamily: Font.Regular,
-                        fontSize: 12, //(mobileW * 3) / 100,
+                        fontSize: 12,
                         textAlign: Configurations.textRotate,
                         paddingHorizontal: 8
 
-                      }}>{classStateData.email}</Text>
+                      }}>{profileData?.email}</Text>
                   </View>
+
                   <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -328,10 +246,10 @@ export default MyProfile = ({ navigation, route }) => {
                       style={{
                         color: Colors.placeholder_textcolorlight,
                         fontFamily: Font.Regular,
-                        fontSize: 12, //(mobileW * 3) / 100,
+                        fontSize: 12,
                         textAlign: Configurations.textRotate,
                         paddingHorizontal: 8
-                      }}>{classStateData.phone_number}</Text>
+                      }}>{profileData?.phone_number}</Text>
                   </View>
                 </View>
               </View>
@@ -345,7 +263,6 @@ export default MyProfile = ({ navigation, route }) => {
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                // backgroundColor: 'red',
                 width: '100%',
                 borderBottomWidth: 1,
                 borderBottomColor: '#DFDFDF',
@@ -354,7 +271,6 @@ export default MyProfile = ({ navigation, route }) => {
                 <View style={{
                   width: '32%',
                   justifyContent: 'center',
-                  // backgroundColor: 'blue',
                   borderRightWidth: 1,
                   borderRightColor: '#DFDFDF',
                 }}>
@@ -362,18 +278,18 @@ export default MyProfile = ({ navigation, route }) => {
                     style={{
                       color: Colors.placeholder_textcolorlight,
                       fontFamily: Font.Regular,
-                      fontSize: 12, //(mobileW * 3) / 100,
+                      fontSize: 12,
                       textAlign: Configurations.textRotate,
-                    }}>{(classStateData.user_type == "lab") ? 'Established' : 'Experience'}
+                    }}>{(profileData?.user_type == "lab") ? 'Established' : 'Experience'}
                   </Text>
                   <Text
                     style={{
                       marginTop: (mobileW * 2) / 100,
                       color: Colors.lightgraytext,
                       fontFamily: Font.Medium,
-                      fontSize: 16, //(mobileW * 3) / 100,
+                      fontSize: 16,
                       textAlign: Configurations.textRotate,
-                    }}>{classStateData.experience}
+                    }}>{profileData?.user_type == "lab" ? `${profileData?.experience}` : `${profileData?.experience} YR`}
                   </Text>
                 </View>
                 <View style={{
@@ -382,39 +298,36 @@ export default MyProfile = ({ navigation, route }) => {
                   borderRightWidth: 1,
                   borderRightColor: '#DFDFDF',
                   paddingLeft: 15
-                  // backgroundColor: 'blue'
                 }}>
                   <Text
                     style={{
                       color: Colors.placeholder_textcolorlight,
                       fontFamily: Font.Regular,
-                      fontSize: 12, //(mobileW * 3) / 100,
+                      fontSize: 12,
                       textAlign: Configurations.textRotate,
-                    }}>{(classStateData.user_type == "lab") ? 'Bookings' : 'Bookings'}
+                    }}>{(profileData?.user_type == "lab") ? 'Bookings' : 'Bookings'}
                   </Text>
                   <Text
                     style={{
                       marginTop: (mobileW * 2) / 100,
                       color: Colors.lightgraytext,
                       fontFamily: Font.Medium,
-                      fontSize: 16, //(mobileW * 3) / 100,
+                      fontSize: 16,
                       textAlign: Configurations.textRotate,
                     }}>
-                    {/* {(classStateData.user_type == "lab") ? ((classStateData?.lab_test_count != null && classStateData?.lab_test_count != 'N/A') ? classStateData?.lab_test_count: '0') : classStateData.booking_count} */}
-                    {classStateData.booking_count}
+                    {profileData?.booking_count}
                   </Text>
                 </View>
                 <View style={{
                   width: '32%',
                   justifyContent: 'center',
                   paddingLeft: 15
-                  // backgroundColor: 'blue'
                 }}>
                   <Text
                     style={{
                       color: Colors.placeholder_textcolorlight,
                       fontFamily: Font.Regular,
-                      fontSize: 12, //(mobileW * 3) / 100,
+                      fontSize: 12,
                       textAlign: Configurations.textRotate,
                     }}>Rating
                   </Text>
@@ -435,9 +348,9 @@ export default MyProfile = ({ navigation, route }) => {
                       style={{
                         color: Colors.lightgraytext,
                         fontFamily: Font.Medium,
-                        fontSize: 16, //(mobileW * 3) / 100,
+                        fontSize: 16,
                         textAlign: Configurations.textRotate,
-                      }}>{parseFloat(classStateData.avg_rating).toFixed(1)}
+                      }}>{parseFloat(profileData?.avg_rating).toFixed(1)}
                     </Text>
                   </View>
 
@@ -454,13 +367,12 @@ export default MyProfile = ({ navigation, route }) => {
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                // backgroundColor: 'red',
                 width: '100%',
               }}>
                 <Text style={[Styles.textcontent, {
                   fontSize: mobileW * 3 / 100,
                   color: Colors.lightgraytext
-                }]}>{classStateData.description}</Text>
+                }]}>{profileData?.description}</Text>
               </View>
             </View>
 
@@ -474,17 +386,16 @@ export default MyProfile = ({ navigation, route }) => {
           }}>
             <Text style={Styles.textheading}>Important Details</Text>
             {
-              (classStateData.user_type == "lab") ?
+              (profileData?.user_type == "lab") ?
                 <>
 
-                  {(classStateData.hosp_moh_lic_no != null && classStateData.hosp_moh_lic_no != '') &&
+                  {(profileData?.hosp_moh_lic_no != null && profileData?.hosp_moh_lic_no != 'null' && profileData?.hosp_moh_lic_no != '') &&
                     <View style={{
                       flexDirection: 'row',
                       marginTop: 20,
                       justifyContent: 'space-between'
                     }}>
                       <View style={{
-                        // backgroundColor: 'red'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
@@ -493,24 +404,22 @@ export default MyProfile = ({ navigation, route }) => {
                         }}>Health Registration ID</Text>
                       </View>
                       <View style={{
-                        // backgroundColor: 'blue'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
                           fontSize: 14,
                           color: Colors.textblue
-                        }}>{classStateData.hosp_moh_lic_no}</Text>
+                        }}>{profileData?.hosp_moh_lic_no}</Text>
                       </View>
                     </View>
                   }
-                  {(classStateData.hosp_reg_no != null && classStateData.hosp_reg_no != '') &&
+                  {(profileData?.hosp_reg_no != null && profileData?.hosp_reg_no != 'null' && profileData?.hosp_reg_no != '') &&
                     <View style={{
                       flexDirection: 'row',
                       marginTop: 20,
                       justifyContent: 'space-between'
                     }}>
                       <View style={{
-                        // backgroundColor: 'red'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
@@ -519,13 +428,12 @@ export default MyProfile = ({ navigation, route }) => {
                         }}>Registration Number</Text>
                       </View>
                       <View style={{
-                        // backgroundColor: 'blue'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
                           fontSize: 14,
                           color: Colors.textblue
-                        }}>{classStateData.hosp_reg_no}</Text>
+                        }}>{profileData?.hosp_reg_no}</Text>
                       </View>
                     </View>
                   }
@@ -534,14 +442,13 @@ export default MyProfile = ({ navigation, route }) => {
                 <>
 
 
-                  {(classStateData.speciality != null && classStateData.speciality != '') &&
+                  {(profileData?.speciality != null && profileData?.speciality != 'null' && profileData?.speciality != '') &&
                     <View style={{
                       flexDirection: 'row',
                       marginTop: 20,
                       justifyContent: 'space-between'
                     }}>
                       <View style={{
-                        // backgroundColor: 'red'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
@@ -550,25 +457,23 @@ export default MyProfile = ({ navigation, route }) => {
                         }}>Speciality</Text>
                       </View>
                       <View style={{
-                        // backgroundColor: 'blue'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
                           fontSize: 14,
                           color: Colors.textblue
-                        }}>{classStateData.speciality}</Text>
+                        }}>{profileData?.speciality}</Text>
                       </View>
                     </View>
                   }
 
-                  {(classStateData.id_number != null && classStateData.id_number != '') &&
+                  {(profileData?.id_number != null && profileData?.id_number != 'null' && profileData?.id_number != '') &&
                     <View style={{
                       flexDirection: 'row',
                       marginTop: 20,
                       justifyContent: 'space-between'
                     }}>
                       <View style={{
-                        // backgroundColor: 'red'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
@@ -577,25 +482,23 @@ export default MyProfile = ({ navigation, route }) => {
                         }}>Identity Number</Text>
                       </View>
                       <View style={{
-                        // backgroundColor: 'blue'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
                           fontSize: 14,
                           color: Colors.textblue
-                        }}>{classStateData.id_number}</Text>
+                        }}>{profileData?.id_number}</Text>
                       </View>
                     </View>
                   }
 
-                  {(classStateData.qualification != null && classStateData.qualification != '') &&
+                  {(profileData?.qualification != null && profileData?.qualification != 'null' && profileData?.qualification != '') &&
                     <View style={{
                       flexDirection: 'row',
                       marginTop: 20,
                       justifyContent: 'space-between'
                     }}>
                       <View style={{
-                        // backgroundColor: 'red'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
@@ -604,25 +507,23 @@ export default MyProfile = ({ navigation, route }) => {
                         }}>Qualification</Text>
                       </View>
                       <View style={{
-                        // backgroundColor: 'blue'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
                           fontSize: 14,
                           color: Colors.textblue
-                        }}>{classStateData.qualification}</Text>
+                        }}>{profileData?.qualification}</Text>
                       </View>
                     </View>
                   }
 
-                  {(classStateData.scfhs_number != null && classStateData.scfhs_number != '') &&
+                  {(profileData?.scfhs_number != null && profileData?.scfhs_number != 'null' && profileData?.scfhs_number != '') &&
                     <View style={{
                       flexDirection: 'row',
                       marginTop: 20,
                       justifyContent: 'space-between'
                     }}>
                       <View style={{
-                        // backgroundColor: 'red'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
@@ -631,13 +532,12 @@ export default MyProfile = ({ navigation, route }) => {
                         }}>Health Registration ID</Text>
                       </View>
                       <View style={{
-                        // backgroundColor: 'blue'
                       }}>
                         <Text style={{
                           fontFamily: Font.Regular,
                           fontSize: 14,
                           color: Colors.textblue
-                        }}>{classStateData?.scfhs_number}</Text>
+                        }}>{profileData?.scfhs_number}</Text>
                       </View>
                     </View>
                   }
@@ -656,13 +556,12 @@ export default MyProfile = ({ navigation, route }) => {
             <View style={{
               flexDirection: 'row',
               marginTop: 20,
-              // justifyContent: 'space-between'
             }}>
               {
-                (classStateData.user_type == "lab") ?
+                (profileData?.user_type == "lab") ?
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     <>
-                      {(classStateData.hosp_moh_lic_no != '' && classStateData.hosp_moh_lic_no != null) && <View style={{
+                      {(profileData?.hosp_moh_lic_no != '' && profileData?.hosp_moh_lic_no != null && profileData?.hosp_moh_lic_no != 'null') && <View style={{
                         justifyContent: 'center',
                         alignItems: 'center',
                         padding: 8,
@@ -675,20 +574,19 @@ export default MyProfile = ({ navigation, route }) => {
                           style={{
                             width: (mobileW * 20) / 100,
                             height: (mobileW * 20) / 100,
-                            // borderRadius: mobileW * 10 / 100,
                             marginBottom: 10,
                             alignSelf: 'center',
 
                           }}
-                          source={classStateData.moh_lic_image == 'NA' ||
-                            classStateData.moh_lic_image == null ||
-                            classStateData.moh_lic_image == '' ? Icons.Prescription :
-                            { uri: Configurations.img_url3 + classStateData.moh_lic_image.filename }}
+                          source={profileData?.moh_lic_image == 'NA' ||
+                            profileData?.moh_lic_image == null ||
+                            profileData?.moh_lic_image == '' ? Icons.Prescription :
+                            { uri: Configurations.img_url3 + profileData?.moh_lic_image }}
                         ></Image>
-                        <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.hosp_moh_lic_no}</Text>
+                        <Text numberOfLines={1} style={{ color: Colors.Black }}>{profileData?.hosp_moh_lic_no}</Text>
                       </View>}
 
-                      {(classStateData.hosp_reg_no != '' && classStateData.hosp_reg_no != null) && <View style={{
+                      {(profileData?.hosp_reg_no != '' && profileData?.hosp_reg_no != null && profileData?.hosp_reg_no != 'null') && <View style={{
                         justifyContent: 'center',
                         alignItems: 'center',
                         padding: 8,
@@ -701,23 +599,22 @@ export default MyProfile = ({ navigation, route }) => {
                           style={{
                             width: (mobileW * 20) / 100,
                             height: (mobileW * 20) / 100,
-                            // borderRadius: mobileW * 10 / 100,
                             marginBottom: 10,
                             alignSelf: 'center',
 
                           }}
-                          source={classStateData.hosp_reg_image == 'NA' ||
-                            classStateData.hosp_reg_image == null ||
-                            classStateData.hosp_reg_image == '' ? Icons.Prescription :
-                            { uri: Configurations.img_url3 + classStateData.hosp_reg_image.filename }}
+                          source={(profileData?.hosp_reg_image == 'NA' ||
+                            profileData?.hosp_reg_image == null ||
+                            profileData?.hosp_reg_image == '') ? Icons.Prescription :
+                            { uri: Configurations.img_url3 + profileData?.hosp_reg_image }}
                         ></Image>
-                        <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.hosp_reg_no}</Text>
+                        <Text numberOfLines={1} style={{ color: Colors.Black }}>{profileData?.hosp_reg_no}</Text>
                       </View>}
                     </>
                   </ScrollView> :
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     <>
-                      {(classStateData.id_number != '') && (classStateData.id_number != null) &&
+                      {(profileData?.id_number != '') && (profileData?.id_number != null) && (profileData?.id_number != 'null') &&
                         <View style={{
                           justifyContent: 'center',
                           alignItems: 'center',
@@ -731,20 +628,16 @@ export default MyProfile = ({ navigation, route }) => {
                             style={{
                               width: (mobileW * 20) / 100,
                               height: (mobileW * 20) / 100,
-                              // borderRadius: mobileW * 10 / 100,
                               marginBottom: 10,
                               alignSelf: 'center',
 
                             }}
-                            source={classStateData.id_image == 'NA' ||
-                              classStateData.id_image == null ||
-                              classStateData.id_image == '' ? Icons.Prescription :
-                              { uri: Configurations.img_url3 + classStateData.id_image.filename }}
+                            source={(profileData?.id_image == null || profileData?.id_image == 'null' || profileData?.id_image == '' || profileData?.id_image == 'NA') ? Icons.Prescription : { uri: Configurations.img_url3 + profileData?.id_image }}
                           ></Image>
-                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.id_number}</Text>
+                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{profileData?.id_number}</Text>
                         </View>
                       }
-                      {(classStateData?.qualification != '') && (classStateData?.qualification != null) &&
+                      {(profileData?.qualification != '') && (profileData?.qualification != null) && (profileData?.qualification != 'null') &&
                         <View style={{
                           justifyContent: 'center',
                           alignItems: 'center',
@@ -758,20 +651,20 @@ export default MyProfile = ({ navigation, route }) => {
                             style={{
                               width: (mobileW * 20) / 100,
                               height: (mobileW * 20) / 100,
-                              // borderRadius: mobileW * 10 / 100,
                               marginBottom: 10,
                               alignSelf: 'center',
 
                             }}
-                            source={classStateData.certificate == 'NA' ||
-                              classStateData.certificate == null ||
-                              classStateData.certificate == '' ? Icons.Prescription :
-                              { uri: Configurations.img_url3 + classStateData.certificate.filename }}
+                            source={profileData?.qualification_certificate == 'NA' ||
+                              profileData?.qualification_certificate == null ||
+                              profileData?.qualification_certificate == 'null' ||
+                              profileData?.qualification_certificate == '' ? Icons.Prescription :
+                              { uri: Configurations.img_url3 + profileData?.qualification_certificate }}
                           ></Image>
-                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData?.qualification}</Text>
+                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{profileData?.qualification}</Text>
                         </View>
                       }
-                      {(classStateData.scfhs_number != '' && classStateData.scfhs_number != null) &&
+                      {(profileData?.scfhs_number != '' && profileData?.scfhs_number != null && profileData?.scfhs_number != 'null') &&
                         <View style={{
                           justifyContent: 'center',
                           alignItems: 'center',
@@ -785,18 +678,17 @@ export default MyProfile = ({ navigation, route }) => {
                             style={{
                               width: (mobileW * 20) / 100,
                               height: (mobileW * 20) / 100,
-                              // borderRadius: mobileW * 10 / 100,
                               marginBottom: 10,
                               alignSelf: 'center',
 
                             }}
-                            source={classStateData.scfhs_image == 'NA' ||
-                              classStateData.scfhs_image == null ||
-                              // classStateData.scfhs_image?.filename?.toLocaleLowerCase()?.includes('pdf') ||
-                              classStateData.scfhs_image == '' ? Icons.Prescription :
-                              { uri: Configurations.img_url3 + classStateData.scfhs_image.filename }}
+                            source={(profileData?.scfhs_image == 'NA' ||
+                              profileData?.scfhs_image == null ||
+                              profileData?.scfhs_image == 'null' ||
+                              profileData?.scfhs_image == '') ? Icons.Prescription :
+                              { uri: Configurations.img_url3 + profileData?.scfhs_image }}
                           ></Image>
-                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{classStateData.scfhs_number}</Text>
+                          <Text numberOfLines={1} style={{ color: Colors.Black }}>{profileData?.scfhs_number}</Text>
                         </View>}
                     </>
                   </ScrollView>
@@ -808,7 +700,6 @@ export default MyProfile = ({ navigation, route }) => {
 
           <DashBoardBox
             textTitle={'Schedule Availability'}
-            // textInfo={item?.details}
             infoIcon={''}
             rightText={"Edit"}
             isBorder={false}
@@ -818,8 +709,7 @@ export default MyProfile = ({ navigation, route }) => {
             }}
           />
           <DashBoardBox
-            textTitle={(classStateData.user_type == "lab") ? 'Tests & Packages' : 'Price List'}
-            // textInfo={item?.details}
+            textTitle={(profileData?.user_type == "lab") ? 'Tests & Packages' : 'Price List'}
             infoIcon={''}
             rightText={"Edit"}
             isBorder={true}

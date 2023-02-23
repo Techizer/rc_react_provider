@@ -10,48 +10,69 @@ import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserLoginData } from '../Redux/Actions/UserActions';
+import { setProfileData, setUserLoginData } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
+import { SvgXml } from 'react-native-svg';
+import { _Cross } from '../Assets/Icons/SvgIcons/Index';
 
 export default EditProfile = ({ navigation, route }) => {
 
+  const {
+    loginUserData,
+    profileData
+  } = useSelector(state => state.Auth)
+
   const [classStateData, setClassStateData] = useState({
-    speciality: '',
-    mabtn: false,
-    country_code: '',
-    febtn: false,
-    work_area: '',
-    name: '',
-    email: '',
-    number: '',
-    dobfocus: false,
-    dob: '',
-    address: '',
-    id_number: '',
-    mobile: '',
-    hosp_moh_lic_no: '',
-    hosp_reg_no: '',
-    profile_img: 'NA',
-    mediamodal: false,
+
+    name: profileData['first_name'],
+    email: profileData['email'],
+    display_user_type: profileData['display_user_type'],
+    user_type: profileData['user_type'],
+    user_id: profileData['user_id'],
+    country_code: profileData['country_code'],
+    work_area: profileData['work_area'],
+    address: profileData['address'],
+    description: profileData['description'],
+    id_number: profileData['id_number'],
+    speciality: profileData['speciality'],
+    qualification: profileData['qualification'],
+    experience: profileData['experience'],
+    dob_date: (profileData['user_type'] == "lab") ? profileData['experience'] : "",
+    scfhs_number: profileData['scfhs_number'],
+    hosp_moh_lic_no: profileData['hosp_moh_lic_no'],
+    hosp_reg_no: profileData['hosp_reg_no'],
+    id_image: { filename: profileData['id_image'] },
+    certificate: { filename: profileData['qualification_certificate'] },
+    scfhs_image: { filename: profileData['scfhs_image'] },
+    hosp_reg_image: { filename: profileData['hosp_reg_image'] },
+    moh_lic_image: { filename: profileData['moh_lic_image'] },
+    mobile: profileData['phone_number'],
+    dob_date: (profileData['dob']) ? profileData['dob'] : '',
+    dobfocus: true,
+    gender: profileData['gender'],
+    febtn: (profileData['gender'] == 'Female') ? true : false,
+    mabtn: (profileData['gender'] == 'Male') ? true : false,
+    profile_img: Configurations.img_url3 + profileData['image'],
     isDatePickerVisibletwo: false,
-    dob_date: '',
     profile_image: '',
     notification_count: '',
     date_new: new Date()
 
   })
+
+  const [isOnLoadingButton, setIsOnLoadingButton] = useState(false)
+
   const dispatch = useDispatch()
 
   const attachmentOptionSheetRef = useRef()
 
-  const {
-    loginUserData
-  } = useSelector(state => state.Auth)
+  const { user_type } = loginUserData
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      getProfile()
+      // getProfile()
       getNotificationsCount()
     });
   }, [])
@@ -109,85 +130,6 @@ export default EditProfile = ({ navigation, route }) => {
     setState({ dob_date: date1, isDatePickerVisibletwo: false, })
   }
 
-  const getProfile = async () => {
-    let user_id = loginUserData['user_id']
-    let user_type = loginUserData['user_type']
-
-    let url = Configurations.baseURL + "api-get-provider-profile";
-    console.log("url", url)
-    var data = new FormData();
-    
-    data.append('id', user_id)
-    data.append('service_type', user_type)
-
-
-
-    API.post(url, data).then((obj) => {
-
-      if (obj.status == true) {
-        console.log('result123456', obj.result)
-
-        let result = obj.result
-        setState({
-          name: result['first_name'],
-          email: result['email'],
-          display_user_type: result['display_user_type'],
-          user_type: result['user_type'],
-          user_id: result['user_id'],
-          country_code: result['country_code'],
-          work_area: result['work_area'],
-          address: result['address'],
-          description: result['description'],
-          id_number: result['id_number'],
-          speciality: result['speciality'],
-          qualification: result['qualification'],
-          experience: result['experience'],
-          dob_date: (result['user_type'] == "lab") ? result['experience'] : "",
-          scfhs_number: result['scfhs_number'],
-          hosp_moh_lic_no: result['hosp_moh_lic_no'],
-          hosp_reg_no: result['hosp_reg_no'],
-          id_image: { filename: result['id_image'] },
-          certificate: { filename: result['qualification_certificate'] },
-          scfhs_image: { filename: result['scfhs_image'] },
-          hosp_reg_image: { filename: result['hosp_reg_image'] },
-          moh_lic_image: { filename: result['moh_lic_image'] },
-
-        })
-
-        if (result['phone_number'] != null && result['phone_number'] != '') {
-          setState({ mobile: result['phone_number'] })
-        }
-
-        if (result['dob'] != null && result['dob'] != '') {
-          setState({ dob_date: result['dob'], dobfocus: true })
-        }
-        if (result['gender'] != null && result['gender'] != '') {
-          setState({
-            gender: result['gender'],
-            febtn: (result['gender'] == 'Female') ? true : false,
-            mabtn: (result['gender'] == 'Male') ? true : false,
-          })
-        }
-        if (result.image != null) {
-          setState({
-            profile_img: Configurations.img_url3 + result['image'],
-          })
-        }
-
-      }
-      else {
-
-
-        MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
-
-        return false;
-      }
-    }).catch((error) => {
-      console.log("-------- error ------- ", error)
-      setState({ loading: false });
-    });
-  }
-
   const Camerapopen = async () => {
     Media.launchCamera(true).then((obj) => {
       console.log(obj);
@@ -202,6 +144,7 @@ export default EditProfile = ({ navigation, route }) => {
       attachmentOptionSheetRef.current.close()
     })
   }
+
   const Galleryopen = () => {
     Media.launchGellery(true).then((obj) => {
       console.log(obj);
@@ -218,7 +161,7 @@ export default EditProfile = ({ navigation, route }) => {
     })
   }
 
-  const submit_click = async () => {
+  const onEditProfileClick = async () => {
     let user_id = loginUserData['user_id']
 
     Keyboard.dismiss()
@@ -250,8 +193,8 @@ export default EditProfile = ({ navigation, route }) => {
       return false;
     }
 
-    if (classStateData.user_type == "lab") {
-      if (classStateData.dob_date.length <= 0) {
+    if (user_type == "lab") {
+      if (classStateData?.dob_date?.length <= 0 && classStateData?.experience?.length <= 0) {
         MessageFunctions.showError("Please choose year of establishment")
         return false;
       }
@@ -260,25 +203,20 @@ export default EditProfile = ({ navigation, route }) => {
         return false;
       }
     } else {
-      if (classStateData.dob_date.length <= 0 || classStateData.dob_date.trim().length <= 0) {
+      if (classStateData?.dob_date?.length <= 0 || classStateData?.dob_date?.trim().length <= 0) {
         MessageFunctions.showError("Please choose your date of birth")
         return false;
       }
     }
-    if (classStateData.user_type != "lab") {
+    if (user_type != "lab") {
       if (classStateData.gender.length <= 0 || classStateData.gender.trim().length <= 0) {
         MessageFunctions.showError("Please choose your gender")
         return false;
       }
     }
-    // if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-    //   MessageFunctions.toast(MessageTexts.emptymobileNumber[Configurations.language], 'center')
-    //   return false;
-    // }
 
 
-
-    if (classStateData.user_type != "lab") {
+    if (user_type != "lab") {
       if ((classStateData.id_number.length < 10 || classStateData.id_number.trim().length < 10)) {
         MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
         return false;
@@ -289,15 +227,15 @@ export default EditProfile = ({ navigation, route }) => {
         return false;
       }
     }
-    if (classStateData.user_type == "nurse" || classStateData.user_type == "physiotherapy"
-      || classStateData.user_type == "doctor") {
+    if (user_type == "nurse" || user_type == "physiotherapy"
+      || user_type == "doctor") {
       if (classStateData.speciality.length <= 0 || classStateData.speciality.trim().length <= 0) {
         MessageFunctions.showError("Please select speciality")
         return false;
       }
     }
 
-    if (classStateData.user_type != "lab") {
+    if (user_type != "lab") {
       if (classStateData.qualification.length <= 0 || classStateData.qualification.trim().length <= 0) {
         MessageFunctions.showError("Please enter your qualification")
         return false;
@@ -309,8 +247,8 @@ export default EditProfile = ({ navigation, route }) => {
       }
     }
 
-    if (classStateData.user_type == "nurse" || classStateData.user_type == "physiotherapy"
-      || classStateData.user_type == "doctor") {
+    if (user_type == "nurse" || user_type == "physiotherapy"
+      || user_type == "doctor") {
       if ((classStateData.scfhs_number.length < 8 || classStateData.scfhs_number.trim().length < 8)) {
         MessageFunctions.showError("Please enter minimum 8 or 11 digits SCFHS registration ID")
         return false;
@@ -322,7 +260,7 @@ export default EditProfile = ({ navigation, route }) => {
       }
     }
 
-    if (classStateData.user_type == "lab") {
+    if (user_type == "lab") {
       if (classStateData.hosp_moh_lic_no == null || classStateData.hosp_moh_lic_no.length <= 0 || classStateData.hosp_moh_lic_no.trim().length <= 0) {
         MessageFunctions.showError("Please enter health registration ID")
         return false;
@@ -339,36 +277,38 @@ export default EditProfile = ({ navigation, route }) => {
     var phone_number_send = classStateData.country_code + classStateData.mobile
     var data = new FormData();
 
+    setIsOnLoadingButton(true)
+
     data.append('user_id', user_id)
-    data.append("service_type", classStateData.user_type)
+    data.append("service_type", user_type)
     data.append('first_name', classStateData.name)
     data.append('email', classStateData.email)
     data.append('phone_number', phone_number_send)
     data.append('work_area', classStateData.work_area)
-    if (classStateData.user_type != "lab") {
+    if (user_type != "lab") {
 
       data.append('gender', classStateData.gender)
       data.append('id_number', classStateData.id_number)
       data.append('scfhs_number', classStateData.scfhs_number)
-      data.append('dob', classStateData.dob_date)
+      data.append('dob', (classStateData?.dob_date?.length <= 0) ? classStateData.experience : classStateData.dob_date)
     }
-    if (classStateData.user_type == "lab") {
+    if (user_type == "lab") {
       data.append('address', classStateData.address)
       data.append('hosp_moh_lic_no', classStateData.hosp_moh_lic_no)
       data.append('hosp_reg_no', classStateData.hosp_reg_no)
     }
-    if (classStateData.user_type != "lab") {
+    if (user_type != "lab") {
       data.append('speciality', classStateData.speciality)
 
     }
     data.append('description', classStateData.description)
-    data.append('experience', (classStateData.user_type == "lab") ? classStateData.dob_date : classStateData.experience)
-    if (classStateData.user_type != "lab") {
+    data.append('experience', (user_type == "lab") ? classStateData?.experience : classStateData.experience)
+    if (user_type != "lab") {
       data.append('qualification', classStateData.qualification)
     }
-    data.append('id_image', (classStateData.user_type == "lab") ? classStateData.moh_lic_image.filename : classStateData.id_image.filename)
-    data.append('certificate', (classStateData.user_type == "lab") ? classStateData.hosp_reg_image.filename : classStateData.certificate.filename)
-    if (classStateData.user_type != "lab") {
+    data.append('id_image', (user_type == "lab") ? classStateData.moh_lic_image.filename : classStateData.id_image.filename)
+    data.append('certificate', (user_type == "lab") ? classStateData.hosp_reg_image.filename : classStateData.certificate.filename)
+    if (user_type != "lab") {
       data.append('scfhs_image', classStateData.scfhs_image.filename)
     }
     if (classStateData.profile_image != '') {
@@ -379,13 +319,14 @@ export default EditProfile = ({ navigation, route }) => {
       })
     }
 
-
-    setState({ loading: true })
-    API.post(url, data).then((obj) => {
-
-      setState({ loading: false });
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        dispatch(setUserLoginData(obj.result))
+        console.log({ editresult: obj?.result });
+        dispatch(setProfileData(obj.result))
+        dispatch(setUserLoginData({
+          ...loginUserData,
+          ...obj.result
+        }))
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -395,8 +336,9 @@ export default EditProfile = ({ navigation, route }) => {
 
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-      setState({ loading: false });
-    });
+    }).finally(() => {
+      setIsOnLoadingButton(false)
+    })
 
   }
 
@@ -998,20 +940,18 @@ export default EditProfile = ({ navigation, route }) => {
       />
 
       {
-        (classStateData.isDatePickerVisibletwo && classStateData.user_type == "lab") ?
+        (classStateData.isDatePickerVisibletwo && user_type == "lab") ?
           <MonthPicker
             onChange={(event, date) => {
-              console.log('event:: ', event);
-              console.log('datedate:: ', date);
-              console.log('getFullYear:: ', new Date(date).getFullYear());
-              // setdatetwo(date),
-              setState({
-                dob_date: new Date(date).getFullYear(),
-                isDatePickerVisibletwo: false
-              })
+              if (date && event != 'dismissedAction') {
+                setState({
+                  dob_date: new Date(date).getFullYear(),
+                  experience: new Date(date).getFullYear(),
+                })
+              }
+              setState({ isDatePickerVisibletwo: false })
             }}
             value={classStateData.date_new}
-            // minimumDate={new Date()}
             maximumDate={new Date()}
           /> :
           <DateTimePicker
@@ -1037,76 +977,71 @@ export default EditProfile = ({ navigation, route }) => {
           title={LanguageConfiguration.EditProfile[Configurations.language]}
           style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
+        <RBSheet
+          ref={attachmentOptionSheetRef}
+          {...BottomSheetProps}
+          customStyles={BottomSheetStylesForSmall} >
+          <View style={BottomSheetViewStyles.MainView}>
+            <View style={BottomSheetViewStyles.ButtonContainerSmall}>
+              <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                attachmentOptionSheetRef.current.close()
+              }}>
+                <SvgXml xml={_Cross}
+                  width={windowHeight / 26}
+                  height={windowHeight / 26}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <View style={BottomSheetViewStyles.Body}>
+
+              <View style={BottomSheetViewStyles.TitleBar}>
+                <Text style={BottomSheetViewStyles.Title}>Choose your option!</Text>
+              </View>
+
+              <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                <View style={{
+                  paddingVertical: vs(16),
+                  width: '100%',
+                  flexDirection: 'row'
+                }}>
+                  <TouchableOpacity onPress={() => {
+                    Camerapopen()
+                  }} style={styles.roundButtonAttachmentContainer}>
+                    <Image source={Icons.Camera} style={{
+                      marginVertical: vs(4),
+                      width: vs(16),
+                      height: vs(16),
+                      tintColor: Colors.textblue
+                    }} resizeMode='contain' resizeMethod='scale' />
+                    <Text style={{
+                    }}>Camera</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => {
+                    Galleryopen()
+                  }} style={styles.roundButtonAttachmentContainer}>
+                    <Image source={Icons.Gallery} style={{
+                      marginVertical: vs(4),
+                      width: vs(16),
+                      height: vs(16),
+                      tintColor: Colors.textblue
+                    }} resizeMode='contain' resizeMethod='scale' />
+                    <Text>Gallery</Text>
+                  </TouchableOpacity>
+
+
+                </View>
+              </KeyboardAwareScrollView>
+            </View>
+          </View>
+
+        </RBSheet>
+
         <KeyboardAwareScrollView style={{
           backgroundColor: Colors.White,
           paddingBottom: vs(8)
         }}>
-
-
-          <RBSheet closeOnPressBack ref={attachmentOptionSheetRef} animationType='slide' height={windowHeight / 3.75} customStyles={{
-            container: {
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-            },
-
-          }} >
-            <View style={{
-              width: '100%',
-              backgroundColor: "white",
-              height: '100%',
-              borderTopLeftRadius: vs(12),
-              borderTopRightRadius: vs(12),
-            }}>
-              <View style={{
-                backgroundColor: Colors.textblue,
-                borderTopLeftRadius: vs(12),
-                borderTopRightRadius: vs(12),
-                paddingVertical: vs(14),
-                width: '100%'
-              }}>
-                <Text style={{
-                  paddingLeft: 15,
-                  color: Colors.white_color,
-                  fontSize: Font.large,
-                  fontFamily: Font.SemiBold,
-                }}>Choose your option!</Text>
-              </View>
-
-              <View style={{
-                paddingVertical: vs(16),
-                width: '100%',
-                flexDirection: 'row'
-              }}>
-                <TouchableOpacity onPress={() => {
-                  Camerapopen()
-                }} style={styles.roundButtonAttachmentContainer}>
-                  <Image source={Icons.Camera} style={{
-                    marginVertical: vs(4),
-                    width: vs(16),
-                    height: vs(16),
-                    tintColor: Colors.textblue
-                  }} resizeMode='contain' resizeMethod='scale' />
-                  <Text style={{
-                  }}>Camera</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => {
-                  Galleryopen()
-                }} style={styles.roundButtonAttachmentContainer}>
-                  <Image source={Icons.Gallery} style={{
-                    marginVertical: vs(4),
-                    width: vs(16),
-                    height: vs(16),
-                    tintColor: Colors.textblue
-                  }} resizeMode='contain' resizeMethod='scale' />
-                  <Text>Gallery</Text>
-                </TouchableOpacity>
-
-
-              </View>
-
-            </View>
-          </RBSheet>
 
           <View>
             <View
@@ -1437,7 +1372,7 @@ export default EditProfile = ({ navigation, route }) => {
                   fontFamily: Font.headingfontfamily,
                   color: Colors.placeholder_text,
                 }}>
-                {(classStateData?.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}
+                {(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}
               </Text>
             </View>
 
@@ -1460,7 +1395,7 @@ export default EditProfile = ({ navigation, route }) => {
                     color: Colors.placeholder_text,
                     fontFamily: Font.Regular,
                     fontSize: Font.placeholdersize,
-                  }}>{classStateData.dob_date.length <= 0 ? (classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language] : classStateData.dob_date}</Text>
+                  }}>{classStateData?.dob_date?.length <= 0 ? (user_type == "lab") ? (classStateData?.experience != '') ? classStateData?.experience : "Year of Establishment" : LanguageConfiguration.dob[Configurations.language] : classStateData?.dob_date}</Text>
                   <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
                     <Image source={Icons.DatePicker}
@@ -1472,19 +1407,19 @@ export default EditProfile = ({ navigation, route }) => {
 
               </TouchableOpacity>
 
-              {classStateData.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.1 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
+              {classStateData?.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.1 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
                 <Text style={{
-                  color: classStateData.dob_date.length <= 0 ? '#0057A5' : Colors.gray4,
+                  color: classStateData?.dob_date.length <= 0 ? '#0057A5' : Colors.gray4,
                   fontSize: Font.sregulartext_size,
                   fontFamily: Font.placeholderfontfamily,
                   textAlign: Configurations.textalign
-                }}>{(classStateData.user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}</Text>
+                }}>{(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}</Text>
               </View>}
 
             </View>
 
             {
-              (classStateData.user_type == "lab") ?
+              (user_type == "lab") ?
                 <View style={{
                   width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100,
                 }}>
@@ -1619,8 +1554,8 @@ export default EditProfile = ({ navigation, route }) => {
             }
 
             {
-              (classStateData.user_type == "nurse" || classStateData.user_type == "physiotherapy"
-                || classStateData.user_type == "doctor") &&
+              (user_type == "nurse" || user_type == "physiotherapy"
+                || user_type == "doctor") &&
               <>
                 {renderIDNumber()}
                 {renderSpeExpCer()}
@@ -1629,7 +1564,7 @@ export default EditProfile = ({ navigation, route }) => {
             }
 
             {
-              (classStateData.user_type == "caregiver" || classStateData.user_type == "babysitter") &&
+              (user_type == "caregiver" || user_type == "babysitter") &&
               <>
                 {renderIDNumber()}
                 {renderExpCer()}
@@ -1638,7 +1573,7 @@ export default EditProfile = ({ navigation, route }) => {
             }
 
             {
-              (classStateData.user_type == "lab") &&
+              (user_type == "lab") &&
               <>
                 {renderHealthIDNumber()}
                 {renderCRC()}
@@ -1685,7 +1620,11 @@ export default EditProfile = ({ navigation, route }) => {
 
             <Button
               text={LanguageConfiguration.submitbtntext[Configurations.language]}
-              onPress={() => submit_click()}
+              onPress={() => onEditProfileClick()}
+              onLoading={isOnLoadingButton}
+              customStyles={{
+                marginBottom: vs(20)
+              }}
             />
 
           </View>

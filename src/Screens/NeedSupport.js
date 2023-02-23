@@ -1,10 +1,16 @@
 import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView, Dimensions, Platform } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Colors, Font, MessageFunctions, MessageTexts, Configurations, mobileW, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icons } from '../Assets/Icons/IReferences';
 import ScreenHeader from '../Components/ScreenHeader';
 import { useSelector } from 'react-redux';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
+import { SvgXml } from 'react-native-svg';
+import { _Cross } from '../Assets/Icons/SvgIcons/Index';
+import { Button } from '../Components';
+import { ActivityIndicator } from 'react-native-paper';
 
 
 const windowHeight = Math.round(Dimensions.get("window").height);
@@ -16,9 +22,11 @@ headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
 export default NeedSupport = ({ navigation, route }) => {
 
+  const [isLoading, setIsLoading] = useState(true)
+  const [isOnButtonLoading, setIsOnButtonLoading] = useState(false)
+  const [issueTopics, setIssueTopics] = useState([])
+
   const [classStateData, setClassStateData] = useState({
-    Select_arr: 'NA',
-    selectmodal: false,
     message: '',
     selectissuefocus: false,
     select: '',
@@ -35,6 +43,9 @@ export default NeedSupport = ({ navigation, route }) => {
       getData()
     });
   }, [])
+
+  const topicSelectSheetRef = useRef()
+  const issueRef = useRef()
 
 
   const {
@@ -53,29 +64,22 @@ export default NeedSupport = ({ navigation, route }) => {
     data.append('login_user_id', user_id)
 
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
-        console.log('result', obj.result)
-        let result = obj.result
-        setState({ Select_arr: obj.result })
+        setIssueTopics(obj.result)
       }
       else {
         MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
 
         return false;
       }
-    }).catch((error) => {
-      console.log("-------- error ------- ", error)
-      setState({ loading: false });
-    });
+    }).finally(() => {
+      setIsLoading(false)
+    })
   }
 
   const onSubmit = async () => {
-    let user_details = loginUserData
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-    let user_type = user_details['user_type']
     if (classStateData.select.length <= 0) {
       MessageFunctions.showError(MessageTexts.emptySelecttopic[Configurations.language])
       return false;
@@ -83,17 +87,16 @@ export default NeedSupport = ({ navigation, route }) => {
     let url = Configurations.baseURL + "api-insert-need-help";
     console.log("url", url)
     var data = new FormData();
-    data.append('user_id', user_id)
+    setIsOnButtonLoading(true)
+    data.append('user_id', loginUserData?.user_id)
     data.append('issue_topic', classStateData.select)
     data.append('message', classStateData.message)
-    data.append('service_type', user_type)
+    data.append('service_type', loginUserData?.user_type)
 
-    API.post(url, data).then((obj) => {
-
+    API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        console.log('result', obj.result)
-        let result = obj.result
         setTimeout(() => {
+          setIsOnButtonLoading(false)
           setState({ successmodal: true });
         }, 700);
 
@@ -122,86 +125,102 @@ export default NeedSupport = ({ navigation, route }) => {
         networkActivityIndicatorVisible={true}
       />
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={classStateData.selectmodal}
-        onRequestClose={() => { }}>
-        <TouchableOpacity activeOpacity={0.9} onPress={() => { setState({ selectmodal: false }) }}
-          style={{
-            flex: 1,
-            alignSelf: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#00000080',
-            width: '100%',
-            marginTop: (mobileW * 3) / 100,
-            paddingBottom: (mobileW * 8) / 100,
-          }}>
-          <View
-            style={{
-              width: '70%',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
+
+
+      <RBSheet
+        ref={topicSelectSheetRef}
+        {...BottomSheetProps}
+        customStyles={BottomSheetStyles} >
+        <View style={BottomSheetViewStyles.MainView}>
+          <View style={BottomSheetViewStyles.ButtonContainer}>
+            <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+              topicSelectSheetRef.current.close()
             }}>
-            <View
-              style={{
-                width: '100%',
-                backgroundColor: Colors.backgroundcolorblue,
-              }}>
-              <View
-                style={{ width: '45%', paddingVertical: (mobileW * 3) / 100 }}>
-                <Text
-                  style={{
-                    textAlign: Configurations.textalign,
-                    fontFamily: Font.Regular,
-                    fontSize: (mobileW * 4) / 100,
-                    alignSelf: 'center',
-                    color: Colors.textwhite,
-                  }}>
-                  {LanguageConfiguration.select_topic_text[Configurations.language]}
-                </Text>
-              </View>
-            </View>
-            <View style={{ width: '100%' }}>
-              <FlatList
-
-                data={classStateData.Select_arr}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setState({
-                            selectmodal: false,
-                            select: item.name,
-
-                          });
-                        }}
-                      >
-                        <View style={{ width: '100%', backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'flex-end' }}>
-                          <View style={{ width: '95%', borderBottomColor: '#0000001F', borderBottomWidth: 1, paddingVertical: mobileW * 2.5 / 100, marginLeft: mobileW * 5 / 100 }}>
-                            <Text
-                              style={{
-                                color: Colors.textblack,
-                                textAlign: Configurations.textRotate,
-                                fontSize: (mobileW * 4) / 100,
-                                paddingLeft: mobileW * 2 / 100,
-
-                              }}>
-                              {item.name}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}></FlatList>
-            </View>
+              <SvgXml xml={_Cross}
+                width={windowHeight / 26}
+                height={windowHeight / 26}
+              />
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </Modal>
+
+          <View style={BottomSheetViewStyles.Body}>
+
+            <View style={BottomSheetViewStyles.TitleBar}>
+              <Text style={BottomSheetViewStyles.Title}>{LanguageConfiguration.select_topic_text[Configurations.language]}</Text>
+            </View>
+
+
+            <FlatList
+              contentContainerStyle={BottomSheetViewStyles.FlatListChild}
+              data={issueTopics}
+              renderItem={({ item, index }) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setState({
+                        select: item.name,
+                      });
+                      topicSelectSheetRef.current.close()
+                    }}
+                  >
+                    <View style={{ width: '95%', borderBottomColor: '#0000001F', borderBottomWidth: 1, paddingVertical: mobileW * 2.5 / 100, marginLeft: mobileW * 5 / 100 }}>
+                      <Text
+                        style={{
+                          color: Colors.textblack,
+                          textAlign: Configurations.textRotate,
+                          fontSize: (mobileW * 4) / 100,
+                          paddingLeft: mobileW * 2 / 100,
+
+                        }}>
+                        {item.name}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              }} />
+
+
+            <FlatList
+              data={classStateData.Countryarr}
+              contentContainerStyle={BottomSheetViewStyles.FlatListChild}
+              renderItem={({ item, index }) => {
+                if (classStateData.Countryarr != '' || classStateData.Countryarr != null) {
+                  return (
+                    <TouchableOpacity style={{
+                      width: '100%',
+                    }}
+                      onPress={() => {
+                        setState({ country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code });
+                        countrySheetRef.current.close()
+                      }}
+                    >
+                      <View style={{
+                        width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                        marginLeft: 15,
+                        borderBottomColor: Colors.gray6,
+                        borderBottomWidth: (index == (classStateData.Countryarr.length - 1)) ? 0 : 1,
+                      }}>
+                        <Text style={{
+                          color: '#041A27',
+                          fontSize: 15,
+                          fontFamily: Font.headingfontfamily,
+                          paddingTop: 15,
+                          paddingBottom: 15,
+                          width: '94.5%',
+                        }}>{item.name}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )
+                }
+              }}
+              keyExtractor={(item, index) => index.toString()}>
+
+
+            </FlatList>
+          </View>
+        </View>
+
+      </RBSheet>
 
       <Modal
         animationType="fade"
@@ -243,12 +262,8 @@ export default NeedSupport = ({ navigation, route }) => {
         title={LanguageConfiguration.supporttext[Configurations.language]}
         style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
-      <ScrollView style={{
-        width: '100%', alignSelf: 'center', flex: 1,
-        backgroundColor: Colors.white_color
-      }}>
-        <KeyboardAwareScrollView>
-          <View style={{ width: '100%', backgroundColor: Colors.tab_background_color, paddingVertical: mobileW * 2 / 100 }}>
+<KeyboardAwareScrollView>
+          <View style={{ width: '100%', backgroundColor: Colors.tab_background_color, paddingBottom: mobileW * 2 / 100 }}>
           </View>
 
           <View style={{ alignItems: 'center', width: '90%', alignSelf: 'center', flexDirection: 'row', marginTop: mobileW * 3 / 100 }}>
@@ -273,12 +288,12 @@ export default NeedSupport = ({ navigation, route }) => {
 
           <View style={{
             width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100, flexDirection: 'row',
-            borderColor: Colors.bordercolor, borderWidth: 1, borderRadius: mobileW * 1 / 100
           }}>
-            <TouchableOpacity onPress={() => {
-              setState({ selectmodal: true });
+            { !isLoading ? 
+              <TouchableOpacity onPress={() => {
+              topicSelectSheetRef.current.open()
             }}
-              style={{ width: '100%', backgroundColor: Colors.backgroundcolor, borderRadius: mobileW * 1 / 100 }}>
+              style={{ width: '100%', backgroundColor: Colors.backgroundcolor, borderColor: Colors.bordercolor, borderWidth: 1, borderRadius: mobileW * 1 / 100 }}>
 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '95%', alignSelf: 'center' }}>
                 <Text
@@ -292,12 +307,16 @@ export default NeedSupport = ({ navigation, route }) => {
                   </Image>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> : 
+            <ActivityIndicator color={Colors.textblue}/>
+            }
           </View>
-          <View style={{
+          <TouchableOpacity style={{
             width: '90%', alignSelf: 'center', marginTop: mobileW * 6 / 100,
             borderColor: classStateData.selectissuefocus == true ? '#0057A5' : Colors.bordercolor, borderWidth: mobileW * 0.3 / 100, borderRadius: mobileW * 2 / 100, height: mobileW * 40 / 100
-          }}>
+          }} onPress={() => {
+            issueRef.current.focus()
+          }} activeOpacity={1}>
             <View style={{ width: '95%', alignSelf: 'center', }}>
               <TextInput
                 style={{ marginTop: mobileW * 2 / 100, backgroundColor: '#fff', width: '100%', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: Configurations.textalign, fontFamily: Font.placeholderfontfamily, paddingVertical: mobileW * 3 / 100 }}
@@ -306,8 +325,7 @@ export default NeedSupport = ({ navigation, route }) => {
                 placeholder={classStateData.selectissuefocus != true ? LanguageConfiguration.text_input_topic[Configurations.language] : null}
                 placeholderTextColor={Colors.placeholder_text}
                 onChangeText={(txt) => { setState({ message: txt }) }}
-                onFocus={() => { setState({ selectissuefocus: true }) }}
-                onBlur={() => { setState({ selectissuefocus: classStateData.message.length > 0 ? true : false }) }}
+                ref={issueRef}
                 keyboardType='default'
                 returnKeyLabel='done'
               />
@@ -315,35 +333,11 @@ export default NeedSupport = ({ navigation, route }) => {
             {classStateData.selectissuefocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
               <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.text_input_topic[Configurations.language]}</Text>
             </View>}
-          </View>
-
-          <TouchableOpacity
-            onPress={() => {
-              onSubmit()
-            }}
-
-            style={{
-              width: '90%',
-              alignSelf: 'center',
-              borderRadius: (mobileW * 2) / 100,
-              backgroundColor: Colors.buttoncolorblue,
-              paddingVertical: (mobileW * 4) / 100,
-              marginTop: (mobileW * 45) / 100,
-            }}>
-            <Text
-              style={{
-                color: Colors.textwhite,
-                fontFamily: Font.Medium,
-                fontSize: Font.buttontextsize,
-                alignSelf: 'flex-end',
-                textAlign: Configurations.textalign,
-                alignSelf: 'center',
-              }}>
-              {LanguageConfiguration.submitbtntext[Configurations.language]}
-            </Text>
           </TouchableOpacity>
+
+          <Button onLoading={isOnButtonLoading} onPress={onSubmit} text={LanguageConfiguration.submitbtntext[Configurations.language]} />
+
         </KeyboardAwareScrollView>
-      </ScrollView>
 
     </View>
   )

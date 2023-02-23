@@ -361,7 +361,7 @@ class LanguageProvider {
   PackageDetails = ["Package detail", "تفاصيل الحزمة"]
 
   
-  SearchScreenNote = ["Customer will be able to see the distance between your and their address after your 'Service Address' is setup successfully.\n\nDistance between a Patient and Medical Health Service Provider is highly important to know before someone completes a booking. Rootscare booking engine have programmed in a manner where we calculate distance fees which will help you travel to customer/patients distance.\n\nWe recommend all of our Medical Health Service Provider to point their address using google map accurately, so they receive bookings from a fair distance.", 
+  SearchScreenNote = ["Customer will be able to see the distance between 'You' and 'themselves' after ‘Service Address’ is pointed successfully.\n\nDistance measurement between a Patient and Medical Health Service Provider is highly important for our system before someone completes a booking. Rootscare booking engine have programmed in a manner where we calculate distance fees which will help you travel to customer/patient distance.\n\nWe recommend all of our Medical Health Service Provider to point their address using google map accurately, so they receive bookings from a fair distance.", 
   `سيتمكن العميل من رؤية المسافة بينك وبين عنوانه بعد إعداد "عنوان الخدمة" بنجاح.
 
   من المهم للغاية معرفة المسافة بين المريض ومقدم الخدمة الصحية الطبية قبل أن يكمل شخص ما الحجز.  لقد تمت برمجة محرك حجز روتس كير بطريقة نحسب فيها رسوم المسافة التي ستساعدك على الذهاب للعملاء / المرضى.

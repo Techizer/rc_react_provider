@@ -4,13 +4,15 @@ import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList } fro
 import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
 import { Button } from '../Components'
-import { Arrow, Cross } from '../Assets/Icons/SvgIcons/Index';
+import { Arrow, Cross, _Cross } from '../Assets/Icons/SvgIcons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { s, vs } from 'react-native-size-matters';
 import { setScheduleAvailabilityData } from '../Redux/Actions/UserActions';
 import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
+import { SvgXml } from 'react-native-svg';
 
 const timeArray = [
   { value: '00:00 AM' },
@@ -318,102 +320,100 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
   return (
     <View style={{
       flex: 1,
+      backgroundColor: Colors.White
     }}>
 
 
-      <RBSheet ref={timeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
-        container: {
-          borderTopLeftRadius: vs(12),
-          borderTopRightRadius: vs(12),
-        }
-      }} closeOnPressBack>
-        <View style={{
-          width: '100%',
-          backgroundColor: "white",
-          height: '100%',
-          borderTopLeftRadius: vs(12),
-          borderTopRightRadius: vs(12),
-        }}>
-          <View style={{
-            backgroundColor: Colors.textblue,
-            borderTopLeftRadius: vs(12),
-            borderTopRightRadius: vs(12),
-            paddingVertical: vs(14),
-            width: '100%'
-          }}>
-            <Text style={{
-              paddingLeft: 15,
-              color: Colors.white_color,
-              fontSize: Font.large,
-              fontFamily: Font.SemiBold,
-            }}>{`Select ${state.flag ? 'start' : 'end'} time for ${Days[state.currentIndex]}`}</Text>
+      <RBSheet
+        ref={timeSheetRef}
+        {...BottomSheetProps}
+        customStyles={BottomSheetStyles} >
+        <View style={BottomSheetViewStyles.MainView}>
+          <View style={BottomSheetViewStyles.ButtonContainer}>
+            <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+              timeSheetRef.current.close()
+            }}>
+              <SvgXml xml={_Cross}
+                width={windowHeight / 26}
+                height={windowHeight / 26}
+              />
+            </TouchableOpacity>
           </View>
-          <FlatList
-            data={state.flag ? timeArray : timeArray.filter((t, i) => i > timeArray.findIndex(v => v.value === state.slotArr[state.currentIndex]?.slot_start_time))}
-            contentContainerStyle={{ paddingTop: vs(10) }}
-            renderItem={({ item, index }) => {
-              return (
-                <View style={{
-                  justifyContent: 'center',
-                }}>
-                  <TouchableOpacity style={{
-                    alignSelf: 'center',
-                    backgroundColor: '#DEF7FF',
-                    padding: vs(6),
-                    paddingHorizontal: vs(12),
-                    marginVertical: vs(8),
-                    borderRadius: vs(16)
-                  }}
-                    onPress={() => {
-                      var arr = state.slotArr
-                      if (state.flag) {
-                        validationTime(item.value, state.slotArr[state.currentIndex].slot_end_time, state.flag, state.currentIndex)
 
-                        arr[state.currentIndex].slot_start_time = item.value
-                        setState(
-                          prev => ({
-                            ...prev,
-                            slotArr: arr
-                          })
-                        )
-                      } else {
-                        validationTime(state.slotArr[state.currentIndex].slot_start_time, item.value, state.flag, state.currentIndex)
-                        arr[state.currentIndex].slot_end_time = item.value
-                        setState(
-                          prev => ({
-                            ...prev,
-                            slotArr: arr
-                          })
-                        )
-                      }
-                      timeSheetRef.current.close()
-                    }}>
-                    <Text
-                      style={{
-                        color: Colors.textblack_new,
-                        textAlign: Configurations.textRotate,
-                        fontSize: Font.large
-                      }} >
-                      {item.value}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-            keyExtractor={(item, index) => 'kyi' + index}
-            showsVerticalScrollIndicator={false}
-            numColumns={3}
-            ListFooterComponent={() => (
-              <View style={{ marginVertical: vs(16) }} />
-            )}
-            columnWrapperStyle={{
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-            }}
-          />
+          <View style={BottomSheetViewStyles.Body}>
+
+            <View style={BottomSheetViewStyles.TitleBar}>
+              <Text style={BottomSheetViewStyles.Title}>{`Select ${state.flag ? 'start' : 'end'} time for ${Days[state.currentIndex]}`}</Text>
+            </View>
+
+            <FlatList
+              data={state.flag ? timeArray : timeArray.filter((t, i) => i > timeArray.findIndex(v => v.value === state.slotArr[state.currentIndex]?.slot_start_time))}
+
+              contentContainerStyle={[BottomSheetViewStyles.FlatListChild, {
+                paddingTop: vs(10)
+              }]}
+              renderItem={({ item, index }) => {
+                return (
+                  <View style={{
+                    justifyContent: 'center',
+                  }}>
+                    <TouchableOpacity style={{
+                      alignSelf: 'center',
+                      backgroundColor: '#DEF7FF',
+                      padding: vs(6),
+                      paddingHorizontal: vs(12),
+                      marginVertical: vs(8),
+                      borderRadius: vs(16)
+                    }}
+                      onPress={() => {
+                        var arr = state.slotArr
+                        if (state.flag) {
+                          validationTime(item.value, state.slotArr[state.currentIndex].slot_end_time, state.flag, state.currentIndex)
+
+                          arr[state.currentIndex].slot_start_time = item.value
+                          setState(
+                            prev => ({
+                              ...prev,
+                              slotArr: arr
+                            })
+                          )
+                        } else {
+                          validationTime(state.slotArr[state.currentIndex].slot_start_time, item.value, state.flag, state.currentIndex)
+                          arr[state.currentIndex].slot_end_time = item.value
+                          setState(
+                            prev => ({
+                              ...prev,
+                              slotArr: arr
+                            })
+                          )
+                        }
+                        timeSheetRef.current.close()
+                      }}>
+                      <Text
+                        style={{
+                          color: Colors.textblack_new,
+                          textAlign: Configurations.textRotate,
+                          fontSize: Font.large
+                        }} >
+                        {item.value}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+              keyExtractor={(item, index) => 'kyi' + index}
+              showsVerticalScrollIndicator={false}
+              numColumns={3}
+              ListFooterComponent={() => (
+                <View style={{ marginVertical: vs(16) }} />
+              )}
+              columnWrapperStyle={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+              }}
+            />
+          </View>
         </View>
-
-
 
       </RBSheet>
 

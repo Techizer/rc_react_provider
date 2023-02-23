@@ -10,62 +10,25 @@ import { DrawerIcons } from '../Assets/Icons/drawer';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';
-global.add_location = 'NA';
 const windowWidth = Dimensions.get('window').width
 
 export default Drawer = ({ navigation, route }) => {
-  const [classStateData, setClassStateData] = useState({
-    modalVisible: false,
-    totalCompletionPercentage: 0
-  })
-  
-  const setState = payload => {
-    setClassStateData(prev => ({ ...prev, ...payload }))
-  }
-
-  const dispatch = useDispatch()
 
 
   const {
-    loginUserData
+    loginUserData,
+    profileCompletion,
+    profileData
   } = useSelector(state => state.Auth)
-
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      if (add_location != 'NA') {
-        setState({
-          latitude: add_location.latitude,
-          longitude: add_location.longitude
-        })
-      }
-      getPercentage()
-    });
-  }, [])
-
-  const getPercentage = async () => {
-    let url = Configurations.baseURL + "api-provider-profile-complete";
-
-    var data = new FormData();
-    data.append("login_user_id", loginUserData?.user_id);
-    data.append("user_type", loginUserData?.user_type);
-    API
-      .post(url, data, 1)
-      .then((completionData) => {
-        setState({
-          totalCompletionPercentage: completionData?.result?.total_complete
-        })
-      })
-      .catch((error) => {
-        
-      });
-  }
+  
+  const dispatch = useDispatch()
 
   const logout = async () => {
     dispatch(onUserLogout())
-    setState({ show: false })
     navigation.navigate('Login')
-
   }
+
+  console.log({profileCompletion});
 
   const logoutApi = async () => {
     let url = Configurations.baseURL + "api-logout";
@@ -92,17 +55,13 @@ export default Drawer = ({ navigation, route }) => {
     <SafeAreaView style={{ flex: 1, }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1, backgroundColor: Colors.White, paddingBottom: Platform.OS === 'ios' ? vs(150) : vs(65), }}
-      >
+        style={{ flex: 1, backgroundColor: Colors.White, paddingBottom: Platform.OS === 'ios' ? vs(150) : vs(65) }}>
         <View
           style={{
             flex: 1,
             width: "100%",
-            // paddingHorizontal: s(15),
             paddingBottom: Platform.OS === 'ios' ? vs(16) : vs(16),
-          }}
-        >
-          {/* user Profile */}
+          }}>
           <TouchableOpacity
             onPress={() => {
               setTimeout(() => {
@@ -115,13 +74,13 @@ export default Drawer = ({ navigation, route }) => {
 
             <View style={{ width: '31%' }} >
               {
-                (loginUserData?.image == "NA" || loginUserData?.image == "" || loginUserData?.image == null) ?
+                (profileData?.image == "NA" || profileData?.image == "" || profileData?.image == null) ?
                   <SvgXml xml={dummyUser} style={{
                     alignSelf: "center",
                   }} />
                   :
                   <Image
-                    source={{ uri: Configurations.img_url3 + loginUserData?.image }}
+                    source={{ uri: Configurations.img_url3 + profileData?.image }}
                     style={{ height: s(85), width: s(85), borderRadius: s(85), backgroundColor: Colors.backgroundcolor, alignSelf: 'center' }}
                   />
 
@@ -141,7 +100,7 @@ export default Drawer = ({ navigation, route }) => {
                       textAlign: Configurations.textRotate,
 
                     }}>
-                    {loginUserData?.first_name}
+                    {profileData?.first_name}
                   </Text>
                 </View>
 
@@ -157,7 +116,6 @@ export default Drawer = ({ navigation, route }) => {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() => {
-                    // navigation.dispatch(DrawerActions.toggleDrawer())
                     setTimeout(() => {
                       navigation.dispatch(DrawerActions.closeDrawer())
                       navigation.navigate(ScreenReferences.EditProfile);
@@ -177,7 +135,7 @@ export default Drawer = ({ navigation, route }) => {
                 </TouchableOpacity>
 
                 {
-                  classStateData.totalCompletionPercentage > 0 &&
+                  profileCompletion?.total_complete > 0 &&
                   <Text
                     style={{
                       color: Colors.DarkGrey,
@@ -186,7 +144,7 @@ export default Drawer = ({ navigation, route }) => {
                       textAlign: Configurations.textRotate,
                       marginTop: vs(4)
                     }}>
-                    {Configurations.language == 0 ? `${classStateData.totalCompletionPercentage}% Completed` : `${classStateData.totalCompletionPercentage}٪ اكتمل`}
+                    {Configurations.language == 0 ? `${profileCompletion?.total_complete}% Completed` : `${profileCompletion?.total_complete}٪ اكتمل`}
                   </Text>
                 }
 

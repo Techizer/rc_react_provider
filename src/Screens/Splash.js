@@ -123,7 +123,7 @@ export default Splash = ({ navigation, route }) => {
 
     }).catch((error) => {
       createNewLoginSession()
-      console.log("-------- error ------- " + error);
+      console.log("-------- error version check ------- " + error);
     })
 
   }
@@ -147,13 +147,13 @@ export default Splash = ({ navigation, route }) => {
 
     const fcmToken = await FBPushNotifications.getFcmToken()
 
-    let result = loginUserData
     if (loginUserData !== null) {
-      let user_id = result.user_id;
       let url = Configurations.baseURL + "api-check-login";
       var data = new FormData();
-      data.append("user_id", user_id);
+      data.append("user_id", loginUserData?.user_id);
       data.append("fcm_token", fcmToken);
+
+      console.log(data);
 
       API
         .post(url, data, 1)
@@ -177,7 +177,7 @@ export default Splash = ({ navigation, route }) => {
               data.append('device_type', Configurations.device_type)
               data.append('device_lang', device_lang)
               data.append('fcm_token', fcmToken)
-              data.append('user_type', result?.user_type)
+              data.append('user_type', loginUserData?.user_type)
 
               API.post(url, data, 1).then((obj) => {
                 console.log({ obj });
@@ -194,7 +194,7 @@ export default Splash = ({ navigation, route }) => {
                   logout()
                 }
               }).catch((error) => {
-                console.log("-------- error ------- " + error);
+                console.log("-------- error relogin ------- " + error);
               });
 
             } else {
@@ -206,7 +206,7 @@ export default Splash = ({ navigation, route }) => {
           }
         })
         .catch((error) => {
-          console.log("-------- error ------- " + error);
+          console.log("-------- error check login ------- " + error);
         });
     }
     else {

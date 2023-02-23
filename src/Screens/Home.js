@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, FlatList, View, Alert, StyleSheet, Image, TouchableOpacity, Platform, BackHandler } from 'react-native';
-import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, localStorage } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, localStorage, MessageFunctions, MessageHeadings } from '../Helpers/Utils';
 import Styles from '../Styles';
 import messaging from '@react-native-firebase/messaging';
 import { DashBoardBox } from '../Components'
@@ -10,7 +10,7 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { onUserLogout, setLastScreen } from '../Redux/Actions/UserActions';
+import { onUserLogout, setLastScreen, setProfileCompletionData, setProfileData } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 global.current_lat_long = 'NA';
@@ -95,9 +95,12 @@ export default Home = ({ navigation, route }) => {
     ]
   })
 
-  const [profilePercentage, setProfilePercentage] = useState(0)
-  const [sectionsData, setSectionsData] = useState(null)
-  const [isSectionsLoading, setIsSectionsLoading] = useState(false)
+
+  const {
+    loginUserData,
+    scheduleAvailability,
+    profileCompletion
+  } = useSelector(state => state.Auth)
 
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
@@ -114,25 +117,31 @@ export default Home = ({ navigation, route }) => {
   // }, [])
 
   const refreshDashboardData = async (shouldLoadOnTop) => {
-    console.log('refreshDashboardData');
-    if (shouldLoadOnTop === 1) {
-      setIsSectionsLoading(true)
-    } else if (shouldLoadOnTop === 0 && isSectionsLoading) {
-      setIsSectionsLoading(false)
-    }
-    // return new Promise(async () => {
-    //   await getPercentage()
-    //   await getNotificationsCount()
-    // })
     return new Promise((res, rej) => {
       getPercentage().finally(getNotificationsCount).finally(() => { res() })
     })
   }
 
-  const {
-    loginUserData, 
-    scheduleAvailability
-  } = useSelector(state => state.Auth)
+  const getProfile = async () => {
+    let url = Configurations.baseURL + "api-get-provider-profile";
+
+    var data = new FormData();
+    data.append('id', loginUserData['user_id'])
+    data.append('service_type', loginUserData['user_type'])
+
+    API.post(url, data, 1).then((obj) => {
+      console.log('Get Profile is being called on Home');
+      if (obj.status == true) {
+        dispatch(setProfileData(obj?.result))
+      }
+      else {
+        return false;
+      }
+    }).catch((error) => {
+      console.log("-------- error ------- ", error)
+    });
+  }
+
 
   useEffect(() => {
     PushNotification.configure({
@@ -213,12 +222,11 @@ export default Home = ({ navigation, route }) => {
         message: remoteMessage.data.body,
         userInfo: remoteMessage.data
       })
-      if (shouldRefreshHome && isFocused) {
-        refreshDashboardData(0)
-      }
       // MessageFunctions.showSuccess("yes call coming")
     }
     )
+
+    getProfile()
   }, [])
 
   const handleBackPress = () => {
@@ -250,8 +258,7 @@ export default Home = ({ navigation, route }) => {
 
   useEffect(() => {
     if (isFocused) {
-      console.log('IsFocusing');
-      refreshDashboardData(0)
+      refreshDashboardData(1)
     }
   }, [isFocused])
 
@@ -280,65 +287,34 @@ export default Home = ({ navigation, route }) => {
       .then((completionData) => {
         console.log({ completionData });
 
-        if (profilePercentage !== completionData?.result?.total_complete) {
-          console.log('PP Updating');
-          setProfilePercentage(completionData?.result?.total_complete)
+        if (profileCompletion?.total_complete != completionData?.result?.total_complete) {
+          dispatch(setProfileCompletionData(completionData?.result))
         }
-        if (sectionsData?.address !== completionData?.result?.address ||
-          sectionsData?.availability_schedule !== completionData?.result?.availability_schedule ||
-          sectionsData?.pending_appointment !== completionData?.result?.pending_appointment ||
-          sectionsData?.price_section !== completionData?.result?.price_section ||
-          sectionsData?.profile_section !== completionData?.result?.profile_section) {
+        state.HomeHealthcareServiceAppointments[0].actionColor = '#FFD553'
+        state.HomeHealthcareServiceAppointments[0].actionTextColor = '#886701'
+        state.HomeHealthcareServiceAppointments[0].actionMessage = completionData?.result?.pending_appointment
 
-          console.log([
-            sectionsData?.address != completionData?.result?.address,
-            sectionsData?.availability_schedule != completionData?.result?.availability_schedule,
-            sectionsData?.pending_appointment != completionData?.result?.pending_appointment,
-            sectionsData?.price_section != completionData?.result?.price_section,
-            sectionsData?.profile_section != completionData?.result?.profile_section
-          ]);
+        state.HomeHealthcareServiceAppointments[1].actionColor = completionData?.result?.availability_schedule == 0 ? '#EB8C8C' : '#86D348'
+        state.HomeHealthcareServiceAppointments[1].actionTextColor = completionData?.result?.availability_schedule == 0 ? '#900000' : '#347401'
+        state.HomeHealthcareServiceAppointments[1].actionMessage = completionData?.result?.availability_schedule == 0 ? 'Incomplete Setup' : 'Completed'
 
-          console.log('Home Updating');
-          console.log('Value Check', `${sectionsData?.address}, ${completionData?.result?.address}`);
+        state.HomeHealthcareServiceAppointments[2].actionColor = completionData?.result?.price_section == 0 ? '#EB8C8C' : '#86D348'
+        state.HomeHealthcareServiceAppointments[2].actionTextColor = completionData?.result?.price_section == 0 ? '#900000' : '#347401'
+        state.HomeHealthcareServiceAppointments[2].actionMessage = completionData?.result?.price_section == 0 ? 'Incomplete Setup' : 'Completed'
 
+        state.HomeHealthcareServiceAppointments[3].actionColor = completionData?.result?.address == 0 ? '#EB8C8C' : '#86D348'
+        state.HomeHealthcareServiceAppointments[3].actionTextColor = completionData?.result?.address == 0 ? '#900000' : '#347401'
+        state.HomeHealthcareServiceAppointments[3].actionMessage = completionData?.result?.address == 0 ? 'Incomplete Setup' : 'Completed'
 
-
-          setSectionsData({
-            address: completionData?.result?.address,
-            availability_schedule: completionData?.result?.availability_schedule,
-            pending_appointment: completionData?.result?.pending_appointment,
-            price_section: completionData?.result?.price_section,
-            profile_section: completionData?.result?.profile_section,
-          })
-          
-
-          state.HomeHealthcareServiceAppointments[0].actionColor = '#FFD553'
-          state.HomeHealthcareServiceAppointments[0].actionTextColor = '#886701'
-          state.HomeHealthcareServiceAppointments[0].actionMessage = completionData?.result?.pending_appointment
-
-          state.HomeHealthcareServiceAppointments[1].actionColor = completionData?.result?.availability_schedule == 0 ? '#EB8C8C' : '#86D348'
-          state.HomeHealthcareServiceAppointments[1].actionTextColor = completionData?.result?.availability_schedule == 0 ? '#900000' : '#347401'
-          state.HomeHealthcareServiceAppointments[1].actionMessage = completionData?.result?.availability_schedule == 0 ? 'Incomplete Setup' : 'Completed'
-
-          state.HomeHealthcareServiceAppointments[2].actionColor = completionData?.result?.price_section == 0 ? '#EB8C8C' : '#86D348'
-          state.HomeHealthcareServiceAppointments[2].actionTextColor = completionData?.result?.price_section == 0 ? '#900000' : '#347401'
-          state.HomeHealthcareServiceAppointments[2].actionMessage = completionData?.result?.price_section == 0 ? 'Incomplete Setup' : 'Completed'
-
-          state.HomeHealthcareServiceAppointments[3].actionColor = completionData?.result?.address == 0 ? '#EB8C8C' : '#86D348'
-          state.HomeHealthcareServiceAppointments[3].actionTextColor = completionData?.result?.address == 0 ? '#900000' : '#347401'
-          state.HomeHealthcareServiceAppointments[3].actionMessage = completionData?.result?.address == 0 ? 'Incomplete Setup' : 'Completed'
-
-          state.HomeHealthcareServiceAppointments[5].actionColor = completionData?.result?.profile_section == 0 ? '#EB8C8C' : '#86D348'
-          state.HomeHealthcareServiceAppointments[5].actionTextColor = completionData?.result?.profile_section == 0 ? '#900000' : '#347401'
-          state.HomeHealthcareServiceAppointments[5].actionMessage = completionData?.result?.profile_section == 0 ? 'Incomplete Setup' : 'Completed'
+        state.HomeHealthcareServiceAppointments[5].actionColor = completionData?.result?.profile_section == 0 ? '#EB8C8C' : '#86D348'
+        state.HomeHealthcareServiceAppointments[5].actionTextColor = completionData?.result?.profile_section == 0 ? '#900000' : '#347401'
+        state.HomeHealthcareServiceAppointments[5].actionMessage = completionData?.result?.profile_section == 0 ? 'Incomplete Setup' : 'Completed'
 
 
-          setState(prev => ({
-            ...prev,
-            HomeHealthcareServiceAppointments: [...state.HomeHealthcareServiceAppointments]
-          }))
-        }
-
+        setState(prev => ({
+          ...prev,
+          HomeHealthcareServiceAppointments: [...state.HomeHealthcareServiceAppointments]
+        }))
       })
       .catch((error) => {
         console.log({ errorz: error });
@@ -501,8 +477,8 @@ export default Home = ({ navigation, route }) => {
           contentContainerStyle={{ paddingBottom: 120 }}
           showsVerticalScrollIndicator={false}
           horizontal={false}
-          ListHeaderComponent={(sectionsData) ? () => {
-            const cProgress = (profilePercentage) ? profilePercentage : 0
+          ListHeaderComponent={(profileCompletion) ? () => {
+            const cProgress = (profileCompletion?.total_complete) ? profileCompletion?.total_complete : 0
             return (
               <View style={{
                 width: mobileW,
@@ -627,18 +603,18 @@ export default Home = ({ navigation, route }) => {
                   </View>
                 </View>
                 {
-                  (sectionsData?.availability_schedule === 0 ||
-                    sectionsData?.price_section === 0 ||
-                    sectionsData?.address === 0 ||
-                    sectionsData?.profile_section === 0) &&
+                  (profileCompletion?.availability_schedule === 0 ||
+                    profileCompletion?.price_section === 0 ||
+                    profileCompletion?.address === 0 ||
+                    profileCompletion?.profile_section === 0) &&
                   <TouchableOpacity onPress={() => {
-                    if (sectionsData?.availability_schedule === 0) {
+                    if (profileCompletion?.availability_schedule === 0) {
                       navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
-                    } else if (sectionsData?.price_section === 0) {
+                    } else if (profileCompletion?.price_section === 0) {
                       navigation.navigate(ScreenReferences.PriceListTabStack)
-                    } else if (sectionsData?.address === 0) {
+                    } else if (profileCompletion?.address === 0) {
                       navigation.navigate(ScreenReferences.ServiceAddress)
-                    } else if (sectionsData?.profile_section === 0) {
+                    } else if (profileCompletion?.profile_section === 0) {
                       navigation.navigate(ScreenReferences.ShowProfile)
                     }
                   }} >
@@ -691,11 +667,9 @@ export default Home = ({ navigation, route }) => {
               <></>
             )
           }}
-          refreshing={isSectionsLoading}
+          refreshing={false}
           onRefresh={() => {
-            refreshDashboardData(1).finally(() => {
-              setIsSectionsLoading(false)
-            })
+            refreshDashboardData(1)
           }}
           data={state.HomeHealthcareServiceAppointments}
           renderItem={({ item, index }) => {

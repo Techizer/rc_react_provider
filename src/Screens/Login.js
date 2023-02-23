@@ -14,6 +14,9 @@ import { useRef } from 'react';
 import { UserTypes } from '../Helpers/Constants';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { vs } from 'react-native-size-matters';
+import { Cross, _Cross } from '../Assets/Icons/SvgIcons/Index';
+import { SvgXml } from 'react-native-svg';
+import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
 
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
@@ -311,71 +314,65 @@ export default Login = ({ navigation, route }) => {
                   boxPressAction={() => { userTypeSheetRef.current.open() }}
                 />
 
-                <RBSheet closeOnPressBack ref={userTypeSheetRef} animationType='slide' height={windowHeight / 1.75} customStyles={{
-                  container: {
-                    borderTopLeftRadius: vs(12),
-                    borderTopRightRadius: vs(12),
-                  },
-
-                }} >
-                  <View style={{
-                    width: '100%',
-                    backgroundColor: "white",
-                    height: '100%',
-                    borderTopLeftRadius: vs(12),
-                    borderTopRightRadius: vs(12),
-                  }}>
-                    <View style={{
-                      backgroundColor: Colors.textblue,
-                      borderTopLeftRadius: vs(12),
-                      borderTopRightRadius: vs(12),
-                      paddingVertical: vs(14),
-                      width: '100%'
-                    }}>
-                      <Text style={{
-                        paddingLeft: 15,
-                        color: Colors.white_color,
-                        fontSize: Font.large,
-                        fontFamily: Font.SemiBold,
-                      }}>Select User Type</Text>
+                <RBSheet
+                  ref={userTypeSheetRef}
+                  {...BottomSheetProps}
+                  customStyles={BottomSheetStyles} >
+                  <View style={BottomSheetViewStyles.MainView}>
+                    <View style={BottomSheetViewStyles.ButtonContainer}>
+                      <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                        userTypeSheetRef.current.close()
+                      }}>
+                        <SvgXml xml={_Cross}
+                          width={windowHeight / 26}
+                          height={windowHeight / 26}
+                        />
+                      </TouchableOpacity>
                     </View>
 
-                    <KeyboardAwareScrollView contentContainerStyle={{
-                    }}>
-                      {
-                        UserTypes.map((data, index) => {
-                          return (
-                            <TouchableOpacity style={{
-                              width: '100%',
-                            }} onPress={() => {
-                              setState({
-                                selectuserType: index
-                              })
-                              userTypeSheetRef.current.close()
-                            }} key={'utol' + index}>
-                              <View style={{
-                                width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                                marginLeft: 15,
-                                borderBottomColor: Colors.gray6,
-                                borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
-                              }}>
-                                <Text style={{
-                                  color: '#041A27',
-                                  fontSize: 15,
-                                  fontFamily: Font.headingfontfamily,
-                                  paddingTop: 15,
-                                  paddingBottom: 15,
-                                  width: '94.5%',
-                                }}>{data.title}</Text>
-                              </View>
-                            </TouchableOpacity>
-                          )
-                        })
-                      }
-                    </KeyboardAwareScrollView>
+                    <View style={BottomSheetViewStyles.Body}>
+
+                      <View style={BottomSheetViewStyles.TitleBar}>
+                        <Text style={BottomSheetViewStyles.Title}>Select User Type</Text>
+                      </View>
+
+                      <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                        {
+                          UserTypes.map((data, index) => {
+                            return (
+                              <TouchableOpacity style={{
+                                width: '100%',
+                              }} onPress={() => {
+                                setState({
+                                  selectuserType: index
+                                })
+                                userTypeSheetRef.current.close()
+                              }} key={'utol' + index}>
+                                <View style={{
+                                  width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                                  marginLeft: 15,
+                                  borderBottomColor: Colors.gray6,
+                                  borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
+                                }}>
+                                  <Text style={{
+                                    color: '#041A27',
+                                    fontSize: 15,
+                                    fontFamily: Font.headingfontfamily,
+                                    paddingTop: 15,
+                                    paddingBottom: 15,
+                                    width: '94.5%',
+                                  }}>{data.title}</Text>
+                                </View>
+                              </TouchableOpacity>
+                            )
+                          })
+                        }
+                      </KeyboardAwareScrollView>
+                    </View>
                   </View>
+
                 </RBSheet>
-                
+
               </View>
 
               <View
@@ -520,6 +517,7 @@ export default Login = ({ navigation, route }) => {
                   width: '90%',
                   alignSelf: 'center',
                   marginTop: (mobileW * 5) / 100,
+
                 }}>
                 <Text
                   style={{
@@ -537,6 +535,11 @@ export default Login = ({ navigation, route }) => {
                 text={LanguageConfiguration.createnewaccountbtn[Configurations.language]}
                 onPress={() => navigation.navigate(ScreenReferences.Signup)}
                 isBlank={true}
+                customStyles={{
+                  mainContainer: { borderWidth: 0, },
+                  buttonText: { fontSize: Font.medium }
+
+                }}
               />
 
               <View

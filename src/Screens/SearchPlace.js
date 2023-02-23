@@ -322,7 +322,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
             backgroundColor: Colors.White
         }}>
 
-            <ScreenHeader navigation={navigation} title='Service Address | Pickup Point' leftIcon={true} onBackPress={() => {
+            <ScreenHeader navigation={navigation} title='Pickup Point for Service' leftIcon={true} onBackPress={() => {
                 navigation.canGoBack() && navigation.goBack()
             }} style={{
                 paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0,

@@ -19,9 +19,10 @@ import { useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
 import AppLoader from '../Components/AppLoader';
-import { VideoCall, dummyUser } from '../Assets/Icons/SvgIcons/Index';
+import { VideoCall, _Cross, dummyUser } from '../Assets/Icons/SvgIcons/Index';
 import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
@@ -349,7 +350,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
     }).finally(() => {
       console.log({ RM: classStateData.isFromReportModal });
       attachmentOptionSheetRef.current.close()
-      setTimeout(()=>{
+      setTimeout(() => {
         if (classStateData.isFromReportModal == true) visibleReportModal()
       }, 1000)
     })
@@ -379,7 +380,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
     }).finally(() => {
       attachmentOptionSheetRef.current.close()
-      setTimeout(()=>{
+      setTimeout(() => {
         if (classStateData.isFromReportModal == true) visibleReportModal()
       }, 1000)
     })
@@ -2040,70 +2041,66 @@ export default AppointmentDetails = ({ navigation, route }) => {
                       </>
                     }
 
-                    <RBSheet closeOnPressBack ref={attachmentOptionSheetRef} animationType='slide' height={windowHeight / 3.75} customStyles={{
-                      container: {
-                        borderTopLeftRadius: vs(12),
-                        borderTopRightRadius: vs(12),
-                      },
 
-                    }} >
-                      <View style={{
-                        width: '100%',
-                        backgroundColor: "white",
-                        height: '100%',
-                        borderTopLeftRadius: vs(12),
-                        borderTopRightRadius: vs(12),
-                      }}>
-                        <View style={{
-                          backgroundColor: Colors.textblue,
-                          borderTopLeftRadius: vs(12),
-                          borderTopRightRadius: vs(12),
-                          paddingVertical: vs(14),
-                          width: '100%'
-                        }}>
-                          <Text style={{
-                            paddingLeft: 15,
-                            color: Colors.white_color,
-                            fontSize: Font.large,
-                            fontFamily: Font.SemiBold,
-                          }}>Choose your option!</Text>
-                        </View>
-
-                        <View style={{
-                          paddingVertical: vs(16),
-                          width: '100%',
-                          flexDirection: 'row'
-                        }}>
-                          <TouchableOpacity onPress={() => {
-                            openGalleryPicker()
-                          }} style={styles.roundButtonAttachmentContainer}>
-                            <Image source={Icons.Gallery} style={{
-                              marginVertical: vs(4),
-                              width: vs(16),
-                              height: vs(16),
-                              tintColor: Colors.textblue
-                            }} resizeMode='contain' resizeMethod='scale' />
-                            <Text>Gallery</Text>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity onPress={() => {
-                            openDocumentPicker()
-                          }} style={styles.roundButtonAttachmentContainer}>
-                            <Image source={Icons.Documents} style={{
-                              marginVertical: vs(4),
-                              width: vs(16),
-                              height: vs(16),
-                              tintColor: Colors.textblue
-                            }} resizeMode='contain' resizeMethod='scale' />
-                            <Text style={{
-                            }}>Documents</Text>
+                    <RBSheet
+                      ref={attachmentOptionSheetRef}
+                      {...BottomSheetProps}
+                      customStyles={BottomSheetStylesForSmall} >
+                      <View style={BottomSheetViewStyles.MainView}>
+                        <View style={BottomSheetViewStyles.ButtonContainerSmall}>
+                          <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                            attachmentOptionSheetRef.current.close()
+                          }}>
+                            <SvgXml xml={_Cross}
+                              width={windowHeight / 26}
+                              height={windowHeight / 26}
+                            />
                           </TouchableOpacity>
                         </View>
 
+                        <View style={BottomSheetViewStyles.Body}>
+
+                          <View style={BottomSheetViewStyles.TitleBar}>
+                            <Text style={BottomSheetViewStyles.Title}>Choose your option!</Text>
+                          </View>
+
+                          <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                            <View style={{
+                              paddingVertical: vs(16),
+                              width: '100%',
+                              flexDirection: 'row'
+                            }}>
+                              <TouchableOpacity onPress={() => {
+                                openGalleryPicker()
+                              }} style={styles.roundButtonAttachmentContainer}>
+                                <Image source={Icons.Gallery} style={{
+                                  marginVertical: vs(4),
+                                  width: vs(16),
+                                  height: vs(16),
+                                  tintColor: Colors.textblue
+                                }} resizeMode='contain' resizeMethod='scale' />
+                                <Text>Gallery</Text>
+                              </TouchableOpacity>
+
+                              <TouchableOpacity onPress={() => {
+                                openDocumentPicker()
+                              }} style={styles.roundButtonAttachmentContainer}>
+                                <Image source={Icons.Documents} style={{
+                                  marginVertical: vs(4),
+                                  width: vs(16),
+                                  height: vs(16),
+                                  tintColor: Colors.textblue
+                                }} resizeMode='contain' resizeMethod='scale' />
+                                <Text style={{
+                                }}>Documents</Text>
+                              </TouchableOpacity>
+                            </View>
+
+                          </KeyboardAwareScrollView>
+                        </View>
                       </View>
+
                     </RBSheet>
-
-
 
 
                     {(item.acceptance_status == 'Accepted' &&

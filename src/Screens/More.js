@@ -8,107 +8,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';
 
 export default More = ({ navigation, route }) => {
-  const [classStateData, setClassStateData] = useState({
-    engbtn: true,
-    modalVisible3: false,
-    langaugeme: 0,
-    device_lang: 'AR'
-  })
-
-  const setState = payload => {
-    setClassStateData(prev => ({ ...prev, ...payload }))
-  }
-
 
   const {
     loginUserData
   } = useSelector(state => state.Auth)
 
   const dispatch = useDispatch()
-
-
-  const launguage_setbtn = (language) => {
-    console.log('Welcome')
-    LanguageConfiguration.language_set(language)
-    setTimeout(() => {
-      submit_click()
-    }, 700);
-    setState({
-      engbtn: !classStateData.engbtn,
-    })
-
-  }
-
-  const submit_click = async () => {
-    let user_details = loginUserData
-    console.log('user_details user_details', user_details)
-    let user_id = user_details['user_id']
-
-    let url = Configurations.baseURL + "api-language-update";
-    console.log("url", url)
-    var data = new FormData();
-    data.append('login_user_id', user_id)
-    data.append('device_lang', classStateData.device_lang)
-
-
-    API.post(url, data, 1).then((obj) => {
-
-      if (obj.status == true) {
-        console.log('result', obj.result)
-        let result = obj.result
-
-
-      }
-      else {
-        MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
-
-        return false;
-      }
-    }).catch((error) => {
-      console.log("-------- error ------- ", error)
-      setState({ loading: false });
-    });
-  }
-  const confireClick = (title, message, callbackOk, callbackCancel) => {
-
-    Alert.alert(
-      LanguageConfiguration.Delete_account[Configurations.language],
-      LanguageConfiguration.Are_you_sure[Configurations.language],
-      // "Do you want to logout ?",
-      [
-        {
-          text: LanguageConfiguration.no_txt[Configurations.language],
-        },
-        {
-          text: LanguageConfiguration.yes_txt[Configurations.language],
-          onPress: () => delete_click(),
-        },
-      ],
-      { cancelable: false },
-    );
-  }
-  const delete_click = async () => {
-    let url = Configurations.baseURL + "api-delete-user";
-    var data = new FormData();
-    data.append('user_id', loginUserData?.user_id)
-
-    API.post(url, data, 1).then((obj) => {
-      if (obj.status == true) {
-        dispatch(onUserLogout())
-        navigation.reset({
-          index: 0,
-          routes: [{ name: ScreenReferences.Login }],
-        });
-      }
-      else {
-        MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
-        return false;
-      }
-    }).catch((error) => {
-      setState({ loading: false });
-    });
-  }
-
 
   const windowHeight = Math.round(Dimensions.get("window").height);
   const windowWidth = Math.round(Dimensions.get("window").width);
@@ -239,54 +144,6 @@ export default More = ({ navigation, route }) => {
       <View style={{ width: '95%', alignSelf: 'flex-end', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 5 / 100 }}>
       </View>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={classStateData.modalVisible3}
-        onRequestClose={() => { setState({ modalVisible3: false }) }}>
-        <TouchableOpacity onPress={() => { setState({ modalVisible3: false }) }} style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
-          <StatusBar backgroundColor={'#fff'} barStyle='default' hidden={false} translucent={false}
-            networkActivityIndicatorVisible={true} />
-          <View style={{ borderRadius: 20, width: mobileW * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
-
-            <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
-
-              <View style={{ alignSelf: 'flex-start', width: mobileW * 60 / 100, paddingVertical: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
-                <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={Icons.Logo}></Image>
-                <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 3 / 100 }}>{LanguageConfiguration.Lang_change[Configurations.language]}</Text>
-              </View>
-
-              <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 4 / 100, width: '90%' }}>{LanguageConfiguration.Lang_change_msg[Configurations.language]}</Text>
-              </View>
-
-              <View style={{
-                flexDirection: 'row', justifyContent: 'space-around', width: '40%', paddingBottom: mobileW * 5 / 100, marginTop: mobileW * 7 / 100,
-                alignSelf: 'flex-end', right: 10
-              }}>
-                <TouchableOpacity onPress={() => { setState({ modalVisible3: false }) }}
-                  style={{ width: mobileW * 15 / 100, flexDirection: 'row', alignSelf: 'center', }}>
-                  <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{LanguageConfiguration.no_txt[Configurations.language]}</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => {
-                  setState({ modalVisible3: false });
-                  if (classStateData.langaugeme == 1) {
-                    launguage_setbtn(0)
-                  }
-                  else {
-                    launguage_setbtn(1)
-                  }
-                }}
-                  activeOpacity={0.8}
-                  style={{ width: mobileW * 20 / 100, justifyContent: 'center' }}>
-                  <Text style={{ fontFamily: Font.Regular, fontSize: mobileW * 4 / 100, color: Colors.bordercolorblue, alignSelf: 'center' }}>{LanguageConfiguration.Restart[Configurations.language]}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </Modal>
     </View>
   )
 
