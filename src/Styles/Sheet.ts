@@ -21,6 +21,17 @@ export const BottomSheetStyles: RBSheetProps["customStyles"] = StyleSheet.create
     }
 })
 
+export const BottomSheetStylesForLarge: RBSheetProps["customStyles"] = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        bottom: 0,
+        borderTopLeftRadius: vs(12),
+        borderTopRightRadius: vs(12),
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        paddingTop: windowHeight - (windowHeight / 1.55)
+    }
+})
+
 export const BottomSheetStylesForSmall: RBSheetProps["customStyles"] = StyleSheet.create({
     container: {
         position: 'absolute',
@@ -68,14 +79,15 @@ export const BottomSheetViewStyles = StyleSheet.create({
         borderTopRightRadius: vs(12),
         paddingVertical: vs(14),
         width: '100%',
-        backgroundColor: Colors.textblue
+        backgroundColor: Colors.White
 
     },
     Title: {
         paddingLeft: 15,
-        color: Colors.white_color,
+        color: Colors.Black,
         fontSize: Font.large,
-        fontFamily: Font.SemiBold,
+        fontFamily: Font.Bold,
+        marginTop: vs(8)
     },
     ScrollContainer: {
         backgroundColor: Colors.White,

@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, FCM_DEVICE_TOKEN, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, PROFILE_COMPLETION_DATA, PROFILE_DATA, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from "../Types";
+import { ALL_USER_LOGIN_DATA, FCM_DEVICE_TOKEN, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from "../Types";
 
 export const setUserLoginData = payload => ({
     type: LOGGEDIN_USER_DATA,
@@ -55,6 +55,22 @@ export const setProfileCompletionData = payload => ({
     payload
 })
 
+
+export const setRatingsData = payload => ({
+    type: RATINGS,
+    payload
+})
+
+export const setNotificationsData = payload => ({
+    type: NOTIFICATIONS,
+    payload
+})
+
+export const setNotificationCount = payload => ({
+    type: NOTIFICATION_COUNT,
+    payload
+})
+ 
 export const onUserLogout = () => ({
     type: LOGOUT,
 })

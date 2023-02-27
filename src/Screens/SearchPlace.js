@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Text,
     View,
@@ -38,7 +38,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default SearchPlaceScreen = ({ navigation, route }) => {
 
     const [classStateData, setClassStateData] = useState({
-        isVisible: false,
         place_key: '',
         countryKey: '',
         searchPlaceVisible: false,
@@ -47,18 +46,11 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
         service_address: '',
     })
 
-    const [isVisible, setIsVisible] = useState(true)
-
-    const isFocused = useIsFocused()
-
-
+    const sheetRef = useRef()
     const setState = (payload, cb = () => { }) => {
         setClassStateData(prev => ({ ...prev, ...payload }))
         cb()
     }
-
-
-
     const {
         loginUserData
     } = useSelector(state => state.Auth)
@@ -75,15 +67,6 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
         })
     }, [])
 
-    useEffect(() => {
-        if (!isVisible) {
-            setIsVisible(true)
-        }
-        else if (!isFocused) {
-            setIsVisible(false)
-        }
-    }, [isFocused])
-
 
     const selectGooglePlace = ({
         data,
@@ -98,9 +81,9 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                 service_lat: latitude,
                 service_long: longitude,
                 service_address: data?.description,
-                isVisible: true
             }
         );
+        sheetRef.current.open()
     };
 
     const getadddressfromlatlong = (event) => {
@@ -330,11 +313,8 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
             }} />
             <AddressInputPopup
                 navigation={navigation}
-                visible={classStateData.isVisible}
                 onRequestClose={() => {
-                    setState({
-                        isVisible: false
-                    })
+                    sheetRef.current.close()
                 }}
                 shouldShowEditParam={false}
                 addressIDParam={address_id}
@@ -348,6 +328,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                 type={isNew ? 'addAddress' : 'editAddress'}
                 editedAddress={(val) => {
                 }}
+                refe={sheetRef}
             />
 
 

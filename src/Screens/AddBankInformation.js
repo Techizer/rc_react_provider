@@ -1,5 +1,5 @@
-import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView, Dimensions, Platform } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextInput, ScrollView, Dimensions, Platform, Keyboard } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { Colors, Font, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { AuthInputBoxSec, Button } from '../Components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -11,10 +11,7 @@ import ScreenHeader from '../Components/ScreenHeader';
 
 export default AddBankInformation = ({ navigation, route }) => {
   const [classStateData, setClassStateData] = useState({
-    Select_arr: 'NA',
-    selectmodal: false,
     message: '',
-    select: '',
     isCheck: false,
     bank_name: "",
     your_bank_name: "",
@@ -24,48 +21,24 @@ export default AddBankInformation = ({ navigation, route }) => {
     swift_no: "",
   })
 
+  const [isOnButtonLoading, setIsOnButtonLoading] = useState(false)
+
+  const bankNameRef = useRef()
+  const accountNameRef = useRef()
+  const accountNumberRef = useRef()
+  const confirmAccountNumberRef = useRef()
+  const ibanRef = useRef()
+  const swiftCodeRef = useRef()
+  const bankAddress = useRef()
+
   const setState = payload => {
     setClassStateData(prev => ({ ...prev, ...payload }))
   }
-
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      getData()
-    });
-  }, [])
-
 
   const {
     loginUserData
   } = useSelector(state => state.Auth)
 
-
-  const getData = async () => {
-    let user_id = loginUserData['user_id']
-
-    let url = Configurations.baseURL + "api-patient-need-help-topic";
-    console.log("url", url)
-    var data = new FormData();
-    data.append('login_user_id', user_id)
-
-
-    API.post(url, data).then((obj) => {
-
-      if (obj.status == true) {
-        console.log('result', obj.result)
-        let result = obj.result
-        setState({ Select_arr: obj.result })
-      }
-      else {
-        MessageFunctions.alert(MessageHeadings.information[Configurations.language], obj.message[Configurations.language], false);
-
-        return false;
-      }
-    }).catch((error) => {
-      console.log("-------- error ------- ", error)
-      setState({ loading: false });
-    });
-  }
   const onUpdate = async () => {
 
     if (classStateData.bank_name.length <= 0) {
@@ -97,12 +70,11 @@ export default AddBankInformation = ({ navigation, route }) => {
       return false;
     }
 
-    let user_id = loginUserData['user_id']
-    let user_type = loginUserData['user_type']
+    setIsOnButtonLoading(true)
 
     let url = Configurations.baseURL + "api-update-bank-details";
     var data = new FormData();
-    data.append('user_id', user_id)
+    data.append('user_id', loginUserData?.user_id)
     data.append('id', classStateData.id)
     data.append('bank_name', classStateData.bank_name)
     data.append('your_bank_name', classStateData.your_bank_name)
@@ -111,28 +83,27 @@ export default AddBankInformation = ({ navigation, route }) => {
     data.append('swift_no', classStateData.swift_no)
     data.append('message', classStateData.message)
 
-    API.post(url, data).then((obj) => {
+    API.post(url, data, 1).then((obj) => {
 
       if (obj.status == true) {
-        console.log('result', obj.result)
-        let result = obj.result
         MessageFunctions.showSuccess(obj.message)
-        // route.params.reloadList()
+        setIsOnButtonLoading(false)
         setTimeout(() => {
           navigation.replace(ScreenReferences.TransactionTabStack);
-        }, 700);
+        }, 800);
 
       }
       else {
         MessageFunctions.showError(obj.message)
-
+        setIsOnButtonLoading(false)
         return false;
       }
     }).catch((error) => {
       console.log("-------- error ------- ", error)
-      setState({ loading: false });
+      setIsOnButtonLoading(false)
     });
   }
+
 
 
 
@@ -156,89 +127,6 @@ export default AddBankInformation = ({ navigation, route }) => {
         networkActivityIndicatorVisible={true}
       />
 
-
-
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={classStateData.selectmodal}
-        onRequestClose={() => { }}>
-        <TouchableOpacity activeOpacity={0.9} onPress={() => { setState({ selectmodal: false }) }}
-          style={{
-            flex: 1,
-            alignSelf: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#00000080',
-            width: '100%',
-            marginTop: (mobileW * 3) / 100,
-            paddingBottom: (mobileW * 8) / 100,
-          }}>
-          <View
-            style={{
-              width: '70%',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-            }}>
-            <View
-              style={{
-                width: '100%',
-                backgroundColor: Colors.backgroundcolorblue,
-              }}>
-              <View
-                style={{ width: '45%', paddingVertical: (mobileW * 3) / 100 }}>
-                <Text
-                  style={{
-                    textAlign: Configurations.textalign,
-                    fontFamily: Font.Regular,
-                    fontSize: (mobileW * 4) / 100,
-                    alignSelf: 'center',
-                    color: Colors.textwhite,
-                  }}>
-                  {LanguageConfiguration.select_topic_text[Configurations.language]}
-                </Text>
-              </View>
-            </View>
-            <View style={{ width: '100%' }}>
-              <FlatList
-
-                data={classStateData.Select_arr}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setState({
-                            selectmodal: false,
-                            select: item.name,
-
-                          });
-                        }}
-                      >
-                        <View style={{ width: '100%', backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'flex-end' }}>
-                          <View style={{ width: '95%', borderBottomColor: '#0000001F', borderBottomWidth: 1, paddingVertical: mobileW * 2.5 / 100, marginLeft: mobileW * 5 / 100 }}>
-                            <Text
-                              style={{
-                                color: Colors.textblack,
-                                textAlign: Configurations.textRotate,
-                                fontSize: (mobileW * 4) / 100,
-                                paddingLeft: mobileW * 2 / 100,
-
-                              }}>
-                              {item.name}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}></FlatList>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-
       <ScreenHeader
         onBackPress={() => {
           navigation.goBack();
@@ -260,9 +148,7 @@ export default AddBankInformation = ({ navigation, route }) => {
           <Text style={Styles.textheading}>Add Bank Details</Text>
           <Text style={[Styles.textcontent, {
             marginTop: 6
-          }]}>This bank account will be used to withdrawa your available
-            funds. You must add a valid bank account details with the same name which
-            verifies its you the owner who receiving the money and not third person.</Text>
+          }]}>This bank account will be used to withdraw your available funds. Please ensure that you add valid bank account details that match your name, in order to verify that you are the rightful owner of the account and that the funds are being received by you and not by a third party.</Text>
         </View>
 
         <View
@@ -270,19 +156,13 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Bank Name'}
-            inputRef={(ref) => {
-              bank_nameInput = ref;
-            }}
+            inputRef={bankNameRef}
             onChangeText={(text) =>
               setState({ bank_name: text })
             }
@@ -291,7 +171,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyType="next"
             onSubmitEditing={() => {
-              your_bank_nameInput.focus();
+              accountNameRef.current.focus();
             }}
           />
         </View>
@@ -301,9 +181,6 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
@@ -311,9 +188,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             }}
             // icon={layer9_icon}
             lableText={'Account Name'}
-            inputRef={(ref) => {
-              your_bank_nameInput = ref;
-            }}
+            inputRef={accountNameRef}
             onChangeText={(text) =>
               setState({ your_bank_name: text })
             }
@@ -322,7 +197,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyType="next"
             onSubmitEditing={() => {
-              account_noInput.focus();
+              accountNumberRef.current.focus();
             }}
           />
         </View>
@@ -332,20 +207,14 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Account Number'}
-            inputRef={(ref) => {
-              account_noInput = ref;
-            }}
-            secureTextEntry={true}
+            inputRef={accountNumberRef}
+            // secureTextEntry={true}
             onChangeText={(text) =>
               setState({ account_no: text })
             }
@@ -354,7 +223,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyType="next"
             onSubmitEditing={() => {
-              cnfaccount_noInput.focus();
+              confirmAccountNumberRef.current.focus();
             }}
           />
         </View>
@@ -364,19 +233,13 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Confirm Account Number'}
-            inputRef={(ref) => {
-              cnfaccount_noInput = ref;
-            }}
+            inputRef={confirmAccountNumberRef}
             onChangeText={(text) =>
               setState({ cnfaccount_no: text })
             }
@@ -385,7 +248,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyType="next"
             onSubmitEditing={() => {
-              iban_noInput.focus();
+              ibanRef.current.focus();
             }}
           />
         </View>
@@ -395,19 +258,15 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
+
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
             // icon={layer9_icon}
             lableText={'IBN Code'}
-            inputRef={(ref) => {
-              iban_noInput = ref;
-            }}
+            inputRef={ibanRef}
             onChangeText={(text) =>
               setState({ iban_no: text })
             }
@@ -416,7 +275,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyType="next"
             onSubmitEditing={() => {
-              swift_noInput.focus();
+              swiftCodeRef.current.focus();
             }}
           />
         </View>
@@ -426,19 +285,13 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
-            lableText={'Swift Number(Optional)'}
-            inputRef={(ref) => {
-              swift_noInput = ref;
-            }}
+            lableText={'Swift Number (Optional)'}
+            inputRef={swiftCodeRef}
             onChangeText={(text) =>
               setState({ swift_no: text })
             }
@@ -447,7 +300,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyType="next"
             onSubmitEditing={() => {
-              messageInput.focus();
+              bankAddress.current.focus();
             }}
           />
         </View>
@@ -457,19 +310,14 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
+            
             lableText={'Bank Account Address'}
-            inputRef={(ref) => {
-              messageInput = ref;
-            }}
+            inputRef={bankAddress}
             onChangeText={(text) =>
               setState({ message: text })
             }
@@ -478,7 +326,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyType="next"
             onSubmitEditing={() => {
-              // emailInput.focus();
+              Keyboard.dismiss()
             }}
           />
         </View>
@@ -488,9 +336,6 @@ export default AddBankInformation = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 5) / 100,
-            // borderColor: classStateData.namefocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <TouchableOpacity activeOpacity={0.9}
             style={{
@@ -508,8 +353,8 @@ export default AddBankInformation = ({ navigation, route }) => {
               justifyContent: 'center'
             }}>
               <View style={{
-                // width: '20%'
-                marginRight: 15
+                width: '8%',
+                marginRight: '2%'
               }}>
                 <Image style={
                   (classStateData.isCheck) ?
@@ -523,11 +368,10 @@ export default AddBankInformation = ({ navigation, route }) => {
                 style={{
                   color: Colors.regulartextcolor,
                   fontFamily: Font.Regular,
-                  // paddingLeft:mobileW*2/100,
-                  // textAlign: Configurations.textalign,
+                  width: '90%',
                   fontSize: Font.Remember,
                 }}>
-                By adding an account, you agree on all the information provided are correct & genuine.
+                By adding an account, you confirm that all the information provided is accurate and genuine.
               </Text>
             </View>
           </TouchableOpacity>
@@ -535,14 +379,9 @@ export default AddBankInformation = ({ navigation, route }) => {
 
         <Button
           text={LanguageConfiguration.submitbtntext[Configurations.language]}
-          // onLoading={classStateData.loading}
-          customStyles={
-            {
-              // mainContainer: styles.butonContainer
-            }
-          }
           onPress={() => onUpdate()}
-        // isBlank={false}
+          onLoading={isOnButtonLoading}
+          isDisabled={!classStateData.isCheck}
         />
 
       </KeyboardAwareScrollView>

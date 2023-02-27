@@ -13,6 +13,9 @@ const LAST_SCREEN = 'LastScreen'
 const SCHEDULE_AVAILABILITY = 'ScheduleAvailability'
 const PROFILE_DATA = 'ProfileData'
 const PROFILE_COMPLETION_DATA = 'ProfileCompletionData'
+const RATINGS = 'Ratings'
+const NOTIFICATIONS = 'Notifications'
+const NOTIFICATION_COUNT = 'NotificationsCount'
 
 export {
     ReducerType,
@@ -27,5 +30,8 @@ export {
     LAST_SCREEN,
     SCHEDULE_AVAILABILITY,
     PROFILE_DATA,
-    PROFILE_COMPLETION_DATA
+    PROFILE_COMPLETION_DATA,
+    RATINGS,
+    NOTIFICATIONS,
+    NOTIFICATION_COUNT
 }

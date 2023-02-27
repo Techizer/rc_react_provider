@@ -30,9 +30,8 @@ const ServiceAddress = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [isFetchedSuccess, setIsFetchedSuccess] = useState(false)
     const [isEditable, setIsEditable] = useState(false)
-    const [isMTrueState, setIsMTrueState] = useState(false)
     const isFocused = useIsFocused()
-    const sheetRef = useRef(null);
+    const sheetRef = useRef();
     const mapRef = useRef()
 
     const { isMTrue, lat, lng, id, googleAddress } = route?.params || { isMTrue: false, lat: 0, lng: 0, id: 0, googleAddress: '' }
@@ -45,10 +44,14 @@ const ServiceAddress = ({ navigation, route }) => {
     const lRot = Configurations.textRotate
 
     useEffect(() => {
-        console.log({ isMTrue, lat, lng, id, googleAddress });
-        setIsMTrueState(isMTrue)
         getAddresses()
-    }, [isFocused, addressSheet])
+        if (sheetRef && isFocused) {
+            if (isMTrue) {
+                sheetRef.current.open()
+            } else sheetRef.current.close()
+        }
+
+    }, [isFocused, isMTrue])
 
     const getAddresses = async () => {
         let user_details = loginUserData
@@ -157,7 +160,7 @@ const ServiceAddress = ({ navigation, route }) => {
                     index={0}
                     addressDetails={addressList[0]}
                     showModal={(val) => {
-                        setAddressSheet(val)
+                        sheetRef.current.open()
                     }}
                     navigation={navigation}
                     selected={selectedAddress}
@@ -254,10 +257,9 @@ const ServiceAddress = ({ navigation, route }) => {
 
             <AddressInputPopup
                 navigation={navigation}
-                visible={addressSheet || isMTrueState}
+                refe={sheetRef}
                 onRequestClose={() => {
-                    setAddressSheet(false)
-                    setIsMTrueState(false)
+                    sheetRef.current.close()
                 }}
                 navToBackThen={false}
                 shouldShowEditParam

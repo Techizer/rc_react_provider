@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, LAST_SCREEN, LOGGEDIN_USER_TYPE, PROFILE_COMPLETION_DATA, PROFILE_DATA, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from '../Types';
+import { ALL_USER_LOGIN_DATA, LAST_SCREEN, LOGGEDIN_USER_TYPE, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from '../Types';
 import { LOGGEDIN_USER_DATA, LOGOUT, FCM_DEVICE_TOKEN } from '../Types';
 import { ScreenReferences } from '../../Stacks/ScreenReferences'
 
@@ -12,7 +12,10 @@ const initialState = {
     scheduleAvailability: null,
     profileData: null,
     profileCompletion: null,
-    lastScreen: ScreenReferences.Splash
+    ratings: null,
+    lastScreen: ScreenReferences.Splash,
+    notifications: [],
+    notificationCount: 0
 };
 
 const Authentication = (state = initialState, action = {}) => {
@@ -86,6 +89,21 @@ const Authentication = (state = initialState, action = {}) => {
             return {
                 ...state,
                 profileCompletion: action.payload,
+            };
+        case RATINGS:
+            return {
+                ...state,
+                ratings: action.payload,
+            };
+        case NOTIFICATIONS:
+            return {
+                ...state,
+                notifications: action.payload,
+            };
+        case NOTIFICATION_COUNT:
+            return {
+                ...state,
+                notificationCount: action.payload,
             };
         default:
             return state;

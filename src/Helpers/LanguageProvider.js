@@ -347,7 +347,7 @@ class LanguageProvider {
   patient_details = ['Patient Details', 'تفاصيل المريض   ']
   appointment_closed_otp_text = ['OTP entered, Appointment Closed', ' تم إدخال رمز التحقق لمرة واحدة ، وتم إغلاق الموعد ']
   All = ['All', '  الجميع   ']
-  NotificationsList = ['Notification', 'الاشعارات  ']
+  NotificationsList = ['Notifications', 'الاشعارات  ']
   Notification = ['Notification', ' الاشعارات   ']
   MyAppointments = ['My Appointments', 'مواعيدي  ']
   rated = ['Rated', 'تم التقييم  ']

@@ -28,8 +28,6 @@ export default Drawer = ({ navigation, route }) => {
     navigation.navigate('Login')
   }
 
-  console.log({profileCompletion});
-
   const logoutApi = async () => {
     let url = Configurations.baseURL + "api-logout";
     var data = new FormData();
@@ -37,9 +35,7 @@ export default Drawer = ({ navigation, route }) => {
 
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        setTimeout(() => {
-          logout()
-        }, 500);
+        
       } else {
         setTimeout(() => {
           MessageFunctions.showError(obj.message)
@@ -47,6 +43,10 @@ export default Drawer = ({ navigation, route }) => {
         return false;
       }
     }).catch((error) => {
+    }).finally(() => {
+      setTimeout(() => {
+        logout()
+      }, 500);
     })
 
   }

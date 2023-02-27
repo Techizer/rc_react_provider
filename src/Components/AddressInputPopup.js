@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View, Image, StyleSheet, ActivityIndicator, Tou
 import Modal from "react-native-modal";
 import { Colors, Font } from "../Provider/Colorsfont";
 import { windowWidth, Configurations, API, MessageFunctions, windowHeight } from "../Helpers/Utils";
-import { Cross } from "../Assets/Icons/SvgIcons/Index";
+import { Cross, _Cross } from "../Assets/Icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import AuthInputBoxSec from "./AuthInputBoxSec";
@@ -12,8 +12,10 @@ import Button from "./Button";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
 import { TextInput } from "react-native-paper";
+import RBSheet from "react-native-raw-bottom-sheet";
+import { BottomSheetProps, BottomSheetStyles, BottomSheetStylesForLarge, BottomSheetViewStyles } from "../Styles/Sheet";
 
-const AddressInputPopup = ({ visible, onRequestClose, type='addAddress', editedAddress = () => { },
+const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', editedAddress = () => { }, refe,
     navigation,
     addressIDParam = -1,
     addressTitleParam = '',
@@ -37,7 +39,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type='addAddress', editedA
 
     const scrollRef = useRef()
     const landmarkRef = useRef()
-    const buildingRef = useRef()
+    const buildingRef = useRef() 
 
 
     const {
@@ -111,7 +113,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type='addAddress', editedA
 
         setIsLoading(true)
 
-        console.log('addData...',data);
+        console.log('addData...', data);
         API
             .post(url, data, 1)
             .then((obj) => {
@@ -119,6 +121,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type='addAddress', editedA
                 setIsLoading(false)
                 if (obj.status == true) {
                     MessageFunctions.showSuccess(obj.message)
+                    // refe.current.close()
                     onRequestClose()
                     editedAddress(title)
                 } else {
@@ -137,261 +140,219 @@ const AddressInputPopup = ({ visible, onRequestClose, type='addAddress', editedA
             })
     };
 
+
+
     return (
-        <Modal
-            isVisible={visible}
-            statusBarTranslucent={true}
-            animationIn='fadeInUpBig'
-            animationOut='fadeOutDownBig'
-            animationInTiming={350}
-            animationOutTimixng={350}
-            avoidKeyboard={false}
-            hasBackdrop={true}
-            useNativeDriver={true}
-            useNativeDriverForBackdrop={true}
-            style={{ margin: 0, }} >
 
-
-            <View pointerEvents={(isLoading || isDelete) ? 'none' : 'auto'} style={styles.modalContainer}>
-                {
-                    isDelete &&
-                    <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'rgba(0,0,0,0.3)',
-                        width: windowWidth,
-                        height: windowHeight - 200,
-                        borderRadius: 25,
-                        position: 'absolute',
-                        bottom: 0,
-                        zIndex: 999,
+        <RBSheet
+            ref={refe}
+            {...BottomSheetProps}
+            customStyles={BottomSheetStylesForLarge} >
+            <View style={BottomSheetViewStyles.MainView}>
+                <View style={BottomSheetViewStyles.ButtonContainer}>
+                    <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                        refe.current.close()
                     }}>
-                        <ActivityIndicator size={'small'} color={Colors.Theme} />
+                        <SvgXml xml={_Cross}
+                            width={windowHeight / 26}
+                            height={windowHeight / 26}
+                        />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={BottomSheetViewStyles.Body}>
+
+                    <View style={BottomSheetViewStyles.TitleBar}>
+                        <Text style={BottomSheetViewStyles.Title}>{(type === 'editAddress') ? 'Edit Address' : 'Add Address'}</Text>
                     </View>
-                }
-                <TouchableHighlight
-                    onPress={() => {
-                        onRequestClose()
-                    }}
-                    underlayColor={Colors.Highlight}
-                    style={styles.closeContainer}
-                >
-                    <SvgXml xml={Cross} height={vs(19)} width={s(18)} />
-                </TouchableHighlight>
 
-                <Text
-                    style={{
-                        fontSize: Font.large,
-                        fontFamily: Font.SemiBold,
-                        textAlign: Configurations.textRotate,
-                        color: Colors.darkText
+                    <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                        <View style={{ padding: vs(8) }}>
 
-                    }}>{(type === 'editAddress') ? 'Edit Address' : 'Add Address'}</Text>
+                            <AuthInputBoxSec
+                                mainContainer={{ width: '100%' }}
+                                inputFieldStyle={{ height: vs(35) }}
+                                lableText={'Address Title'}
+                                onChangeText={(val) => setTitle(val)}
+                                value={title}
+                                keyboardType="default"
+                                autoCapitalize="none"
+                                returnKeyType="next"
+                                onSubmitEditing={() => {
+                                    landmarkRef.current.focus();
+                                }}
+                                blurOnSubmit={Platform.OS === 'ios' ? true : false}
+                                editable
+                            />
 
-                <KeyboardAwareScrollView
-                    // keyboardOpeningTime={200}
-                    extraScrollHeight={50}
-                    enableOnAndroid={true}
-                    keyboardShouldPersistTaps='handled'
-                    contentContainerStyle={{
-                        justifyContent: 'center',
-                        paddingBottom: vs(15),
-                    }}
-                    showsVerticalScrollIndicator={false}>
+                            <TextInput
+                                style={{
+                                    backgroundColor: Colors.tab_background_color,
+                                    alignSelf: 'flex-start',
+                                    justifyContent: 'flex-start',
+                                    textAlignVertical: 'top',
+                                    width: '100%',
+                                    color: Colors.Black,
+                                    fontSize: Font.medium,
+                                    textAlign: Configurations.textalign,
+                                    fontFamily: Font.Regular,
+                                    marginTop: vs(5)
+                                }}
+                                label={'Google Map Address'}
+                                onChangeText={(val) => setGoogleAddress(val)}
+                                value={googleAddress.trim()}
+                                keyboardType="default"
+                                autoCapitalize="none"
+                                returnKeyType="next"
+                                editable={false}
+                                multiline
+                                mode='outlined'
+                                outlineColor={Colors.field_border_color}
+                                activeOutlineColor={Colors.placholderactive}
+                                allowFontScaling={false}
+                                right={
+                                    (shouldShowEditParam) &&
+                                    <TextInput.Icon
+                                        name={'pencil'}
+                                        onPress={shouldShowEditParam ? () => {
+                                            refe.current.close()
+                                            setTimeout(() => {
+                                                navigation.navigate(ScreenReferences.SearchPlace, {
+                                                    address_id: addressIDParam,
+                                                    isNew: false
+                                                })
+                                            }, 500)
+                                        } : () => { }}
+                                        forceTextInputFocus={false}
+                                        color={Colors.regulartextcolor}
+                                        style={{
+                                            marginTop: 12,
+                                            alignSelf: 'center',
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}
 
+                                    />
 
-                    <View style={{ marginTop: vs(15) }}>
+                                }
+                            />
 
-                        {
+                            <AuthInputBoxSec
+                                mainContainer={{ marginTop: vs(5), width: '100%' }}
+                                inputFieldStyle={{ height: vs(35) }}
+                                lableText={'Nearest Landmark'}
+                                onChangeText={(val) => setNearest(val)}
+                                value={nearest}
+                                keyboardType="default"
+                                autoCapitalize="none"
+                                returnKeyType="next"
+                                onSubmitEditing={() => {
+                                    buildingRef.current.focus()
+                                }}
+                                blurOnSubmit={Platform.OS === 'ios' ? true : false}
+                                editable
+                                inputRef={landmarkRef}
+                            />
 
-                            <>
-                                <AuthInputBoxSec
-                                    mainContainer={{ width: '100%' }}
-                                    inputFieldStyle={{ height: vs(35) }}
-                                    lableText={'Address Title'}
-                                    onChangeText={(val) => setTitle(val)}
-                                    value={title}
-                                    keyboardType="default"
-                                    autoCapitalize="none"
-                                    returnKeyType="next"
-                                    onSubmitEditing={() => {
-                                        landmarkRef.current.focus();
-                                    }}
-                                    blurOnSubmit={Platform.OS === 'ios' ? true : false}
-                                    editable
-                                />
+                            <AuthInputBoxSec
+                                mainContainer={{ marginTop: vs(5), width: '100%' }}
+                                inputFieldStyle={{ height: vs(35) }}
+                                lableText={'Building Name'}
+                                //inputRef={buildingRef}
+                                onChangeText={(val) => setBuilding(val)}
+                                value={building}
+                                keyboardType="default"
+                                autoCapitalize="none"
+                                returnKeyType="done"
+                                onSubmitEditing={() => {
+                                    Keyboard.dismiss()
+                                }}
+                                blurOnSubmit={Platform.OS === 'ios' ? true : false}
+                                editable
+                                inputRef={buildingRef}
+                            />
 
-                                <TextInput
+                            <View
+                                style={{
+                                    width: "100%",
+                                    alignSelf: "center",
+                                    marginTop: vs(15),
+                                    flexDirection: "row",
+                                    alignItems: 'center'
+                                }} >
+
+                                <TouchableOpacity
+                                    disabled
+                                    activeOpacity={0.8}
                                     style={{
-                                        backgroundColor: Colors.tab_background_color,
-                                        alignSelf: 'flex-start',
-                                        justifyContent: 'flex-start',
-                                        textAlignVertical: 'top',
-                                        width: '100%',
-                                        color: Colors.Black,
-                                        fontSize: Font.medium,
-                                        textAlign: Configurations.textalign,
-                                        fontFamily: Font.Regular,
-                                        marginTop: vs(5)
-                                    }}
-                                    label={'Google Map Address'}
-                                    onChangeText={(val) => setGoogleAddress(val)}
-                                    value={googleAddress.trim()}
-                                    keyboardType="default"
-                                    autoCapitalize="none"
-                                    returnKeyType="next"
-                                    editable={false}
-                                    multiline
-                                    mode='outlined'
-                                    outlineColor={Colors.field_border_color}
-                                    activeOutlineColor={Colors.placholderactive}
-                                    allowFontScaling={false}
-                                    right={
-                                        (shouldShowEditParam) &&
-                                        <TextInput.Icon
-                                            name={'pencil'}
-                                            onPress={shouldShowEditParam ? () => {
-                                                onRequestClose()
-                                                setTimeout(() => {
-                                                    navigation.navigate(ScreenReferences.SearchPlace, {
-                                                        address_id: addressIDParam,
-                                                        isNew: false
-                                                    })
-                                                }, 500)
-                                            } : () => { }}
-                                            forceTextInputFocus={false}
-                                            color={Colors.regulartextcolor}
-                                            style={{
-                                                marginTop: 12,
-                                                alignSelf: 'center',
-                                                justifyContent: 'center',
-                                                alignItems: 'center'
-                                            }}
-
-                                        />
-
-                                    }
-                                />
-
-                                <AuthInputBoxSec
-                                    mainContainer={{ marginTop: vs(5), width: '100%' }}
-                                    inputFieldStyle={{ height: vs(35) }}
-                                    lableText={'Nearest Landmark'}
-                                    onChangeText={(val) => setNearest(val)}
-                                    value={nearest}
-                                    keyboardType="default"
-                                    autoCapitalize="none"
-                                    returnKeyType="next"
-                                    onSubmitEditing={() => {
-                                        buildingRef.current.focus()
-                                    }}
-                                    blurOnSubmit={Platform.OS === 'ios' ? true : false}
-                                    editable
-                                    inputRef={landmarkRef}
-                                />
-
-                                <AuthInputBoxSec
-                                    mainContainer={{ marginTop: vs(5), width: '100%' }}
-                                    inputFieldStyle={{ height: vs(35) }}
-                                    lableText={'Building Name'}
-                                    //inputRef={buildingRef}
-                                    onChangeText={(val) => setBuilding(val)}
-                                    value={building}
-                                    keyboardType="default"
-                                    autoCapitalize="none"
-                                    returnKeyType="done"
-                                    onSubmitEditing={() => {
-                                        Keyboard.dismiss()
-                                    }}
-                                    blurOnSubmit={Platform.OS === 'ios' ? true : false}
-                                    editable
-                                    inputRef={buildingRef}
-                                />
-
-                                <View
-                                    style={{
-                                        width: "100%",
-                                        alignSelf: "center",
-                                        marginTop: vs(15),
+                                        width: "37%",
                                         flexDirection: "row",
-                                        alignItems: 'center'
-                                    }} >
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                    }}
+                                    onPress={() => {
+                                        setDefaultAddress(!defaultAddress)
+                                    }}>
+
 
                                     <TouchableOpacity
                                         disabled
-                                        activeOpacity={0.8}
-                                        style={{
-                                            width: "37%",
-                                            flexDirection: "row",
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
                                         onPress={() => {
                                             setDefaultAddress(!defaultAddress)
+                                        }}
+                                        style={{
+                                            height: 20,
+                                            width: 20,
+                                            borderRadius: 5,
+                                            backgroundColor: defaultAddress ? Colors.Theme : Colors.White,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            borderWidth: defaultAddress ? 0 : 1.3,
+                                            borderColor: Colors.Border
                                         }}>
-
-
-                                        <TouchableOpacity
-                                            disabled
-                                            onPress={() => {
-                                                setDefaultAddress(!defaultAddress)
-                                            }}
-                                            style={{
-                                                height: 20,
-                                                width: 20,
-                                                borderRadius: 5,
-                                                backgroundColor: defaultAddress ? Colors.Theme : Colors.White,
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                borderWidth: defaultAddress ? 0 : 1.3,
-                                                borderColor: Colors.Border
-                                            }}>
-                                            {
-                                                defaultAddress ?
-                                                    <Image
-                                                        style={{
-                                                            height: 14,
-                                                            width: 14,
-                                                            tintColor: Colors.White
-                                                        }}
-                                                        resizeMode="contain"
-                                                        source={require('../Assets/Icons/tick.png')}
-                                                    />
-                                                    :
-                                                    null
-                                            }
-                                        </TouchableOpacity>
-                                        <Text
-                                            style={{
-                                                color: Colors.inActiveText,
-                                                fontFamily: Font.Regular,
-                                                fontSize: Font.medium,
-                                            }}>
-                                            {'Default Address'}
-                                        </Text>
-
+                                        {
+                                            defaultAddress ?
+                                                <Image
+                                                    style={{
+                                                        height: 14,
+                                                        width: 14,
+                                                        tintColor: Colors.White
+                                                    }}
+                                                    resizeMode="contain"
+                                                    source={require('../Assets/Icons/tick.png')}
+                                                />
+                                                :
+                                                null
+                                        }
                                     </TouchableOpacity>
-                                </View>
+                                    <Text
+                                        style={{
+                                            color: Colors.inActiveText,
+                                            fontFamily: Font.Regular,
+                                            fontSize: Font.medium,
+                                        }}>
+                                        {'Default Address'}
+                                    </Text>
 
-                            </>
-
-                        }
-
-                        <View style={{ marginTop: vs(25) }}>
-
+                                </TouchableOpacity>
+                            </View>
                             <Button
                                 text={"Save Address"}
                                 onPress={() => {
                                     addEditAddress()
                                 }}
                                 btnStyle={{ marginTop: vs(10) }}
+                                customStyles={{
+                                    mainContainer: {width: '100%'}
+                                }}
                                 onLoading={isLoading}
                             />
                         </View>
-                    </View>
-                </KeyboardAwareScrollView>
+                    </KeyboardAwareScrollView>
+                </View>
             </View>
-        </Modal >
+
+        </RBSheet>
     )
 }
 const styles = StyleSheet.create({
