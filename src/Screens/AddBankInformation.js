@@ -7,6 +7,7 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
 import ScreenHeader from '../Components/ScreenHeader';
+import { vs } from 'react-native-size-matters';
 
 
 export default AddBankInformation = ({ navigation, route }) => {
@@ -138,7 +139,9 @@ export default AddBankInformation = ({ navigation, route }) => {
         style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
 
 
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView contentContainerStyle={{
+        paddingBottom: vs(28)
+      }}>
 
         <View style={{
           width: '90%', alignSelf: 'center', marginTop: mobileW * 5 / 100,
@@ -379,9 +382,15 @@ export default AddBankInformation = ({ navigation, route }) => {
 
         <Button
           text={LanguageConfiguration.submitbtntext[Configurations.language]}
-          onPress={() => onUpdate()}
+          onPress={onUpdate}
           onLoading={isOnButtonLoading}
           isDisabled={!classStateData.isCheck}
+          customStyles={{
+            mainContainer: {
+              marginBottom: vs(16),
+              width: '90%'
+            }
+          }}
         />
 
       </KeyboardAwareScrollView>

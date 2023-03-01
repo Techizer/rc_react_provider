@@ -36,6 +36,7 @@ import { onUserLogout, setLastScreen } from '../Redux/Actions/UserActions';
 import { localStorage } from '../Provider/localStorageProvider';
 import { NavigationContainer } from '@react-navigation/native';
 import { useRef } from 'react';
+import Chat from '../Screens/Chat';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -173,6 +174,12 @@ const MainStack = navigation => {
         <Stack.Screen
           name={ScreenReferences.AppointmentsTabStack}
           component={AppointmentsTabStack}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+
+        <Stack.Screen
+          name={ScreenReferences.ChatScreen}
+          component={Chat}
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen

@@ -168,8 +168,6 @@ export default PastAppointments = ({ navigation, route }) => {
                       navigation.navigate(ScreenReferences.VideoCall, {
                         item: item
                       });
-
-
                     }}
                   />
                 </>

@@ -10,6 +10,7 @@ import { DrawerIcons } from '../Assets/Icons/drawer';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';
+import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 const windowWidth = Dimensions.get('window').width
 
 export default Drawer = ({ navigation, route }) => {
@@ -29,9 +30,11 @@ export default Drawer = ({ navigation, route }) => {
   }
 
   const logoutApi = async () => {
+    const fcm_token = FBPushNotifications.getFcmToken()
     let url = Configurations.baseURL + "api-logout";
     var data = new FormData();
     data.append('user_id', loginUserData?.user_id)
+    data.append('fcm_token', fcm_token)
 
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {

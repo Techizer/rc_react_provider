@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Text, TextInput, View, Linking, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl, StyleSheet } from 'react-native';
+import { Alert, Text, TextInput, View, Linking, Image, TouchableOpacity, Modal, FlatList, PermissionsAndroid, Platform, Dimensions, StatusBar, RefreshControl, StyleSheet, LogBox } from 'react-native';
 import { Media, Colors, Font, mobileH, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -23,6 +23,7 @@ import { VideoCall, _Cross, dummyUser } from '../Assets/Icons/SvgIcons/Index';
 import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
+import { getISChatImplemented, getIsAppointmentChatEnabled } from '../Helpers/AppFunctions';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
@@ -56,6 +57,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
     loginUserData
   } = useSelector(state => state.Auth)
 
+  LogBox.ignoreAllLogs()
+
   const onRefresh = useCallback(() => {
     console.log('onRefresh');
     getDetails(0)
@@ -82,17 +85,13 @@ export default AppointmentDetails = ({ navigation, route }) => {
     data.append('service_type', loginUserData?.user_type)
 
     API.post(url, data, 1).then((obj) => {
-      console.log('In get details 1');
       if (obj.status == true) {
-        console.log({ AppointmentDetails: obj?.result });
+        console.log({appointmentDetails: obj?.result});
         setState({
           appointmentDetails: obj.result,
-          message: obj.message,
           isLoading: false
         })
       } else {
-
-        setState({ nurse_data: obj.result, message: obj.message })
         return false;
       }
     }).catch((error) => {
@@ -388,8 +387,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
   }
 
   const onUploadPrescription = async (file) => {
-    // Keyboard.dismiss()
-
     let url = Configurations.baseURL + "api-doctor-upload-prescription";
     var data = new FormData();
 
@@ -511,8 +508,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
   headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
   try {
-
-
     var item = classStateData.appointmentDetails
 
     if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
@@ -525,8 +520,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
       var MyDate = moment(item.appointment_date + " " + item.from_time, 'YYYY-MM-DD hh:mm A').unix();
       var MyEndDate = moment(item.appointment_date + " 11:59 PM", 'YYYY-MM-DD hh:mm A').unix();
 
-
-      console.log({ Hospital: item.hospital_id });
       if (CurrentDate > MyDate) {
         UploadprecriptionBtn = true
         UploadReportBtn = true
@@ -547,6 +540,30 @@ export default AppointmentDetails = ({ navigation, route }) => {
       }
       if (CurrentDate > MyEndDate) {
         VideoCallBtn = false
+      }
+
+      const isChatImplemented = getISChatImplemented(moment(item?.appointment_date).valueOf())
+      console.log({ isChatImplemented });
+
+
+      const chatOptions = {
+        provider: {
+          name: item?.provider_name,
+          image: Configurations.img_url3 + item?.provider_image,
+          service: item?.service_type
+        },
+        patient: {
+          name: item?.patientr_name,
+          image: Configurations.img_url3 + item?.patient_image,
+          address: item?.patient_address
+        },
+        appointment: {
+          id: item?.id,
+          order: item?.order_id,
+          date: item?.appointment_date,
+          status: item?.acceptance_status
+        }
+
       }
 
       return (
@@ -572,10 +589,12 @@ export default AppointmentDetails = ({ navigation, route }) => {
             }}
             showsVerticalScrollIndicator={false}>
             <RefreshControl
+              key={'refresher'}
               refreshing={classStateData.isLoading}
               onRefresh={onRefresh}
               enabled />
             <View
+              key={'main-view'}
               style={{
                 flex: 1,
                 marginBottom: (mobileW * 40) / 100,
@@ -2224,25 +2243,24 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
         </View>
       );
-    }
-    else {
+    } else {
       return (
         <View style={{ flex: 1 }}>
           <ScreenHeader
-            onBackPress={() => {
-              navigation.goBack();
-            }}
+            onBackPress={() => { navigation.goBack() }}
             leftIcon
             rightIcon={false}
             navigation={navigation}
             title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
-            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }}
+          />
 
           <KeyboardAwareScrollView>
 
             <RefreshControl
               refreshing={classStateData.isLoading}
-              enabled />
+              enabled
+              key={'refresher'} />
 
             <View style={{
               width: windowWidth,
@@ -2256,9 +2274,9 @@ export default AppointmentDetails = ({ navigation, route }) => {
                 style={{
                   flexDirection: "row",
                   width: '100%',
-                  paddingHorizontal: s(11),
+                  paddingHorizontal: s(11)
                 }}>
-                <View style={{ width: "30%", }}>
+                <View style={{ width: "30%" }}>
                   <SkeletonPlaceholder>
                     <SkeletonPlaceholder.Item width={vs(50)} height={vs(50)} borderRadius={vs(50)} />
                   </SkeletonPlaceholder>

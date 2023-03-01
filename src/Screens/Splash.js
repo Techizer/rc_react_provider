@@ -19,7 +19,6 @@ export default Splash = ({ navigation, route }) => {
     email: '',
     password: '',
     device_lang: 'ENG',
-    fcm_token: 123456,
     loanguage: 0,
     modalVisible3: false,
     appVer: '',
@@ -54,42 +53,8 @@ export default Splash = ({ navigation, route }) => {
     API.get(url, 1).then((obj) => {
 
       if (obj.status == true) {
-
-        console.log({
-          MyVersion: appVersion,
-          FromApiVersion: obj?.result?.appVer,
-          Platform: Platform.OS
-        });
-
-        // const fetchedVersionCodes = obj?.result?.appVer?.split('.') //[3,3,6]
-        // const myAppVersionCodes = appVersion.split('.') //[3,3,7]
-        // for (let index = 0; index < fetchedVersionCodes.length; index++) {
-        //   if (parseInt(fetchedVersionCodes[index]) > parseInt(myAppVersionCodes[index])) {
-        //     setState(prev => ({
-        //       ...prev,
-        //       appVer: obj.result.appVer,
-        //       updTitle: '<h3>' + obj.result.updTitle + '</h3>',
-        //       updText: '<p>' + obj.result.updText + '</p>',
-        //       skipFlag: obj.result.skipFlag,
-        //       skipText: obj.result.skipText,
-        //       rdrTo: obj.result.rdrTo,
-        //       rdrUrl: obj.result.rdrUrl,
-        //       showHelp: obj.result.showHelp,
-        //       helpTitle: obj.result.helpTitle,
-        //       helpUrl: obj.result.helpUrl,
-        //       modalVisible3: true
-        //     }))
-        //     return;
-        //   }
-        // }
-
-        // setTimeout(() => {
-        //   createNewLoginSession()
-        // }, 1000);
-
         const newCode = obj?.result?.appVer?.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
         const myCode = appVersion.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
-
         console.log({ newCode, myCode });
 
         if (parseInt(newCode) > parseInt(myCode)) {
@@ -112,8 +77,6 @@ export default Splash = ({ navigation, route }) => {
             createNewLoginSession()
           }, 1000);
         }
-
-
       } else {
         setTimeout(() => {
           createNewLoginSession()
@@ -129,9 +92,11 @@ export default Splash = ({ navigation, route }) => {
   }
 
   const logout = async () => {
+    const fcm_token = await FBPushNotifications.getFcmToken()
     let url = Configurations.baseURL + "api-logout";
     var data = new FormData();
     data.append('user_id', loginUserData?.user_id)
+    data.append('fcm_token', fcm_token)
 
     API.post(url, data, 1).finally(() => {
       dispatch(onUserLogout())

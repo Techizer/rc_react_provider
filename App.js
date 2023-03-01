@@ -18,6 +18,7 @@ import { store, persistor } from './src/Redux/Store'
 import { AppState } from 'react-native';
 import { Settings } from 'react-native-fbsdk-next';
 import analytics from '@react-native-firebase/analytics';
+import { MessageRoom } from './src/Schemas/MessageRoom';
 
 // Sentry.init({
 //   dsn: "https://02c63dd1da9049678fe535486d33409f@o4504395052482560.ingest.sentry.io/4504563977224192",
@@ -68,6 +69,7 @@ const App = (props) => {
               // }}
               position="top"
               animated={true}
+              
             // titleStyle={{
             //   fontFamily: Font.Regular,
             //   fontSize: 20

@@ -164,9 +164,6 @@ export default EditProfile = ({ navigation, route }) => {
   const onEditProfileClick = async () => {
     let user_id = loginUserData['user_id']
 
-    Keyboard.dismiss()
-
-
     if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
       MessageFunctions.showError(MessageTexts.emptyName[Configurations.language])
       return false;
@@ -373,9 +370,6 @@ export default EditProfile = ({ navigation, route }) => {
               width: '100%',
             }}
             lableText={'Provide ID Number'}
-            inputRef={(ref) => {
-              id_numberInput = ref;
-            }}
             maxLength={15}
             onChangeText={(text) =>
               setState({ id_number: text })
@@ -451,11 +445,7 @@ export default EditProfile = ({ navigation, route }) => {
               width: '90%',
               alignSelf: 'center'
             }}
-            // icon={layer9_icon}
             lableText={'Speciality'}
-            // inputRef={(ref) => {
-            //   qualificationInput = ref;
-            // }}
             onChangeText={(text) =>
               setState({ speciality: text })
             }
@@ -480,11 +470,7 @@ export default EditProfile = ({ navigation, route }) => {
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Highest Qualification'}
-            inputRef={(ref) => {
-              qualificationInput = ref;
-            }}
             onChangeText={(text) =>
               setState({ qualification: text })
             }
@@ -541,11 +527,7 @@ export default EditProfile = ({ navigation, route }) => {
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Years of Experience'}
-            inputRef={(ref) => {
-              experienceInput = ref;
-            }}
             onChangeText={(text) =>
               setState({ experience: text })
             }
@@ -570,11 +552,7 @@ export default EditProfile = ({ navigation, route }) => {
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'SCFHS Registration ID'}
-            inputRef={(ref) => {
-              scfhs_numberInput = ref;
-            }}
             onChangeText={(text) =>
               setState({ scfhs_number: text })
             }
@@ -647,20 +625,13 @@ export default EditProfile = ({ navigation, route }) => {
             width: '90%',
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
-            flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
+            flexDirection: 'row'
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Highest Qualification'}
-            inputRef={(ref) => {
-              qualificationInput = ref;
-            }}
             onChangeText={(text) =>
               setState({ qualification: text })
             }
@@ -715,19 +686,12 @@ export default EditProfile = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Years of Experience'}
-            inputRef={(ref) => {
-              experienceInput = ref;
-            }}
             onChangeText={(text) =>
               setState({ experience: text })
             }
@@ -771,19 +735,12 @@ export default EditProfile = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Health Registration ID'}
-            inputRef={(ref) => {
-              hosp_moh_lic_noInput = ref;
-            }}
             maxLength={15}
             onChangeText={(text) =>
               setState({ hosp_moh_lic_no: text })
@@ -857,19 +814,12 @@ export default EditProfile = ({ navigation, route }) => {
             alignSelf: 'center',
             marginTop: (mobileW * 2) / 100,
             flexDirection: 'row',
-            // borderColor: classStateData.confirmpasswordfocus == true ? '#0057A5' : Colors.placeholder_border,
-            // borderWidth: 1,
-            // borderRadius: (mobileW * 1) / 100,
           }}>
           <AuthInputBoxSec
             mainContainer={{
               width: '100%',
             }}
-            // icon={layer9_icon}
             lableText={'Registration Number'}
-            inputRef={(ref) => {
-              hosp_reg_noInput = ref;
-            }}
             maxLength={15}
             onChangeText={(text) =>
               setState({ hosp_reg_no: text })
@@ -880,8 +830,6 @@ export default EditProfile = ({ navigation, route }) => {
             autoCapitalize="none"
             returnKeyLabel="next"
             returnKeyType="next"
-            onSubmitEditing={() => {
-            }}
           />
 
         </View>
@@ -926,7 +874,7 @@ export default EditProfile = ({ navigation, route }) => {
   headerHeight += (Platform.OS === 'ios') ? 28 : -60
   return (
     //
-    <View style={{ flex: 1, }}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView
         style={{ backgroundColor: Colors.statusbar_color, flex: 0 }}
       />
@@ -1038,596 +986,575 @@ export default EditProfile = ({ navigation, route }) => {
 
         </RBSheet>
 
-        <KeyboardAwareScrollView style={{
+        <KeyboardAwareScrollView contentContainerStyle={{
           backgroundColor: Colors.White,
           paddingBottom: vs(8)
         }}>
 
-          <View>
-            <View
-              style={{
-                width: '90%',
-                alignSelf: 'center',
-                marginTop: (mobileW * 7) / 100,
-                flexDirection: 'row',
+          <View
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: (mobileW * 7) / 100,
+              flexDirection: 'row',
 
 
-              }}>
+            }}>
 
-              <View style={{ width: '28%', alignSelf: 'center' }}>
-                <View
-                  style={{
-                    width: (mobileW * 21) / 100,
-                    height: (mobileW * 21) / 100,
-                    borderRadius: (mobileW * 10.5) / 100,
-                    borderWidth: 2.5,
-                    borderColor: Colors.bordercolor_light_blue,
-
-                    alignItems: 'center'
-                  }}>
-                  <Image
-                    style={{
-                      width: (mobileW * 20) / 100,
-                      height: (mobileW * 20) / 100,
-                      borderRadius: mobileW * 10 / 100,
-
-                      alignSelf: 'center',
-
-                    }}
-                    source={classStateData.profile_img == 'NA' || classStateData.profile_img == null || classStateData.profile_img == '' ? Icons.ProfileImage : { uri: classStateData.profile_img }}
-                  ></Image>
-                </View>
-              </View>
-
-              <View style={{ width: '70%', alignSelf: 'center', }}>
-                <View style={{ width: '100%', alignSelf: 'center' }}>
-                  <Text style={{
-                    color: Colors.placeholder_text_color,
-                    // fontFamily: Font.blackheadingfontfamily, 
-                    // fontSize: Font.tabtextsize, 
-                    fontFamily: Font.Medium, fontSize: 18,
-                    textAlign: Configurations.textRotate,
-                  }}>{classStateData.name}</Text>
-                </View>
-
-                <View style={{ width: '100%', alignSelf: 'center', marginTop: mobileW * 1 / 100 }}>
-                  <Text
-                    style={{
-                      color: Colors.placeholder_textcolorlight,
-                      fontFamily: Font.Regular,
-                      fontSize: 14, //(mobileW * 3) / 100,
-                      textAlign: Configurations.textRotate,
-                    }}>{classStateData.email}
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <View
-              style={{
-                width: '60%',
-                alignSelf: 'center',
-                marginTop: (mobileW * -8) / 100,
-                marginRight: mobileW * 4 / 100
-              }}>
+            <View style={{ width: '28%', alignSelf: 'center' }}>
               <View
                 style={{
-                  width: (mobileW * 8) / 100,
-                  height: (mobileW * 8) / 100,
-                  borderRadius: (mobileW * 4) / 100,
-                  borderWidth: 2,
+                  width: (mobileW * 21) / 100,
+                  height: (mobileW * 21) / 100,
+                  borderRadius: (mobileW * 10.5) / 100,
+                  borderWidth: 2.5,
                   borderColor: Colors.bordercolor_light_blue,
-                  backgroundColor: 'white'
-                }}>
-                <TouchableOpacity onPress={() => { attachmentOptionSheetRef.current.open() }}>
-                  <Image
-                    style={{
-                      height: (mobileW * 3.5) / 100,
-                      width: (mobileW * 3.5) / 100,
-                      alignSelf: 'center',
-                      marginTop: (mobileW * 1.8) / 100,
 
-                    }}
-                    source={Icons.Camera}></Image>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View
-              style={{
-                width: '90%',
-                alignSelf: 'center',
-                marginTop: (mobileW * 10) / 100,
-                borderColor: Colors.placeholder_border,
-                borderWidth: 1,
-                borderRadius: mobileW * 1 / 100,
-              }}>
-              <View style={{ width: '95%', alignSelf: 'center', }}>
-
-                <View style={{
-                  width: '100%',
-                  height: 48,
-                  flexDirection: 'row',
-                  // alignSelf: 'center',
-                  // justifyContent: 'center',
                   alignItems: 'center'
                 }}>
-                  <View style={{
-                    width: '20%',
-                    // backgroundColor: 'red',
-                    height: 48,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRightWidth: 1,
-                    borderRightColor: Colors.placeholder_border
-                  }}>
-                    <Text style={{
-                      fontFamily: Font.Regular,
-                      fontSize: 12,
-                      color: Colors.placeholder_textcolorlight,
-                    }}>User Type</Text>
-                  </View>
+                <Image
+                  style={{
+                    width: (mobileW * 20) / 100,
+                    height: (mobileW * 20) / 100,
+                    borderRadius: mobileW * 10 / 100,
 
-                  <View style={{
-                    width: '60%',
-                    // backgroundColor: 'yellow',
-                    height: 48,
-                    // alignItems: 'center',
-                    justifyContent: 'center',
-                    paddingLeft: 10
-                  }}>
-                    <Text style={{
-                      fontFamily: Font.Regular,
-                      fontSize: 15,
-                      color: '#041A27'
-                    }}>{classStateData.display_user_type}</Text>
-                  </View>
-                  <View style={{
-                    width: '20%',
-                    // backgroundColor: 'blue',
-                    height: 48,
-                    alignItems: 'flex-end',
-                    justifyContent: 'center'
-                  }}>
-                    <Text style={{
-                      fontFamily: Font.Regular,
-                      fontSize: 10,
-                      color: Colors.placeholder_textcolorlight
-                    }}>Non Editable</Text>
-                  </View>
-                </View>
+                    alignSelf: 'center',
 
+                  }}
+                  source={classStateData.profile_img == 'NA' || classStateData.profile_img == null || classStateData.profile_img == '' ? Icons.ProfileImage : { uri: classStateData.profile_img }}
+                ></Image>
               </View>
             </View>
 
+            <View style={{ width: '70%', alignSelf: 'center', }}>
+              <View style={{ width: '100%', alignSelf: 'center' }}>
+                <Text style={{
+                  color: Colors.placeholder_text_color,
+                  // fontFamily: Font.blackheadingfontfamily, 
+                  // fontSize: Font.tabtextsize, 
+                  fontFamily: Font.Medium, fontSize: 18,
+                  textAlign: Configurations.textRotate,
+                }}>{classStateData.name}</Text>
+              </View>
 
+              <View style={{ width: '100%', alignSelf: 'center', marginTop: mobileW * 1 / 100 }}>
+                <Text
+                  style={{
+                    color: Colors.placeholder_textcolorlight,
+                    fontFamily: Font.Regular,
+                    fontSize: 14, //(mobileW * 3) / 100,
+                    textAlign: Configurations.textRotate,
+                  }}>{classStateData.email}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <View
+            style={{
+              width: '60%',
+              alignSelf: 'center',
+              marginTop: (mobileW * -8) / 100,
+              marginRight: mobileW * 4 / 100
+            }}>
             <View
               style={{
-                width: '90%',
+                width: (mobileW * 8) / 100,
+                height: (mobileW * 8) / 100,
+                borderRadius: (mobileW * 4) / 100,
+                borderWidth: 2,
+                borderColor: Colors.bordercolor_light_blue,
+                backgroundColor: 'white'
+              }}>
+              <TouchableOpacity onPress={() => { attachmentOptionSheetRef.current.open() }}>
+                <Image
+                  style={{
+                    height: (mobileW * 3.5) / 100,
+                    width: (mobileW * 3.5) / 100,
+                    alignSelf: 'center',
+                    marginTop: (mobileW * 1.8) / 100,
+
+                  }}
+                  source={Icons.Camera}></Image>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: (mobileW * 10) / 100,
+              borderColor: Colors.placeholder_border,
+              borderWidth: 1,
+              borderRadius: mobileW * 1 / 100,
+            }}>
+            <View style={{ width: '95%', alignSelf: 'center', }}>
+
+              <View style={{
+                width: '100%',
+                height: 48,
+                flexDirection: 'row',
+                // alignSelf: 'center',
+                // justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <View style={{
+                  width: '20%',
+                  // backgroundColor: 'red',
+                  height: 48,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRightWidth: 1,
+                  borderRightColor: Colors.placeholder_border
+                }}>
+                  <Text style={{
+                    fontFamily: Font.Regular,
+                    fontSize: 12,
+                    color: Colors.placeholder_textcolorlight,
+                  }}>User Type</Text>
+                </View>
+
+                <View style={{
+                  width: '60%',
+                  // backgroundColor: 'yellow',
+                  height: 48,
+                  // alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingLeft: 10
+                }}>
+                  <Text style={{
+                    fontFamily: Font.Regular,
+                    fontSize: 15,
+                    color: '#041A27'
+                  }}>{classStateData.display_user_type}</Text>
+                </View>
+                <View style={{
+                  width: '20%',
+                  // backgroundColor: 'blue',
+                  height: 48,
+                  alignItems: 'flex-end',
+                  justifyContent: 'center'
+                }}>
+                  <Text style={{
+                    fontFamily: Font.Regular,
+                    fontSize: 10,
+                    color: Colors.placeholder_textcolorlight
+                  }}>Non Editable</Text>
+                </View>
+              </View>
+
+            </View>
+          </View>
+
+
+          <View
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: (mobileW * 2) / 100
+            }}>
+            <AuthInputBoxSec
+              mainContainer={{
+                width: '100%',
+              }}
+              lableText={LanguageConfiguration.textinputname[Configurations.language]}
+              onChangeText={(text) =>
+                setState({ name: text })
+              }
+              value={classStateData.name}
+              keyboardType="default"
+              autoCapitalize="none"
+              returnKeyLabel='done'
+              returnKeyType='done'
+              onSubmitEditing={() => {
+              }}
+            />
+
+          </View>
+
+          <View
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: (mobileW * 4) / 100,
+            }}>
+            <Text
+              style={{
+                textAlign: Configurations.textRotate,
+                fontSize: Font.headinggray,
+                fontFamily: Font.headingfontfamily,
+                color: Colors.placeholder_text,
+              }}>
+              {LanguageConfiguration.selectcountrytitle[Configurations.language]}
+            </Text>
+          </View>
+
+          <DropDownboxSec
+            lableText={classStateData.work_area.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.work_area}
+            boxPressAction={() => {
+            }}
+            isDisabled={true}
+          />
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', width: mobileW * 90 / 100, justifyContent: 'space-between', alignSelf: 'center', }}>
+            <View
+              style={{
+                width: '20%',
                 alignSelf: 'center',
-                marginTop: (mobileW * 2) / 100
+                marginTop: (mobileW * 3) / 100
               }}>
               <AuthInputBoxSec
                 mainContainer={{
                   width: '100%',
                 }}
-                lableText={LanguageConfiguration.textinputname[Configurations.language]}
-                inputRef={(ref) => {
-                  nameInput = ref;
+                inputFieldStyle={{
+                  textAlign: 'center',
+                  marginBottom: (mobileW * 4) / 100,
                 }}
+                lableText={LanguageConfiguration.CC_code[Configurations.language]}
                 onChangeText={(text) =>
-                  setState({ name: text })
+                  setState({ country_code: text })
                 }
-                value={classStateData.name}
-                keyboardType="default"
+                maxLength={3}
+                editable={false}
+                value={classStateData.country_code}
+                keyboardType="number-pad"
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                }}
+              />
+
+            </View>
+            <View
+              style={{
+                width: '75%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 3) / 100,
+              }}>
+
+              <AuthInputBoxSec
+                mainContainer={{
+                  width: '100%',
+                }}
+                lableText={LanguageConfiguration.textinputnumber[Configurations.language]}
+                maxLength={9}
+                onChangeText={(text) =>
+                  setState({ mobile: text })
+                }
+                value={classStateData.mobile}
+                keyboardType="number-pad"
                 autoCapitalize="none"
                 returnKeyLabel='done'
                 returnKeyType='done'
                 onSubmitEditing={() => {
                 }}
               />
-
-            </View>
-
-            <View
-              style={{
-                width: '90%',
-                alignSelf: 'center',
-                marginTop: (mobileW * 4) / 100,
-              }}>
-              <Text
+              <View
                 style={{
-                  textAlign: Configurations.textRotate,
-                  fontSize: Font.headinggray,
-                  fontFamily: Font.headingfontfamily,
-                  color: Colors.placeholder_text,
+                  width: '89%',
+                  marginTop: (mobileW * 0.5) / 100,
                 }}>
-                {LanguageConfiguration.selectcountrytitle[Configurations.language]}
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    textAlign: Configurations.textRotate,
+                    fontSize: Font.textsize,
+                    fontFamily: Font.headingfontfamily,
+                    color: Colors.textgray,
+                  }}>
+                  {LanguageConfiguration.mobletexttitle[Configurations.language]}
+                </Text>
+              </View>
 
-            <DropDownboxSec
-              lableText={classStateData.work_area.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.work_area}
-              boxPressAction={() => {
+            </View>
+          </View>
+
+
+          <View style={{
+            width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100
+          }}>
+            <AuthInputBoxSec
+              mainContainer={{
+                width: '100%',
               }}
-              isDisabled={true}
-            />
-
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: mobileW * 90 / 100, justifyContent: 'space-between', alignSelf: 'center', }}>
-              <View
-                style={{
-                  width: '20%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 3) / 100
-                }}>
-                <AuthInputBoxSec
-                  mainContainer={{
-                    width: '100%',
-                  }}
-                  inputFieldStyle={{
-                    textAlign: 'center',
-                    marginBottom: (mobileW * 4) / 100,
-                  }}
-                  lableText={LanguageConfiguration.CC_code[Configurations.language]}
-                  inputRef={(ref) => {
-                    country_codeInput = ref;
-                  }}
-                  onChangeText={(text) =>
-                    setState({ country_code: text })
-                  }
-                  maxLength={3}
-                  editable={false}
-                  value={classStateData.country_code}
-                  keyboardType="number-pad"
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  onSubmitEditing={() => {
-                    //passwordInput.focus();
-                  }}
-                />
-
-              </View>
-              <View
-                style={{
-                  width: '75%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 3) / 100,
-                }}>
-
-                <AuthInputBoxSec
-                  mainContainer={{
-                    width: '100%',
-                  }}
-                  lableText={LanguageConfiguration.textinputnumber[Configurations.language]}
-                  inputRef={(ref) => {
-                    mobileInput = ref;
-                  }}
-                  maxLength={9}
-                  onChangeText={(text) =>
-                    setState({ mobile: text })
-                  }
-                  value={classStateData.mobile}
-                  keyboardType="number-pad"
-                  autoCapitalize="none"
-                  returnKeyLabel='done'
-                  returnKeyType='done'
-                  onSubmitEditing={() => {
-                  }}
-                />
-                <View
-                  style={{
-                    width: '89%',
-                    marginTop: (mobileW * 0.5) / 100,
-                  }}>
-                  <Text
-                    style={{
-                      textAlign: Configurations.textRotate,
-                      fontSize: Font.textsize,
-                      fontFamily: Font.headingfontfamily,
-                      color: Colors.textgray,
-                    }}>
-                    {LanguageConfiguration.mobletexttitle[Configurations.language]}
-                  </Text>
-                </View>
-
-              </View>
-            </View>
-
-
-            <View style={{
-              width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100
-            }}>
-              <AuthInputBoxSec
-                mainContainer={{
-                  width: '100%',
-                }}
-                lableText={LanguageConfiguration.Mobileno[Configurations.language]}
-                inputRef={(ref) => {
-                  emailInput = ref;
-                }}
-                onChangeText={(text) =>
-                  setState({ email: text })
-                }
-                value={classStateData.email}
-                editable={false}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                }}
-              />
-
-            </View>
-
-            <View
-              style={{
-                width: '90%',
-                alignSelf: 'center',
-                marginTop: (mobileW * 4) / 100,
-              }}>
-              <Text
-                style={{
-                  textAlign: Configurations.textRotate,
-                  fontSize: Font.headinggray,
-                  fontFamily: Font.headingfontfamily,
-                  color: Colors.placeholder_text,
-                }}>
-                {(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}
-              </Text>
-            </View>
-
-            <View style={{
-              width: '90%', height: 48, alignSelf: 'center', marginTop: mobileW * 2 / 100, flexDirection: 'row',
-              borderColor: Colors.field_border_color, borderWidth: 1, borderRadius: (mobileW * 1) / 100,
-            }}>
-              <TouchableOpacity
-                onPress={() => { setState({ isDatePickerVisibletwo: true }) }}
-                style={{ width: '100%', flexDirection: 'row' }}>
-                <View style={{ width: '1%' }}>
-                </View>
-                <View style={{
-                  width: '100%',
-                  height: Font.placeholder_height,
-                  marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row'
-                }}>
-                  <Text style={{
-                    width: '78%', textAlign: Configurations.textRotate,
-                    color: Colors.placeholder_text,
-                    fontFamily: Font.Regular,
-                    fontSize: Font.placeholdersize,
-                  }}>{classStateData?.dob_date?.length <= 0 ? (user_type == "lab") ? (classStateData?.experience != '') ? classStateData?.experience : "Year of Establishment" : LanguageConfiguration.dob[Configurations.language] : classStateData?.dob_date}</Text>
-                  <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
-
-                    <Image source={Icons.DatePicker}
-                      style={{ height: 25, width: 25 }}>
-                    </Image>
-                  </View>
-                </View>
-
-
-              </TouchableOpacity>
-
-              {classStateData?.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.1 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-                <Text style={{
-                  color: classStateData?.dob_date.length <= 0 ? '#0057A5' : Colors.gray4,
-                  fontSize: Font.sregulartext_size,
-                  fontFamily: Font.placeholderfontfamily,
-                  textAlign: Configurations.textalign
-                }}>{(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}</Text>
-              </View>}
-
-            </View>
-
-            {
-              (user_type == "lab") ?
-                <View style={{
-                  width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100,
-                }}>
-                  <AuthInputBoxSec
-                    mainContainer={{
-                      width: '100%',
-                    }}
-                    lableText={LanguageConfiguration.textinputaddress[Configurations.language]}
-                    inputRef={(ref) => {
-                      addressInput = ref;
-                    }}
-                    maxLength={50}
-                    onChangeText={(text) =>
-                      setState({ address: text })
-                    }
-                    value={classStateData.address}
-                    keyboardType="default"
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    onSubmitEditing={() => {
-                    }}
-                  />
-                </View> :
-                <View
-                  style={{
-                    width: '90%',
-                    alignSelf: 'center',
-                    marginTop: (mobileW * 3) / 100,
-                    marginBottom: (mobileW * 2 / 100),
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <View style={{ width: '23%' }}>
-                    <Text
-                      style={{
-                        color: Colors.placeholder_text,
-                        fontFamily: Font.Regular,
-                        fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
-                        textAlign: Configurations.textRotate,
-                      }}>
-                      {LanguageConfiguration.Gender[Configurations.language]}
-                    </Text>
-                  </View>
-
-
-                  <View
-                    style={{
-                      width: '70%',
-                      alignSelf: 'center',
-
-
-                      flexDirection: 'row',
-
-                    }}>
-                    <View style={{ width: '30%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => { setState({ mabtn: true, febtn: false, gender: 'Male' }); }}
-                          style={{
-                            width: '100%',
-                            alignSelf: 'center',
-                            flexDirection: 'row',
-                          }} >
-                          <Icon style={{ alignSelf: 'center' }}
-                            name={(classStateData.mabtn == false) ? "circle-thin" : "dot-circle-o"}
-                            size={22}
-                            color={(classStateData.mabtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
-
-                          <View style={{ width: '70%', alignSelf: 'center' }}>
-                            <Text
-                              style={{
-                                marginLeft: mobileW * 1.5 / 100,
-                                textAlign: Configurations.textRotate,
-                                color: Colors.placeholder_text,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.placeholdersize,
-                              }}>
-                              {LanguageConfiguration.male[Configurations.language]}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-
-
-
-                      </View>
-
-
-                    </View>
-
-                    <View
-                      style={{
-                        width: '33%',
-                        alignSelf: 'center',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
-                      <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
-                        <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
-                          style={{
-                            width: '100%',
-                            alignSelf: 'center',
-                            flexDirection: 'row',
-                            alignItems: 'center'
-                          }}>
-                          <Icon style={{ alignSelf: 'center' }}
-                            name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
-                            size={22}
-                            color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
-
-                          <Text
-                            style={{
-                              textAlign: Configurations.textRotate,
-                              marginLeft: mobileW * 1.5 / 100,
-                              color: Colors.placeholder_text,
-                              fontFamily: Font.Regular,
-                              fontSize: Font.placeholdersize,
-                              // alignSelf: 'center',
-                            }}>
-                            {LanguageConfiguration.female[Configurations.language]}
-                          </Text>
-
-                        </TouchableOpacity>
-
-
-
-                      </View>
-
-
-
-                    </View>
-                  </View>
-                </View>
-            }
-
-            {
-              (user_type == "nurse" || user_type == "physiotherapy"
-                || user_type == "doctor") &&
-              <>
-                {renderIDNumber()}
-                {renderSpeExpCer()}
-                {renderExpRegid()}
-              </>
-            }
-
-            {
-              (user_type == "caregiver" || user_type == "babysitter") &&
-              <>
-                {renderIDNumber()}
-                {renderExpCer()}
-                {renderExp()}
-              </>
-            }
-
-            {
-              (user_type == "lab") &&
-              <>
-                {renderHealthIDNumber()}
-                {renderCRC()}
-              </>
-            }
-
-            <View style={{
-              width: '90%', alignSelf: 'center',
-              marginTop: mobileW * 3 / 100,
-              justifyContent: 'flex-start'
-            }}>
-              <AuthInputBoxSec
-                mainContainer={{
-                  width: '100%',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start'
-                }}
-                inputFieldStyle={{
-                  width: '100%',
-                  height: mobileW * 30 / 100,
-                  color: Colors.textblack,
-                  fontSize: Font.placeholdersize,
-                  textAlign: Configurations.textalign,
-                  fontFamily: Font.placeholderfontfamily,
-                  textAlignVertical: 'top',
-                  alignSelf: 'flex-start'
-
-                }}
-                lableText={'About'}
-                inputRef={(ref) => {
-                  messageInput = ref;
-                }}
-                onChangeText={(text) =>
-                  setState({ description: text })
-                }
-                value={classStateData.description}
-                maxLength={250}
-                multiline={true}
-                keyboardType="default"
-                autoCapitalize="none"
-                returnKeyType="next"
-              />
-            </View>
-
-            <Button
-              text={LanguageConfiguration.submitbtntext[Configurations.language]}
-              onPress={() => onEditProfileClick()}
-              onLoading={isOnLoadingButton}
-              customStyles={{
-                marginBottom: vs(20)
+              lableText={LanguageConfiguration.Mobileno[Configurations.language]}
+              onChangeText={(text) =>
+                setState({ email: text })
+              }
+              value={classStateData.email}
+              editable={false}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              returnKeyType="next"
+              onSubmitEditing={() => {
               }}
             />
 
           </View>
+
+          <View
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: (mobileW * 4) / 100,
+            }}>
+            <Text
+              style={{
+                textAlign: Configurations.textRotate,
+                fontSize: Font.headinggray,
+                fontFamily: Font.headingfontfamily,
+                color: Colors.placeholder_text,
+              }}>
+              {(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}
+            </Text>
+          </View>
+
+          <View style={{
+            width: '90%', height: 48, alignSelf: 'center', marginTop: mobileW * 2 / 100, flexDirection: 'row',
+            borderColor: Colors.field_border_color, borderWidth: 1, borderRadius: (mobileW * 1) / 100,
+          }}>
+            <TouchableOpacity
+              onPress={() => { setState({ isDatePickerVisibletwo: true }) }}
+              style={{ width: '100%', flexDirection: 'row' }}>
+              <View style={{ width: '1%' }}>
+              </View>
+              <View style={{
+                width: '100%',
+                height: Font.placeholder_height,
+                marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row'
+              }}>
+                <Text style={{
+                  width: '78%', textAlign: Configurations.textRotate,
+                  color: Colors.placeholder_text,
+                  fontFamily: Font.Regular,
+                  fontSize: Font.placeholdersize,
+                }}>{classStateData?.dob_date?.length <= 0 ? (user_type == "lab") ? (classStateData?.experience != '') ? classStateData?.experience : "Year of Establishment" : LanguageConfiguration.dob[Configurations.language] : classStateData?.dob_date}</Text>
+                <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
+
+                  <Image source={Icons.DatePicker}
+                    style={{ height: 25, width: 25 }}>
+                  </Image>
+                </View>
+              </View>
+
+
+            </TouchableOpacity>
+
+            {classStateData?.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.1 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
+              <Text style={{
+                color: classStateData?.dob_date.length <= 0 ? '#0057A5' : Colors.gray4,
+                fontSize: Font.sregulartext_size,
+                fontFamily: Font.placeholderfontfamily,
+                textAlign: Configurations.textalign
+              }}>{(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}</Text>
+            </View>}
+
+          </View>
+
+          {
+            (user_type == "lab") ?
+              <View style={{
+                width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100,
+              }}>
+                <AuthInputBoxSec
+                  mainContainer={{
+                    width: '100%',
+                  }}
+                  lableText={LanguageConfiguration.textinputaddress[Configurations.language]}
+                  maxLength={50}
+                  onChangeText={(text) =>
+                    setState({ address: text })
+                  }
+                  value={classStateData.address}
+                  keyboardType="default"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                />
+              </View> :
+              <View
+                style={{
+                  width: '90%',
+                  alignSelf: 'center',
+                  marginTop: (mobileW * 3) / 100,
+                  marginBottom: (mobileW * 2 / 100),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <View style={{ width: '23%' }}>
+                  <Text
+                    style={{
+                      color: Colors.placeholder_text,
+                      fontFamily: Font.Regular,
+                      fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
+                      textAlign: Configurations.textRotate,
+                    }}>
+                    {LanguageConfiguration.Gender[Configurations.language]}
+                  </Text>
+                </View>
+
+
+                <View
+                  style={{
+                    width: '70%',
+                    alignSelf: 'center',
+
+
+                    flexDirection: 'row',
+
+                  }}>
+                  <View style={{ width: '30%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                      <TouchableOpacity onPress={() => { setState({ mabtn: true, febtn: false, gender: 'Male' }); }}
+                        style={{
+                          width: '100%',
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                        }} >
+                        <Icon style={{ alignSelf: 'center' }}
+                          name={(classStateData.mabtn == false) ? "circle-thin" : "dot-circle-o"}
+                          size={22}
+                          color={(classStateData.mabtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+
+                        <View style={{ width: '70%', alignSelf: 'center' }}>
+                          <Text
+                            style={{
+                              marginLeft: mobileW * 1.5 / 100,
+                              textAlign: Configurations.textRotate,
+                              color: Colors.placeholder_text,
+                              fontFamily: Font.Regular,
+                              fontSize: Font.placeholdersize,
+                            }}>
+                            {LanguageConfiguration.male[Configurations.language]}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+
+
+
+                    </View>
+
+
+                  </View>
+
+                  <View
+                    style={{
+                      width: '33%',
+                      alignSelf: 'center',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
+                      <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
+                        style={{
+                          width: '100%',
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          alignItems: 'center'
+                        }}>
+                        <Icon style={{ alignSelf: 'center' }}
+                          name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
+                          size={22}
+                          color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+
+                        <Text
+                          style={{
+                            textAlign: Configurations.textRotate,
+                            marginLeft: mobileW * 1.5 / 100,
+                            color: Colors.placeholder_text,
+                            fontFamily: Font.Regular,
+                            fontSize: Font.placeholdersize,
+                            // alignSelf: 'center',
+                          }}>
+                          {LanguageConfiguration.female[Configurations.language]}
+                        </Text>
+
+                      </TouchableOpacity>
+
+
+
+                    </View>
+
+
+
+                  </View>
+                </View>
+              </View>
+          }
+
+          {
+            (user_type == "nurse" || user_type == "physiotherapy"
+              || user_type == "doctor") &&
+            <>
+              {renderIDNumber()}
+              {renderSpeExpCer()}
+              {renderExpRegid()}
+            </>
+          }
+
+          {
+            (user_type == "caregiver" || user_type == "babysitter") &&
+            <>
+              {renderIDNumber()}
+              {renderExpCer()}
+              {renderExp()}
+            </>
+          }
+
+          {
+            (user_type == "lab") &&
+            <>
+              {renderHealthIDNumber()}
+              {renderCRC()}
+            </>
+          }
+
+          <View style={{
+            width: '90%', alignSelf: 'center',
+            marginTop: mobileW * 3 / 100,
+            justifyContent: 'flex-start'
+          }}>
+            <AuthInputBoxSec
+              mainContainer={{
+                width: '100%',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start'
+              }}
+              inputFieldStyle={{
+                width: '100%',
+                height: mobileW * 30 / 100,
+                color: Colors.textblack,
+                fontSize: Font.placeholdersize,
+                textAlign: Configurations.textalign,
+                fontFamily: Font.placeholderfontfamily,
+                textAlignVertical: 'top',
+                alignSelf: 'flex-start'
+
+              }}
+              lableText={'About'}
+              onChangeText={(text) =>
+                setState({ description: text })
+              }
+              value={classStateData.description}
+              maxLength={250}
+              multiline={true}
+              keyboardType="default"
+              autoCapitalize="none"
+              returnKeyType="next"
+            />
+          </View>
+
+          <Button
+            text={LanguageConfiguration.submitbtntext[Configurations.language]}
+            onPress={() => onEditProfileClick()}
+            onLoading={isOnLoadingButton}
+            customStyles={{
+              mainContainer: {
+                marginBottom: vs(28),
+                width: '90%'
+              }
+            }}
+          />
 
         </KeyboardAwareScrollView>
       </View>

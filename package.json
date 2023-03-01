@@ -19,6 +19,7 @@
     "@react-native-community/slider": "^4.3.1",
     "@react-native-firebase/analytics": "^17.0.0",
     "@react-native-firebase/app": "^16.5.0",
+    "@react-native-firebase/firestore": "^17.3.1",
     "@react-native-firebase/messaging": "^16.5.0",
     "@react-native-masked-view/masked-view": "^0.2.8",
     "@react-navigation/drawer": "^6.4.4",

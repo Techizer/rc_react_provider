@@ -31,4 +31,6 @@ export const ScreenReferences = {
     VideoCall: "VideoCall",
     Withdrawal: "Withdrawal",
     AddBankInformation: "AddBankInformation",
+
+    ChatScreen: 'Chat'
 }
