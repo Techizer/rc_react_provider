@@ -1,6 +1,6 @@
 import moment from "moment-timezone"
 
-export const getIsAppointmentChatEnabled = (appointmentDate: Date, apppointmentStatus: String): Boolean => {
+export const getIsAppointmentChatEnabled = (appointmentDate?: Date, apppointmentStatus?: String): Boolean => {
 
 
     if (!appointmentDate || !apppointmentStatus) {

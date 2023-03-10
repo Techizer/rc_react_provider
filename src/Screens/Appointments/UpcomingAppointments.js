@@ -7,6 +7,8 @@ import AppointmentItem from '../../Components/AppointmentItem';
 import { useSelector } from 'react-redux';
 import { s, vs } from 'react-native-size-matters'
 import { useIsFocused } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import { Message } from '../../Schemas/MessageRoomSchema';
 
 const pageName = "upcoming"
 
@@ -29,10 +31,6 @@ export default UpcomingAppointments = ({ navigation, route }) => {
   const {
     loginUserData
   } = useSelector(state => state.Auth)
-
-  const reloadList = () => {
-    getApppointments()
-  }
 
   const getApppointments = async () => {
 
@@ -119,16 +117,17 @@ export default UpcomingAppointments = ({ navigation, route }) => {
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
-        if (listIndex !== -1) {
-          appointments.splice(listIndex, 1);
-          setAppointments(prev => prev)
-        }
+        // if (listIndex !== -1) {
+        //   appointments.splice(listIndex, 1);
+        //   setAppointments(prev => prev)
+        // }
         MessageFunctions.showSuccess(obj.message)
+        getApppointments()
       } else {
         MessageFunctions.showError(obj.message)
         return false;
       }
-    });
+    })
 
   }
 
@@ -157,11 +156,9 @@ export default UpcomingAppointments = ({ navigation, route }) => {
                     }}
                     onPressAccept={() => {
                       updateProviderAppointmentStatus("Accept", item.id, index)
-                      reloadList()
                     }}
                     onPressReject={() => {
                       showConfirmDialogReject("Reject", item.id, index)
-                      reloadList()
                     }}
                     onPressVideoCall={() => {
                       navigation.navigate(ScreenReferences.VideoCall, {

@@ -180,7 +180,7 @@ const MainStack = navigation => {
         <Stack.Screen
           name={ScreenReferences.ChatScreen}
           component={Chat}
-          options={{ headerShown: false, gestureEnabled: false }}
+          options={{ headerShown: false, gestureEnabled: true }}
         />
         <Stack.Screen
           name={ScreenReferences.AvailabilityScheduleTabStack}

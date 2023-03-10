@@ -156,24 +156,29 @@ const ServiceAddress = ({ navigation, route }) => {
                     </View>
                 </View>
 
-                <AddressContainer
-                    index={0}
-                    addressDetails={addressList[0]}
-                    showModal={(val) => {
-                        sheetRef.current.open()
-                    }}
-                    navigation={navigation}
-                    selected={selectedAddress}
-                    selectedAddress={(val) => {
-                        setSelectedAddress(val)
-                    }}
-                    editable={(val) => {
-                        setIsEditable(val)
-                        setType('editAddress')
-                    }}
-                    isLoading={isLoading}
-                    defaultAdd={defaultAddress}
-                />
+                {
+                    (addressList.length > 0) &&
+                    <AddressContainer
+                        index={0}
+                        addressDetails={addressList[0]}
+                        showModal={(val) => {
+                            sheetRef.current.open()
+                        }}
+                        navigation={navigation}
+                        selected={selectedAddress}
+                        selectedAddress={(val) => {
+                            setSelectedAddress(val)
+                        }}
+                        editable={(val) => {
+                            setIsEditable(val)
+                            setType('editAddress')
+                        }}
+                        isLoading={isLoading}
+                        defaultAdd={defaultAddress}
+                    />
+                }
+
+
 
                 <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingVertical: 16, paddingHorizontal: 10, backgroundColor: '#E5E5E58D', borderRadius: 6, marginTop: vs(8) }}>
                     {

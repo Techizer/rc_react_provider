@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground, Modal, FlatList, RefreshControl } from 'react-native';
-
-import { Font, MessageFunctions, Configurations, mobileW, API, windowWidth, windowHeight } from '../../Helpers/Utils';
+import { Alert, Text, View, FlatList } from 'react-native';
+import { Font, MessageFunctions, Configurations, mobileW, API } from '../../Helpers/Utils';
 import { ScreenReferences } from '../../Stacks/ScreenReferences';
 import AppointmentItem from '../../Components/AppointmentItem';
 import { useSelector } from 'react-redux';
-import { s, vs } from 'react-native-size-matters'
+import { vs } from 'react-native-size-matters'
 import { useIsFocused } from '@react-navigation/native';
 
 const pageName = "ongoing"
@@ -29,10 +28,6 @@ export default OngoingAppointments = ({ navigation, route }) => {
   const {
     loginUserData
   } = useSelector(state => state.Auth)
-
-  const reloadList = () => {
-    getApppointments()
-  }
 
   const getApppointments = async () => {
 
@@ -119,10 +114,11 @@ export default OngoingAppointments = ({ navigation, route }) => {
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
-        if (listIndex !== -1) {
-          appointments.splice(listIndex, 1);
-          setAppointments(prev => prev)
-        }
+        // if (listIndex !== -1) {
+        //   appointments.splice(listIndex, 1);
+        //   setAppointments(prev => prev)
+        // }
+        getApppointments()
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -157,11 +153,9 @@ export default OngoingAppointments = ({ navigation, route }) => {
                     }}
                     onPressAccept={() => {
                       updateProviderAppointmentStatus("Accept", item.id, index)
-                      reloadList()
                     }}
                     onPressReject={() => {
                       showConfirmDialogReject("Reject", item.id, index)
-                      reloadList()
                     }}
                     onPressVideoCall={() => {
                       navigation.navigate(ScreenReferences.VideoCall, {
@@ -192,7 +186,7 @@ export default OngoingAppointments = ({ navigation, route }) => {
             )
           }}
           refreshing={isLoading}
-          onRefresh={async () => { await getApppointments() }}
+          onRefresh={getApppointments}
         />
     </View>
   );

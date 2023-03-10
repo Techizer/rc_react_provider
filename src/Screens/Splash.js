@@ -112,6 +112,8 @@ export default Splash = ({ navigation, route }) => {
 
     const fcmToken = await FBPushNotifications.getFcmToken()
 
+    dispatch(setUserFCMToken(fcmToken))
+
     if (loginUserData !== null) {
       let url = Configurations.baseURL + "api-check-login";
       var data = new FormData();

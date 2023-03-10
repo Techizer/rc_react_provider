@@ -63,5 +63,7 @@ export const Icons = {
     BlackBox: require('./ic_black_box.png'),
 
     Gallery: require('./gallery.png'),
-    Documents: require('./documents.png'),
+    Documents: require('./document.png'),
+    Audio: require('./audio.png'),
+    Mic: require('./mic.png'),
 }

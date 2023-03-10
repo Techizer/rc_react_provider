@@ -19,11 +19,13 @@ import { useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
 import AppLoader from '../Components/AppLoader';
-import { VideoCall, _Cross, dummyUser } from '../Assets/Icons/SvgIcons/Index';
+import { LabTest, Prescription, Report, VideoCall, _Cross, dummyUser } from '../Assets/Icons/SvgIcons/Index';
 import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 import { getISChatImplemented, getIsAppointmentChatEnabled } from '../Helpers/AppFunctions';
+import firestore from '@react-native-firebase/firestore'
+import { Message } from '../Schemas/MessageRoomSchema';
 
 export default AppointmentDetails = ({ navigation, route }) => {
 
@@ -95,7 +97,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
         return false;
       }
     }).catch((error) => {
-      console.log("-------- error ------- ", error)
+      console.log("-------- error ad------- ", error)
       setState({
         isLoading: false
       })
@@ -189,7 +191,6 @@ export default AppointmentDetails = ({ navigation, route }) => {
       ]
     );
   };
-
   const updateProviderAppointmentStatus = async (acceptanceStatus, appointmentID) => {
     let user_type = loginUserData['user_type']
     let url = Configurations.baseURL + "api-update-provider-appointment-status";
@@ -201,10 +202,23 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
 
     API.post(url, data).then((obj) => {
-
       if (obj.status == true) {
-        // route.params.reloadList()
         getDetails(0)
+        firestore().collection(`Chats-${Configurations.mode}`)
+        .doc(classStateData?.appointmentDetails?.order_id)
+        .update('MessageRoomDetails.Messages', firestore.FieldValue.arrayUnion(new Message({
+          Body: `Appointment ${acceptanceStatus}ed on ${moment().format('hh:mm A, ddd, DD MMM YYYY')}`,
+          DateTime: new Date(),
+          DocPaths: [],
+          ImagePaths: [],
+          Milliseconds: moment().valueOf(),
+          NumChars: 0,
+          ReadBit: 1,
+          SenderID: loginUserData?.user_id,
+          Shown: true,
+          SYSTEM: true,
+          ReceiverID: item?.patient_id,
+        })) )
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -510,6 +524,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
   try {
     var item = classStateData.appointmentDetails
 
+    console.log(item);
+
     if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
 
       var VideoCallBtn = false
@@ -548,12 +564,14 @@ export default AppointmentDetails = ({ navigation, route }) => {
 
       const chatOptions = {
         provider: {
+          id: loginUserData?.user_id,
           name: item?.provider_name,
           image: Configurations.img_url3 + item?.provider_image,
-          service: item?.service_type
+          service: item?.service_type,
         },
         patient: {
-          name: item?.patientr_name,
+          id: item?.patient_id,
+          name: item?.booked_by,
           image: Configurations.img_url3 + item?.patient_image,
           address: item?.patient_address
         },
@@ -1094,13 +1112,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                       <View style={{
                         width: '17%',
                       }}>
-                        <Image
-                          defaultSource={Icons.Prescription}
-                          source={Icons.Prescription}
-                          style={{
-                            width: vs(40),
-                            height: s(40)
-                          }} />
+                        <SvgXml xml={Prescription} height={vs(36)} width={vs(36)}/>
                       </View>
                       <View style={{
                         width: "83%",
@@ -1200,21 +1212,13 @@ export default AppointmentDetails = ({ navigation, route }) => {
                             marginBottom: 10
                           }}>
                             <View style={{
-                              width: '20%',
-                              marginBottom: 10
-                              // backgroundColor: 'red'
+                              width: '16%',
+                              marginBottom: 10,
                             }}>
-                              <Image
-                                defaultSource={Icons.Report}
-                                source={Icons.Report}
-                                style={{
-                                  width: (mobileW * 14) / 100,
-                                  height: (mobileW * 16) / 100,
-                                }}></Image>
+                              <SvgXml xml={Report} height={(mobileW * 12) / 100} width={(mobileW * 12) / 100}/>
                             </View>
                             <View style={{
-                              width: '80%',
-                              // backgroundColor: 'blue'
+                              width: '84%',
                             }}>
                               <Text
                                 numberOfLines={1}
@@ -1406,13 +1410,7 @@ export default AppointmentDetails = ({ navigation, route }) => {
                                             width: '18%',
                                             marginBottom: 10
                                           }}>
-                                            <Image
-                                              defaultSource={Icons.Report}
-                                              source={Icons.Report}
-                                              style={{
-                                                width: (mobileW * 12) / 100,
-                                                height: (mobileW * 16) / 100,
-                                              }}></Image>
+                                            <SvgXml xml={Report} height={(mobileW * 12) / 100} width={(mobileW * 12) / 100}/>
                                           </View>
                                           <View style={{
                                             width: '82%',
@@ -1710,6 +1708,23 @@ export default AppointmentDetails = ({ navigation, route }) => {
                     </View>
                   }
                 </View>
+
+
+                {((item?.acceptance_status == 'Accepted' || item?.acceptance_status == 'Completed') && (item.service_type == "Doctor") && isChatImplemented) &&
+                <TouchableOpacity style={{
+                  marginHorizontal: '3%',
+                  marginBottom: vs(16)
+                }} 
+                onPress={() => {
+                  navigation.navigate(ScreenReferences.ChatScreen, {chatOptions})
+                }} >
+                  <Text style={{
+                    color: Colors.textblue,
+                    fontFamily: Font.Medium
+                  }}>Chat with patient</Text>
+                </TouchableOpacity>
+                }
+
                 {(item.acceptance_status == 'Accepted' && (item.service_type != "Doctor" && item.service_type != "Lab")) ?
                   (item?.OTP == "") ?
                     <>

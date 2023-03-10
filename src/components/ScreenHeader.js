@@ -36,7 +36,8 @@ const ScreenHeader = ({
     rightIcon,
     leftIcon,
     notiCount,
-    style = {}
+    style = {},
+    renderHeaderWOBack
 }) => {
     const iconSize = notiCount > 0 ? s(20) : s(18)
 
@@ -84,20 +85,26 @@ const ScreenHeader = ({
                         <View style={{ width: '14%' }}></View>
                 }
 
-                <View
-                    style={{
-                        width: "72%",
-                        height: '80%',
-                        justifyContent: 'center'
-                    }}>
-                    <Text
-                        style={{
-                            textAlign: "center",
-                            fontFamily: Font.Medium,
-                            fontSize: (windowWidth * 4) / 100,
-                            color: Colors.darkText
-                        }}>{title}</Text>
-                </View>
+                {
+                    !renderHeaderWOBack ?
+                        <View
+                            style={{
+                                width: "72%",
+                                height: '80%',
+                                justifyContent: 'center'
+                            }}>
+                            <Text
+                                style={{
+                                    textAlign: "center",
+                                    fontFamily: Font.Medium,
+                                    fontSize: (windowWidth * 4) / 100,
+                                    color: Colors.darkText
+                                }}>{title}</Text>
+                        </View> : renderHeaderWOBack()
+
+                }
+
+
                 {
                     rightIcon ?
                         <TouchableHighlight
@@ -117,8 +124,7 @@ const ScreenHeader = ({
                                 height: iconSize
                             }} resizeMethod='resize' resizeMode="contain" />
                         </TouchableHighlight>
-                        :
-                        <View style={{ width: '14%' }}></View>
+                        : (!renderHeaderWOBack && <View style={{ width: '14%' }}></View>)
                 }
             </View>
         </View>

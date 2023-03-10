@@ -30,10 +30,6 @@ export default PastAppointments = ({ navigation, route }) => {
     loginUserData
   } = useSelector(state => state.Auth)
 
-  const reloadList = () => {
-    getApppointments()
-  }
-
   const getApppointments = async () => {
 
     let user_details = loginUserData;
@@ -120,10 +116,11 @@ export default PastAppointments = ({ navigation, route }) => {
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
-        if (listIndex !== -1) {
-          appointments.splice(listIndex, 1);
-          setAppointments(prev => prev)
-        }
+        // if (listIndex !== -1) {
+        //   appointments.splice(listIndex, 1);
+        //   setAppointments(prev => prev)
+        // }
+        getApppointments()
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -158,11 +155,9 @@ export default PastAppointments = ({ navigation, route }) => {
                     }}
                     onPressAccept={() => {
                       updateProviderAppointmentStatus("Accept", item.id, index)
-                      reloadList()
                     }}
                     onPressReject={() => {
                       showConfirmDialogReject("Reject", item.id, index)
-                      reloadList()
                     }}
                     onPressVideoCall={() => {
                       navigation.navigate(ScreenReferences.VideoCall, {
@@ -191,7 +186,7 @@ export default PastAppointments = ({ navigation, route }) => {
             )
           }}
           refreshing={isLoading}
-          onRefresh={async () => { await getApppointments() }}
+          onRefresh={getApppointments}
         />
     </View>
   );

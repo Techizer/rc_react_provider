@@ -17,14 +17,24 @@ import { VideoCall } from "../Assets/Icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
 import StarRating from "react-native-star-rating";
 import { Icons } from "../Assets/Icons/IReferences";
+import { useSelector } from "react-redux";
+import firestore from '@react-native-firebase/firestore'
+import { Message } from "../Schemas/MessageRoomSchema";
 
 const AppointmentItem = ({
     item,
     Index,
     navigation,
     isLoading,
-    onPressViewDetails, onPressAccept, onPressReject, onPressVideoCall,
+    onPressViewDetails, 
+    onPressAccept, 
+    onPressReject, 
+    onPressVideoCall,
 }) => {
+
+    const {
+        loginUserData
+      } = useSelector(state => state.Auth)
 
     const aDate = new Date(item?.appointment_date)
     var VideoCallBtn = false
@@ -49,6 +59,31 @@ const AppointmentItem = ({
 
     }
 
+    console.log({orderID: item?.order_id});
+
+    const changeStatus = async (acceptanceStatus) => {
+        await firestore().collection(`Chats-${Configurations.mode}`)
+        .doc(item?.order_id)
+        .update('MessageRoomDetails.Messages', firestore.FieldValue.arrayUnion(new Message({
+          Body: `Appointment ${acceptanceStatus}ed on ${moment().format('hh:mm A, ddd, DD MMM YYYY')}`,
+          DateTime: new Date(),
+          DocPaths: [],
+          ImagePaths: [],
+          Milliseconds: moment().valueOf(),
+          NumChars: 0,
+          ReadBit: 1,
+          SenderID: loginUserData?.user_id,
+          Shown: true,
+          SYSTEM: true,
+          ReceiverID: item?.patient_id,
+          
+        })) ).then(()=>{
+            console.log('Appointment Status added in firestore');
+        }).catch((e)=>{
+            console.log('Appointment Status added failed in firestore', e);
+        })
+    }
+
     return (
 
         isLoading ?
@@ -60,8 +95,7 @@ const AppointmentItem = ({
                 paddingVertical: vs(9)
             }}>
 
-                <View
-                    style={{
+                <View style={{
                         flexDirection: "row",
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -404,7 +438,12 @@ const AppointmentItem = ({
                             {item?.acceptance_status == 'Pending' ?
                                 <TouchableOpacity
                                     // onPress={() => { this.rescdule_click(), this.get_day(), this.setState({ order_id: item?.id, service_status: item?.provider_type, send_id: item?.provider_id, time_take_data: '', }) }}
-                                    onPress={onPressAccept}
+                                    onPress={() => {
+                                        changeStatus('Accept').finally(()=>{
+                                            onPressAccept()
+                                        })
+                                        
+                                    }}
                                     style={{
                                         backgroundColor: Colors.buttoncolorhgreen,
                                         width: '40%',
@@ -430,7 +469,10 @@ const AppointmentItem = ({
 
                             {item?.acceptance_status == 'Pending' &&
                                 <TouchableOpacity
-                                    onPress={onPressReject}
+                                    onPress={() => {
+                                        onPressReject()
+                                        changeStatus('Reject')
+                                    }}
                                     style={{
                                         backgroundColor: '#FF4500',
                                         width: '40%',
