@@ -579,7 +579,8 @@ export default AppointmentDetails = ({ navigation, route }) => {
           id: item?.id,
           order: item?.order_id,
           date: item?.appointment_date,
-          status: item?.acceptance_status
+          status: item?.acceptance_status,
+          bookingDate: item?.booking_dates
         }
 
       }

@@ -12,13 +12,16 @@ import moment from 'moment-timezone'
 import { useSelector } from 'react-redux'
 import { SvgXml } from 'react-native-svg'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Attachment, Send } from '../Assets/Icons/SvgIcons/Index'
+import { Attachment, Send, _Cross } from '../Assets/Icons/SvgIcons/Index'
 import { Icons } from '../Assets/Icons/IReferences'
 import { API } from '../Helpers/API'
 import { Media } from '../Helpers/MediaProvider'
 import { MessageFunctions } from '../Helpers/Message'
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications'
 import MediaOptions from '../Components/MediaOptions'
+import ChatMessage from '../Components/ChatMessage'
+import Button from '../Components/Button'
+
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const windowWidth = Math.round(Dimensions.get("window").width);
@@ -46,10 +49,17 @@ const Chat = ({ navigation, route }) => {
     const { provider, patient, appointment } = chatOptions
     !chatOptions ? (() => { navigation.canGoBack() && navigation.goBack(); return (<></>) })() : true
     const isProvider = true
-    const isNextChatEnabled = getIsAppointmentChatEnabled(appointment?.date, appointment?.acceptance_status)
+    const isNextChatEnabled = getIsAppointmentChatEnabled(appointment?.bookingDate, appointment?.acceptance_status)
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
     const [mediaOptions, setMediaOptions] = useState(false);
     const [docs, setDocs] = useState([]);
+
+    const [attachment, setAttachment] = useState([])
+    const [type, setType] = useState('')
+    const [isExpired, setIsExpired] = useState(false)
+
+    console.log('Main DateTime', moment(appointment?.bookingDate));
+    
 
     useEffect(() => {
         firestore()
@@ -57,7 +67,7 @@ const Chat = ({ navigation, route }) => {
             .doc(appointment?.order)
             .onSnapshot(documentSnapshot => {
                 if (!documentSnapshot.exists) {
-                    const room = new MessageRoom({
+                    const thisRoom = new MessageRoom({
                         ID: appointment?.order,
                         AppointmentID: appointment?.id,
                         Created: new Date(),
@@ -82,21 +92,23 @@ const Chat = ({ navigation, route }) => {
                     firestore()
                         .collection(`Chats-${Configurations.mode}`)
                         .doc(appointment?.order)
-                        .set(room)
+                        .set(thisRoom)
                         .then(() => {
                             console.log('posted');
                         })
                 } else {
-                    const roomDetails = documentSnapshot.data()
+                    const roomDetails = documentSnapshot?.data()
                     // console.log({ roomDetails });
                     roomDetails?.MessageRoomDetails?.Messages?.reverse()
+                    console.log('Room', room?.MessageRoomDetails.Messages);
+                    
                     setRoom(roomDetails)
                 }
             })
     }, [])
 
     useEffect(() => {
-        messageInputRef.current.focus()
+        messageInputRef?.current?.focus()
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             () => setIsKeyboardVisible(true)
@@ -114,6 +126,7 @@ const Chat = ({ navigation, route }) => {
     }, [])
 
     const Galleryopen = () => {
+        let tempArr = []
         Media
             .launchGellery(true)
             .then((obj) => {
@@ -124,33 +137,39 @@ const Chat = ({ navigation, route }) => {
                     type: obj.mime,
                     uri: obj?.path,
                 };
+                tempArr.push(source)
+                setAttachment(tempArr)
+                setType('image')
                 setMediaOptions(false)
-                const newMessage = new Message({
-                    Body: messageInput,
-                    DateTime: new Date(),
-                    DocPaths: docs,
-                    ImagePaths: [obj?.path],
-                    Milliseconds: moment().valueOf(),
-                    NumChars: messageInput.length,
-                    ReadBit: 1,
-                    ReceiverID: patient?.id,
-                    SenderID: loginUserData?.user_id,
-                    Shown: true,
-                    SYSTEM: false
-                })
-                setRoom(r => {
-                    r?.MessageRoomDetails.Messages.unshift(newMessage)
-                    return r
-                })
-                UploadFile(new Array(source), newMessage)
-
             })
             .catch((error) => {
                 console.log('Galleryopen-error', error);
             });
+
     };
 
     const Camerapopen = async () => {
+
+
+        let tempArr = []
+        Media
+            .launchCamera(true)
+            .then((obj) => {
+                const fileName = obj?.path.split('/')
+                const source = {
+                    name: fileName[fileName.length - 1],
+                    type: obj.mime,
+                    uri: obj?.path,
+                };
+                tempArr.push(source)
+                setAttachment(tempArr)
+                setType('image')
+                setMediaOptions(false)
+            }).catch((error) => {
+                console.log('Camerapopen..............', error);
+            });
+
+
         Media
             .launchCamera(true)
             .then((obj) => {
@@ -187,20 +206,11 @@ const Chat = ({ navigation, route }) => {
     };
 
     const selectFile = async () => {
-        let oldMsgs = room?.MessageRoomDetails.Messages
+        let tempArr = []
         try {
             const res = await DocumentPicker.pick({
                 type: [
-                    //   DocumentPicker.types.pdf,
-                    //   DocumentPicker.types.docx,
-                    //   DocumentPicker.types.doc,
-                    //   DocumentPicker.types.ppt,
-                    //   DocumentPicker.types.xls,
-                    //   DocumentPicker.types.audio,
-                    // DocumentPicker.types.images,
-                    DocumentPicker.types.allFiles,
-                    //   DocumentPicker.types.plainText,
-                    //   DocumentPicker.types.video,
+                    DocumentPicker.types.pdf,
                 ],
             });
             console.log('Document Pick Response', res);
@@ -209,27 +219,10 @@ const Chat = ({ navigation, route }) => {
                 type: res[0].type,
                 uri: res[0].uri,
             };
+            tempArr.push(source)
+            setAttachment(tempArr)
+            setType('pdf')
             setMediaOptions(false)
-            const newMessage = new Message({
-                Body: messageInput,
-                DateTime: new Date(),
-                DocPaths: docs,
-                ImagePaths: [res[0].uri],
-                Milliseconds: moment().valueOf(),
-                NumChars: messageInput.length,
-                ReadBit: 1,
-                ReceiverID: patient?.id,
-                SenderID: loginUserData?.user_id,
-                Shown: true,
-                SYSTEM: false
-            })
-            // oldMsgs=oldMsgs?.push(newMessage)
-            // oldMsgs=oldMsgs?.reverse()
-            setRoom(r => {
-                r?.MessageRoomDetails.Messages.unshift(newMessage)
-                return r
-            })
-            UploadFile(new Array(source), newMessage)
 
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
@@ -241,18 +234,26 @@ const Chat = ({ navigation, route }) => {
         }
     };
 
-    const UploadFile = async (arr: any, msg: Message) => {
+    const UploadFile = async (msg: Message) => {
         let url = Configurations.baseURL + "api-chat-image";
         var data = new FormData();
-        for (var i = 0; i < arr.length; i++) {
-            data.append("chat_image[]", arr[i]);
+        for (var i = 0; i < attachment.length; i++) {
+            data.append("chat_image[]", attachment[i]);
         }
 
         API.post(url, data, 1)
-            .then((obj) => {
+            .then(async (obj) => {
                 if (obj.status == true) {
                     console.log("UploadFile-res...", obj);
-                    onSendMessage(obj?.result, msg)
+                    if (type === 'image') {
+                        msg.MessageDetails.ImagePaths = obj.result
+                    } else {
+                        msg.MessageDetails.DocPaths = obj.result
+                    }
+                    await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Messages': firestore.FieldValue.arrayUnion(msg) }).finally(() => {
+                        setIsAutoResendable(true)
+                    })
+
                 } else {
                     MessageFunctions.showError(obj.message);
                     return false;
@@ -262,12 +263,9 @@ const Chat = ({ navigation, route }) => {
             })
     };
 
-    const onSendMessage = async (imgs = [], msg: Message) => {
+    const onSendMessage = async () => {
 
-        console.log({ length: imgs.length });
-
-        if (imgs.length == 0) {
-
+        if (attachment.length == 0) {
             if (isAutoResendable) {
                 setIsAutoResendable(false)
 
@@ -284,102 +282,50 @@ const Chat = ({ navigation, route }) => {
                     Shown: true,
                     SYSTEM: false
                 })
-
                 setRoom(r => {
                     r?.MessageRoomDetails.Messages.unshift(newMessage)
                     return r
                 })
-
                 setMessageInput('')
-
-                await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Messages': firestore.FieldValue.arrayUnion(newMessage) }).finally(() => {
-                    setIsAutoResendable(true)
-                })
+                await firestore()
+                    .collection(`Chats-${Configurations.mode}`)
+                    .doc(appointment?.order)
+                    .update({ 'MessageRoomDetails.Messages': firestore.FieldValue.arrayUnion(newMessage) })
+                    .finally(() => {
+                        setIsAutoResendable(true)
+                    })
             }
         } else {
-            console.log({ msg });
-            if (msg) {
-                msg.MessageDetails.ImagePaths = imgs
-                await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Messages': firestore.FieldValue.arrayUnion(msg) }).finally(() => {
-                    setIsAutoResendable(true)
-                })
-            }
+            const newMessage = new Message({
+                Body: messageInput,
+                DateTime: new Date(),
+                DocPaths: type === 'pdf' ? [attachment[0].uri] : [],
+                ImagePaths: type === 'image' ? [attachment[0].uri] : [],
+                Milliseconds: moment().valueOf(),
+                NumChars: messageInput.length,
+                ReadBit: 1,
+                ReceiverID: patient?.id,
+                SenderID: loginUserData?.user_id,
+                Shown: true,
+                SYSTEM: false
+            })
+            setAttachment([])
+            setRoom(r => {
+                r?.MessageRoomDetails.Messages.unshift(newMessage)
+                return r
+            })
+            setMessageInput('')
+            UploadFile(newMessage)
+
 
         }
-
     }
 
     const renderMessageItem = ({ item, index }) => {
-        const messageItem = new Message(item?.MessageDetails)
-        const { MessageDetails, isSentByMe } = messageItem
-        const { Body, SYSTEM, ImagePaths } = MessageDetails
-        const isMine = isSentByMe(loginUserData?.user_id)
-
-        var str = moment(MessageDetails.Milliseconds).format('hh:mm A, DD MMM YY')
-
         return (
-
-            <View style={{
-                width: '100%',
-                alignItems: SYSTEM ? 'center' : isMine ? 'flex-end' : 'flex-start',
-                justifyContent: 'center',
-                zIndex: 5,
-            }}>
-                <View style={{
-                    width: SYSTEM ? '86%' : '92%',
-                    alignItems: SYSTEM ? 'center' : isMine ? 'flex-end' : 'flex-start',
-                }}>
-                    <View style={{
-                        flex: 1,
-                        backgroundColor: SYSTEM ? '#FFF2D9' : (isMine && ImagePaths?.length > 0) ? 'transparent' : isMine ? '#0168B3' : '#FFFFFF',
-                        padding: ImagePaths?.length > 0 ? 0 : 8,
-                        borderRadius: 8,
-                    }}>
-
-                        {
-                            ImagePaths?.length > 0 ?
-                                <View
-                                    style={[styles.msgImg, { alignSelf: SYSTEM ? 'center' : isMine ? 'flex-end' : 'flex-start', }]}>
-                                    <Image source={{ uri: ImagePaths[0] }}
-                                        style={{
-                                            height: '100%',
-                                            width: '100%',
-                                            borderRadius: (windowWidth * 3) / 100,
-                                        }}
-                                        resizeMode='cover'
-                                    />
-                                </View>
-                                :
-                                <Text style={{
-                                    textAlign: SYSTEM ? 'left' : 'left',
-                                    color: SYSTEM ? '#A47C32' : isMine ? '#FFFFFF' : '#0C1016',
-                                    fontFamily: Font.Regular,
-                                    fontSize: SYSTEM ? Font.small : Font.medium
-                                }}>
-                                    {Body}
-                                </Text>
-                        }
-                    </View>
-
-                    {!SYSTEM &&
-                        <Text style={{
-                            textAlign: isMine ? 'right' : 'left',
-                            color: '#8F98A7',
-                            fontFamily: Font.Regular,
-                            fontSize: Font.xsmall,
-                            width: '100%',
-                            marginTop: vs(3),
-
-
-                        }}>
-                            {str}
-                        </Text>
-                    }
-
-                </View>
-
-            </View>
-
+            <ChatMessage
+                Item={item}
+            />
         )
     }
 
@@ -425,7 +371,7 @@ const Chat = ({ navigation, route }) => {
                                     color: '#8F98A7',
                                     fontFamily: Font.Medium,
                                     fontSize: Font.xsmall
-                                }} allowFontScaling={false} >{`Consultation ID: ${appointment?.order}`}</Text>
+                                }} allowFontScaling={false}>{`Consultation ID: ${appointment?.order}`}</Text>
 
                             </View>
 
@@ -450,122 +396,187 @@ const Chat = ({ navigation, route }) => {
                         renderItem={renderMessageItem}
                         showsVerticalScrollIndicator={false}
                         ItemSeparatorComponent={() => (<View style={{ marginVertical: vs(6) }} />)}
+                    // ListEmptyComponent={() => (<Text style={{ width: '100%', alignSelf: 'center', textAlign: 'center' }} >No Messages</Text>)}
                     />
                 </View>
 
                 <View style={{
                     width: '100%',
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
                     backgroundColor: Colors.White,
-                    paddingBottom: (Platform.OS == 'ios') ? insets.bottom - 10 : 9,
+                    paddingBottom: (Platform.OS == 'ios') ? insets.bottom - (windowWidth * 3) / 100 : vs(9),
                     paddingVertical: vs(9),
                     paddingHorizontal: s(13),
-
                 }}>
-                    <View style={{
-                        width: '87%',
-                        flexDirection: 'row',
-                        borderRadius: vs(25),
-                        backgroundColor: Colors.backgroundcolor,
-                        paddingHorizontal: vs(12),
-                        paddingVertical: Platform.OS == 'ios' ? vs(10) : 0,
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        // height:40,
-                        maxHeight: 200,
-                    }}>
-                        <View style={{
-                            width: '85%',
-                            justifyContent: 'center',
-                        }}>
-                            <TextInput
-                                placeholder='Write your message here..'
-                                placeholderTextColor={'#515C6F'}
-                                style={{ width: '100%', color: Colors.Black, fontSize: Font.small }}
-                                multiline
-                                value={messageInput}
-                                returnKeyType='next'
-                                onChangeText={setMessageInput}
-                                ref={messageInputRef}
-                            />
-                        </View>
 
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={() => {
-                                Keyboard.dismiss()
-                                setTimeout(() => {
-                                    setMediaOptions(true)
-                                }, 350);
-                            }}
-                            style={{
-                                width: '10%',
-                                paddingVertical: Platform.OS == 'ios' ? 0 : vs(10),
-                                justifyContent: 'flex-end',
-                                alignItems: 'flex-end',
-                                // alignSelf: 'flex-end',
-                            }}>
+                    {
+                        isExpired ?
+                            <Button
+                                text={'Chat is closed'}
+                                btnStyle={{ backgroundColor: '#FFA800' }}
+                                isDisabled={true}
+                            />
+                            :
                             <View
                                 style={{
-                                    width: (windowWidth * 5) / 100,
-                                    height: (windowWidth * 5) / 100,
-                                    borderRadius: (windowWidth * 20) / 100,
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
+                                    width: '100%',
+                                    justifyContent: 'space-between',
+                                    flexDirection: 'row',
+                                }}
+                            >
+                                <View style={{
+                                    width: '88%',
                                 }}>
-                                <SvgXml xml={Attachment} width={(windowWidth * 4.5) / 100} height={(windowWidth * 4.5) / 100} />
-                                {/* <Image
-                                    resizeMode="contain"
-                                    source={Icons.Attachment}
-                                    style={{
-                                        width: (windowWidth * 4.5) / 100,
-                                        height: (windowWidth * 4.5) / 100,
+                                    {
+                                        attachment.length > 0 &&
+                                        <View style={{
+                                            borderBottomWidth: 1,
+                                            borderBottomColor: Colors.Border,
+                                            paddingBottom: vs(4),
+                                            marginBottom: vs(4),
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            width: '100%',
+                                            // height: 50,
+                                            // paddingVertical: vs(10),
+                                            // backgroundColor:'#d6d6d6'
+                                        }}>
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                alignItems: 'flex-end',
+                                            }}>
+                                                {
+                                                    type === 'image' ?
+                                                        <Image
+                                                            source={{ uri: attachment[0].uri }}
+                                                            style={{ height: 50, width: 50, borderRadius: (windowWidth * 2) / 100, }}
+                                                        />
+                                                        :
+                                                        <Image
+                                                            source={Icons.Pdf}
+                                                            style={{ height: 50, width: 50, borderRadius: (windowWidth * 2) / 100, }}
+                                                        />
+                                                }
+                                                <Text
+                                                    numberOfLines={1}
+                                                    style={{
+                                                        fontSize: Font.small,
+                                                        fontFamily: Font.Regular,
+                                                        color: Colors.DarkGrey,
+                                                        paddingHorizontal: s(5),
+                                                        width: '75%',
+                                                    }}
+                                                >
+                                                    {attachment[0].name}
+                                                </Text>
+                                            </View>
+                                            <TouchableHighlight
+                                                onPress={() => {
+                                                    setAttachment([])
+                                                }}
+                                                underlayColor={Colors.Highlight}
+                                                style={styles.closeContainer}>
+                                                <SvgXml xml={_Cross} height={vs(20)} width={s(20)} />
+                                            </TouchableHighlight>
+
+                                        </View>
+                                    }
+                                    {/* --------------------------------- */}
+                                    <View style={{
+                                        width: '100%',
+                                        flexDirection: 'row',
+                                        borderRadius: Platform.OS === 'ios' ? vs(15) : vs(20),
+                                        backgroundColor: Colors.backgroundcolor,
+                                        paddingHorizontal: vs(12),
+                                        paddingVertical: Platform.OS == 'ios' ? vs(7) : 0,
+                                        justifyContent: 'space-between',
+                                        maxHeight: (windowWidth * 35) / 100,
+                                    }}>
+                                        <View style={{
+                                            width: '88%',
+                                            justifyContent: 'center',
+                                        }}>
+                                            <TextInput
+                                                placeholder='Write your message here..'
+                                                placeholderTextColor={'#515C6F'}
+                                                style={{ width: '100%', color: Colors.Black, fontSize: Font.small }}
+                                                multiline
+                                                value={messageInput}
+                                                returnKeyType='next'
+                                                ref={messageInputRef}
+                                                onChangeText={setMessageInput}
+                                            />
+                                        </View>
+
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            onPress={() => {
+                                                Keyboard.dismiss()
+                                                setTimeout(() => {
+                                                    setMediaOptions(true)
+                                                }, 350);
+                                            }}
+                                            style={{
+                                                width: '10%',
+                                                paddingVertical: Platform.OS == 'ios' ? 0 : vs(10),
+                                                justifyContent: 'flex-end',
+                                                alignItems: 'flex-end',
+                                                // alignSelf: 'flex-end',
+                                            }}>
+                                            <View
+                                                style={{
+                                                    width: (windowWidth * 4.9) / 100,
+                                                    height: (windowWidth * 4.9) / 100,
+                                                    borderRadius: (windowWidth * 20) / 100,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center'
+                                                }}>
+                                                <SvgXml xml={Attachment} width={(windowWidth * 4.5) / 100} height={(windowWidth * 4.5) / 100} />
+                                            </View>
+                                        </TouchableOpacity>
+
+                                    </View>
+                                </View>
+
+                                <View style={{
+                                    justifyContent: 'flex-end',
+                                    width: '12%',
+                                    alignItems: 'flex-end',
+                                    // alignSelf: 'flex-end',
+                                    // paddingBottom:(windowWidth*1)/100,
+
+                                }}>
+                                    <Pressable style={{
+                                        backgroundColor: Colors.Theme,
+                                        height: windowWidth * 0.09,
+                                        marginBottom: Platform.OS === 'ios' ? vs(0.5) : vs(4),
+                                        width: '80%',
+                                        borderRadius: windowWidth * 0.1,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
                                     }}
-                                /> */}
+                                        disabled={
+                                            (messageInput.trim().length <= 0 && attachment.length == 0) ?
+                                                true
+                                                :
+                                                (messageInput.trim().length <= 0 && attachment.length > 0) ? false
+                                                    :
+                                                    (messageInput.trim().length > 0 || attachment.length > 0) ? false
+                                                        :
+                                                        false
+                                        }
+                                        onPress={() => {
+                                            onSendMessage()
+                                        }}>
+
+                                        <SvgXml xml={Send} />
+                                    </Pressable>
+
+
+                                </View>
+
                             </View>
-                        </TouchableOpacity>
-
-                    </View>
-
-                    <View style={{
-                        justifyContent: 'center',
-                        width: '12%',
-                        alignItems: 'center',
-
-                    }}>
-                        <Pressable style={{
-                            backgroundColor: Colors.Theme,
-                            height: windowWidth * 0.09,
-                            width: '80%',
-                            borderRadius: windowWidth * 0.1,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
-                            disabled={messageInput.trim().length <= 0}
-                            onPress={() => {
-                                onSendMessage([], null)
-                            }}>
-
-                            {
-                                messageInput.trim().length <= 0 ?
-                                    <Image
-                                        resizeMode="contain"
-                                        source={Icons.Mic}
-                                        style={{
-                                            width: (windowWidth * 6) / 100,
-                                            height: (windowWidth * 6) / 100,
-                                            tintColor: Colors.White,
-                                        }}
-                                    />
-                                    :
-                                    <SvgXml xml={Send} />
-                            }
-                        </Pressable>
-
-
-                    </View>
-
+                    }
 
 
                 </View>
@@ -578,8 +589,9 @@ const Chat = ({ navigation, route }) => {
                     setMediaOptions(false)
                 }}
                 selectedOption={(val: string) => {
-                    // selectFile()
-                    if (val == '2') {
+                    if (val == '1') {
+                        selectFile()
+                    } else if (val == '2') {
                         Camerapopen()
                     } else {
                         Galleryopen()
@@ -638,6 +650,16 @@ const styles = StyleSheet.create({
         height: (windowWidth * 40) / 100,
         width: (windowWidth * 40) / 100,
 
-    }
+    },
+    closeContainer: {
+        height: s(20),
+        width: s(20),
+        borderRadius: s(20),
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        backgroundColor: Colors.DarkGrey,
+        zIndex: 999
+    },
 })
 export default Chat

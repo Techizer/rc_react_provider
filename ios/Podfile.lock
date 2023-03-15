@@ -1249,6 +1249,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNPDF (0.14.0):
+    - React
   - RNReanimated (2.14.4):
     - DoubleConversion
     - FBLazyVector
@@ -1384,6 +1386,7 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNPDF (from `../node_modules/react-native-view-pdf`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
@@ -1560,6 +1563,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNPDF:
+    :path: "../node_modules/react-native-view-pdf"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -1673,6 +1678,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 04ecf12bae7543cd8df145f1b26d89d867594be7
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
+  RNPDF: 8526c7210ff375c29d2461c51945e2f5480f7b60
   RNReanimated: 73afd1a9b4087e403163e0d300854cb99260c9b6
   RNScreens: ea4cd3a853063cda19a4e3c28d2e52180c80f4eb
   RNSentry: 7e90aec2633d2fdad8aeb839c9915e4376fd27d1
@@ -1688,4 +1694,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5a2dc20b8cd5431c425053c31a6d35b692db3f8f
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0

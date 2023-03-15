@@ -59,8 +59,6 @@ const AppointmentItem = ({
 
     }
 
-    console.log({orderID: item?.order_id});
-
     const changeStatus = async (acceptanceStatus) => {
         await firestore().collection(`Chats-${Configurations.mode}`)
         .doc(item?.order_id)

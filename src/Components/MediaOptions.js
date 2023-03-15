@@ -16,11 +16,6 @@ const MediaOptions = ({
 
     const options = [
         {
-            id: '1',
-            title: 'Document',
-            icon: Icons.Documents
-        },
-        {
             id: '2',
             title: 'Camera',
             icon: Icons.Camera
@@ -31,10 +26,15 @@ const MediaOptions = ({
             icon: Icons.Gallery
         },
         {
-            id: '4',
-            title: 'Audio',
-            icon: Icons.Audio
+            id: '1',
+            title: 'Document',
+            icon: Icons.Documents
         },
+        // {
+        //     id: '4',
+        //     title: 'Audio',
+        //     icon: Icons.Audio
+        // },
     ]
 
     return (
@@ -83,7 +83,7 @@ const MediaOptions = ({
                                     return (
                                         <View style={{ alignItems: 'center', marginLeft: index == 0 ? 0 : (windowWidth * 8) / 100 }}>
                                             <TouchableOpacity
-                                                disabled={(item.id == '1' || item.id == '4') ? true : false}
+                                                disabled={(item.id == '4') ? true : false}
                                                 activeOpacity={0.8}
                                                 onPress={() => {
                                                     selectedOption(item.id)
@@ -104,7 +104,7 @@ const MediaOptions = ({
                                                     style={{
                                                         width: (windowWidth * 6) / 100,
                                                         height: (windowWidth * 6) / 100,
-                                                        tintColor:(item.id == '1' || item.id == '4') ? Colors.lightGrey: Colors.textblue
+                                                        tintColor:(item.id == '4') ? Colors.lightGrey: Colors.textblue
                                                     }}
                                                 />
                                             </TouchableOpacity>

@@ -66,4 +66,6 @@ export const Icons = {
     Documents: require('./document.png'),
     Audio: require('./audio.png'),
     Mic: require('./mic.png'),
+    
+    Pdf: require('./pdf.png'),
 }
