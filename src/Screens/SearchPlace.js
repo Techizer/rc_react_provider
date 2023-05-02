@@ -337,16 +337,18 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                 zIndex: 999,
                 width: '96%',
                 alignSelf: 'center',
-                top: (Platform.OS === 'ios') ? headerHeight + StatusbarHeight-(StatusbarHeight/1.5) : headerHeight + StatusbarHeight,
+                top: (Platform.OS === 'ios') ? headerHeight + StatusbarHeight - (StatusbarHeight / 1.5) : headerHeight + StatusbarHeight,
             }}>
                 <GooglePlacesAutocomplete
                     ref={instance => {
                         locationRef = instance;
                     }}
 
+                    currentLocation={true}
+                    currentLocationLabel="Current location"
+                    nearbyPlacesAPI='GooglePlacesSearch'
+                    debounce={200}
                     clearButtonMode={'while-editing'}
-                    currentLocation
-                    currentLocationLabel='Current'
                     placeholder='Search for area, street name..'
                     placeholderTextColor="#7C7C7C"
                     minLength={2}

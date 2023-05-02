@@ -26,7 +26,7 @@ import TermsAndConditions from '../Screens/TermsAndConditions';
 import ForgetPassword from '../Screens/ForgetPassword';
 import Drawerscreen from '../Containers/Drawer';
 import Notifications from '../Screens/Notifications';
-import AppointmentDetails from '../Screens/AppointmentDetails';
+import AppointmentsDetails from '../Screens/AppointmentsDetails';
 import NeedSupport from '../Screens/NeedSupport';
 import OTP from '../Screens/OTP';
 import ServiceAddress from '../Screens/ServiceAddress';
@@ -106,7 +106,7 @@ const MainStack = navigation => {
       }
       console.log(sName);
     }} ref={navRef}>
-      <Stack.Navigator initialRouteName={ScreenReferences.Splash}>
+      <Stack.Navigator initialRouteName={ScreenReferences.SearchPlace}>
 
         <Stack.Screen
           name={ScreenReferences.Splash}
@@ -116,7 +116,7 @@ const MainStack = navigation => {
 
         <Stack.Screen
           name={ScreenReferences.AppointmentDetails}
-          component={AppointmentDetails}
+          component={AppointmentsDetails}
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen

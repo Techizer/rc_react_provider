@@ -41,15 +41,15 @@ class MediaProvider {
       })
    }
    launchGellery = async (crop) => {
-      let cropvalue = crop == null ? false : crop
+      let cropvalue = !!crop
       return new Promise((resolve, reject) => {
          ImagePicker.openPicker({
-            width: 200,
-            height: 200,
-            cropping: cropvalue,
+            // width: 200,
+            // height: 200,
+            cropping: false,
             includeBase64: true,
             includeExif: true,
-            compressImageQuality: 0.4,
+            compressImageQuality: 0.5,
             // multiple: true
          }).then((res) => {
             resolve(res);

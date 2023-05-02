@@ -27,7 +27,7 @@ import { getISChatImplemented, getIsAppointmentChatEnabled } from '../Helpers/Ap
 import firestore from '@react-native-firebase/firestore'
 import { Message } from '../Schemas/MessageRoomSchema';
 
-export default AppointmentDetails = ({ navigation, route }) => {
+export default AppointmentsDetails = ({ navigation, route }) => {
 
   const [classStateData, setClassStateData] = useState({
     showPDetails: false,

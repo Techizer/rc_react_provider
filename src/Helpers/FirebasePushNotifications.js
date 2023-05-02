@@ -16,13 +16,32 @@ class FirebasePushNotifications {
     }
   }
   getFcmToken = async () => {
-    const fcmToken = await messaging().getToken()
-    if (fcmToken) {
-      return fcmToken;
-      //fcmtoken= fcmToken
+    // const fcmToken = await messaging().getToken()
+    // if (fcmToken) {
+    //   return fcmToken;
+    //   //fcmtoken= fcmToken
+    // } else {
+    //   this.showAlert('Failed', 'No token received');
+    // }
+
+    try{
+      const isPermissable = await messaging().hasPermission();
+    if (isPermissable) {
+      const fcmToken = await messaging().getToken()
+      console.log('FPN Token: ', {isPermissable, fcmToken});
+      return fcmToken
     } else {
-      this.showAlert('Failed', 'No token received');
+      messaging().requestPermission()
+        .then(() => { console.log("+++ PERMISSION REQUESTED +++++") })
+        .catch(error => { console.log(" +++++ ERROR RP ++++ " + error) })
     }
+    } catch(e) {
+      console.log('Error >>>>>>>>>>>> ', e);
+      return null
+    }
+
+    
+
   }
 }
 export const FBPushNotifications = new FirebasePushNotifications();
