@@ -91,7 +91,7 @@ export const BottomSheetViewStyles = StyleSheet.create({
     },
     ScrollContainer: {
         backgroundColor: Colors.White,
-        height: '100%'
+        paddingBottom: '15%'
     },
     FlatListChild: {
         backgroundColor: Colors.White,

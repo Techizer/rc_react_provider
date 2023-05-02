@@ -106,7 +106,7 @@ const MainStack = navigation => {
       }
       console.log(sName);
     }} ref={navRef}>
-      <Stack.Navigator initialRouteName={ScreenReferences.SearchPlace}>
+      <Stack.Navigator initialRouteName={ScreenReferences.Splash}>
 
         <Stack.Screen
           name={ScreenReferences.Splash}
