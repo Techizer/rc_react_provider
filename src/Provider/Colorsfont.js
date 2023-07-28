@@ -89,7 +89,7 @@ export const Colors = {
   darkText:'#17181A',
   detailTitles:'#354052',
   tabsBackground:'#F1F2F4',
-  Yellow:'#FFA800',
+  Yellow:'#ffa800',
   Red:'#FF0000',
   precautionText: "#041A27",
 

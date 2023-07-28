@@ -5,7 +5,7 @@ import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 import { Colors, Font } from "../Provider/Colorsfont";
 import { windowWidth, Configurations } from "../Helpers/Utils";
-import { Address, Edit, roundCheck } from "../../src/Assets/Icons/SvgIcons/Index";
+import { Address, Edit, roundCheck } from "../Assets/Icons/SvgIcons/Index";
 
 const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = () => { }, isLoading, defaultAdd }) => {
 

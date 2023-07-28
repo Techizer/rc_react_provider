@@ -8,7 +8,7 @@ import {
 } from "react-native"
 import Spinner from 'react-native-spinkit';
 
-export default AppLoader = ({ loading }) => {
+const AppLoader = ({ loading }) => {
     return (
         <Modal
             transparent={true}
@@ -58,3 +58,5 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     }
 })
+
+export default AppLoader;

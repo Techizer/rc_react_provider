@@ -17,25 +17,25 @@ import { VideoCall } from "../Assets/Icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
 import StarRating from "react-native-star-rating";
 import { Icons } from "../Assets/Icons/IReferences";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import firestore from '@react-native-firebase/firestore'
 import { Message } from "../Schemas/MessageRoomSchema";
+import { setVideoCall, setVideoCallData } from "../Redux/Actions/UserActions";
 
 const AppointmentItem = ({
     item,
     Index,
     navigation,
     isLoading,
-    onPressViewDetails, 
-    onPressAccept, 
-    onPressReject, 
-    onPressVideoCall,
+    onPressViewDetails,
+    onPressAccept,
+    onPressReject,
 }) => {
 
     const {
         loginUserData
-      } = useSelector(state => state.Auth)
-
+    } = useSelector(state => state.Auth)
+    const dispatch = useDispatch()
     const aDate = new Date(item?.appointment_date)
     var VideoCallBtn = false
     var appointmentDate = moment(item?.app_date).format(
@@ -61,25 +61,25 @@ const AppointmentItem = ({
 
     const changeStatus = async (acceptanceStatus) => {
         await firestore().collection(`Chats-${Configurations.mode}`)
-        .doc(item?.order_id)
-        .update('MessageRoomDetails.Messages', firestore.FieldValue.arrayUnion(new Message({
-          Body: `Appointment ${acceptanceStatus}ed on ${moment().format('hh:mm A, ddd, DD MMM YYYY')}`,
-          DateTime: new Date(),
-          DocPaths: [],
-          ImagePaths: [],
-          Milliseconds: moment().valueOf(),
-          NumChars: 0,
-          ReadBit: 1,
-          SenderID: loginUserData?.user_id,
-          Shown: true,
-          SYSTEM: true,
-          ReceiverID: item?.patient_id,
-          
-        })) ).then(()=>{
-            console.log('Appointment Status added in firestore');
-        }).catch((e)=>{
-            console.log('Appointment Status added failed in firestore', e);
-        })
+            .doc(item?.order_id)
+            .update('MessageRoomDetails.Messages', firestore.FieldValue.arrayUnion(new Message({
+                Body: `Appointment ${acceptanceStatus}ed on ${moment().format('hh:mm A, ddd, DD MMM YYYY')}`,
+                DateTime: new Date(),
+                DocPaths: [],
+                ImagePaths: [],
+                Milliseconds: moment().valueOf(),
+                NumChars: 0,
+                ReadBit: 1,
+                SenderID: loginUserData?.user_id,
+                Shown: true,
+                SYSTEM: true,
+                ReceiverID: item?.patient_id,
+
+            }))).then(() => {
+                console.log('Appointment Status added in firestore');
+            }).catch((e) => {
+                console.log('Appointment Status added failed in firestore', e);
+            })
     }
 
     return (
@@ -94,15 +94,15 @@ const AppointmentItem = ({
             }}>
 
                 <View style={{
-                        flexDirection: "row",
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        width: "100%",
-                        alignSelf: "center",
-                        borderBottomWidth: 1.5,
-                        borderBottomColor: Colors.backgroundcolor,
-                        paddingBottom: vs(5)
-                    }} >
+                    flexDirection: "row",
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: "100%",
+                    alignSelf: "center",
+                    borderBottomWidth: 1.5,
+                    borderBottomColor: Colors.backgroundcolor,
+                    paddingBottom: vs(5)
+                }} >
                     <SkeletonPlaceholder>
                         <SkeletonPlaceholder.Item width={(windowWidth * 25) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
                     </SkeletonPlaceholder>
@@ -411,7 +411,23 @@ const AppointmentItem = ({
 
                                 <TouchableOpacity
                                     activeOpacity={0.8}
-                                    onPress={onPressVideoCall}
+                                    onPress={() => {
+                                        var videoDetails = {
+                                            fromUserId: loginUserData?.user_id,
+                                            fromUserName: loginUserData?.first_name,
+                                            order_id: item?.order_id,
+                                            room_name: "rootvideo_room_" + loginUserData?.user_id + "_" + item?.patient_id,
+                                            toUserId: item?.patient_id,
+                                            toUserName: item?.patient_name,
+                                            type: 'doctor_to_patient_video_call',
+                                            image: item?.patient_image,
+                                            isPage: "outGoing",
+                                        };
+                                        dispatch(setVideoCallData(videoDetails))
+                                        setTimeout(() => {
+                                            dispatch(setVideoCall(true))
+                                        }, 500);
+                                    }}
                                     style={{
                                         paddingHorizontal: s(8),
                                         paddingVertical: vs(4),
@@ -437,10 +453,10 @@ const AppointmentItem = ({
                                 <TouchableOpacity
                                     // onPress={() => { this.rescdule_click(), this.get_day(), this.setState({ order_id: item?.id, service_status: item?.provider_type, send_id: item?.provider_id, time_take_data: '', }) }}
                                     onPress={() => {
-                                        changeStatus('Accept').finally(()=>{
+                                        changeStatus('Accept').finally(() => {
                                             onPressAccept()
                                         })
-                                        
+
                                     }}
                                     style={{
                                         backgroundColor: Colors.buttoncolorhgreen,

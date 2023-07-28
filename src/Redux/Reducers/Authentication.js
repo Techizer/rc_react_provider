@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, LAST_SCREEN, LOGGEDIN_USER_TYPE, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from '../Types';
+import { ALL_USER_LOGIN_DATA, APP_STATE, LAST_SCREEN, LOGGEDIN_USER_TYPE, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD, VIDEO_CALL, VIDEO_CALL_DATA } from '../Types';
 import { LOGGEDIN_USER_DATA, LOGOUT, FCM_DEVICE_TOKEN } from '../Types';
 import { ScreenReferences } from '../../Stacks/ScreenReferences'
 
@@ -15,7 +15,10 @@ const initialState = {
     ratings: null,
     lastScreen: ScreenReferences.Splash,
     notifications: [],
-    notificationCount: 0
+    notificationCount: 0,
+    appState: '',
+    isVideoCall: false,
+    videoDetails: null
 };
 
 const Authentication = (state = initialState, action = {}) => {
@@ -27,7 +30,9 @@ const Authentication = (state = initialState, action = {}) => {
                     shouldAutoLogin: state.shouldAutoLogin,
                     userType: state.userType,
                     userEmail: state.userEmail,
-                    userPassword: state.userPassword
+                    userPassword: state.userPassword,
+                    profileData: state.profileData,
+                    // loginUserData: state.loginUserData
                 }
             }
             return initialState
@@ -105,6 +110,23 @@ const Authentication = (state = initialState, action = {}) => {
                 ...state,
                 notificationCount: action.payload,
             };
+        case APP_STATE:
+            return {
+                ...state,
+                appState: action.payload,
+            };
+
+        case VIDEO_CALL:
+            return {
+                ...state,
+                isVideoCall: action.payload,
+            };
+        case VIDEO_CALL_DATA:
+            return {
+                ...state,
+                videoDetails: action.payload,
+            };
+
         default:
             return state;
     }

@@ -13,19 +13,24 @@ const Button = ({
   onLoading,
   isDisabled,
   isBlank,
+  btnStyle
+
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={isDisabled}
-      style={[((isBlank != undefined && isBlank === true) ? styles.mainContainer1 : styles.mainContainer), customStyles.mainContainer, {
-        opacity: (isDisabled) ? 0.3 : 1.0
+      style={[((isBlank != undefined && isBlank === true) ? styles.mainContainer1 : styles.mainContainer), {
+        opacity: (isDisabled) ? 0.3 : 1.0,
+        marginTop: text === 'FOLLOW UP CONSULTATION' ? 0 : (windowWidth * 6) / 100,
+        marginBottom: text === 'FOLLOW UP CONSULTATION' ? 0 : (windowWidth * 4) / 100,
+        backgroundColor: text === 'FOLLOW UP CONSULTATION' ? Colors.Yellow : Colors.buttoncolorblue
       }]}>
       {
         onLoading ?
           <ActivityIndicator size={'small'} color={'white'} />
           :
-          <Text style={[((isBlank != undefined && isBlank === true) ? styles.buttonText1 : styles.buttonText), customStyles.buttonText]}>
+          <Text style={[((isBlank != undefined && isBlank === true) ? styles.buttonText1 : styles.buttonText)]}>
             {text}
           </Text>
       }
@@ -85,8 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.buttoncolorblue,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: (windowWidth * 6) / 100,
-    marginBottom: (windowWidth * 4) / 100,
+
   },
   mainContainer1: {
     width: '90%',
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
     paddingVertical: (windowWidth * 0.25) / 100,
     marginTop: (windowWidth * 1) / 100,
     marginBottom: (windowWidth * 3) / 100,
-    justifyContent:'center'
+    justifyContent: 'center'
   },
   buttonText: {
     color: 'white',
@@ -118,4 +122,3 @@ const styles = StyleSheet.create({
 });
 
 export default Button;
- 

@@ -79,8 +79,8 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
-    bundleInDebug: true,
-    bundleInRelease: true,
+    bundleInDebug: false,
+    bundleInRelease: false,
 
 ]
 
@@ -139,8 +139,8 @@ android {
         applicationId "com.rootscare.serviceprovider"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 33
-        versionName "3.7.0"
+        versionCode 36
+        versionName "3.7.2"
         multiDexEnabled true
     }
     splits {

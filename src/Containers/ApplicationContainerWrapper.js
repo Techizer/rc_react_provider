@@ -5,11 +5,16 @@ import AppLoader from '../Components/AppLoader'
 import * as Animatable from 'react-native-animatable';
 import NetInfo from '@react-native-community/netinfo';
 import { ScreenReferences } from "../Stacks/ScreenReferences";
+import VideoCall from "../Components/VideoCall";
+import { useSelector } from "react-redux";
 
 const AppContext = React.createContext({})
 export const AppConsumer = AppContext.Consumer
 
 export const ApplicationContainerWrapper = ({ navigation, route, children }) => {
+
+  const { loginUserData, isVideoCall } = useSelector(state => state.Auth)
+
 
   const [classStateData, setClassStateData] = useState({
     loading: false,
@@ -75,6 +80,12 @@ export const ApplicationContainerWrapper = ({ navigation, route, children }) => 
         {children}
 
         <AppLoader loading={classStateData.loading} />
+        {
+          isVideoCall &&
+          <VideoCall
+            isVisible={isVideoCall}
+          />
+        }
         {screens != ScreenReferences.Splash &&
           <View>
             {!classStateData.isConnected && <View style={{ position: 'absolute', bottom: 5, width: '100%' }}>

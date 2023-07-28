@@ -49,13 +49,13 @@ export default Splash = ({ navigation, route }) => {
   const checkAppVersion = async () => {
     let lang = (state?.loanguage == 1) ? "ENG" : "ENG"
     let url = Configurations.baseURL + ((Platform.OS === 'ios') ? ("api-ios-provider-update?divice_lang=" + lang) : ("api-android-provider-update?divice_lang=" + lang))
-    console.log("url", url, Configurations.language)
+    // console.log("url", url, Configurations.language)
     API.get(url, 1).then((obj) => {
 
       if (obj.status == true) {
         const newCode = obj?.result?.appVer?.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
         const myCode = appVersion.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
-        console.log({ newCode, myCode });
+        // console.log({ newCode, myCode });
 
         if (parseInt(newCode) > parseInt(myCode)) {
           setState(prev => ({
@@ -99,7 +99,6 @@ export default Splash = ({ navigation, route }) => {
     data.append('fcm_token', fcm_token)
 
     API.post(url, data, 1).finally(() => {
-      dispatch(onUserLogout())
       navigation.reset({
         index: 0,
         routes: [{ name: ScreenReferences.Login }],
@@ -119,8 +118,6 @@ export default Splash = ({ navigation, route }) => {
       var data = new FormData();
       data.append("user_id", loginUserData?.user_id);
       data.append("fcm_token", fcmToken);
-
-      console.log(data);
 
       API
         .post(url, data, 1)
@@ -147,9 +144,8 @@ export default Splash = ({ navigation, route }) => {
               data.append('user_type', loginUserData?.user_type)
 
               API.post(url, data, 1).then((obj) => {
-                console.log({ obj });
+                // console.log({ obj });
                 if (obj.status == true) {
-                  console.log('Status is TT');
                   dispatch(setUserLoginData(obj.result))
                   dispatch(setUserFCMToken(fcmToken))
                   navigation.reset({
@@ -187,7 +183,7 @@ export default Splash = ({ navigation, route }) => {
 
   const openAppstoreUrl = async (url) => {
     const supported = await Linking.canOpenURL(url);
-    console.log('supported:: ', supported, url);
+    // console.log('supported:: ', supported, url);
     if (supported) {
       // Opening the link with some app, if the URL scheme is "http" the web link should be opened
       // by some browser in the mobile

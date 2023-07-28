@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, FlatList, SafeAreaView, Image, Modal, TouchableOpacity, StatusBar, Dimensions, Platform } from 'react-native';
-import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions } from '../Helpers/Utils';
 import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { vs, s } from 'react-native-size-matters';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { setNotificationsData } from '../Redux/Actions/UserActions';
+import { useIsFocused } from '@react-navigation/native';
 
 export default Notifications = ({ navigation, route }) => {
   const {
@@ -15,12 +16,14 @@ export default Notifications = ({ navigation, route }) => {
   } = useSelector(state => state.Auth)
 
   const dispatch = useDispatch()
+  const isFocused = useIsFocused()
 
   const [classStateData, setClassStateData] = useState({
     isModalVisible: false,
     body: '',
     message: '',
-    isLoading: false
+    isLoading: false,
+    isReadAll: true
   })
 
   const [isListRefreshing, setIsListRefreshing] = useState(false)
@@ -33,7 +36,9 @@ export default Notifications = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    getNotifications(true && notifications.length === 0)
+    if (isFocused) {
+      getNotifications(true && notifications.length === 0)
+    }
   }, [])
 
   const getNotifications = async (loader = false) => {
@@ -52,11 +57,22 @@ export default Notifications = ({ navigation, route }) => {
 
 
       if (obj.status == true) {
-        console.log({notis: obj?.result});
+        // console.log({ notis: obj?.result });
         dispatch(setNotificationsData(obj?.result))
+        if (obj.result && obj.result.length > 0) {
+          for (const iterator of obj.result) {
+            if (iterator.read == '0') {
+              console.log('unread');
+              setState({ isReadAll: false })
+              return
+            }
+          }
+        } else {
+          setState({ isReadAll: false })
+        }
         setState({ message: obj.message })
       } else {
-        dispatch(setNotificationsData(obj?.result))
+        dispatch(setNotificationsData([]))
         setState({ message: obj.message })
         return false;
       }
@@ -92,6 +108,29 @@ export default Notifications = ({ navigation, route }) => {
     });
 
   }
+
+  const ReadAll = async () => {
+    let apishow = "api-update-all-notification";
+    let url = Configurations.baseURL + apishow;
+
+    var data = new FormData();
+    data.append("login_user_id", loginUserData?.user_id);
+    API.post(url, data)
+      .then((obj) => {
+
+        if (obj.status == true) {
+          MessageFunctions.showSuccess(obj.message)
+          setState({ isReadAll: true })
+        } else {
+          MessageFunctions.showError(obj.message)
+        }
+      }).catch((error) => {
+        MessageFunctions.showError(obj.message)
+        console.log("ReadAll-error ------- " + error);
+      }).finally(() => {
+        getNotifications(false)
+      })
+  };
 
   const windowHeight = Math.round(Dimensions.get("window").height);
   const windowWidth = Math.round(Dimensions.get("window").width);
@@ -153,11 +192,36 @@ export default Notifications = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
-      {(notifications == null || notifications.length === 0) && !classStateData.isLoading && 
+
+      {(notifications == null || notifications.length === 0) && !classStateData.isLoading &&
         <View>
           <Text style={{ textAlign: 'center', color: Colors.DarkGrey, fontFamily: Font.Medium, fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 60 / 100 }}>{classStateData.message}</Text>
         </View>
       }
+
+      {!classStateData.isReadAll &&
+        <TouchableOpacity 
+          activeOpacity={0.7}
+          onPress={ReadAll}
+          style={{
+            width: '40%',
+            height: 30,
+            paddingHorizontal: '4%',
+            justifyContent: 'center',
+            alignItems: 'flex-start'
+          }}
+        >
+          <Text
+            style={{
+              fontSize: Font.large,
+              fontFamily: Font.Medium,
+              color: Colors.Theme,
+
+            }}
+          >
+            {'Mark all as read'}
+          </Text>
+        </TouchableOpacity>}
 
       <FlatList
         data={classStateData.isLoading ? ['', '', '', '', '', '', '', '', '', '', ''] : notifications}
@@ -281,16 +345,16 @@ export default Notifications = ({ navigation, route }) => {
               </View>
             </TouchableOpacity>
           );
-        }} 
+        }}
         refreshing={isListRefreshing}
-        onRefresh={()=>{
-          if(!classStateData.isLoading){
+        onRefresh={() => {
+          if (!classStateData.isLoading) {
             setIsListRefreshing(true)
-            getNotifications(false).finally(()=>{
+            getNotifications(false).finally(() => {
               setIsListRefreshing(false)
             })
           }
-        }}/>
+        }} />
 
     </View>
 

@@ -15,7 +15,7 @@ import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { s, vs } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
 import AppLoader from '../Components/AppLoader';
@@ -23,9 +23,10 @@ import { LabTest, Prescription, Report, VideoCall, _Cross, dummyUser } from '../
 import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
-import { getISChatImplemented, getIsAppointmentChatEnabled } from '../Helpers/AppFunctions';
+import { getISChatImplemented } from '../Helpers/AppFunctions';
 import firestore from '@react-native-firebase/firestore'
 import { Message } from '../Schemas/MessageRoomSchema';
+import { setAppState, setVideoCall, setVideoCallData } from '../Redux/Actions/UserActions';
 
 export default AppointmentsDetails = ({ navigation, route }) => {
 
@@ -38,10 +39,13 @@ export default AppointmentsDetails = ({ navigation, route }) => {
     modalPatientPrescription: false,
     isLoading: true,
     isFromReportModal: false,
+    isChat: false
   })
-
   const [explicitLoader, setExplicitLoader] = useState(false)
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+  }, [classStateData.isChat])
   const setState = (payload, resolver = () => { }) => {
     setClassStateData(prev => ({
       ...prev,
@@ -62,7 +66,6 @@ export default AppointmentsDetails = ({ navigation, route }) => {
   LogBox.ignoreAllLogs()
 
   const onRefresh = useCallback(() => {
-    console.log('onRefresh');
     getDetails(0)
     getDay()
     FontAwesome.getImageSource('circle', 20, Colors.theme_color).then(source =>
@@ -83,25 +86,43 @@ export default AppointmentsDetails = ({ navigation, route }) => {
     })
     var data = new FormData();
     data.append('id', route?.params?.appoinment_id)
-
     data.append('service_type', loginUserData?.user_type)
 
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        console.log({appointmentDetails: obj?.result});
+        // console.log({ appointmentDetails: obj?.result});
+        if (obj.result.acceptance_status === 'Accepted' || obj.result.acceptance_status === 'Completed') {
+          if (getISChatImplemented(obj.result.app_date, obj.result.app_time)) {
+            firestore()
+              .collection(`Chats-${Configurations.mode}`)
+              .doc(obj.result?.order_id)
+              .onSnapshot(documentSnapshot => {
+                if (!documentSnapshot.exists) {
+                  setState({ isChat: false })
+                } else {
+                  const roomDetails = documentSnapshot.data()
+                  setState({ isChat: false })
+                }
+              })
+          } else {
+            setState({ isChat: true })
+          }
+        } else {
+          setState({ isChat: false })
+        }
+
         setState({
           appointmentDetails: obj.result,
-          isLoading: false
         })
       } else {
         return false;
       }
     }).catch((error) => {
       console.log("-------- error ad------- ", error)
+    }).finally(() => {
       setState({
         isLoading: false
       })
-    }).finally(() => {
     })
 
   }
@@ -205,20 +226,20 @@ export default AppointmentsDetails = ({ navigation, route }) => {
       if (obj.status == true) {
         getDetails(0)
         firestore().collection(`Chats-${Configurations.mode}`)
-        .doc(classStateData?.appointmentDetails?.order_id)
-        .update('MessageRoomDetails.Messages', firestore.FieldValue.arrayUnion(new Message({
-          Body: `Appointment ${acceptanceStatus}ed on ${moment().format('hh:mm A, ddd, DD MMM YYYY')}`,
-          DateTime: new Date(),
-          DocPaths: [],
-          ImagePaths: [],
-          Milliseconds: moment().valueOf(),
-          NumChars: 0,
-          ReadBit: 1,
-          SenderID: loginUserData?.user_id,
-          Shown: true,
-          SYSTEM: true,
-          ReceiverID: item?.patient_id,
-        })) )
+          .doc(classStateData?.appointmentDetails?.order_id)
+          .update('MessageRoomDetails.Messages', firestore.FieldValue.arrayUnion(new Message({
+            Body: `Appointment ${acceptanceStatus}ed on ${moment().format('hh:mm A, ddd, DD MMM YYYY')}`,
+            DateTime: new Date(),
+            DocPaths: [],
+            ImagePaths: [],
+            Milliseconds: moment().valueOf(),
+            NumChars: 0,
+            ReadBit: 1,
+            SenderID: loginUserData?.user_id,
+            Shown: true,
+            SYSTEM: true,
+            ReceiverID: item?.patient_id,
+          })))
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -320,6 +341,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
   }
 
   const openGalleryPicker = () => {
+
+    dispatch(setAppState('active'))
     Media.launchGellery(false).then((obj) => {
 
       var objF = undefined
@@ -361,7 +384,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
     }).catch((error) => {
 
     }).finally(() => {
-      console.log({ RM: classStateData.isFromReportModal });
+      // console.log({ RM: classStateData.isFromReportModal });
       attachmentOptionSheetRef.current.close()
       setTimeout(() => {
         if (classStateData.isFromReportModal == true) visibleReportModal()
@@ -370,6 +393,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
   }
 
   const openDocumentPicker = async () => {
+
+    dispatch(setAppState('active'))
     Media.launchDocumentGellery(true).then((res) => {
 
       const source = {
@@ -414,17 +439,17 @@ export default AppointmentsDetails = ({ navigation, route }) => {
       })
     }
 
-    console.log('provider_prescription', {
-      uri: file?.path,
-      type: file?.mime, //'image/jpg',
-      name: file?.filename,
-    })
+    // console.log('provider_prescription', {
+    //   uri: file?.path,
+    //   type: file?.mime, //'image/jpg',
+    //   name: file?.filename,
+    // })
 
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
 
-        console.log({ AppointmentUpload: obj });
+        // console.log({ AppointmentUpload: obj });
 
         setTimeout(() => {
           // route.params.reloadList()
@@ -486,12 +511,11 @@ export default AppointmentsDetails = ({ navigation, route }) => {
       android: configfb,
     });
 
-    console.log('The file saved to 23233', configfb, dirs);
+    // console.log('The file saved to 23233', configfb, dirs);
 
     RNFetchBlob.config(configOptions)
       .fetch('GET', imgUrl, {})
       .then(async (res) => {
-        console.log('In Download');
         if (Platform.OS === "ios") {
           RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
           setTimeout(() => {
@@ -523,9 +547,6 @@ export default AppointmentsDetails = ({ navigation, route }) => {
 
   try {
     var item = classStateData.appointmentDetails
-
-    console.log(item);
-
     if (classStateData.appointmentDetails != '' && classStateData.appointmentDetails != null && !classStateData.isLoading) {
 
       var VideoCallBtn = false
@@ -557,9 +578,6 @@ export default AppointmentsDetails = ({ navigation, route }) => {
       if (CurrentDate > MyEndDate) {
         VideoCallBtn = false
       }
-
-      const isChatImplemented = getISChatImplemented(moment(item?.appointment_date).valueOf())
-      console.log({ isChatImplemented });
 
 
       const chatOptions = {
@@ -1113,7 +1131,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       <View style={{
                         width: '17%',
                       }}>
-                        <SvgXml xml={Prescription} height={vs(36)} width={vs(36)}/>
+                        <SvgXml xml={Prescription} height={vs(36)} width={vs(36)} />
                       </View>
                       <View style={{
                         width: "83%",
@@ -1216,7 +1234,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               width: '16%',
                               marginBottom: 10,
                             }}>
-                              <SvgXml xml={Report} height={(mobileW * 12) / 100} width={(mobileW * 12) / 100}/>
+                              <SvgXml xml={Report} height={(mobileW * 12) / 100} width={(mobileW * 12) / 100} />
                             </View>
                             <View style={{
                               width: '84%',
@@ -1411,7 +1429,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                                             width: '18%',
                                             marginBottom: 10
                                           }}>
-                                            <SvgXml xml={Report} height={(mobileW * 12) / 100} width={(mobileW * 12) / 100}/>
+                                            <SvgXml xml={Report} height={(mobileW * 12) / 100} width={(mobileW * 12) / 100} />
                                           </View>
                                           <View style={{
                                             width: '82%',
@@ -1555,14 +1573,14 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       })
                     }}>
                       <View style={{
-                        padding: 15,
+                        padding: 8,
                         backgroundColor: Colors.backgroundcolor,
                         justifyContent: "center",
                       }}>
                         <Image
                           style={{
-                            height: (mobileW * 4.5) / 100,
-                            width: (mobileW * 4.5) / 100,
+                            height: (mobileW * 4) / 100,
+                            width: (mobileW * 4) / 100,
                           }}
                           source={(classStateData.showPDetails) ? Icons.UpArrow : Icons.DownArrow} />
                       </View>
@@ -1711,19 +1729,19 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                 </View>
 
 
-                {((item?.acceptance_status == 'Accepted' || item?.acceptance_status == 'Completed') && (item.service_type == "Doctor") && isChatImplemented) &&
-                <TouchableOpacity style={{
-                  marginHorizontal: '3%',
-                  marginBottom: vs(16)
-                }} 
-                onPress={() => {
-                  navigation.navigate(ScreenReferences.ChatScreen, {chatOptions})
-                }} >
-                  <Text style={{
-                    color: Colors.textblue,
-                    fontFamily: Font.Medium
-                  }}>Chat with patient</Text>
-                </TouchableOpacity>
+                {((item?.acceptance_status == 'Accepted' || item?.acceptance_status == 'Completed') && (item.service_type == "Doctor")) &&
+                  <TouchableOpacity style={{
+                    marginHorizontal: '3%',
+                    marginBottom: vs(16)
+                  }}
+                    onPress={() => {
+                      navigation.navigate(ScreenReferences.ChatScreen, { chatOptions, isEnabled: (classStateData.isChat) })
+                    }} >
+                    <Text style={{
+                      color: Colors.textblue,
+                      fontFamily: Font.Medium
+                    }}>Chat with patient</Text>
+                  </TouchableOpacity>
                 }
 
                 {(item.acceptance_status == 'Accepted' && (item.service_type != "Doctor" && item.service_type != "Lab")) ?
@@ -1858,7 +1876,6 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       {
                         item.task_details.map((i, index) => {
                           if (item.task_details != '') {
-                            console.log({ i });
                             return (
                               <TouchableOpacity activeOpacity={0.9}
                                 // onPress={() => { check_all(item, index) }}
@@ -1975,26 +1992,26 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                     </View>
                   </View>
                 </View>
+
+
                 {/* last button */}
                 <View
                   style={[{
                     width: '91%',
                     alignSelf: 'center',
                     flexDirection: 'row',
+                    alignItems: 'center',
                     backgroundColor: Colors.white_color,
                     paddingTop: (mobileW * 3) / 100,
                     paddingBottom: mobileW * 3 / 100,
-                    alignItems: 'center',
-
-                    // borderTopWidth: (mobileW * 0.3) / 100,
                     borderColor: Colors.bordercolor,
 
                   }, item.acceptance_status != 'Rejected' ? { justifyContent: 'space-between' } : null]}>
+
+
                   <View
                     style={{
-                      alignItems: 'center',
                       flexDirection: 'row',
-                      width: '40%'
                     }}>
                     {Configurations.language == 0 ?
                       <Image
@@ -2022,14 +2039,15 @@ export default AppointmentsDetails = ({ navigation, route }) => {
 
                     </Text>
                   </View>
-                  <View style={{
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    flexDirection: 'row',
-                    width: '60%',
-                    // backgroundColor: 'red'
-                  }}>
-                    {item.acceptance_status == 'Pending' &&
+
+                  {
+                    item.acceptance_status == 'Pending' &&
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                    }}>
+
                       <>
                         <TouchableOpacity onPress={() => {
                           updateProviderAppointmentStatus("Accept", item.id)
@@ -2037,11 +2055,11 @@ export default AppointmentsDetails = ({ navigation, route }) => {
 
                           style={{
                             backgroundColor: Colors.buttoncolorhgreen,
-                            width: '40%',
                             borderRadius: (mobileW * 1) / 100,
                             paddingVertical: (mobileW * 2) / 100,
+                            paddingHorizontal: (mobileW * 6) / 100,
                             justifyContent: 'center',
-                            marginHorizontal: '4%'
+                            marginHorizontal: '2%'
                           }}>
                           <Text
                             style={{
@@ -2059,9 +2077,9 @@ export default AppointmentsDetails = ({ navigation, route }) => {
 
                           style={{
                             backgroundColor: '#FF4500',
-                            width: '40%',
-                            borderRadius: (mobileW * 1) / 100,
                             paddingVertical: (mobileW * 2) / 100,
+                            borderRadius: (mobileW * 1) / 100,
+                            paddingHorizontal: (mobileW * 6) / 100,
                             justifyContent: 'center',
                           }}>
                           <Text
@@ -2074,188 +2092,218 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                             }}>Reject</Text>
                         </TouchableOpacity>
                       </>
-                    }
+                    </View>
+                  }
 
 
-                    <RBSheet
-                      ref={attachmentOptionSheetRef}
-                      {...BottomSheetProps}
-                      customStyles={BottomSheetStylesForSmall} >
-                      <View style={BottomSheetViewStyles.MainView}>
-                        <View style={BottomSheetViewStyles.ButtonContainerSmall}>
-                          <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
-                            attachmentOptionSheetRef.current.close()
-                          }}>
-                            <SvgXml xml={_Cross}
-                              width={windowHeight / 26}
-                              height={windowHeight / 26}
-                            />
-                          </TouchableOpacity>
-                        </View>
 
-                        <View style={BottomSheetViewStyles.Body}>
+                  {
+                    item.acceptance_status == 'Accepted' &&
+                    <View>
+                      {
+                        (item.acceptance_status == 'Accepted' && UploadprecriptionBtn == true &&
+                          item.service_type == "Doctor" && item.provider_prescription == null) &&
+                        <>
+                          <TouchableOpacity onPress={() => {
 
-                          <View style={BottomSheetViewStyles.TitleBar}>
-                            <Text style={BottomSheetViewStyles.Title}>Choose your option!</Text>
-                          </View>
-
-                          <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
-                            <View style={{
-                              paddingVertical: vs(16),
-                              width: '100%',
-                              flexDirection: 'row'
-                            }}>
-                              <TouchableOpacity onPress={() => {
-                                openGalleryPicker()
-                              }} style={styles.roundButtonAttachmentContainer}>
-                                <Image source={Icons.Gallery} style={{
-                                  marginVertical: vs(4),
-                                  width: vs(16),
-                                  height: vs(16),
-                                  tintColor: Colors.textblue
-                                }} resizeMode='contain' resizeMethod='scale' />
-                                <Text>Gallery</Text>
-                              </TouchableOpacity>
-
-                              <TouchableOpacity onPress={() => {
-                                openDocumentPicker()
-                              }} style={styles.roundButtonAttachmentContainer}>
-                                <Image source={Icons.Documents} style={{
-                                  marginVertical: vs(4),
-                                  width: vs(16),
-                                  height: vs(16),
-                                  tintColor: Colors.textblue
-                                }} resizeMode='contain' resizeMethod='scale' />
-                                <Text style={{
-                                }}>Documents</Text>
-                              </TouchableOpacity>
-                            </View>
-
-                          </KeyboardAwareScrollView>
-                        </View>
-                      </View>
-
-                    </RBSheet>
-
-
-                    {(item.acceptance_status == 'Accepted' &&
-                      item.service_type == "Doctor" &&
-                      item.appointment_type == "Online" && VideoCallBtn == true) &&
-                      item.booking_type === 'online_task' &&
-                      <>
-                        <TouchableOpacity
-                          activeOpacity={0.8}
-                          onPress={() => {
-                            navigation.navigate(ScreenReferences.VideoCall, {
-                              item: item
-                            });
+                            attachmentOptionSheetRef.current.open()
                           }}
-                          style={{
-                            backgroundColor: Colors.Green,
-                            borderRadius: (mobileW * 1) / 100,
-                            padding: (mobileW * 2) / 100,
-                            alignItems: 'center',
-                            flexDirection: 'row'
-                          }} >
-                          <SvgXml xml={VideoCall} />
-                          <Text
+
                             style={{
-                              textAlign: 'center',
-                              color: Colors.white_color,
-                              textTransform: 'uppercase',
-                              fontFamily: Font.SemiBold,
-                              fontSize: mobileW * 3 / 100,
-                              marginLeft: s(7)
+                              backgroundColor: Colors.orange,
+                              // width: mobileW * 39 / 100,
+                              borderRadius: (mobileW * 1) / 100,
+                              // paddingVertical: (mobileW * 1.5) / 100,
+                              padding: (mobileW * 2) / 100,
+                              justifyContent: 'center',
+                              marginBottom: 6
+                            }}>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                color: Colors.white_color,
+                                textTransform: 'uppercase',
+                                fontFamily: Font.SemiBold,
+                                fontSize: mobileW * 3 / 100,
+                              }}>UPLOAD Prescription</Text>
+                          </TouchableOpacity>
+                        </>
+                      }
+
+
+                      {
+                        (item.acceptance_status == 'Accepted' &&
+                          item.service_type == "Doctor" &&
+                          item.appointment_type == "Online" && VideoCallBtn == true) &&
+                        item.booking_type === 'online_task' &&
+                        <>
+                          <TouchableOpacity
+                            activeOpacity={0.8}
+                            onPress={() => {
+                              var videoDetails = {
+                                fromUserId: loginUserData?.user_id,
+                                fromUserName: loginUserData?.first_name,
+                                order_id: item?.order_id,
+                                room_name: "rootvideo_room_" + loginUserData?.user_id + "_" + item?.patient_id,
+                                toUserId: item?.patient_id,
+                                toUserName: item?.patient_name,
+                                type: 'doctor_to_patient_video_call',
+                                image: item?.patient_image,
+                                isPage: "outGoing",
+                              };
+                              dispatch(setVideoCallData(videoDetails))
+                              setTimeout(() => {
+                                dispatch(setVideoCall(true))
+                              }, 500);
                             }}
-                          >VIDEO CALL</Text>
-                        </TouchableOpacity>
-
-                      </>
-                    }
-
-                    {
-                      (item.acceptance_status == 'Accepted' && UploadprecriptionBtn == true &&
-                        item.service_type == "Doctor" && item.provider_prescription == null) &&
-                      <>
-                        <TouchableOpacity onPress={() => {
-
-                          attachmentOptionSheetRef.current.open()
-                        }}
-
-                          style={{
-                            backgroundColor: Colors.orange,
-                            // width: mobileW * 39 / 100,
-                            borderRadius: (mobileW * 1) / 100,
-                            // paddingVertical: (mobileW * 1.5) / 100,
-                            padding: (mobileW * 2) / 100,
-                            justifyContent: 'center',
-                            marginLeft: 7
-                          }}>
-                          <Text
                             style={{
-                              textAlign: 'center',
-                              color: Colors.white_color,
-                              textTransform: 'uppercase',
-                              fontFamily: Font.SemiBold,
-                              fontSize: mobileW * 3 / 100,
-                            }}>UPLOAD Prescription</Text>
-                        </TouchableOpacity>
-                      </>
-                    }
+                              backgroundColor: Colors.Green,
+                              borderRadius: (mobileW * 1) / 100,
+                              padding: (mobileW * 2) / 100,
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                              alignSelf: 'flex-end',
+                            }} >
+                            <SvgXml xml={VideoCall} />
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                color: Colors.white_color,
+                                textTransform: 'uppercase',
+                                fontFamily: Font.SemiBold,
+                                fontSize: mobileW * 3 / 100,
+                                marginLeft: s(7)
+                              }}
+                            >VIDEO CALL</Text>
+                          </TouchableOpacity>
 
-                    {item.acceptance_status == 'Completed' &&
-                      <View style={{ alignItems: 'flex-end' }}>
-                        {item.avg_rating != '' && item.avg_rating != 0 ?
-                          <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: '2%' }}>
-                            <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{LanguageConfiguration.rated[Configurations.language]}</Text>
-                            <StarRating
-                              disabled={false}
-                              fullStar={Icons.YellowStar}
-                              emptyStar={Icons.UnfilledStar}
-                              maxStars={5}
-                              starSize={15}
-                              rating={item.avg_rating}
+                        </>
+                      }
 
-                            />
+                    </View>
+                  }
 
-                          </View> :
-                          <>
-                            <Text style={{
-                              fontFamily: Font.Regular, color: '#000',
-                              fontSize: mobileW * 3.5 / 100,
-                              //  marginRight: mobileW * 2 / 100,
-                              textAlign: 'right',
-                            }}>{'Not Rated Yet'}</Text>
-                          </>
-                        }
-                      </View>
-                    }
-                    {item.acceptance_status == 'Rejected' && item.rf_text != '' &&
-                      <View
 
+                  {item.acceptance_status == 'Completed' &&
+                    <View style={{ alignItems: 'flex-end' }}>
+                      {item.avg_rating != '' && item.avg_rating != 0 ?
+                        <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: '2%' }}>
+                          <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 3.5 / 100, marginRight: mobileW * 2 / 100 }}>{LanguageConfiguration.rated[Configurations.language]}</Text>
+                          <StarRating
+                            disabled={false}
+                            fullStar={Icons.YellowStar}
+                            emptyStar={Icons.UnfilledStar}
+                            maxStars={5}
+                            starSize={15}
+                            rating={item.avg_rating}
+
+                          />
+
+                        </View> :
+                        <>
+                          <Text style={{
+                            fontFamily: Font.Regular, color: '#000',
+                            fontSize: mobileW * 3.5 / 100,
+                            //  marginRight: mobileW * 2 / 100,
+                            textAlign: 'right',
+                          }}>{'Not Rated Yet'}</Text>
+                        </>
+                      }
+                    </View>
+                  }
+
+
+                  {
+                    item.acceptance_status == 'Rejected' && item.rf_text != '' &&
+                    <View
+
+                      style={{
+                        width: mobileW * 24 / 100,
+                        borderRadius: 1,
+                        paddingVertical: (mobileW * 1) / 100,
+                        justifyContent: 'center',
+                        marginLeft: mobileW * 2 / 100
+                      }}>
+                      <Text
                         style={{
-                          width: mobileW * 24 / 100,
-                          borderRadius: 1,
-                          paddingVertical: (mobileW * 1) / 100,
-                          justifyContent: 'center',
-                          marginLeft: mobileW * 2 / 100
-                        }}>
-                        <Text
-                          style={{
-                            textAlign: 'center',
-                            color: '#FF4500',
-                            textTransform: 'uppercase',
-                            fontFamily: Font.SemiBold,
-                            fontSize: Font.medium,
-                          }}>{LanguageConfiguration.Refunde[Configurations.language]}
+                          textAlign: 'center',
+                          color: '#FF4500',
+                          textTransform: 'uppercase',
+                          fontFamily: Font.SemiBold,
+                          fontSize: Font.medium,
+                        }}>{LanguageConfiguration.Refunde[Configurations.language]}
 
-                        </Text>
-                      </View>}
-                  </View>
+                      </Text>
+                    </View>
+                  }
+
+
                 </View>
+
               </View>
             </View>
           </KeyboardAwareScrollView>
+
+          <RBSheet
+            ref={attachmentOptionSheetRef}
+            {...BottomSheetProps}
+            customStyles={BottomSheetStylesForSmall} >
+            <View style={BottomSheetViewStyles.MainView}>
+              <View style={BottomSheetViewStyles.ButtonContainerSmall}>
+                <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                  attachmentOptionSheetRef.current.close()
+                }}>
+                  <SvgXml xml={_Cross}
+                    width={windowHeight / 26}
+                    height={windowHeight / 26}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <View style={BottomSheetViewStyles.Body}>
+
+                <View style={BottomSheetViewStyles.TitleBar}>
+                  <Text style={BottomSheetViewStyles.Title}>Choose your option!</Text>
+                </View>
+
+                <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                  <View style={{
+                    paddingVertical: vs(16),
+                    width: '100%',
+                    flexDirection: 'row'
+                  }}>
+                    <TouchableOpacity onPress={() => {
+                      openGalleryPicker()
+                    }} style={styles.roundButtonAttachmentContainer}>
+                      <Image source={Icons.Gallery} style={{
+                        marginVertical: vs(4),
+                        width: vs(16),
+                        height: vs(16),
+                        tintColor: Colors.textblue
+                      }} resizeMode='contain' resizeMethod='scale' />
+                      <Text>Gallery</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                      openDocumentPicker()
+                    }} style={styles.roundButtonAttachmentContainer}>
+                      <Image source={Icons.Documents} style={{
+                        marginVertical: vs(4),
+                        width: vs(16),
+                        height: vs(16),
+                        tintColor: Colors.textblue
+                      }} resizeMode='contain' resizeMethod='scale' />
+                      <Text style={{
+                      }}>Documents</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                </KeyboardAwareScrollView>
+              </View>
+            </View>
+
+          </RBSheet>
+
 
         </View>
       );

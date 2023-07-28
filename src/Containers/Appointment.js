@@ -117,7 +117,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
     data.append('user_id', user_id)
     data.append('service_type', user_type)
 
-    console.log({apiname});
+    console.log({ apiname });
 
     API.post(url, data, 1).then((obj) => {
       if (apiname == "api-provider-ongoing-appointment-list") {
@@ -131,7 +131,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
         });
       }
       if (obj?.status == true) {
-        
+
         setState(
           prev => ({
             ...prev,
@@ -237,20 +237,6 @@ export default Appointment = ({ navigation, route, pageName }) => {
                           showConfirmDialogReject("Reject", item.id, index)
                           reloadList()
                         }}
-                        onPressVideoCall={() => {
-                          setState(
-                            prev => ({
-                              ...prev,
-                              id: item.id,
-                              index: index
-                            })
-                          )
-                          navigation.navigate(ScreenReferences.VideoCall, {
-                            item: item
-                          });
-
-
-                        }}
                       />
                     </>
                   );
@@ -276,51 +262,51 @@ export default Appointment = ({ navigation, route, pageName }) => {
               onRefresh={async () => { await getApppointments() }}
             /> :
             <>
-            <View style={{
-              marginTop: 4
-            }}/>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
-              data={[1, 2, 3, 4, 5, 6, 7]}
-              renderItem={({ item, index }) => {
-                return (
-                  // <View
-                  //   style={{
-                  //     flexDirection: "row",
-                  //     width: '100%',
-                  //     paddingHorizontal: s(11),
-                  //   }}>
-                  //   <View style={{ width: "30%", }}>
-                  //     <SkeletonPlaceholder>
-                  //       <SkeletonPlaceholder.Item width={s(50)} height={s(50)} borderRadius={s(50)} />
-                  //     </SkeletonPlaceholder>
-                  //   </View>
+              <View style={{
+                marginTop: 4
+              }} />
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+                data={[1, 2, 3, 4, 5, 6, 7]}
+                renderItem={({ item, index }) => {
+                  return (
+                    // <View
+                    //   style={{
+                    //     flexDirection: "row",
+                    //     width: '100%',
+                    //     paddingHorizontal: s(11),
+                    //   }}>
+                    //   <View style={{ width: "30%", }}>
+                    //     <SkeletonPlaceholder>
+                    //       <SkeletonPlaceholder.Item width={s(50)} height={s(50)} borderRadius={s(50)} />
+                    //     </SkeletonPlaceholder>
+                    //   </View>
 
-                  //   <View style={{ justifyContent: 'center' }}>
-                  //     <SkeletonPlaceholder>
-                  //       <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
-                  //     </SkeletonPlaceholder>
-                  //     <SkeletonPlaceholder>
-                  //       <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
-                  //     </SkeletonPlaceholder>
-                  //     <SkeletonPlaceholder>
-                  //       <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
-                  //     </SkeletonPlaceholder>
-                  //   </View>
-                  // </View>
-                  <AppointmentItem isLoading={true}/>
-                )
+                    //   <View style={{ justifyContent: 'center' }}>
+                    //     <SkeletonPlaceholder>
+                    //       <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} />
+                    //     </SkeletonPlaceholder>
+                    //     <SkeletonPlaceholder>
+                    //       <SkeletonPlaceholder.Item width={(windowWidth * 30) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                    //     </SkeletonPlaceholder>
+                    //     <SkeletonPlaceholder>
+                    //       <SkeletonPlaceholder.Item width={(windowWidth * 20) / 100} height={(windowWidth * 4) / 100} borderRadius={s(4)} style={{ marginTop: vs(7) }} />
+                    //     </SkeletonPlaceholder>
+                    //   </View>
+                    // </View>
+                    <AppointmentItem isLoading={true} />
+                  )
 
-              }}
-              ItemSeparatorComponent={() => (
-                <View style={{
-                  marginVertical: vs(3)
-                }}/>
-              )}
-            />
+                }}
+                ItemSeparatorComponent={() => (
+                  <View style={{
+                    marginVertical: vs(3)
+                  }} />
+                )}
+              />
             </>
-            
+
         }
 
       </View>

@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Text, FlatList, View, Alert, StyleSheet, Image, TouchableOpacity, Platform, BackHandler } from 'react-native';
 import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, localStorage, MessageFunctions, MessageHeadings } from '../Helpers/Utils';
 import Styles from '../Styles';
-import messaging from '@react-native-firebase/messaging';
 import { DashBoardBox } from '../Components'
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import PushNotification from 'react-native-push-notification';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { onUserLogout, setLastScreen, setProfileCompletionData, setProfileData } from '../Redux/Actions/UserActions';
+import { onUserLogout, setLastScreen, setNotificationCount, setProfileCompletionData, setProfileData } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SvgXml } from 'react-native-svg';
+import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';
@@ -22,8 +22,10 @@ global.cart_customer = [];
 export default Home = ({ navigation, route }) => {
 
   const [state, setState] = useState({
-    notification_count: '',
     HomeHealthcareServiceAppointments: [
+      {
+        title: 'About Profile'
+      },
       {
         img: Icons.AppointmentArt,
         title: 'My Appointment',
@@ -99,7 +101,8 @@ export default Home = ({ navigation, route }) => {
   const {
     loginUserData,
     scheduleAvailability,
-    profileCompletion
+    profileCompletion,
+    notificationCount
   } = useSelector(state => state.Auth)
 
   const dispatch = useDispatch()
@@ -130,7 +133,6 @@ export default Home = ({ navigation, route }) => {
     data.append('service_type', loginUserData['user_type'])
 
     API.post(url, data, 1).then((obj) => {
-      console.log('Get Profile is being called on Home');
       if (obj.status == true) {
         dispatch(setProfileData(obj?.result))
       }
@@ -141,93 +143,6 @@ export default Home = ({ navigation, route }) => {
       console.log("-------- error ------- ", error)
     });
   }
-
-
-  useEffect(() => {
-    PushNotification.configure({
-      onNotification: function (notification) {
-        console.log("NOTIFICATION:", notification);
-        if (notification.data?.type == "Logout") {
-          logout();
-        }
-        if (notification.userInteraction) {
-          // Handle notification click
-          console.log('PushNotification.configure', notification)
-          if (notification.data?.type == "patient_to_doctor_video_call") {
-            let data = (Platform.OS == "ios") ? JSON.parse(notification.data.notidata) : notification.data
-            Alert.alert(
-              "Incoming Video call",
-              data.message,
-              [
-                {
-                  text: "Reject",
-                  onPress: () => {
-                    console.log("Cancel Pressed");
-                    callRejectNotification(data)
-                  },
-                  style: "cancel",
-                },
-                {
-                  text: "Accept",
-                  onPress: () => {
-                    console.log("Accept Pressed");
-                    //   val messageBody = json.optString("message")
-                    // val roomName = json.getString("room_name")
-                    // val fromUserName = json.optString("fromUserName")
-                    // val fromUserId = json.getString("fromUserId")
-                    // val toUserName = json.getString("toUserName")
-                    // val toUserId = json.getString("toUserId")
-                    // val orderId = json.getString("order_id")
-                    showVideoCallAlert(data)
-                  },
-                  style: "default",
-                },
-              ],
-              {
-                cancelable: true,
-              }
-            )
-          }
-        }
-
-        notification.finish(PushNotificationIOS.FetchResult.NoData);
-      },
-    });
-    PushNotification.createChannel(
-      {
-        channelId: "rootscares1", // (required)
-        channelName: "rootscare messasge", // (required)
-
-        importance: 4, // (optional) default: 4. Int value of the Android notification importance
-        vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-      },
-      (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-    )
-    messaging().onMessage(async remoteMessage => {
-
-      console.log({ remoteMessage });
-
-      let shouldRefreshHome = false
-
-      if (remoteMessage.data?.type == "Logout") {
-        shouldRefreshHome = false
-        logout();
-      } else {
-        shouldRefreshHome = true
-      }
-
-      PushNotification.localNotification({
-        channelId: 'rootscares1', //his must be same with channelid in createchannel
-        title: remoteMessage.data.title, //'Appointment Booking',
-        message: remoteMessage.data.body,
-        userInfo: remoteMessage.data
-      })
-      // MessageFunctions.showSuccess("yes call coming")
-    }
-    )
-
-    getProfile()
-  }, [])
 
   const handleBackPress = () => {
     Alert.alert(
@@ -245,6 +160,11 @@ export default Home = ({ navigation, route }) => {
     );
     return true;
   };
+
+  useEffect(() => {
+    getProfile()
+  }, [])
+
 
   useEffect(() => {
     dispatch(setLastScreen(ScreenReferences.Home))
@@ -266,17 +186,7 @@ export default Home = ({ navigation, route }) => {
 
   }
 
-  const logout = async () => {
-    localStorage.setItemString('logout_bit', '100')
-    dispatch(onUserLogout())
-    navigation.reset({
-      index: 0,
-      routes: [{ name: ScreenReferences.Login }],
-    });
-  };
-
   const getPercentage = async () => {
-    console.log('getPercentage');
     let url = Configurations.baseURL + "api-provider-profile-complete";
 
     var data = new FormData();
@@ -285,7 +195,7 @@ export default Home = ({ navigation, route }) => {
     API
       .post(url, data, 1)
       .then((completionData) => {
-        console.log({ completionData });
+        // console.log({ completionData });
 
         if (profileCompletion?.total_complete != completionData?.result?.total_complete) {
           dispatch(setProfileCompletionData(completionData?.result))
@@ -367,33 +277,214 @@ export default Home = ({ navigation, route }) => {
   };
 
   const getNotificationsCount = async () => {
+
     let url = Configurations.baseURL + "api-notification-count";
-    console.log("url", url)
     var data = new FormData();
     data.append('login_user_id', loginUserData?.user_id)
 
-
     API.post(url, data, 1).then((obj) => {
-
+      // console.log("getNotificationCount-response", obj);
       if (obj.status == true) {
-        if (state.notification_count != obj.result) {
-          setState(prev => ({
-            ...prev,
-            notification_count: obj.result
-          }))
-        }
-
+        dispatch(setNotificationCount(obj?.result))
       } else {
         return false;
       }
     }).catch((error) => {
-      // getProfile()
-      setState(prev => ({
-        ...prev,
-        notification_count: 0
-      }))
-      console.log("-------- error ------- " + error);
-    })
+      dispatch(setNotificationCount(0))
+      console.log("getNotificationCount- error ------- " + error);
+    });
+  };
+
+  const FlatListHeader = () => {
+    if (profileCompletion) {
+      const cProgress = (profileCompletion?.total_complete) ? profileCompletion?.total_complete : 0
+      return (
+        <View style={{
+          width: mobileW,
+          flexDirection: 'column',
+          marginTop: 8,
+          backgroundColor: 'white'
+        }}>
+          <View style={{
+            width: mobileW,
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 8,
+            backgroundColor: 'white'
+          }}>
+            <View style={{
+              width: mobileW / 3,
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 16,
+              height: 'auto'
+              //backgroundColor: 'pink'
+            }}>
+
+              <CircularProgress
+                duration={400}
+                activeStrokeColor={'#0888D1'}
+                inActiveStrokeColor='#E2E7EE'
+                maxValue={100}
+                titleStyle={{ fontWeight: 'bold' }}
+                value={cProgress}
+                showProgressValue={true}
+                valueSuffix={'%'}
+                progressValueFontSize={Font.large}
+                activeStrokeWidth={20}
+                inActiveStrokeWidth={16}
+                strokeLinecap={'butt'}
+                radius={mobileW / 7.5}
+                progressValueColor='#0888D1'
+                delay={1000}
+              />
+
+              <View style={{
+                width: 24,
+                height: 2,
+                position: 'absolute',
+                right: 8,
+                top: mobileW / 6,
+                bottom: mobileW / 6,
+                backgroundColor: (cProgress >= 25) ? '#0888D1' : '#E2E7EE'
+              }}>
+              </View>
+
+              <View style={{
+                width: 24,
+                height: 2,
+                position: 'absolute',
+                left: 8,
+                top: mobileW / 6,
+                bottom: mobileW / 6,
+                backgroundColor: (cProgress >= 75) ? '#0888D1' : '#E2E7EE'
+              }}>
+              </View>
+
+              <View style={{
+                width: 2,
+                height: 24,
+                position: 'absolute',
+                bottom: 12,
+                left: mobileW / 6,
+                right: mobileW / 6,
+                backgroundColor: (cProgress >= 50) ? '#0888D1' : '#E2E7EE'
+              }}>
+              </View>
+
+              <View style={{
+                width: 2,
+                height: 24,
+                position: 'absolute',
+                top: 12,
+                left: mobileW / 6,
+                right: mobileW / 6,
+                backgroundColor: (cProgress >= 100 || cProgress === 0) ? '#0888D1' : '#E2E7EE'
+              }}>
+              </View>
+
+            </View>
+            <View style={{
+              width: (mobileW * 2) / 3,
+              justifyContent: 'center',
+              padding: 16,
+            }}>
+
+              <Text style={{
+                color: Colors.textblack,
+                fontFamily: Font.Medium,
+                fontSize: Font.medium
+              }}>
+                {cProgress >= 100 ? `Profile Complete` : 'Profile In Progress'}
+              </Text>
+
+              <Text style={{
+                color: '#0888D1',
+                fontFamily: Font.Light,
+                fontSize: Font.medium,
+                marginVertical: 4
+              }}>
+                {`${cProgress}% completed`}
+              </Text>
+
+              <Text style={{
+                color: '#8F98A7',
+                fontFamily: Font.Regular,
+                fontSize: Font.small,
+                marginVertical: 4
+              }}>
+                {`One must complete Profile, Service Address, Schedule Availability & Price List, etc steps`}
+              </Text>
+
+
+
+            </View>
+          </View>
+          {
+            (profileCompletion?.availability_schedule === 0 ||
+              profileCompletion?.price_section === 0 ||
+              profileCompletion?.address === 0 ||
+              profileCompletion?.profile_section === 0) &&
+            <TouchableOpacity onPress={() => {
+              if (profileCompletion?.availability_schedule === 0) {
+                navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
+              } else if (profileCompletion?.price_section === 0) {
+                navigation.navigate(ScreenReferences.PriceListTabStack)
+              } else if (profileCompletion?.address === 0) {
+                navigation.navigate(ScreenReferences.ServiceAddress)
+              } else if (profileCompletion?.profile_section === 0) {
+                navigation.navigate(ScreenReferences.ShowProfile)
+              }
+            }} >
+              <View style={{
+                backgroundColor: '#0168B3',
+                flexDirection: 'row',
+                padding: 8,
+                alignItems: 'center'
+              }}>
+                <Text style={{
+                  flex: 5,
+                  color: Colors.White,
+                  fontFamily: Font.Medium,
+                  fontSize: Font.medium
+                }}>
+                  {'Complete Now to Appear In Booking App'}
+                </Text>
+
+                <View style={{
+                  flex: 1,
+                  alignSelf: 'flex-end',
+                  alignItems: 'flex-end',
+                  paddingHorizontal: 4
+                }}>
+                  <View style={{
+                    height: vs(16),
+                    width: vs(16),
+                    borderRadius: vs(16),
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    <Image source={Icons.RightArrow} style={{
+                      width: vs(10),
+                      height: vs(10)
+                    }} resizeMethod='scale' resizeMode='contain' />
+                  </View>
+                </View>
+
+
+
+              </View>
+            </TouchableOpacity>
+          }
+
+        </View>
+      )
+    } else {
+      return (
+        <></>
+      )
+    }
 
   }
 
@@ -425,14 +516,24 @@ export default Home = ({ navigation, route }) => {
               <TouchableOpacity onPress={() => {
                 navigation.toggleDrawer();
               }}>
-                <Image
-                  source={loginUserData?.image == null || loginUserData?.image == '' ? Icons.AccountFilled : { uri: Configurations.img_url3 + loginUserData?.image }}
-                  style={{
-                    // resizeMode: 'contain',
-                    width: (mobileW * 9) / 100,
-                    height: (mobileW * 9) / 100,
-                    borderRadius: mobileW * 4.5 / 100
-                  }}></Image>
+                {
+                  (loginUserData?.image == null || loginUserData?.image == '') ?
+                    <SvgXml xml={dummyUser} style={{
+                      alignSelf: "center",
+                    }}
+                      width={(mobileW * 9) / 100}
+                      height={(mobileW * 9) / 100}
+                    />
+                    :
+                    <Image
+                      source={{ uri: Configurations.img_url3 + loginUserData?.image }}
+                      style={{
+                        width: (mobileW * 9) / 100,
+                        height: (mobileW * 9) / 100,
+                        borderRadius: mobileW * 4.5 / 100
+                      }}></Image>
+                }
+
               </TouchableOpacity>
             </View>
             <View style={{ width: '80%', alignSelf: 'center', paddingTop: (mobileW * 1.5) / 100, }}>
@@ -459,7 +560,7 @@ export default Home = ({ navigation, route }) => {
                 {/* <TouchableOpacity onPress={()=>{notificationfunctoion()}}> */}
                 <Image
                   // tintColor="#fff"
-                  source={state?.notification_count > 0 ? Icons.NotificationBadge : Icons.Notification}
+                  source={notificationCount > 0 ? Icons.NotificationBadge : Icons.Notification}
                   style={{
                     alignSelf: 'flex-end',
                     resizeMode: 'contain',
@@ -477,234 +578,51 @@ export default Home = ({ navigation, route }) => {
           contentContainerStyle={{ paddingBottom: 120 }}
           showsVerticalScrollIndicator={false}
           horizontal={false}
-          ListHeaderComponent={(profileCompletion) ? () => {
-            const cProgress = (profileCompletion?.total_complete) ? profileCompletion?.total_complete : 0
-            return (
-              <View style={{
-                width: mobileW,
-                flexDirection: 'column',
-                marginTop: 8,
-                backgroundColor: 'white'
-              }}>
-                <View style={{
-                  width: mobileW,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 8,
-                  backgroundColor: 'white'
-                }}>
-                  <View style={{
-                    width: mobileW / 3,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 16,
-                    height: 'auto'
-                    //backgroundColor: 'pink'
-                  }}>
-
-                    <CircularProgress
-                      duration={400}
-                      activeStrokeColor={'#0888D1'}
-                      inActiveStrokeColor='#E2E7EE'
-                      maxValue={100}
-                      titleStyle={{ fontWeight: 'bold' }}
-                      value={cProgress}
-                      showProgressValue={true}
-                      valueSuffix={'%'}
-                      progressValueFontSize={Font.large}
-                      activeStrokeWidth={20}
-                      inActiveStrokeWidth={16}
-                      strokeLinecap={'butt'}
-                      radius={mobileW / 7.5}
-                      progressValueColor='#0888D1'
-
-
-                    />
-
-                    <View style={{
-                      width: 24,
-                      height: 2,
-                      position: 'absolute',
-                      right: 8,
-                      top: mobileW / 6,
-                      bottom: mobileW / 6,
-                      backgroundColor: (cProgress >= 25) ? '#0888D1' : '#E2E7EE'
-                    }}>
-                    </View>
-
-                    <View style={{
-                      width: 24,
-                      height: 2,
-                      position: 'absolute',
-                      left: 8,
-                      top: mobileW / 6,
-                      bottom: mobileW / 6,
-                      backgroundColor: (cProgress >= 75) ? '#0888D1' : '#E2E7EE'
-                    }}>
-                    </View>
-
-                    <View style={{
-                      width: 2,
-                      height: 24,
-                      position: 'absolute',
-                      bottom: 12,
-                      left: mobileW / 6,
-                      right: mobileW / 6,
-                      backgroundColor: (cProgress >= 50) ? '#0888D1' : '#E2E7EE'
-                    }}>
-                    </View>
-
-                    <View style={{
-                      width: 2,
-                      height: 24,
-                      position: 'absolute',
-                      top: 12,
-                      left: mobileW / 6,
-                      right: mobileW / 6,
-                      backgroundColor: (cProgress >= 100 || cProgress === 0) ? '#0888D1' : '#E2E7EE'
-                    }}>
-                    </View>
-
-                  </View>
-                  <View style={{
-                    width: (mobileW * 2) / 3,
-                    justifyContent: 'center',
-                    padding: 16,
-                  }}>
-
-                    <Text style={{
-                      color: Colors.textblack,
-                      fontFamily: Font.Medium,
-                      fontSize: Font.medium
-                    }}>
-                      {cProgress >= 100 ? `Profile Complete` : 'Profile In Progress'}
-                    </Text>
-
-                    <Text style={{
-                      color: '#0888D1',
-                      fontFamily: Font.Light,
-                      fontSize: Font.medium,
-                      marginVertical: 4
-                    }}>
-                      {`${cProgress}% completed`}
-                    </Text>
-
-                    <Text style={{
-                      color: '#8F98A7',
-                      fontFamily: Font.Regular,
-                      fontSize: Font.small,
-                      marginVertical: 4
-                    }}>
-                      {`One must complete Profile, Service Address, Schedule Availability & Price List, etc steps`}
-                    </Text>
-
-
-
-                  </View>
-                </View>
-                {
-                  (profileCompletion?.availability_schedule === 0 ||
-                    profileCompletion?.price_section === 0 ||
-                    profileCompletion?.address === 0 ||
-                    profileCompletion?.profile_section === 0) &&
-                  <TouchableOpacity onPress={() => {
-                    if (profileCompletion?.availability_schedule === 0) {
-                      navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
-                    } else if (profileCompletion?.price_section === 0) {
-                      navigation.navigate(ScreenReferences.PriceListTabStack)
-                    } else if (profileCompletion?.address === 0) {
-                      navigation.navigate(ScreenReferences.ServiceAddress)
-                    } else if (profileCompletion?.profile_section === 0) {
-                      navigation.navigate(ScreenReferences.ShowProfile)
-                    }
-                  }} >
-                    <View style={{
-                      backgroundColor: '#0168B3',
-                      flexDirection: 'row',
-                      padding: 8,
-                      alignItems: 'center'
-                    }}>
-                      <Text style={{
-                        flex: 5,
-                        color: Colors.White,
-                        fontFamily: Font.Medium,
-                        fontSize: Font.medium
-                      }}>
-                        {'Complete Now to Appear In Booking App'}
-                      </Text>
-
-                      <View style={{
-                        flex: 1,
-                        alignSelf: 'flex-end',
-                        alignItems: 'flex-end',
-                        paddingHorizontal: 4
-                      }}>
-                        <View style={{
-                          height: vs(16),
-                          width: vs(16),
-                          borderRadius: vs(16),
-                          backgroundColor: 'white',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                          <Image source={Icons.RightArrow} style={{
-                            width: vs(10),
-                            height: vs(10)
-                          }} resizeMethod='scale' resizeMode='contain' />
-                        </View>
-                      </View>
-
-
-
-                    </View>
-                  </TouchableOpacity>
-                }
-
-              </View>
-            )
-          } : () => {
-            return (
-              <></>
-            )
-          }}
           refreshing={false}
           onRefresh={() => {
             refreshDashboardData(1)
           }}
           data={state.HomeHealthcareServiceAppointments}
           renderItem={({ item, index }) => {
-            return (
-              <DashBoardBox
-                textTitle={(loginUserData?.user_type == 'lab' && index == 2) ? item?.titleL : item?.title}
-                textInfo={(loginUserData?.user_type == 'lab' && index == 2) ? item?.detailsL : item?.details}
-                infoIcon={item?.img}
-                actionColor={item.actionColor}
-                actionTextColor={item?.actionTextColor}
-                actionMessage={item?.actionMessage}
-                rightIcon={Icons.RightArrow}
-                isBorder={(item?.title == "About Rootscare") ? false : true}
-                isMargin={(item?.title == "Help & Support") ? false : true}
-                onPress={() => {
-                  if (item?.goTo != undefined) {
-                    if (item?.title == "About Rootscare") {
-                      navigation.navigate(item?.goTo,
-                        {
-                          contantpage: 0,
-                          content: Configurations.about_url_eng,
-                          content_ar: Configurations.about_url_ar
-                        })
-                    } else if (item?.title == 'My Appointment') {
-                      navigation.navigate(item?.goTo)
-                      // { title: LanguageConfiguration.upcoming_heading[Configurations.language], api_status: 0 })
-                    } else {
-                      navigation.navigate(item?.goTo);
+            if (item.title === 'About Profile') {
+              return (
+                <FlatListHeader />
+              )
+            } else {
+              console.log(item.title);
+              return (
+                <DashBoardBox
+                  textTitle={(loginUserData?.user_type == 'lab' && index == 3) ? item?.titleL : item?.title}
+                  textInfo={(loginUserData?.user_type == 'lab' && index == 3) ? item?.detailsL : item?.details}
+                  infoIcon={item?.img}
+                  actionColor={item.actionColor}
+                  actionTextColor={item?.actionTextColor}
+                  actionMessage={item?.actionMessage}
+                  rightIcon={Icons.RightArrow}
+                  isBorder={(item?.title == "About Rootscare") ? false : true}
+                  isMargin={(item?.title == "Help & Support") ? false : true}
+                  onPress={() => {
+                    if (item?.goTo != undefined) {
+                      if (item?.title == "About Rootscare") {
+                        navigation.navigate(item?.goTo,
+                          {
+                            contantpage: 0,
+                            content: Configurations.about_url_eng,
+                            content_ar: Configurations.about_url_ar
+                          })
+                      } else if (item?.title == 'My Appointment') {
+                        navigation.navigate(item?.goTo)
+                      } else {
+                        navigation.navigate(item?.goTo);
+                      }
+
                     }
 
-                  }
+                  }}
+                />
+              );
+            }
 
-                }}
-              />
-            );
           }}
         />
       </View>

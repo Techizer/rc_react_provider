@@ -12,7 +12,7 @@ import AddressInputPopup from "../Components/AddressInputPopup";
 import AddressContainer from "../Components/AddressContainer";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
-// import MapView, { Marker } from 'react-native-maps';
+// import MapView, { Marker } from 'react-native-maps'; 
 import { useRef } from "react";
 import { Icons } from "../Assets/Icons/IReferences";
 
@@ -23,7 +23,7 @@ headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
 const ServiceAddress = ({ navigation, route }) => {
     const [addressSheet, setAddressSheet] = useState(false)
-    const [addressList, setAddressList] = useState([1])
+    const [addressList, setAddressList] = useState([])
     const [selectedAddress, setSelectedAddress] = useState(-1)
     const [defaultAddress, setDefaultAddress] = useState('')
     const [type, setType] = useState('addAddress')
@@ -51,7 +51,7 @@ const ServiceAddress = ({ navigation, route }) => {
             } else sheetRef.current.close()
         }
 
-    }, [isFocused, isMTrue])
+    }, [isMTrue])
 
     const getAddresses = async () => {
         let user_details = loginUserData
@@ -65,7 +65,7 @@ const ServiceAddress = ({ navigation, route }) => {
 
 
         API.post(url, data, 1).then((obj) => {
-            console.log({ results: obj?.result[0] });
+            // console.log({ results: obj?.result });
 
             if (obj.status == true) {
                 if (obj?.result?.length > 1) {

@@ -16,6 +16,9 @@ const PROFILE_COMPLETION_DATA = 'ProfileCompletionData'
 const RATINGS = 'Ratings'
 const NOTIFICATIONS = 'Notifications'
 const NOTIFICATION_COUNT = 'NotificationsCount'
+const APP_STATE = 'APP_STATE'
+const VIDEO_CALL='VIDEO_CALL'
+const VIDEO_CALL_DATA='VIDEO_CALL_DATA'
 
 export {
     ReducerType,
@@ -33,5 +36,8 @@ export {
     PROFILE_COMPLETION_DATA,
     RATINGS,
     NOTIFICATIONS,
-    NOTIFICATION_COUNT
+    NOTIFICATION_COUNT,
+    APP_STATE,
+    VIDEO_CALL,
+    VIDEO_CALL_DATA
 }

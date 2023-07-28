@@ -14,6 +14,8 @@ import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { UserTypes } from '../Helpers/Constants';
 import { BottomSheetProps, BottomSheetStyles, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
+import { useDispatch } from 'react-redux';
+import { setAppState } from '../Redux/Actions/UserActions';
 
 export default Signup = ({ navigation, route }) => {
 
@@ -69,6 +71,7 @@ export default Signup = ({ navigation, route }) => {
   const countrySheetRef = useRef()
   const specialitySheetRef = useRef()
   const attachmentOptionSheetRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     navigation.addListener('focus', () => {
@@ -339,6 +342,7 @@ export default Signup = ({ navigation, route }) => {
 
   const Galleryopen = () => {
 
+    dispatch(setAppState('active'))
     Media.launchGellery(true).then((obj) => {
       const pths = obj.path.split('/')
       const source = {
@@ -368,6 +372,9 @@ export default Signup = ({ navigation, route }) => {
   }
 
   const DocumentGalleryopen = async () => {
+
+    dispatch(setAppState('active'))
+
     Media.launchDocumentGellery(true).then((res) => {
 
       const source = {

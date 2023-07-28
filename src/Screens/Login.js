@@ -8,7 +8,7 @@ import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import { Icons } from '../Assets/Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRememberedEmail, setRememberedPassword, setShouldAutoLogin, setUserFCMToken, setUserLoginData, setUserLoginType } from '../Redux/Actions/UserActions';
+import { onUserLogout, setRememberedEmail, setRememberedPassword, setShouldAutoLogin, setUserFCMToken, setUserLoginData, setUserLoginType } from '../Redux/Actions/UserActions';
 import { useIsFocused } from '@react-navigation/native';
 import { useRef } from 'react';
 import { UserTypes } from '../Helpers/Constants';
@@ -17,6 +17,7 @@ import { vs } from 'react-native-size-matters';
 import { Cross, _Cross } from '../Assets/Icons/SvgIcons/Index';
 import { SvgXml } from 'react-native-svg';
 import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
@@ -57,12 +58,6 @@ export default Login = ({ navigation, route }) => {
 
   useEffect(() => {
     const mUserTypeIndex = UserTypes.findIndex(u => u.value === userType)
-    console.log({
-      email: userEmail,
-      password: userPassword,
-      isRememberChecked: shouldAutoLogin,
-      selectuserType: mUserTypeIndex
-    });
     if (shouldAutoLogin) {
       if (userEmail && userPassword) {
         setState({
@@ -96,6 +91,7 @@ export default Login = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.addListener('focus', payload =>
+      dispatch(onUserLogout()),
       BackHandler.addEventListener('hardwareBackPress', handleBackPress)
     );
     navigation.addListener('blur', payload =>
@@ -153,13 +149,14 @@ export default Login = ({ navigation, route }) => {
 
       API.post(url, data, 1).then((obj) => {
 
-        console.log({ Login: obj?.result })
+        console.log({ Login: obj?.result?.user_id })
         if (obj.status == true) {
 
           dispatch(setUserLoginData(obj?.result))
           dispatch(setUserFCMToken(fcm))
           dispatch(setUserLoginType(UserTypes[classStateData?.selectuserType].value))
           dispatch(setShouldAutoLogin(classStateData?.isRememberChecked))
+          AsyncStorage.setItem('userId', obj?.result?.user_id)
 
           if (classStateData?.isRememberChecked == true) {
             dispatch(setRememberedEmail(classStateData?.email))
@@ -531,15 +528,10 @@ export default Login = ({ navigation, route }) => {
                 </Text>
               </View>
 
+
               <Button
                 text={LanguageConfiguration.createnewaccountbtn[Configurations.language]}
                 onPress={() => navigation.navigate(ScreenReferences.Signup)}
-                isBlank={true}
-                customStyles={{
-                  mainContainer: { borderWidth: 0, },
-                  buttonText: { fontSize: Font.medium }
-
-                }}
               />
 
               <View

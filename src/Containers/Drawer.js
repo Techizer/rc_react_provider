@@ -21,16 +21,11 @@ export default Drawer = ({ navigation, route }) => {
     profileCompletion,
     profileData
   } = useSelector(state => state.Auth)
-  
+
   const dispatch = useDispatch()
 
-  const logout = async () => {
-    dispatch(onUserLogout())
-    navigation.navigate('Login')
-  }
-
   const logoutApi = async () => {
-    const fcm_token = FBPushNotifications.getFcmToken()
+    const fcm_token = await FBPushNotifications.getFcmToken()
     let url = Configurations.baseURL + "api-logout";
     var data = new FormData();
     data.append('user_id', loginUserData?.user_id)
@@ -38,7 +33,10 @@ export default Drawer = ({ navigation, route }) => {
 
     API.post(url, data, 1).then((obj) => {
       if (obj.status == true) {
-        
+        navigation.reset({
+          index: 0,
+          routes: [{ name: ScreenReferences.Login }],
+        });
       } else {
         setTimeout(() => {
           MessageFunctions.showError(obj.message)
@@ -46,10 +44,6 @@ export default Drawer = ({ navigation, route }) => {
         return false;
       }
     }).catch((error) => {
-    }).finally(() => {
-      setTimeout(() => {
-        logout()
-      }, 500);
     })
 
   }

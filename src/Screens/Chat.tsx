@@ -39,12 +39,15 @@ const Chat = ({ navigation, route }) => {
     const insets = useSafeAreaInsets()
     const messageInputRef = useRef()
 
-    const { chatOptions } = route?.params
+    const { chatOptions, isEnabled } = route?.params
+
 
     const {
         loginUserData,
-        fcmDeviceToken
-    } = useSelector(({ Auth }) => Auth)
+        fcmDeviceToken,
+        profileCompletion,
+        notificationCount
+    } = useSelector(state => state.Auth)
 
     const { provider, patient, appointment } = chatOptions
     !chatOptions ? (() => { navigation.canGoBack() && navigation.goBack(); return (<></>) })() : true
@@ -56,10 +59,9 @@ const Chat = ({ navigation, route }) => {
 
     const [attachment, setAttachment] = useState([])
     const [type, setType] = useState('')
-    const [isExpired, setIsExpired] = useState(false)
 
     console.log('Main DateTime', moment(appointment?.bookingDate));
-    
+
 
     useEffect(() => {
         firestore()
@@ -101,14 +103,13 @@ const Chat = ({ navigation, route }) => {
                     // console.log({ roomDetails });
                     roomDetails?.MessageRoomDetails?.Messages?.reverse()
                     console.log('Room', room?.MessageRoomDetails.Messages);
-                    
+
                     setRoom(roomDetails)
                 }
             })
     }, [])
 
     useEffect(() => {
-        messageInputRef?.current?.focus()
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             () => setIsKeyboardVisible(true)
@@ -170,39 +171,39 @@ const Chat = ({ navigation, route }) => {
             });
 
 
-        Media
-            .launchCamera(true)
-            .then((obj) => {
-                // console.log('Camerapopen..............', obj);
-                const fileName = obj?.path.split('/')
-                const source = {
-                    name: fileName[fileName.length - 1],
-                    type: obj.mime,
-                    uri: obj?.path,
-                };
-                setMediaOptions(false)
-                const newMessage = new Message({
-                    Body: messageInput,
-                    DateTime: new Date(),
-                    DocPaths: docs,
-                    ImagePaths: [obj?.path],
-                    Milliseconds: moment().valueOf(),
-                    NumChars: messageInput.length,
-                    ReadBit: 1,
-                    ReceiverID: patient?.id,
-                    SenderID: loginUserData?.user_id,
-                    Shown: true,
-                    SYSTEM: false
-                })
-                setRoom(r => {
-                    r?.MessageRoomDetails.Messages.unshift(newMessage)
-                    return r
-                })
-                UploadFile(new Array(source), newMessage)
-            })
-            .catch((error) => {
-                console.log('Camerapopen..............', error);
-            });
+        // Media
+        //     .launchCamera(true)
+        //     .then((obj) => {
+        //         // console.log('Camerapopen..............', obj);
+        //         const fileName = obj?.path.split('/')
+        //         const source = {
+        //             name: fileName[fileName.length - 1],
+        //             type: obj.mime,
+        //             uri: obj?.path,
+        //         };
+        //         setMediaOptions(false)
+        //         const newMessage = new Message({
+        //             Body: messageInput,
+        //             DateTime: new Date(),
+        //             DocPaths: docs,
+        //             ImagePaths: [obj?.path],
+        //             Milliseconds: moment().valueOf(),
+        //             NumChars: messageInput.length,
+        //             ReadBit: 1,
+        //             ReceiverID: patient?.id,
+        //             SenderID: loginUserData?.user_id,
+        //             Shown: true,
+        //             SYSTEM: false
+        //         })
+        //         setRoom(r => {
+        //             r?.MessageRoomDetails.Messages.unshift(newMessage)
+        //             return r
+        //         })
+        //         UploadFile(new Array(source), newMessage)
+        //     })
+        //     .catch((error) => {
+        //         console.log('Camerapopen..............', error);
+        //     });
     };
 
     const selectFile = async () => {
@@ -240,6 +241,10 @@ const Chat = ({ navigation, route }) => {
         for (var i = 0; i < attachment.length; i++) {
             data.append("chat_image[]", attachment[i]);
         }
+
+        console.log({msg});
+        console.log({attachment});
+        
 
         API.post(url, data, 1)
             .then(async (obj) => {
@@ -409,11 +414,12 @@ const Chat = ({ navigation, route }) => {
                 }}>
 
                     {
-                        isExpired ?
+                        !isEnabled ?
                             <Button
-                                text={'Chat is closed'}
-                                btnStyle={{ backgroundColor: '#FFA800' }}
-                                isDisabled={true}
+                                text={'FOLLOW UP CONSULTATION'}
+                                btnStyle={{ backgroundColor:Colors.orange }}
+                                isDisabled={false}
+                                onPress={()=>navigation.pop()}
                             />
                             :
                             <View

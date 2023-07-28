@@ -157,13 +157,7 @@ export default OngoingAppointments = ({ navigation, route }) => {
                     onPressReject={() => {
                       showConfirmDialogReject("Reject", item.id, index)
                     }}
-                    onPressVideoCall={() => {
-                      navigation.navigate(ScreenReferences.VideoCall, {
-                        item: item
-                      });
-
-
-                    }}
+                   
                   />
                 </>
               );

@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, FCM_DEVICE_TOKEN, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD } from "../Types";
+import { ALL_USER_LOGIN_DATA, APP_STATE, FCM_DEVICE_TOKEN, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD, VIDEO_CALL, VIDEO_CALL_DATA } from "../Types";
 
 export const setUserLoginData = payload => ({
     type: LOGGEDIN_USER_DATA,
@@ -70,7 +70,22 @@ export const setNotificationCount = payload => ({
     type: NOTIFICATION_COUNT,
     payload
 })
+
+export const setAppState = payload => ({
+    type: APP_STATE,
+    payload
+})
  
 export const onUserLogout = () => ({
     type: LOGOUT,
+})
+
+export const setVideoCall = payload => ({
+    type: VIDEO_CALL,
+    payload
+})
+
+export const setVideoCallData = payload => ({
+    type: VIDEO_CALL_DATA,
+    payload
 })

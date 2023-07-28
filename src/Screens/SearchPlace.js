@@ -335,7 +335,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
             <View style={{
                 position: 'absolute',
                 zIndex: 999,
-                width: '96%',
+                width: '100%',
                 alignSelf: 'center',
                 top: (Platform.OS === 'ios') ? headerHeight + StatusbarHeight - (StatusbarHeight / 1.5) : headerHeight + StatusbarHeight,
             }}>

@@ -10,12 +10,12 @@ import ScreenHeader from '../Components/ScreenHeader';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProfileData, setUserLoginData } from '../Redux/Actions/UserActions';
+import { setAppState, setProfileData, setUserLoginData } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 import { SvgXml } from 'react-native-svg';
-import { _Cross } from '../Assets/Icons/SvgIcons/Index';
+import { dummyUser, _Cross } from '../Assets/Icons/SvgIcons/Index';
 
 export default EditProfile = ({ navigation, route }) => {
 
@@ -54,7 +54,7 @@ export default EditProfile = ({ navigation, route }) => {
     gender: profileData['gender'],
     febtn: (profileData['gender'] == 'Female') ? true : false,
     mabtn: (profileData['gender'] == 'Male') ? true : false,
-    profile_img: Configurations.img_url3 + profileData['image'],
+    profile_img: profileData['image'],
     isDatePickerVisibletwo: false,
     profile_image: '',
     notification_count: '',
@@ -68,11 +68,10 @@ export default EditProfile = ({ navigation, route }) => {
 
   const attachmentOptionSheetRef = useRef()
 
-  const { user_type } = loginUserData
+  const user_type = loginUserData?.user_type || ''
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      // getProfile()
       getNotificationsCount()
     });
   }, [])
@@ -132,8 +131,7 @@ export default EditProfile = ({ navigation, route }) => {
 
   const Camerapopen = async () => {
     Media.launchCamera(true).then((obj) => {
-      console.log(obj);
-      console.log(obj.path);
+      // console.log(obj);
       if (classStateData.img_type == 0) {
         setState({ cover_img: obj.path })
       }
@@ -872,6 +870,7 @@ export default EditProfile = ({ navigation, route }) => {
   const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
   let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
   headerHeight += (Platform.OS === 'ios') ? 28 : -60
+
   return (
     //
     <View style={{ flex: 1 }}>
@@ -1012,17 +1011,30 @@ export default EditProfile = ({ navigation, route }) => {
 
                   alignItems: 'center'
                 }}>
-                <Image
-                  style={{
-                    width: (mobileW * 20) / 100,
-                    height: (mobileW * 20) / 100,
-                    borderRadius: mobileW * 10 / 100,
+                {
+                  (classStateData.profile_img == 'NA' || classStateData.profile_img == null || classStateData.profile_img == '') ?
+                    <SvgXml xml={dummyUser} style={{
+                      alignSelf: "center",
+                    }}
+                      width={(mobileW * 20) / 100}
+                      height={(mobileW * 20) / 100}
+                    />
+                    :
+                    <Image
+                      style={{
+                        width: (mobileW * 20) / 100,
+                        height: (mobileW * 20) / 100,
+                        borderRadius: mobileW * 10 / 100,
 
-                    alignSelf: 'center',
+                        alignSelf: 'center',
 
-                  }}
-                  source={classStateData.profile_img == 'NA' || classStateData.profile_img == null || classStateData.profile_img == '' ? Icons.ProfileImage : { uri: classStateData.profile_img }}
-                ></Image>
+                      }}
+                      source={{ uri: Configurations.img_url3 + classStateData.profile_img }}
+                    />
+
+                }
+
+
               </View>
             </View>
 

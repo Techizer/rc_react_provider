@@ -11,6 +11,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="28">
+
+        <!-- <service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" /> -->
         <activity
             android:name="com.rootscare.serviceprovider.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
@@ -80,4 +82,5 @@
     <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> -->
 </manifest>

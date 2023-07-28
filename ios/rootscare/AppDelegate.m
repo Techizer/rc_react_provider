@@ -7,7 +7,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTI18nUtil.h>
 #import <Firebase.h>
-#import <FBSDKCoreKit/FBSDKCoreKit-swift.h>
+// #import <FBSDKCoreKit/FBSDKCoreKit-swift.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -41,8 +41,8 @@ static void InitializeFlipper(UIApplication *application) {
    [[RCTI18nUtil sharedInstance] allowRTL:NO];
    [[RCTI18nUtil sharedInstance] forceRTL:NO];
   
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-                         didFinishLaunchingWithOptions:launchOptions];
+  // [[FBSDKApplicationDelegate sharedInstance] application:application
+  //                        didFinishLaunchingWithOptions:launchOptions];
   
   [[Branch getInstance] initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary * _Nonnull params, NSError * _Nullable error) {
      // do stuff with deep link data (nav to page, display content, etc)

@@ -109,7 +109,6 @@ class ApiContainer {
   }
 
   post = async (url, data, loding_status = 0) => {
-
     return new Promise((resolve, reject) => {
       NetInfo.fetch().then(state => {
         if (state.isConnected == true) {

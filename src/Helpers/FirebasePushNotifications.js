@@ -28,7 +28,7 @@ class FirebasePushNotifications {
       const isPermissable = await messaging().hasPermission();
     if (isPermissable) {
       const fcmToken = await messaging().getToken()
-      console.log('FPN Token: ', {isPermissable, fcmToken});
+      console.log('FCM Token: ', fcmToken);
       return fcmToken
     } else {
       messaging().requestPermission()
