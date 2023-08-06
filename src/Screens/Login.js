@@ -101,10 +101,10 @@ export default Login = ({ navigation, route }) => {
 
   const checkIsValid = () => {
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    if (classStateData?.selectuserType == -1) {
-      MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
-      return false;
-    }
+    // if (classStateData?.selectuserType == -1) {
+    //   MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
+    //   return false;
+    // }
 
     if (classStateData?.email.trim().length <= 0) {
       MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
@@ -145,8 +145,12 @@ export default Login = ({ navigation, route }) => {
       data.append('device_type', Configurations.device_type)
       data.append('device_lang', 'ENG')
       data.append('fcm_token', fcm)
-      data.append('user_type', UserTypes[classStateData?.selectuserType].value)
+      // data.append('user_type', UserTypes[classStateData?.selectuserType].value)
 
+      console.log(classStateData.email);
+      console.log(classStateData.password);
+      console.log(Configurations.device_type);
+      console.log(fcm);
       API.post(url, data, 1).then((obj) => {
 
         console.log({ Login: obj?.result?.user_id })
@@ -306,69 +310,10 @@ export default Login = ({ navigation, route }) => {
                   alignSelf: 'center',
                   marginTop: (mobileW * 4) / 100,
                 }}>
-                <DropDownboxSec
+                {/* <DropDownboxSec
                   lableText={(classStateData?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : UserTypes[classStateData?.selectuserType].title}
                   boxPressAction={() => { userTypeSheetRef.current.open() }}
-                />
-
-                <RBSheet
-                  ref={userTypeSheetRef}
-                  {...BottomSheetProps}
-                  customStyles={BottomSheetStyles} >
-                  <View style={BottomSheetViewStyles.MainView}>
-                    <View style={BottomSheetViewStyles.ButtonContainer}>
-                      <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
-                        userTypeSheetRef.current.close()
-                      }}>
-                        <SvgXml xml={_Cross}
-                          width={windowHeight / 26}
-                          height={windowHeight / 26}
-                        />
-                      </TouchableOpacity>
-                    </View>
-
-                    <View style={BottomSheetViewStyles.Body}>
-
-                      <View style={BottomSheetViewStyles.TitleBar}>
-                        <Text style={BottomSheetViewStyles.Title}>Select User Type</Text>
-                      </View>
-
-                      <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
-                        {
-                          UserTypes.map((data, index) => {
-                            return (
-                              <TouchableOpacity style={{
-                                width: '100%',
-                              }} onPress={() => {
-                                setState({
-                                  selectuserType: index
-                                })
-                                userTypeSheetRef.current.close()
-                              }} key={'utol' + index}>
-                                <View style={{
-                                  width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                                  marginLeft: 15,
-                                  borderBottomColor: Colors.gray6,
-                                  borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
-                                }}>
-                                  <Text style={{
-                                    color: '#041A27',
-                                    fontSize: 15,
-                                    fontFamily: Font.headingfontfamily,
-                                    paddingTop: 15,
-                                    paddingBottom: 15,
-                                    width: '94.5%',
-                                  }}>{data.title}</Text>
-                                </View>
-                              </TouchableOpacity>
-                            )
-                          })
-                        }
-                      </KeyboardAwareScrollView>
-                    </View>
-                  </View>
-
-                </RBSheet>
+                /> */}
 
               </View>
 
@@ -557,6 +502,8 @@ export default Login = ({ navigation, route }) => {
 
         </KeyboardAwareScrollView>
       </ScrollView>
+
+   
     </GestureRecognizer>
   );
 

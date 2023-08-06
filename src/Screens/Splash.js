@@ -55,7 +55,7 @@ export default Splash = ({ navigation, route }) => {
       if (obj.status == true) {
         const newCode = obj?.result?.appVer?.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
         const myCode = appVersion.split('.').map((i, _i) => (`${i}`.length > 0 && _i !== 0) ? `${i}`.charAt(0) : `${i}`).join('')
-        // console.log({ newCode, myCode });
+        console.log({ newCode, myCode });
 
         if (parseInt(newCode) > parseInt(myCode)) {
           setState(prev => ({
