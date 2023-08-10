@@ -27,7 +27,7 @@ const LabPackageDetails = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   useEffect(() => {
     getPackageList();

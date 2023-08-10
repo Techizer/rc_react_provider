@@ -6,6 +6,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification, { Importance } from 'react-native-push-notification';
 import messaging from '@react-native-firebase/messaging';
 import BackgroundJob from 'react-native-background-actions';
+import NetInfo from "@react-native-community/netinfo";
 
 import Splash from '../Screens/Splash';
 import Login from '../Screens/Login';
@@ -34,7 +35,7 @@ import OTP from '../Screens/OTP';
 import ServiceAddress from '../Screens/ServiceAddress';
 import { ScreenReferences } from './ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { onUserLogout, setAppState, setLastScreen, setVideoCall, setVideoCallData } from '../Redux/Actions/UserActions';
+import { onUserLogout, setAppState, setLastScreen, setVideoCall, setVideoCallData, setVideoCallStatus } from '../Redux/Actions/UserActions';
 import { NavigationContainer } from '@react-navigation/native';
 import { useRef } from 'react';
 import Chat from '../Screens/Chat';
@@ -43,7 +44,7 @@ import { MessageFunctions } from '../Helpers/Message';
 import { API } from '../Helpers/API';
 import { Configurations } from '../Provider/configProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CheckSession } from '../Helpers/APIFunctions';
+import { callRejectNotification, CheckSession, Network } from '../Helpers/APIFunctions';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -124,7 +125,7 @@ const MainStack = navigation => {
     loginUserData,
     profileCompletion,
     appState
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
 
   const toggleBackground = async () => {
@@ -145,7 +146,7 @@ const MainStack = navigation => {
     }
   };
 
-  const logout = async () => {
+  const Logout = async () => {
     let ID = await AsyncStorage.getItem('userId')
     const fcm_token = await FBPushNotifications.getFcmToken()
     let url = Configurations.baseURL + "api-logout";
@@ -175,7 +176,6 @@ const MainStack = navigation => {
     PushNotification.configure({
       onNotification: function (notification) {
         let data = (Platform.OS == "ios") ? JSON.parse(notification.data.notidata) : notification.data
-
         var videoDetails = {
           fromUserId: data.fromUserId,
           fromUserName: data.fromUserName,
@@ -189,55 +189,55 @@ const MainStack = navigation => {
         };
         dispatch(setVideoCallData(videoDetails))
 
-        if (notification.userInteraction) {
-          if (notification.data?.type == "patient_to_doctor_video_call") {
-            Alert.alert(
-              "Incoming Video call",
-              data.message,
-              [
-                {
-                  text: "Reject",
-                  onPress: () => {
-                    console.log("Cancel Pressed");
-                    callRejectNotification(data)
+        if (Platform.OS == 'ios') {
+          if (notification.userInteraction) {
+            if (notification.data?.type == "patient_to_doctor_video_call") {
+              Alert.alert(
+                "Incoming Video call",
+                data.message,
+                [
+                  {
+                    text: "Reject",
+                    onPress: () => {
+                      console.log("Cancel Pressed");
+                      callRejectNotification(data)
+                    },
+                    style: "cancel",
                   },
-                  style: "cancel",
-                },
-                {
-                  text: "Accept",
-                  onPress: () => {
-                    console.log("Accept Pressed", data.image);
-                    setTimeout(() => {
-                      dispatch(setVideoCall(true))
-                    }, 500);
+                  {
+                    text: "Accept",
+                    onPress: () => {
+                      console.log("Accept Pressed", data.image);
+                      setTimeout(() => {
+                        dispatch(setVideoCall(true))
+                      }, 500);
+                    },
+                    style: "default",
                   },
-                  style: "default",
-                },
-              ],
-              {
-                cancelable: true,
-              }
-            )
+                ],
+                {
+                  cancelable: true,
+                }
+              )
+            }
+          }
+        } else {
+          if (notification.action === 'Accept') {
+            console.log('if pressed');
+            if (notification.data?.type == "patient_to_doctor_video_call") {
+              setTimeout(() => {
+                dispatch(setVideoCall(true))
+              }, 1000);
+            }
+          } else if (notification.action === 'Reject') {
+            callRejectNotification(data)
+          } else {
+            console.log('waiting...');
           }
         }
 
 
-        // if (notification.action === 'Accept') {
-        //   console.log('if pressed');
-        //   if (notification.data?.type == "patient_to_doctor_video_call") {
-        //     setTimeout(() => {
-        //       dispatch(setVideoCall(true))
-        //     }, 1000);
-        //   }
-        // } else if (notification.action === 'Reject') {
-        // } else {
-        //   console.log('waiting...');
-        // }
 
-      },
-      onAction: function (notification) {
-        console.log("ACTION:", notification.action);
-        console.log("NOTIFICATION:", notification);
 
       },
     });
@@ -257,24 +257,23 @@ const MainStack = navigation => {
       title: remoteMessage.data.title,
       message: remoteMessage.data.body,
       userInfo: remoteMessage.data,
-      // actions: remoteMessage.data?.type == "patient_to_doctor_video_call" ? '["Accept", "Reject"]' : [],
+      actions: remoteMessage.data?.type == "patient_to_doctor_video_call" ? '["Accept", "Reject"]' : [],
     });
 
   };
 
 
-
   const messageListener = async () => {
     PushNotification.createChannel(
       {
-        channelId: "rootscares1", // (required)
-        channelName: "rootscare messasge", // (required)
+        channelId: "rootscares1",
+        channelName: "rootscare messasge",
         smallIcon: "app_icon",
-        importance: 4, // (optional) default: 4. Int value of the Android notification importance
-        vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+        importance: 4,
+        vibrate: true,
         ignoreInForeground: false,
       },
-      (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+      (created) => console.log(`createChannel returned '${created}'`)
     )
     // --------------------------------------
 
@@ -282,17 +281,25 @@ const MainStack = navigation => {
       console.log("Notification msg****", remoteMessage);
       if (remoteMessage) {
         if (Platform.OS === 'ios' && !remoteMessage.collapseKey) {
-          showNotification(remoteMessage)
-          if (remoteMessage.data?.type == "Logout") {
-            logout();
+          if (remoteMessage.data?.type == "doctor_to_patient_video_call_reject") {
+            dispatch(setVideoCallStatus(9))
+          } else {
+            showNotification(remoteMessage)
+            if (remoteMessage.data?.type == "Logout") {
+              Logout();
+            }
           }
+
         } else {
-          showNotification(remoteMessage)
-          if (remoteMessage.data?.type == "Logout") {
-            logout();
+          if (remoteMessage.data?.type == "doctor_to_patient_video_call_reject") {
+            dispatch(setVideoCallStatus(9))
+          } else {
+            showNotification(remoteMessage)
+            if (remoteMessage.data?.type == "Logout") {
+              Logout();
+            }
           }
         }
-
       }
 
     });
@@ -310,35 +317,12 @@ const MainStack = navigation => {
     });
   }
 
-  const callRejectNotification = async (data) => {
-    let apiName = "api-get-video-access-token-with-push-notification";
-    let url = Configurations.baseURL + apiName;
 
-    var data = new FormData();
-    data.append("fromUserId", loginUserData?.user_id);
-    data.append("fromUserName", data.toUserName);
-    data.append("order_id", data.order_id);
-    data.append("room_name", data.room_name);
-    data.append("toUserId", data.fromUserId);
-    data.append("toUserName", data.fromUserName);
-    data.append("type", "doctor_to_patient_video_call_reject");
-    // data.append('callStatus', 'reject')
-
-    API.post(url, data, 1)
-      .then((obj) => {
-        if (obj.status == true) {
-        } else {
-          return false;
-        }
-      }).catch((error) => {
-        console.log("callRejectNotification-error ------- " + error);
-      });
-  };
 
   useEffect(() => {
     configureNotifications()
     messageListener()
-
+    // toggleBackground()
   }, [])
 
   useEffect(() => {
@@ -366,38 +350,47 @@ const MainStack = navigation => {
     };
   }, []);
 
-  useMemo(() => {
-    if (appState === 'active') {
-      console.log('routeName', routeNameRef?.current?.getCurrentRoute()?.name);
-      const currentRoute = (
-        routeNameRef?.current?.getCurrentRoute()
-        &&
-        routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.Splash
-        &&
-        routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.Login
-        &&
-        routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.Signup
-        &&
-        routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.ForgotPassword
-        &&
-        routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.TermsAndConditions
-        &&
-        routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.OTP
-      )
-      CheckSession().then((authStatus) => {
-        if (!authStatus) {
-          if (currentRoute) {
-            routeNameRef?.current.reset({
-              index: 0,
-              routes: [{ name: ScreenReferences.Login }],
-            });
-          }
-        }
-      }).catch((error) => {
-        console.log(error);
-      })
+  useEffect(() => {
+    const checkConnectivity = NetInfo.addEventListener(state => {
+        Network(state)
+    });
+    return () => {
+        checkConnectivity()
     }
-  }, [appState])
+}, [])
+
+  // useMemo(() => {
+  //   if (appState === 'active') {
+  //     console.log('routeName', routeNameRef?.current?.getCurrentRoute()?.name);
+  //     const currentRoute = (
+  //       routeNameRef?.current?.getCurrentRoute()
+  //       &&
+  //       routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.Splash
+  //       &&
+  //       routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.Login
+  //       &&
+  //       routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.Signup
+  //       &&
+  //       routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.ForgotPassword
+  //       &&
+  //       routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.TermsAndConditions
+  //       &&
+  //       routeNameRef?.current?.getCurrentRoute()?.name != ScreenReferences.OTP
+  //     )
+  //     CheckSession().then((authStatus) => {
+  //       if (!authStatus) {
+  //         if (currentRoute) {
+  //           routeNameRef?.current.reset({
+  //             index: 0,
+  //             routes: [{ name: ScreenReferences.Login }],
+  //           });
+  //         }
+  //       }
+  //     }).catch((error) => {
+  //       console.log(error);
+  //     })
+  //   }
+  // }, [appState])
 
 
 

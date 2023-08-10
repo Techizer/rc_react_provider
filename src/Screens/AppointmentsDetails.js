@@ -61,7 +61,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   LogBox.ignoreAllLogs()
 

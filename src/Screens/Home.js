@@ -103,7 +103,7 @@ export default Home = ({ navigation, route }) => {
     scheduleAvailability,
     profileCompletion,
     notificationCount
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
@@ -507,15 +507,25 @@ export default Home = ({ navigation, route }) => {
             }}>
             <View
               style={{
-                width: '10%',
+                width: '12%',
                 backgroundColor: '#fff',
                 justifyContent: 'center',
                 alignSelf: 'center',
                 paddingTop: (mobileW * 1.5) / 100,
               }}>
-              <TouchableOpacity onPress={() => {
-                navigation.toggleDrawer();
-              }}>
+              <TouchableOpacity
+                style={{
+                  width: (mobileW * 10) / 100,
+                  height: (mobileW * 10) / 100,
+                  borderRadius: mobileW * 10 / 100,
+                  backgroundColor:Colors.Border,
+                  justifyContent:'center',
+                  alignItems:'center'
+
+                }}
+                onPress={() => {
+                  navigation.toggleDrawer();
+                }}>
                 {
                   (loginUserData?.image == null || loginUserData?.image == '') ?
                     <SvgXml xml={dummyUser} style={{
@@ -530,13 +540,14 @@ export default Home = ({ navigation, route }) => {
                       style={{
                         width: (mobileW * 9) / 100,
                         height: (mobileW * 9) / 100,
-                        borderRadius: mobileW * 4.5 / 100
-                      }}></Image>
+                        borderRadius: mobileW * 9 / 100
+                      }} />
                 }
 
               </TouchableOpacity>
             </View>
-            <View style={{ width: '80%', alignSelf: 'center', paddingTop: (mobileW * 1.5) / 100, }}>
+
+            <View style={{ width: '76%', alignSelf: 'center', paddingTop: (mobileW * 1.5) / 100, }}>
 
               <View style={{ width: '95%', alignSelf: 'center' }}>
                 <Text style={{
@@ -552,7 +563,7 @@ export default Home = ({ navigation, route }) => {
             </View>
             <View
               style={{
-                width: '10%',
+                width: '12%',
                 paddingTop: (mobileW * 2) / 100,
                 justifyContent: 'center',
               }}>
@@ -589,7 +600,6 @@ export default Home = ({ navigation, route }) => {
                 <FlatListHeader />
               )
             } else {
-              console.log(item.title);
               return (
                 <DashBoardBox
                   textTitle={(loginUserData?.user_type == 'lab' && index == 3) ? item?.titleL : item?.title}

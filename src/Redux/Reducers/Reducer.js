@@ -1,4 +1,4 @@
-import { ALL_USER_LOGIN_DATA, APP_STATE, LAST_SCREEN, LOGGEDIN_USER_TYPE, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD, VIDEO_CALL, VIDEO_CALL_DATA } from '../Types';
+import { ALL_USER_LOGIN_DATA, APP_STATE, DEVICE_CONNECTION, NO_INTERNET, LAST_SCREEN, LOGGEDIN_USER_TYPE, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD, VIDEO_CALL, VIDEO_CALL_DATA, VIDEO_CALL_STATUS } from '../Types';
 import { LOGGEDIN_USER_DATA, LOGOUT, FCM_DEVICE_TOKEN } from '../Types';
 import { ScreenReferences } from '../../Stacks/ScreenReferences'
 
@@ -18,10 +18,13 @@ const initialState = {
     notificationCount: 0,
     appState: '',
     isVideoCall: false,
-    videoDetails: null
+    videoDetails: null,
+    callStatus: 0,
+    deviceConnection: null,
+    noInternet: false
 };
 
-const Authentication = (state = initialState, action = {}) => {
+const ReducerCases = (state = initialState, action = {}) => {
     switch (action.type) {
         case LOGOUT:
             if (state.shouldAutoLogin == true) {
@@ -126,10 +129,26 @@ const Authentication = (state = initialState, action = {}) => {
                 ...state,
                 videoDetails: action.payload,
             };
+        case VIDEO_CALL_STATUS:
+            return {
+                ...state,
+                callStatus: action.payload,
+            };
+
+        case DEVICE_CONNECTION:
+            return {
+                ...state,
+                deviceConnection: action.payload,
+            };
+        case NO_INTERNET:
+            return {
+                ...state,
+                noInternet: action.payload,
+            };
 
         default:
             return state;
     }
 }
 
-export { Authentication }
+export { ReducerCases }

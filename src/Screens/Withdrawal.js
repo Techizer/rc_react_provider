@@ -26,7 +26,7 @@ export default Withdrawal = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const isPartOfHospital = ((loginUserData?.hospital_id != '' ) && (loginUserData?.hospital_id != null ))
 

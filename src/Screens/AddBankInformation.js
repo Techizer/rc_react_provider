@@ -38,7 +38,7 @@ export default AddBankInformation = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const onUpdate = async () => {
 

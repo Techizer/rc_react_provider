@@ -9,7 +9,7 @@ import DeviceInfo from 'react-native-device-info';
 import { Icons } from '../Assets/Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { onUserLogout, setUserFCMToken, setUserLoginData } from '../Redux/Actions/UserActions';
+import { onUserLogout, setUserFCMToken, setUserLoginData, setVideoCall, setVideoCallStatus } from '../Redux/Actions/UserActions';
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications'
 const appVersion = DeviceInfo.getVersion();
 
@@ -39,7 +39,7 @@ export default Splash = ({ navigation, route }) => {
     userEmail,
     userPassword,
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -47,6 +47,9 @@ export default Splash = ({ navigation, route }) => {
   }, [])
 
   const checkAppVersion = async () => {
+    dispatch(setVideoCallStatus(0))
+    dispatch(setVideoCall(false))
+
     let lang = (state?.loanguage == 1) ? "ENG" : "ENG"
     let url = Configurations.baseURL + ((Platform.OS === 'ios') ? ("api-ios-provider-update?divice_lang=" + lang) : ("api-android-provider-update?divice_lang=" + lang))
     // console.log("url", url, Configurations.language)

@@ -47,7 +47,7 @@ const Chat = ({ navigation, route }) => {
         fcmDeviceToken,
         profileCompletion,
         notificationCount
-    } = useSelector(state => state.Auth)
+    } = useSelector(state => state.StorageReducer)
 
     const { provider, patient, appointment } = chatOptions
     !chatOptions ? (() => { navigation.canGoBack() && navigation.goBack(); return (<></>) })() : true

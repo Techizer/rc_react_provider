@@ -11,7 +11,7 @@ export default More = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const dispatch = useDispatch()
 

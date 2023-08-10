@@ -27,7 +27,7 @@ export default OngoingAppointments = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const getApppointments = async () => {
 
@@ -56,14 +56,14 @@ export default OngoingAppointments = ({ navigation, route }) => {
 
     API.post(url, data, 1).then((obj) => {
       if (apiname == "api-provider-ongoing-appointment-list") {
-        console.log({
-          OngoingApps: obj
-        });
+        // console.log({
+        //   OngoingApps: obj
+        // });
       }
       if (apiname == "api-provider-upcoming-appointment-list") {
-        console.log({
-          UpcomingApps: obj
-        });
+        // console.log({
+        //   UpcomingApps: obj
+        // });
       }
       if (obj?.status == true) {
         setAppointments(obj?.result)

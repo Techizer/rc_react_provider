@@ -54,7 +54,7 @@ export default AvailabilitySchedule = ({ navigation }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
 
   const getUserData = async () => {

@@ -13,7 +13,7 @@ export const AppConsumer = AppContext.Consumer
 
 export const ApplicationContainerWrapper = ({ navigation, route, children }) => {
 
-  const { loginUserData, isVideoCall } = useSelector(state => state.Auth)
+  const { loginUserData, isVideoCall } = useSelector(state => state.StorageReducer)
 
 
   const [classStateData, setClassStateData] = useState({
@@ -86,6 +86,14 @@ export const ApplicationContainerWrapper = ({ navigation, route, children }) => 
             isVisible={isVideoCall}
           />
         }
+
+        {/* {
+          noInternet &&
+          <NoInternet
+            visible={noInternet}
+          />
+        } */}
+
         {screens != ScreenReferences.Splash &&
           <View>
             {!classStateData.isConnected && <View style={{ position: 'absolute', bottom: 5, width: '100%' }}>

@@ -1,7 +1,7 @@
 
 
 import React, { Component, useRef } from 'react';
-import { Text,TouchableOpacity, Linking, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { Linking, Platform, StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 
 import PushNotification from 'react-native-push-notification';
@@ -63,6 +63,7 @@ const App = (props) => {
 
   }, [])
 
+  
   return (
 
     <Provider store={store}>
@@ -81,11 +82,6 @@ const App = (props) => {
             // }}
             position="top"
             animated={true}
-
-          // titleStyle={{
-          //   fontFamily: Font.Regular,
-          //   fontSize: 20
-          // }}
           />
         </ApplicationContainerWrapper>
       </PersistGate>
@@ -119,5 +115,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Sentry.wrap(App);
-// export default App;
+// export default Sentry.wrap(App);
+export default App;

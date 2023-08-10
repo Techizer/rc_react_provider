@@ -28,7 +28,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
 
   const getTransactions = async () => {

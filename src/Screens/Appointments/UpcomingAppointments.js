@@ -30,7 +30,7 @@ export default UpcomingAppointments = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const getApppointments = async () => {
 

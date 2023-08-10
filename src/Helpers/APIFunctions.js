@@ -1,8 +1,13 @@
 import messaging from '@react-native-firebase/messaging';
-import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { FBPushNotifications } from './FirebasePushNotifications';
-import { getReduxState, setLogout, setUserData } from './ReduxStates';
+import { getReduxState, setConnection, setLogout, setUserData } from './ReduxStates';
 import { API, Configurations } from './Utils';
+import NetInfo from "@react-native-community/netinfo";
+
+const Network = (state) => {
+  setConnection(state.isConnected)
+}
+
 
 const logout = async () => {
   const fcm_token = await FBPushNotifications.getFcmToken()
@@ -45,41 +50,6 @@ const CheckSession = async () => {
           else {
             device_lang = 'AR'
           }
-
-          // if (credentials) {
-
-          //   let url = Configurations.baseURL + "api-service-provider-login";
-          //   var data = new FormData();
-
-          //   data.append('email', userEmail)
-          //   data.append('password', userPassword)
-          //   data.append('device_type', Configurations.device_type)
-          //   data.append('device_lang', device_lang)
-          //   data.append('fcm_token', fcmToken)
-          //   data.append('user_type', loginUserData?.user_type)
-
-          //   API.post(url, data, 1).then((obj) => {
-          //     if (obj.status == true) {
-          //       setUserData(fcmToken, obj.result)
-          //       authStatus = true;
-
-          //     }
-          //     else {
-          //       authStatus = false;
-          //       logout()
-          //     }
-          //   }).catch((error) => {
-          //     console.log('catch');
-          //     authStatus = false;
-          //     console.log("-------- error relogin ------- " + error);
-          //   });
-
-          // } else {
-          //   console.log('second else');
-          //   authStatus = false;
-          //   logout()
-          // }
-
         } else {
           console.log('last else');
           authStatus = false;
@@ -97,6 +67,33 @@ const CheckSession = async () => {
   return authStatus;
 }
 
+const callRejectNotification = async (details) => {
+
+  let apiName = "api-video-call-reject-notification";
+  let url = Configurations.baseURL + apiName;
+  var data = new FormData();
+  data.append("fromUserId", details?.fromUserId);
+  data.append("fromUserName", details.fromUserName);
+  data.append("order_id", details.order_id);
+  data.append("room_name", details.room_name);
+  data.append("toUserId", details.toUserId);
+  data.append("toUserName", details.toUserName);
+  data.append("type", "patient_to_doctor_video_call_reject");
+  data.append('callStatus', 'reject')
+
+  API.post(url, data, 1)
+    .then((obj) => {
+      if (obj.status == true) {
+      } else {
+        return false;
+      }
+    }).catch((error) => {
+      console.log("callRejectNotification-error ------- " + error);
+    });
+};
+
 export {
-  CheckSession
+  CheckSession,
+  callRejectNotification,
+  Network
 }

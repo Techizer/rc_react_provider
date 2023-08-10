@@ -82,7 +82,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
   const {
     loginUserData,
     scheduleAvailability
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const [state, setState] = useState({
     message: '',

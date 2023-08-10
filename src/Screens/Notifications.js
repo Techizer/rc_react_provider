@@ -13,7 +13,7 @@ export default Notifications = ({ navigation, route }) => {
   const {
     loginUserData,
     notifications
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const dispatch = useDispatch()
   const isFocused = useIsFocused()

@@ -19,7 +19,7 @@ export default MyProfile = ({ navigation, route }) => {
   const {
     loginUserData,
     profileData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const [notificationsCount, setNotificationsCount] = useState(0)
 

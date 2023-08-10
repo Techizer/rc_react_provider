@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, PermissionsAndroid, Platform, Image, Modal } from 'react-native';
 import { TwilioVideoLocalView, TwilioVideoParticipantView, TwilioVideo } from "react-native-twilio-video-webrtc";
 
@@ -9,10 +9,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { useDispatch, useSelector } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
 import { vs } from 'react-native-size-matters';
-import { setVideoCall } from '../Redux/Actions/UserActions';
+import { setVideoCall, setVideoCallStatus } from '../Redux/Actions/UserActions';
 import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
-import { API, Configurations, windowWidth } from '../Helpers/Utils';
+import { API, Colors, Configurations, windowWidth } from '../Helpers/Utils';
 import { useIsFocused } from '@react-navigation/native';
+import LoadingDots from './LoadingDots';
 
 
 var countTimeInterval
@@ -39,6 +40,8 @@ const Statuses = {
     NoInternet: 6,
     CallConnected: 7,
     Connecting: 8,
+    Declined: 9,
+    Reconnecting: 10,
     Unknown: -1
 }
 
@@ -58,7 +61,6 @@ const VideoCall = ({
 }) => {
     var runtimeSecondsToDisconnectOnNoAnswer = 0
     const [isAudioEnabled, setIsAudioEnabled] = useState(true);
-    const [status, setStatus] = useState(Statuses.Disconnected);
     const [trackData, setTrackData] = useState(NullTrackData)
     const [token, setToken] = useState("");
     const [callDetails, setCallDetails] = useState({});
@@ -66,10 +68,9 @@ const VideoCall = ({
     const [callTime, setCallTime] = useState(DefaultTime)
     const [started, setStarted] = useState(false);
     const [isMyVideoVisible, setIsMyVideoVisible] = useState(true);
-    const [callType, setCallType] = useState(CallType.Unknown)
 
 
-    const { loginUserData, videoDetails } = useSelector(state => state.Auth)
+    const { loginUserData, videoDetails, callStatus } = useSelector(state => state.StorageReducer)
 
     const dispatch = useDispatch()
 
@@ -108,8 +109,8 @@ const VideoCall = ({
             width: 150,
             height: 150,
             position: "absolute",
-            right: 20,
-            top: 30,
+            top: windowWidth / 8,
+            right: windowWidth / 20,
             backgroundColor: 'black'
         },
         remoteGrid: {
@@ -155,12 +156,10 @@ const VideoCall = ({
     useEffect(() => {
         if (videoDetails?.isPage == "accept") {
             getIncomingCallTokenFromAPI('patient_to_doctor_video_call')
-            setStatus(Statuses.Connecting)
-            setCallType(CallType.Incoming)
+            dispatch(setVideoCallStatus(Statuses.Connecting))
         } else {
             getOutgoingCallTokenFromAPI()
-            setStatus(Statuses.Calling)
-            setCallType(CallType.Outgoing)
+            dispatch(setVideoCallStatus(Statuses.Calling))
         }
 
         return () => {
@@ -171,7 +170,7 @@ const VideoCall = ({
     }, []);
 
     useEffect(() => {
-        console.log(console.log('tryyyyyy', token));
+        console.log(videoDetails?.image);
         if (token != "") {
             try {
                 twilioVideo.current.disconnect()
@@ -211,6 +210,13 @@ const VideoCall = ({
         }
         return () => clearInterval(timerId);
     }, [started, callTime.seconds, callTime.minutes, callTime.hours]);
+
+    useEffect(() => {
+        if (callStatus === Statuses.Declined) {
+            endCall()
+        }
+    }, [callStatus])
+
 
     const startCall = async () => {
         if (Platform.OS === "android") {
@@ -289,7 +295,11 @@ const VideoCall = ({
         twilioVideo.current.disconnect();
         setTimeout(() => {
             dispatch(setVideoCall(false))
-        }, 2500);
+
+        }, 1000);
+        setTimeout(() => {
+            dispatch(setVideoCallStatus(0))
+        }, 3000);
     };
 
     const _requestAudioPermission = () => {
@@ -323,11 +333,11 @@ const VideoCall = ({
                     // onCameraWasInterrupted={()=>{}}
                     onRoomDidConnect={(props) => {
                         console.log({ VideoCall: '_onRoomDidConnect' });
-                        setStatus(Statuses.RoomConnected)
+                        dispatch(setVideoCallStatus(Statuses.RoomConnected))
                         countTimeInterval = setInterval(() => {
                             runtimeSecondsToDisconnectOnNoAnswer = parseInt(runtimeSecondsToDisconnectOnNoAnswer) + parseInt(1)
-                            if (runtimeSecondsToDisconnectOnNoAnswer > 30) {
-                                setStatus(Statuses.NotAnswered)
+                            if (runtimeSecondsToDisconnectOnNoAnswer > 75) {
+                                dispatch(setVideoCallStatus(Statuses.NotAnswered))
                                 endCall()
                                 clearInterval(countTimeInterval)
                             }
@@ -337,30 +347,32 @@ const VideoCall = ({
                         console.log("ERROR _onRoomDidDisconnect: ", error);
                         endCall()
                         if (error) {
-                            setStatus(Statuses.Disconnected)
+                            dispatch(setVideoCallStatus(Statuses.Disconnected))
                         }
                         else {
-                            setStatus(Statuses.Ended);
+                            dispatch(setVideoCallStatus(Statuses.Ended))
                         }
                     }}
                     onRoomDidFailToConnect={(props) => {
                         console.log({ VideoCall: '_onRoomDidFailToConnect' });
-                        setStatus(Statuses.Disconnected);
+                        dispatch(setVideoCallStatus(Statuses.Disconnected))
                         endCall()
                     }}
                     onParticipantAddedVideoTrack={({ participant, track }) => {
                         console.log({ VideoCall: '_onParticipantAddedVideoTrack' });
-                        setStatus(Statuses.CallConnected);
+                        dispatch(setVideoCallStatus(Statuses.CallConnected))
                         setTrackData({
                             trackSid: track.trackSid,
                             participantSid: participant.sid,
                         })
                         clearInterval(countTimeInterval)
-                        setStarted(true)
+                        setTimeout(() => {
+                            setStarted(true)
+                        }, 2000);
                     }}
                     onParticipantRemovedVideoTrack={() => {
                         console.log({ VideoCall: '_onParticipantRemovedVideoTrack' });
-                        setStatus(Statuses.Ended)
+                        dispatch(setVideoCallStatus(Statuses.Ended))
                         setTrackData(NullTrackData)
 
                         setCallTime(DefaultTime)
@@ -389,6 +401,7 @@ const VideoCall = ({
     }
 
     const oponentImage = Configurations.img_url3 + ((videoDetails?.image != undefined && videoDetails?.image != '') ? videoDetails?.image : callDetails?.Receiver?.message?.image)
+
     return (
 
         <Modal
@@ -401,7 +414,21 @@ const VideoCall = ({
 
             <View style={styles.mainContainer}>
                 {
-                    (status === Statuses.Calling || status === Statuses.Connecting || status === Statuses.NotAnswered || status === Statuses.Ended) &&
+                    (
+                        callStatus === Statuses.Calling
+                        ||
+                        callStatus === Statuses.Connecting
+                        ||
+                        callStatus === Statuses.Disconnected
+                        ||
+                        callStatus === Statuses.NotAnswered
+                        ||
+                        callStatus === Statuses.Ended
+                        ||
+                        callStatus === Statuses.Declined
+                        ||
+                        callStatus === Statuses.Reconnecting
+                    ) &&
                     <>
                         {
                             oponentImage ?
@@ -412,25 +439,33 @@ const VideoCall = ({
                                         width: 140,
                                         borderRadius: 140,
                                         alignSelf: 'center',
-                                        marginTop: 50
+                                        marginTop: 50,
+                                        backgroundColor: Colors.backgroundcolor
                                     }} />
                                 :
                                 <SvgXml xml={dummyUser} height={140} width={140} />
                         }
 
                         <Text style={{
-                            color: "#515C6F",
+                            color: callStatus === Statuses.Declined ? '#d44a5a' : "#515C6F",
                             marginTop: 10,
                             alignSelf: 'center'
-                        }}>{status === Statuses.Calling ? 'Calling...'
+                        }}>{callStatus === Statuses.Calling ? 'Calling...'
                             :
-                            (status === Statuses.Connecting ?
-                                'Connecting...'
+                            (callStatus === Statuses.Connecting ? <LoadingDots title={'Connecting'} />
                                 :
-                                (status === Statuses.NotAnswered ?
-                                    'Not answered'
+                                callStatus === Statuses.NotAnswered ? 'Not answered'
                                     :
-                                    'Call ended'))
+                                    (callStatus === Statuses.Ended) ? 'Call ended'
+                                        :
+                                        (callStatus === Statuses.Declined) ? 'Call Declined'
+                                            :
+                                            (callStatus === Statuses.Reconnecting) ? <LoadingDots title={'Reconnecting'} />
+                                                :
+                                                (callStatus === Statuses.Disconnected) ? 'Failed to connect'
+                                                :
+                                                ''
+                            )
                             }</Text>
                         <View style={[styles.optionsContainer, { justifyContent: 'center', alignItems: 'center' }]}>
                             <View style={{
@@ -443,11 +478,11 @@ const VideoCall = ({
                                     marginBottom: 12
                                 }}>Video Consultation {videoDetails?.order_id}</Text>
                                 {
-                                    !Statuses.Ended &&
+                                    callStatus != Statuses.Ended &&
                                     <TouchableOpacity
                                         style={styles.optionButtonEnd}
                                         onPress={() => {
-                                            setStatus(Statuses.Ended)
+                                            dispatch(setVideoCallStatus(Statuses.Ended))
                                             endCall()
                                         }}>
                                         <MaterialIcons style={{ alignSelf: 'center' }}
@@ -462,7 +497,7 @@ const VideoCall = ({
                 }
 
                 {
-                    (status === Statuses.CallConnected && trackData.trackSid && trackData.participantSid) &&
+                    (callStatus === Statuses.CallConnected && trackData.trackSid && trackData.participantSid) &&
                     <View style={styles.callContainer}>
                         <View style={styles.remoteGrid}>
                             <TwilioVideoParticipantView
@@ -533,7 +568,7 @@ const VideoCall = ({
                                 <TouchableOpacity
                                     style={styles.optionButtonEnd}
                                     onPress={() => {
-                                        setStatus(Statuses.Ended)
+                                        dispatch(setVideoCallStatus(Statuses.Ended))
                                         endCall()
                                     }}
                                 >
@@ -559,7 +594,7 @@ const VideoCall = ({
                 }
 
                 {
-                    (status === Statuses.RoomConnected) &&
+                    (callStatus === Statuses.RoomConnected) &&
                     <View style={styles.callContainer}>
                         <View style={styles.remoteGrid}>
                             <TwilioVideoLocalView
@@ -573,11 +608,7 @@ const VideoCall = ({
                                 marginTop: 15,
                                 marginBottom: 25
                             }}>
-                                <Text style={{
-                                    color: "#515C6F",
-                                    marginTop: 4,
-                                    alignSelf: 'center'
-                                }}>{`Ringing...`}</Text>
+                                <LoadingDots title={'Ringing'} />
                                 <Text style={{
                                     color: "#515C6F",
                                     alignSelf: 'center'
@@ -614,7 +645,7 @@ const VideoCall = ({
                                 <TouchableOpacity
                                     style={styles.optionButtonEnd}
                                     onPress={() => {
-                                        setStatus(Statuses.Ended)
+                                        dispatch(setVideoCallStatus(Statuses.Ended))
                                         endCall()
                                     }}>
                                     <MaterialIcons style={{ alignSelf: 'center' }}

@@ -36,7 +36,7 @@ export default AppointmentsTabStack = ({ navigation }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
 
   const getNotificationsCount = async () => {
@@ -134,12 +134,13 @@ export default AppointmentsTabStack = ({ navigation }) => {
       <Tab.Navigator
 
         screenOptions={{
-          tabBarStyle: { width: '100%', backgroundColor: Colors.backgroundcolor, borderWidth: 0, },
+          // tabBarStyle: { width: '100%', backgroundColor: Colors.backgroundcolor, borderWidth: 0, },
           tabBarItemStyle: { width: windowWidth / 3, },
           tabBarScrollEnabled: true,
           tabBarActiveTintColor: Colors.Theme,
           tabBarInactiveTintColor: Colors.lightGrey,
           tabBarIndicatorContainerStyle: {
+            backgroundColor: Colors.tabsBackground,
             height: '100%',
             borderWidth: 0
             // marginTop:vs(7)

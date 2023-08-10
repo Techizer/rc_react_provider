@@ -34,7 +34,7 @@ const AppointmentItem = ({
 
     const {
         loginUserData
-    } = useSelector(state => state.Auth)
+    } = useSelector(state => state.StorageReducer)
     const dispatch = useDispatch()
     const aDate = new Date(item?.appointment_date)
     var VideoCallBtn = false
@@ -420,7 +420,7 @@ const AppointmentItem = ({
                                             toUserId: item?.patient_id,
                                             toUserName: item?.patient_name,
                                             type: 'doctor_to_patient_video_call',
-                                            image: item?.patient_image,
+                                            image: '',
                                             isPage: "outGoing",
                                         };
                                         dispatch(setVideoCallData(videoDetails))

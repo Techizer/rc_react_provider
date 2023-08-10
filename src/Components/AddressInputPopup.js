@@ -44,7 +44,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', edite
 
     const {
         loginUserData
-    } = useSelector(state => state.Auth)
+    } = useSelector(state => state.StorageReducer)
 
     useEffect(() => {
         setGoogleAddress(googleAddress)

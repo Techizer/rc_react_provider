@@ -28,7 +28,7 @@ export default PastAppointments = ({ navigation, route }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const getApppointments = async () => {
 

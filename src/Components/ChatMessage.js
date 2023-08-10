@@ -24,9 +24,7 @@ const ChatMessage = ({
     const insets = useSafeAreaInsets()
     const messageInputRef = useRef()
 
-    const {
-        loginUserData,
-    } = useSelector(({Auth}) => Auth)
+    const { loginUserData } = useSelector(state => state.StorageReducer)
 
     const messageItem = new Message(Item?.MessageDetails)
     const { MessageDetails, isSentByMe } = messageItem

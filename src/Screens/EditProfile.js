@@ -22,7 +22,7 @@ export default EditProfile = ({ navigation, route }) => {
   const {
     loginUserData,
     profileData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const [classStateData, setClassStateData] = useState({
 

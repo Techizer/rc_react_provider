@@ -27,7 +27,7 @@ export default Appointment = ({ navigation, route, pageName }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const reloadList = () => {
     getApppointments()

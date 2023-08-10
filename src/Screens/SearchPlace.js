@@ -53,7 +53,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     }
     const {
         loginUserData
-    } = useSelector(state => state.Auth)
+    } = useSelector(state => state.StorageReducer)
 
 
     const address_id = route?.params?.address_id;

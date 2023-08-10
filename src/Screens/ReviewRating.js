@@ -15,7 +15,7 @@ export default ReviewRating = ({ navigation, route }) => {
   const {
     loginUserData,
     ratings
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
   
   const [isLoading, setIsLoading] = useState(!ratings ? true : false)
 

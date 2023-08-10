@@ -34,7 +34,7 @@ const LabPackageListing = (props) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
 
   const reloadPackList = () => {

@@ -20,7 +20,7 @@ export default Drawer = ({ navigation, route }) => {
     loginUserData,
     profileCompletion,
     profileData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const dispatch = useDispatch()
 

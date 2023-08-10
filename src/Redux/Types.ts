@@ -2,8 +2,8 @@ type ReducerType = {
 }
 
 const LOGGEDIN_USER_DATA = 'LoginUserData'
-const LOGOUT= 'Logout'
-const FCM_DEVICE_TOKEN= 'FCMDeviceToken'
+const LOGOUT = 'Logout'
+const FCM_DEVICE_TOKEN = 'FCMDeviceToken'
 const LOGGEDIN_USER_TYPE = 'UserType'
 const SHOULD_AUTO_LOGIN = 'ShouldAutoLogin'
 const ALL_USER_LOGIN_DATA = 'ALlUserLoginData'
@@ -17,12 +17,15 @@ const RATINGS = 'Ratings'
 const NOTIFICATIONS = 'Notifications'
 const NOTIFICATION_COUNT = 'NotificationsCount'
 const APP_STATE = 'APP_STATE'
-const VIDEO_CALL='VIDEO_CALL'
-const VIDEO_CALL_DATA='VIDEO_CALL_DATA'
+const VIDEO_CALL = 'VIDEO_CALL'
+const VIDEO_CALL_DATA = 'VIDEO_CALL_DATA'
+const VIDEO_CALL_STATUS = 'VIDEO_CALL_STATUS'
+const DEVICE_CONNECTION = 'DEVICE_CONNECTION';
+const NO_INTERNET = 'NO_INTERNET'
 
 export {
     ReducerType,
-    LOGGEDIN_USER_DATA, 
+    LOGGEDIN_USER_DATA,
     LOGOUT,
     FCM_DEVICE_TOKEN,
     LOGGEDIN_USER_TYPE,
@@ -39,5 +42,8 @@ export {
     NOTIFICATION_COUNT,
     APP_STATE,
     VIDEO_CALL,
-    VIDEO_CALL_DATA
+    VIDEO_CALL_DATA,
+    VIDEO_CALL_STATUS,
+    DEVICE_CONNECTION,
+    NO_INTERNET
 }

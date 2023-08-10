@@ -35,7 +35,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
 
   const {
     loginUserData
-  } = useSelector(state => state.Auth)
+  } = useSelector(state => state.StorageReducer)
 
   const getPriceList = async () => {
     let user_details = loginUserData

@@ -1,91 +1,130 @@
-import { ALL_USER_LOGIN_DATA, APP_STATE, FCM_DEVICE_TOKEN, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD, VIDEO_CALL, VIDEO_CALL_DATA } from "../Types";
+import { ALL_USER_LOGIN_DATA, APP_STATE, CONNECTION, DEVICE_CONNECTION, FCM_DEVICE_TOKEN, NO_INTERNET, LAST_SCREEN, LOGGEDIN_USER_DATA, LOGGEDIN_USER_TYPE, LOGOUT, NOTIFICATIONS, NOTIFICATION_COUNT, PROFILE_COMPLETION_DATA, PROFILE_DATA, RATINGS, SCHEDULE_AVAILABILITY, SHOULD_AUTO_LOGIN, USER_REMEMBERED_EMAIL, USER_REMEMBERED_PASSWORD, VIDEO_CALL, VIDEO_CALL_DATA, VIDEO_CALL_STATUS } from "../Types";
 
-export const setUserLoginData = payload => ({
+const setUserLoginData = payload => ({
     type: LOGGEDIN_USER_DATA,
     payload
 })
 
-export const setUserAllLoginData = payload => ({
+const setUserAllLoginData = payload => ({
     type: ALL_USER_LOGIN_DATA,
     payload
 })
 
-export const setUserFCMToken = payload => ({
+const setUserFCMToken = payload => ({
     type: FCM_DEVICE_TOKEN,
     payload
 })
 
-export const setUserLoginType = payload => ({
+const setUserLoginType = payload => ({
     type: LOGGEDIN_USER_TYPE,
     payload
 })
 
-export const setShouldAutoLogin = payload => ({
+const setShouldAutoLogin = payload => ({
     type: SHOULD_AUTO_LOGIN,
     payload
 })
 
-export const setRememberedEmail = payload => ({
+const setRememberedEmail = payload => ({
     type: USER_REMEMBERED_EMAIL,
     payload
 })
 
-export const setRememberedPassword = payload => ({
+const setRememberedPassword = payload => ({
     type: USER_REMEMBERED_PASSWORD,
     payload
 })
 
-export const setLastScreen = payload => ({
+const setLastScreen = payload => ({
     type: LAST_SCREEN,
     payload
 })
 
-export const setScheduleAvailabilityData = payload => ({
+const setScheduleAvailabilityData = payload => ({
     type: SCHEDULE_AVAILABILITY,
     payload
 })
 
-export const setProfileData = payload => ({
+const setProfileData = payload => ({
     type: PROFILE_DATA,
     payload
 })
 
-export const setProfileCompletionData = payload => ({
+const setProfileCompletionData = payload => ({
     type: PROFILE_COMPLETION_DATA,
     payload
 })
 
 
-export const setRatingsData = payload => ({
+const setRatingsData = payload => ({
     type: RATINGS,
     payload
 })
 
-export const setNotificationsData = payload => ({
+const setNotificationsData = payload => ({
     type: NOTIFICATIONS,
     payload
 })
 
-export const setNotificationCount = payload => ({
+const setNotificationCount = payload => ({
     type: NOTIFICATION_COUNT,
     payload
 })
 
-export const setAppState = payload => ({
+const setAppState = payload => ({
     type: APP_STATE,
     payload
 })
- 
-export const onUserLogout = () => ({
+
+const onUserLogout = () => ({
     type: LOGOUT,
 })
 
-export const setVideoCall = payload => ({
+const setVideoCall = payload => ({
     type: VIDEO_CALL,
     payload
 })
 
-export const setVideoCallData = payload => ({
+const setVideoCallData = payload => ({
     type: VIDEO_CALL_DATA,
     payload
 })
+
+const setVideoCallStatus = payload => ({
+    type: VIDEO_CALL_STATUS,
+    payload
+})
+
+const DeviceConnection = (payload) => ({
+    type: DEVICE_CONNECTION,
+    payload
+})
+
+const setNoInternet = payload => ({
+    type: NO_INTERNET,
+    payload
+})
+
+export {
+    setUserLoginData,
+    setUserAllLoginData,
+    setUserFCMToken,
+    setUserLoginType,
+    setShouldAutoLogin,
+    setRememberedEmail,
+    setRememberedPassword,
+    setLastScreen,
+    setScheduleAvailabilityData,
+    setProfileData,
+    setProfileCompletionData,
+    setRatingsData,
+    setNotificationsData,
+    setNotificationCount,
+    setAppState,
+    onUserLogout,
+    setVideoCall,
+    setVideoCallData,
+    setVideoCallStatus,
+    DeviceConnection,
+    setNoInternet
+}

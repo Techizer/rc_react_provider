@@ -31,7 +31,6 @@ export default Login = ({ navigation, route }) => {
     password: '',
     device_lang: 'AR',
     isRememberChecked: false,
-    selectuserType: -1,
     isLoadingInButton: false,
   })
 
@@ -45,30 +44,7 @@ export default Login = ({ navigation, route }) => {
   }
 
   const dispatch = useDispatch()
-
-  const {
-    userType,
-    shouldAutoLogin,
-    userEmail,
-    userPassword,
-    loginUserData
-  } = useSelector(state => state.Auth)
-
   const isFocused = useIsFocused()
-
-  useEffect(() => {
-    const mUserTypeIndex = UserTypes.findIndex(u => u.value === userType)
-    if (shouldAutoLogin) {
-      if (userEmail && userPassword) {
-        setState({
-          email: userEmail,
-          password: userPassword,
-          isRememberChecked: shouldAutoLogin,
-          selectuserType: mUserTypeIndex
-        })
-      }
-    }
-  }, [])
 
 
   const handleBackPress = () => {
@@ -101,11 +77,7 @@ export default Login = ({ navigation, route }) => {
 
   const checkIsValid = () => {
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    // if (classStateData?.selectuserType == -1) {
-    //   MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
-    //   return false;
-    // }
-
+    
     if (classStateData?.email.trim().length <= 0) {
       MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
@@ -145,12 +117,7 @@ export default Login = ({ navigation, route }) => {
       data.append('device_type', Configurations.device_type)
       data.append('device_lang', 'ENG')
       data.append('fcm_token', fcm)
-      // data.append('user_type', UserTypes[classStateData?.selectuserType].value)
 
-      console.log(classStateData.email);
-      console.log(classStateData.password);
-      console.log(Configurations.device_type);
-      console.log(fcm);
       API.post(url, data, 1).then((obj) => {
 
         console.log({ Login: obj?.result?.user_id })
@@ -158,7 +125,6 @@ export default Login = ({ navigation, route }) => {
 
           dispatch(setUserLoginData(obj?.result))
           dispatch(setUserFCMToken(fcm))
-          dispatch(setUserLoginType(UserTypes[classStateData?.selectuserType].value))
           dispatch(setShouldAutoLogin(classStateData?.isRememberChecked))
           AsyncStorage.setItem('userId', obj?.result?.user_id)
 
@@ -310,10 +276,6 @@ export default Login = ({ navigation, route }) => {
                   alignSelf: 'center',
                   marginTop: (mobileW * 4) / 100,
                 }}>
-                {/* <DropDownboxSec
-                  lableText={(classStateData?.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : UserTypes[classStateData?.selectuserType].title}
-                  boxPressAction={() => { userTypeSheetRef.current.open() }}
-                /> */}
 
               </View>
 
