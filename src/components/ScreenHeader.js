@@ -14,9 +14,9 @@ import {
     Configurations,
 } from "../Helpers/Utils";
 
-import { Icons } from '../Assets/Icons/IReferences'
+import { Icons } from '../Icons/IReferences'
 
-import { leftArrow, rightArrow, Notification, dummyUser } from "../Assets/Icons/SvgIcons/Index";
+import { leftArrow, rightArrow, Notification, dummyUser } from "../Icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 import { ScreenReferences } from "../Stacks/ScreenReferences";

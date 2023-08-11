@@ -4,7 +4,7 @@ import { Colors, Font, Configurations, mobileW, LanguageConfiguration, MessageFu
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { AuthInputBoxSec, Button } from '../Components'
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { s, vs } from 'react-native-size-matters';
 

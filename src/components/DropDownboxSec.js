@@ -7,7 +7,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Colors, Font, Configurations, mobileW } from '../Helpers/Utils';
-import { Icons } from "../Assets/Icons/IReferences";
+import { Icons } from "../Icons/IReferences";
 
 const DropDownboxSec = ({
   lableText,

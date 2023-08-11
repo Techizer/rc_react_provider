@@ -11,7 +11,7 @@ import moment from 'moment-timezone';
 import RNFetchBlob from "rn-fetch-blob";
 import { Button } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { s, vs } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
@@ -19,14 +19,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { AudioPlayer } from '../Components/AudioPlayer';
 import AppLoader from '../Components/AppLoader';
-import { LabTest, Prescription, Report, VideoCall, _Cross, dummyUser } from '../Assets/Icons/SvgIcons/Index';
+import { LabTest, Prescription, Report, VideoCall, _Cross, dummyUser } from '../Icons/SvgIcons/Index';
 import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 import { getISChatImplemented } from '../Helpers/AppFunctions';
 import firestore from '@react-native-firebase/firestore'
 import { Message } from '../Schemas/MessageRoomSchema';
-import { setAppState, setVideoCall, setVideoCallData } from '../Redux/Actions/UserActions';
+import { setAppState, setVideoCall, setVideoCallData, setVideoCallStatus } from '../Redux/Actions/UserActions';
 
 export default AppointmentsDetails = ({ navigation, route }) => {
 
@@ -2152,6 +2152,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                                 isPage: "outGoing",
                               };
                               dispatch(setVideoCallData(videoDetails))
+                              dispatch(setVideoCallStatus(1))
                               setTimeout(() => {
                                 dispatch(setVideoCall(true))
                               }, 500);

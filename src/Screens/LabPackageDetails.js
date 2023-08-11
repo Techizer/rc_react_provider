@@ -14,7 +14,7 @@ import {
   MessageFunctions,
 } from "../Helpers/Utils";
 import Styles from "../Styles";
-import { Icons } from "../Assets/Icons/IReferences";
+import { Icons } from "../Icons/IReferences";
 import { useSelector } from "react-redux";
 import { vs } from "react-native-size-matters";
 

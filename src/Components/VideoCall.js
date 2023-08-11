@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
 import { vs } from 'react-native-size-matters';
 import { setVideoCall, setVideoCallStatus } from '../Redux/Actions/UserActions';
-import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
+import { dummyUser } from '../Icons/SvgIcons/Index';
 import { API, Colors, Configurations, windowWidth } from '../Helpers/Utils';
 import { useIsFocused } from '@react-navigation/native';
 import LoadingDots from './LoadingDots';
@@ -156,10 +156,8 @@ const VideoCall = ({
     useEffect(() => {
         if (videoDetails?.isPage == "accept") {
             getIncomingCallTokenFromAPI('patient_to_doctor_video_call')
-            dispatch(setVideoCallStatus(Statuses.Connecting))
         } else {
             getOutgoingCallTokenFromAPI()
-            dispatch(setVideoCallStatus(Statuses.Calling))
         }
 
         return () => {
@@ -297,9 +295,7 @@ const VideoCall = ({
             dispatch(setVideoCall(false))
 
         }, 1000);
-        setTimeout(() => {
-            dispatch(setVideoCallStatus(0))
-        }, 3000);
+        
     };
 
     const _requestAudioPermission = () => {
@@ -350,7 +346,9 @@ const VideoCall = ({
                             dispatch(setVideoCallStatus(Statuses.Disconnected))
                         }
                         else {
-                            dispatch(setVideoCallStatus(Statuses.Ended))
+                            if (callStatus != Statuses.Declined) {
+                                dispatch(setVideoCallStatus(Statuses.Ended))
+                            }
                         }
                     }}
                     onRoomDidFailToConnect={(props) => {
@@ -372,7 +370,9 @@ const VideoCall = ({
                     }}
                     onParticipantRemovedVideoTrack={() => {
                         console.log({ VideoCall: '_onParticipantRemovedVideoTrack' });
-                        dispatch(setVideoCallStatus(Statuses.Ended))
+                        if (callStatus != Statuses.Declined) {
+                            dispatch(setVideoCallStatus(Statuses.Ended))
+                        }
                         setTrackData(NullTrackData)
 
                         setCallTime(DefaultTime)
@@ -463,8 +463,8 @@ const VideoCall = ({
                                             (callStatus === Statuses.Reconnecting) ? <LoadingDots title={'Reconnecting'} />
                                                 :
                                                 (callStatus === Statuses.Disconnected) ? 'Failed to connect'
-                                                :
-                                                ''
+                                                    :
+                                                    ''
                             )
                             }</Text>
                         <View style={[styles.optionsContainer, { justifyContent: 'center', alignItems: 'center' }]}>

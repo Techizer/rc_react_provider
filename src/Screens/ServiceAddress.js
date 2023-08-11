@@ -5,7 +5,7 @@ import { s, vs } from "react-native-size-matters";
 
 import { Colors, Font } from "../Provider/Colorsfont";
 import { windowWidth, deviceHeight, Configurations, localStorage, API, LanguageConfiguration } from "../Helpers/Utils";
-import { Add } from "../Assets/Icons/SvgIcons/Index";
+import { Add } from "../Icons/SvgIcons/Index";
 import ScreenHeader from "../Components/ScreenHeader";
 import { useIsFocused } from "@react-navigation/native";
 import AddressInputPopup from "../Components/AddressInputPopup";
@@ -14,7 +14,7 @@ import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
 // import MapView, { Marker } from 'react-native-maps'; 
 import { useRef } from "react";
-import { Icons } from "../Assets/Icons/IReferences";
+import { Icons } from "../Icons/IReferences";
 
 const windowHeight = Math.round(Dimensions.get("window").height);
 const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)

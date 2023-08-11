@@ -7,7 +7,7 @@ import MonthPicker from 'react-native-month-year-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAppState, setProfileData, setUserLoginData } from '../Redux/Actions/UserActions';
@@ -15,7 +15,7 @@ import { vs } from 'react-native-size-matters';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 import { SvgXml } from 'react-native-svg';
-import { dummyUser, _Cross } from '../Assets/Icons/SvgIcons/Index';
+import { dummyUser, _Cross } from '../Icons/SvgIcons/Index';
 
 export default EditProfile = ({ navigation, route }) => {
 

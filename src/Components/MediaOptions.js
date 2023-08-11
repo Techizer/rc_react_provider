@@ -4,8 +4,8 @@ import { Colors, Font } from "../Provider/Colorsfont";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import { windowHeight, windowWidth } from "../Helpers/Utils";
-import { Icons } from "../Assets/Icons/IReferences";
-import { _Cross } from "../Assets/Icons/SvgIcons/Index";
+import { Icons } from "../Icons/IReferences";
+import { _Cross } from "../Icons/SvgIcons/Index";
 
 
 const MediaOptions = ({

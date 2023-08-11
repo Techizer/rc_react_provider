@@ -3,10 +3,10 @@ import { Text, View, ScrollView, StyleSheet, SafeAreaView, Image, TouchableOpaci
 import { Colors, Font, MessageFunctions, Configurations, LanguageConfiguration, API } from '../Helpers/Utils';
 import { DrawerActions } from '@react-navigation/native';
 import { s, vs } from 'react-native-size-matters';
-import { dummyUser, leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
+import { dummyUser, leftArrow, rightArrow } from '../Icons/SvgIcons/Index';
 import { SvgXml } from 'react-native-svg';
 import DrawerItemContainer from '../Components/DrawerItem';
-import { DrawerIcons } from '../Assets/Icons/drawer';
+import { DrawerIcons } from '../Icons/drawer';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';

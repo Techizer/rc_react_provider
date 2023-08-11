@@ -13,14 +13,14 @@ import { Colors, Font } from "../Provider/Colorsfont";
 import { LanguageConfiguration } from "../Helpers/LanguageProvider";
 import { Configurations } from "../Provider/configProvider";
 import { mobileW, windowHeight, windowWidth } from "../Helpers/Utils";
-import { VideoCall } from "../Assets/Icons/SvgIcons/Index";
+import { VideoCall } from "../Icons/SvgIcons/Index";
 import { SvgXml } from "react-native-svg";
 import StarRating from "react-native-star-rating";
-import { Icons } from "../Assets/Icons/IReferences";
+import { Icons } from "../Icons/IReferences";
 import { useDispatch, useSelector } from "react-redux";
 import firestore from '@react-native-firebase/firestore'
 import { Message } from "../Schemas/MessageRoomSchema";
-import { setVideoCall, setVideoCallData } from "../Redux/Actions/UserActions";
+import { setNoInternet, setVideoCall, setVideoCallData, setVideoCallStatus } from "../Redux/Actions/UserActions";
 
 const AppointmentItem = ({
     item,
@@ -33,9 +33,23 @@ const AppointmentItem = ({
 }) => {
 
     const {
-        loginUserData
+        loginUserData,
+        deviceConnection
     } = useSelector(state => state.StorageReducer)
     const dispatch = useDispatch()
+
+    var videoDetails = {
+        fromUserId: loginUserData?.user_id,
+        fromUserName: loginUserData?.first_name,
+        order_id: item?.order_id,
+        room_name: "rootvideo_room_" + loginUserData?.user_id + "_" + item?.patient_id,
+        toUserId: item?.patient_id,
+        toUserName: item?.patient_name,
+        type: 'doctor_to_patient_video_call',
+        image: '',
+        isPage: "outGoing",
+    };
+
     const aDate = new Date(item?.appointment_date)
     var VideoCallBtn = false
     var appointmentDate = moment(item?.app_date).format(
@@ -412,21 +426,15 @@ const AppointmentItem = ({
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     onPress={() => {
-                                        var videoDetails = {
-                                            fromUserId: loginUserData?.user_id,
-                                            fromUserName: loginUserData?.first_name,
-                                            order_id: item?.order_id,
-                                            room_name: "rootvideo_room_" + loginUserData?.user_id + "_" + item?.patient_id,
-                                            toUserId: item?.patient_id,
-                                            toUserName: item?.patient_name,
-                                            type: 'doctor_to_patient_video_call',
-                                            image: '',
-                                            isPage: "outGoing",
-                                        };
-                                        dispatch(setVideoCallData(videoDetails))
-                                        setTimeout(() => {
-                                            dispatch(setVideoCall(true))
-                                        }, 500);
+                                        if (!deviceConnection) {
+                                            dispatch(setNoInternet(true))
+                                        } else {
+                                            dispatch(setVideoCallData(videoDetails))
+                                            dispatch(setVideoCallStatus(1))
+                                            setTimeout(() => {
+                                                dispatch(setVideoCall(true))
+                                            }, 500);
+                                        }
                                     }}
                                     style={{
                                         paddingHorizontal: s(8),

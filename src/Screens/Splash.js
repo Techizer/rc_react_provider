@@ -6,7 +6,7 @@ global.amount_total = 0;
 global.username = 'NA'
 import HTMLView from 'react-native-htmlview';
 import DeviceInfo from 'react-native-device-info';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout, setUserFCMToken, setUserLoginData, setVideoCall, setVideoCallStatus } from '../Redux/Actions/UserActions';

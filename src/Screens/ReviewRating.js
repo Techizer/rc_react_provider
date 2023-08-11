@@ -3,7 +3,7 @@ import { Text, View, FlatList, SafeAreaView, Image, Modal, TouchableOpacity, Sta
 import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ScreenHeader from '../Components/ScreenHeader';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRatingsData } from '../Redux/Actions/UserActions';
 import { vs } from 'react-native-size-matters';

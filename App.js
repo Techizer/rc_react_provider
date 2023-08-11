@@ -3,6 +3,7 @@
 import React, { Component, useRef } from 'react';
 import { Linking, Platform, StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 import PushNotification from 'react-native-push-notification';
 import { displayNotification } from './src/Helpers/BackgroundTask';
@@ -63,7 +64,7 @@ const App = (props) => {
 
   }, [])
 
-  
+
   return (
 
     <Provider store={store}>
@@ -76,13 +77,7 @@ const App = (props) => {
               return <MainStack {...funcs} />;
             }}
           </AppConsumer>
-          <FlashMessage
-            // style={{
-            //   marginTop: Platform.OS == "ios" ? 0 : StatusBar.currentHeight,
-            // }}
-            position="top"
-            animated={true}
-          />
+          <Toast />
         </ApplicationContainerWrapper>
       </PersistGate>
     </Provider>

@@ -5,7 +5,7 @@ import Slider from "@react-native-community/slider";
 import { s } from "react-native-size-matters";
 import { Colors, Font } from "../Provider/Colorsfont";
 import { windowWidth } from "../Helpers/Utils";
-import { Icons } from "../Assets/Icons/IReferences";
+import { Icons } from "../Icons/IReferences";
 
 UIManager.setLayoutAnimationEnabledExperimental &&
     UIManager.setLayoutAnimationEnabledExperimental(true);

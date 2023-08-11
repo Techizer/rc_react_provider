@@ -4,7 +4,7 @@ import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList } fro
 import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
 import { Button } from '../Components'
-import { Arrow, Cross, _Cross } from '../Assets/Icons/SvgIcons/Index';
+import { Arrow, Cross, _Cross } from '../Icons/SvgIcons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { s, vs } from 'react-native-size-matters';

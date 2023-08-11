@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Alert, Image, TouchableOpacity, FlatList } from 'react-native';
 import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight } from '../Helpers/Utils';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { s } from 'react-native-size-matters';

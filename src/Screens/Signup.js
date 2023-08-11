@@ -5,11 +5,11 @@ import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, 
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { vs, s } from 'react-native-size-matters';
 import { SvgXml } from 'react-native-svg';
-import { _Cross, leftArrow, rightArrow } from '../Assets/Icons/SvgIcons/Index';
+import { _Cross, leftArrow, rightArrow } from '../Icons/SvgIcons/Index';
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { UserTypes } from '../Helpers/Constants';

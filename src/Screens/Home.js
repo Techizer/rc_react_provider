@@ -4,7 +4,7 @@ import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, loca
 import Styles from '../Styles';
 import { DashBoardBox } from '../Components'
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout, setLastScreen, setNotificationCount, setProfileCompletionData, setProfileData } from '../Redux/Actions/UserActions';
@@ -12,7 +12,7 @@ import { vs } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SvgXml } from 'react-native-svg';
-import { dummyUser } from '../Assets/Icons/SvgIcons/Index';
+import { dummyUser } from '../Icons/SvgIcons/Index';
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
 global.myLongitude = 'NA';

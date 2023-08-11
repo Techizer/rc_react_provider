@@ -1,57 +1,47 @@
 import { Alert, ToastAndroid, Platform } from "react-native";
-import Toast from 'react-native-simple-toast';
-import { showMessage, hideMessage } from "react-native-flash-message";
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration } from '../Helpers/Utils';
+import SimpleToast from 'react-native-simple-toast';
+import Toast from 'react-native-toast-message';
+
+import { StatusbarHeight, windowHeight } from '../Helpers/Utils';
 
 class MessageFunctionsProvider {
 
 	showError = (message) => {
-		showMessage({
-			message: message, //"SORRY!",
-			description: "",
-			type: "danger",
-			//color: '#000000',
-			backgroundColor: 'red',
-			duration: 4000,
-			titleStyle: {
-				fontFamily: Font.Regular,
-				fontSize: Font.cart2heading 
-			},
-			textStyle: {
-				fontFamily: Font.Regular,
-				fontSize: Font.allergies_txt_size_edit
-			}
+		Toast.show({
+			type: 'error',
+			text1: 'Alert!',
+			text2: message,
+			position: 'top',
+			topOffset: StatusbarHeight + windowHeight / 25
+
 		});
+
 	}
 
 	showSuccess = (message, duration = 4000) => {
-		showMessage({
-			message: message,
-			description: "",
-			type: "success",
-			//color: '#000000',
-			backgroundColor: '#71AC2B', //'#006400', //'#228B22',
-			duration: duration,
-			titleStyle: {
-				fontFamily: Font.Regular,
-				fontSize: Font.buttontext_size
-			}
+		Toast.show({
+			type: 'success',
+			text1: 'Congratulations!',
+			text2: message,
+			position: 'top',
+			topOffset: StatusbarHeight + windowHeight / 25
 		});
 	}
 
+
 	toast(message, position) {
 		if (position == 'center') {
-			Toast.showWithGravity(message, Toast.SHORT, Toast.CENTER);
+			SimpleToast.showWithGravity(message, SimpleToast.SHORT, SimpleToast.CENTER);
 		}
 		else if (position == 'top') {
-			Toast.showWithGravity(message, Toast.SHORT, Toast.TOP);
+			SimpleToast.showWithGravity(message, SimpleToast.SHORT, SimpleToast.TOP);
 		}
 		else if (position == 'bottom') {
-			Toast.showWithGravity(message, Toast.SHORT, Toast.BOTTOM);
+			SimpleToast.showWithGravity(message, SimpleToast.SHORT, SimpleToast.BOTTOM);
 
 		}
 		else if (position == 'long') {
-			Toast.showWithGravity(message, Toast.LONG, Toast.CENTER);
+			SimpleToast.showWithGravity(message, SimpleToast.LONG, SimpleToast.CENTER);
 		}
 
 	}

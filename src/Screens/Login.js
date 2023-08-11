@@ -5,7 +5,7 @@ import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, 
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
-import { Icons } from '../Assets/Icons/IReferences'
+import { Icons } from '../Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout, setRememberedEmail, setRememberedPassword, setShouldAutoLogin, setUserFCMToken, setUserLoginData, setUserLoginType } from '../Redux/Actions/UserActions';
@@ -14,7 +14,7 @@ import { useRef } from 'react';
 import { UserTypes } from '../Helpers/Constants';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { vs } from 'react-native-size-matters';
-import { Cross, _Cross } from '../Assets/Icons/SvgIcons/Index';
+import { Cross, _Cross } from '../Icons/SvgIcons/Index';
 import { SvgXml } from 'react-native-svg';
 import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';

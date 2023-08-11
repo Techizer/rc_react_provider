@@ -2,13 +2,13 @@ import { Text, View, Image, StatusBar, TouchableOpacity, Modal, FlatList, TextIn
 import React, { useEffect, useRef, useState } from 'react'
 import { Colors, Font, MessageFunctions, MessageTexts, Configurations, mobileW, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import ScreenHeader from '../Components/ScreenHeader';
 import { useSelector } from 'react-redux';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
 import { SvgXml } from 'react-native-svg';
-import { _Cross } from '../Assets/Icons/SvgIcons/Index';
+import { _Cross } from '../Icons/SvgIcons/Index';
 import { Button } from '../Components';
 import { ActivityIndicator } from 'react-native-paper';
 
@@ -235,7 +235,7 @@ export default NeedSupport = ({ navigation, route }) => {
                 source={Icons.GreenTick}></Image>
               :
               <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
-                source={require('../Assets/Icons/ryt_opp.png')}></Image>
+                source={require('../Icons/ryt_opp.png')}></Image>
             }
             <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, }}>{LanguageConfiguration.thank[Configurations.language]}</Text>
             <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign }}>{'Support ticket posted'}</Text>

@@ -210,6 +210,7 @@ const MainStack = navigation => {
                       console.log("Accept Pressed", data.image);
                       setTimeout(() => {
                         dispatch(setVideoCall(true))
+                        dispatch(setVideoCallStatus(8))
                       }, 500);
                     },
                     style: "default",
@@ -227,6 +228,7 @@ const MainStack = navigation => {
             if (notification.data?.type == "patient_to_doctor_video_call") {
               setTimeout(() => {
                 dispatch(setVideoCall(true))
+                dispatch(setVideoCallStatus(8))
               }, 1000);
             }
           } else if (notification.action === 'Reject') {
@@ -258,6 +260,7 @@ const MainStack = navigation => {
       message: remoteMessage.data.body,
       userInfo: remoteMessage.data,
       actions: remoteMessage.data?.type == "patient_to_doctor_video_call" ? '["Accept", "Reject"]' : [],
+      playSound: true
     });
 
   };

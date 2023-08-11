@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import OTPTextInput from 'react-native-otp-textinput';
 import { AuthInputBoxSec } from '../Components'
 import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts } from '../Helpers/Utils';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 
 export default OTP = ({ navigation, route }) => {
 

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Colors, Font, MessageFunctions, Configurations, mobileW, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import { AuthInputBoxSec, Button } from '../Components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
 import ScreenHeader from '../Components/ScreenHeader';

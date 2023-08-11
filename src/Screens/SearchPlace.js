@@ -25,7 +25,7 @@ import { s, vs } from 'react-native-size-matters';
 import ScreenHeader from '../Components/ScreenHeader';
 import SimpleToast from 'react-native-simple-toast';
 import AddressInputPopup from '../Components/AddressInputPopup';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
@@ -363,7 +363,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
 
                         }}>
                             <Image
-                                source={require('../Assets/Icons/search.png')}
+                                source={require('../Icons/search.png')}
                                 style={{
                                     width: 18,
                                     height: 18,

@@ -6,7 +6,7 @@ import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import { SkypeIndicator } from "react-native-indicators";
-import { _Cross } from "../Assets/Icons/SvgIcons/Index";
+import { _Cross } from "../Icons/SvgIcons/Index";
 import { windowHeight, windowWidth } from "../Helpers/Utils";
 
 

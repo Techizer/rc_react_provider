@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { Colors, Font, Configurations, mobileW, API } from '../Helpers/Utils';
 
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { useSelector } from 'react-redux';
 
 export default Transaction = ({ navigation, route, page, pageName }) => {

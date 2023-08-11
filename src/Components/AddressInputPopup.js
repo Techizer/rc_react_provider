@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View, Image, StyleSheet, ActivityIndicator, Tou
 import Modal from "react-native-modal";
 import { Colors, Font } from "../Provider/Colorsfont";
 import { windowWidth, Configurations, API, MessageFunctions, windowHeight } from "../Helpers/Utils";
-import { Cross, _Cross } from "../Assets/Icons/SvgIcons/Index";
+import { Cross, _Cross } from "../Icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import AuthInputBoxSec from "./AuthInputBoxSec";
@@ -319,7 +319,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', edite
                                                         tintColor: Colors.White
                                                     }}
                                                     resizeMode="contain"
-                                                    source={require('../Assets/Icons/tick.png')}
+                                                    source={require('../Icons/tick.png')}
                                                 />
                                                 :
                                                 null

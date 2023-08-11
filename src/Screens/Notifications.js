@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, FlatList, SafeAreaView, Image, Modal, TouchableOpacity, StatusBar, Dimensions, Platform } from 'react-native';
 import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions } from '../Helpers/Utils';
 import ScreenHeader from '../Components/ScreenHeader';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { vs, s } from 'react-native-size-matters';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';

@@ -68,4 +68,6 @@ export const Icons = {
     Mic: require('./mic.png'),
     
     Pdf: require('./pdf.png'),
+
+    Connect: require('./plug.jpg'),
 }

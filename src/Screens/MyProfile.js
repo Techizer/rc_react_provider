@@ -8,7 +8,7 @@ import Styles from '../Styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DashBoardBox } from '../Components'
 import ScreenHeader from '../Components/ScreenHeader';
-import { Icons } from '../Assets/Icons/IReferences';
+import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { vs } from 'react-native-size-matters';

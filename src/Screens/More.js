@@ -2,7 +2,7 @@ import { Text, Modal, Alert, View, Image, StatusBar, TouchableOpacity, Dimension
 import React, { useEffect, useState } from 'react'
 import { Colors, Font, MessageFunctions, Configurations, mobileW, localStorage, LanguageConfiguration, API, MessageHeadings } from '../Helpers/Utils';
 import ScreenHeader from '../Components/ScreenHeader';
-import { Icons } from '../Assets/Icons/IReferences'
+import { Icons } from '../Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';

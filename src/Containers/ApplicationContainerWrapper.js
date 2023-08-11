@@ -7,13 +7,14 @@ import NetInfo from '@react-native-community/netinfo';
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 import VideoCall from "../Components/VideoCall";
 import { useSelector } from "react-redux";
+import NoInternet from "../Components/NoInternet";
 
 const AppContext = React.createContext({})
 export const AppConsumer = AppContext.Consumer
 
 export const ApplicationContainerWrapper = ({ navigation, route, children }) => {
 
-  const { loginUserData, isVideoCall } = useSelector(state => state.StorageReducer)
+  const { noInternet, isVideoCall } = useSelector(state => state.StorageReducer)
 
 
   const [classStateData, setClassStateData] = useState({
@@ -87,12 +88,12 @@ export const ApplicationContainerWrapper = ({ navigation, route, children }) => 
           />
         }
 
-        {/* {
+        {
           noInternet &&
           <NoInternet
             visible={noInternet}
           />
-        } */}
+        }
 
         {screens != ScreenReferences.Splash &&
           <View>
