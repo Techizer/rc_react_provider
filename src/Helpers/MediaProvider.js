@@ -23,10 +23,12 @@ class MediaProvider {
             // return dirs.unlink(imagePath);
          });
    }
-   launchCamera = async (crop) => {
+   launchCamera = async (crop, useFrontCamera = false) => {
       let cropvalue = crop == null ? false : crop
       return new Promise((resolve, reject) => {
          ImagePicker.openCamera({
+            useFrontCamera: useFrontCamera,
+            mediaType: 'photo',
             width: 200,
             height: 200,
             cropping: cropvalue,
@@ -44,8 +46,7 @@ class MediaProvider {
       let cropvalue = !!crop
       return new Promise((resolve, reject) => {
          ImagePicker.openPicker({
-            // width: 200,
-            // height: 200,
+            mediaType: 'photo',
             cropping: false,
             includeBase64: true,
             includeExif: true,

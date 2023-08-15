@@ -15,6 +15,7 @@ export const Colors = {
   cancletextcolor: 'black',
   splashtextcolor: '#8F98A7',
   headingtextboldcolor: 'black',
+  LightBlack: 'rgba(0,0,0,0.8)',
 
 
   placeholdertextcolor: '#515C6F',
@@ -68,29 +69,29 @@ export const Colors = {
   blue2: '#d1e9f6',
 
   backgroundcolor: "#f1f2f4",
-  Theme:'#0168B3',
-  Primary:'#38ABEC',
-  Blue:'#0888D1',
-  lightBlue:'#C5EAFF',
-  Green:'#4FB82A',
+  Theme: '#0168B3',
+  Primary: '#38ABEC',
+  Blue: '#0888D1',
+  lightBlue: '#C5EAFF',
+  Green: '#4FB82A',
   inActiveTab: '#505B6E',
   tabBackground: '#E5F6FF',
-  DarkGrey:'#515C6F',
-  MediumGrey:'#6E7786',
-  lightGrey:'#8F98A7',
-  dullGrey:'#6D737E',
-  Border:'#DFDFDF',
-  Highlight:'#E2E7EE82',
+  DarkGrey: '#515C6F',
+  MediumGrey: '#6E7786',
+  lightGrey: '#8F98A7',
+  dullGrey: '#6D737E',
+  Border: '#DFDFDF',
+  Highlight: '#E2E7EE82',
   Black: "#000000",
-  White:'#ffffff',
+  White: '#ffffff',
   orange: "#FFA800",
-  inActiveText:'#0C1016',
-  ButtonBorder:'#E2EBF0',
-  darkText:'#17181A',
-  detailTitles:'#354052',
-  tabsBackground:'#F1F2F4',
-  Yellow:'#ffa800',
-  Red:'#FF0000',
+  inActiveText: '#0C1016',
+  ButtonBorder: '#E2EBF0',
+  darkText: '#17181A',
+  detailTitles: '#354052',
+  tabsBackground: '#F1F2F4',
+  Yellow: '#ffa800',
+  Red: '#FF0000',
   precautionText: "#041A27",
 
   //28 radhekrishan
@@ -101,7 +102,7 @@ export const Colors = {
   gainsboro: '#e5e5e5',
   backgroundcolor: '#f1f2f4',
   orange: '#FFA800',
-  Theme:'#38ABEC',
+  Theme: '#38ABEC',
 
   //01-03 radhekrishan
   drawerblue: '#57A7DB',
@@ -155,7 +156,7 @@ export const Colors = {
   "Rejected": "#FF4E00",
   "Refunded": "#FF4E00",
   "Else": "#515C6F",
-  Black:'black',
+  Black: 'black',
   DarkGrey: '#515C6F',
   White: 'white'
 };
@@ -175,13 +176,13 @@ export const Font = {
   SemiBold: 'Rubik-SemiBold',
   SemiBoldItalic: 'Rubik-SemiBoldItalic',
 
-  xsmall:  (windowWidth*2.67)/100,  //----10
-  small: (windowWidth*3.2)/100,  //----12
-  medium: (windowWidth*3.7)/100,  //----14
+  xsmall: (windowWidth * 2.67) / 100,  //----10
+  small: (windowWidth * 3.2) / 100,  //----12
+  medium: (windowWidth * 3.7) / 100,  //----14
   large: s(14),  //----15
-  xlarge: (windowWidth*4.2)/100,  //----16
-  xxlarge: (windowWidth*4.7)/100,  //----18
-  xxxlarge: (windowWidth*5)/100,  //----20
+  xlarge: (windowWidth * 4.2) / 100,  //----16
+  xxlarge: (windowWidth * 4.7) / 100,  //----18
+  xxxlarge: (windowWidth * 5) / 100,  //----20
 
   headerfont: (windowWidth * 5) / 100,
   headingfont: (windowWidth * 4.5) / 100,

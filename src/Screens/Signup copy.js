@@ -1,7 +1,7 @@
 import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform, StyleSheet } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, Media, windowHeight, windowWidth } from '../Helpers/Utils';
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, Media, windowHeight } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -16,8 +16,7 @@ import { UserTypes } from '../Helpers/Constants';
 import { BottomSheetProps, BottomSheetStyles, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 import { useDispatch } from 'react-redux';
 import { setAppState } from '../Redux/Actions/UserActions';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import SignupForm from '../Components/SignupForm';
+import RegistrationSteps from '../Components/RegistrationSteps';
 
 export default Signup = ({ navigation, route }) => {
 
@@ -74,10 +73,11 @@ export default Signup = ({ navigation, route }) => {
   const specialitySheetRef = useRef()
   const attachmentOptionSheetRef = useRef()
   const dispatch = useDispatch()
-  const insets = useSafeAreaInsets()
 
   useEffect(() => {
-    getServiceCountries()
+    navigation.addListener('focus', () => {
+      getServiceCountries()
+    });
   }, [])
 
   const setState = (payload, resolver) => {
@@ -429,6 +429,7 @@ export default Signup = ({ navigation, route }) => {
 
   const getServiceCountries = async () => {
     let url = Configurations.baseURL + "api-medical-service-area";
+    console.log("url", url)
 
     API.get(url, 1).then((obj) => {
 
@@ -1213,15 +1214,876 @@ export default Signup = ({ navigation, route }) => {
   }
 
   return (
-    <View
-      pointerEvents={classStateData.isLoadingInButton ? 'none' : 'auto'}
-      style={{ flex: 1, justifyContent: 'center', backgroundColor: Colors.white_color, paddingTop: insets.top, paddingBottom: (insets.bottom) }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: 'white' }}
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="always"
+      showsVerticalScrollIndicator={false}>
+      <KeyboardAwareScrollView>
+        <View>
+          <SafeAreaView
+            style={{ backgroundColor: Colors.statusbar_color, flex: 0 }}
+          />
 
-      <SignupForm
-        navigation={navigation}
-      />
+          <RegistrationSteps />
+          <RBSheet
+            ref={attachmentOptionSheetRef}
+            {...BottomSheetProps}
+            customStyles={BottomSheetStylesForSmall} >
+            <View style={BottomSheetViewStyles.MainView}>
+              <View style={BottomSheetViewStyles.ButtonContainerSmall}>
+                <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                  attachmentOptionSheetRef.current.close()
+                }}>
+                  <SvgXml xml={_Cross}
+                    width={windowHeight / 26}
+                    height={windowHeight / 26}
+                  />
+                </TouchableOpacity>
+              </View>
 
-    </View>
+              <View style={BottomSheetViewStyles.Body}>
+
+                <View style={BottomSheetViewStyles.TitleBar}>
+                  <Text style={BottomSheetViewStyles.Title}>Choose your option!</Text>
+                </View>
+
+                <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                  <View style={{
+                    paddingVertical: vs(16),
+                    width: '100%',
+                    flexDirection: 'row'
+                  }}>
+                    <TouchableOpacity onPress={() => {
+                      Galleryopen()
+                    }} style={styles.roundButtonAttachmentContainer}>
+                      <Image source={Icons.Gallery} style={{
+                        marginVertical: vs(4),
+                        width: vs(16),
+                        height: vs(16),
+                        tintColor: Colors.textblue
+                      }} resizeMode='contain' resizeMethod='scale' />
+                      <Text>Gallery</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                      DocumentGalleryopen()
+                    }} style={styles.roundButtonAttachmentContainer}>
+                      <Image source={Icons.Documents} style={{
+                        marginVertical: vs(4),
+                        width: vs(16),
+                        height: vs(16),
+                        tintColor: Colors.textblue
+                      }} resizeMode='contain' resizeMethod='scale' />
+                      <Text style={{
+                      }}>Documents</Text>
+                    </TouchableOpacity>
+                  </View>
+                </KeyboardAwareScrollView>
+              </View>
+            </View>
+
+          </RBSheet>
+
+
+          <RBSheet
+            ref={countrySheetRef}
+            {...BottomSheetProps}
+            customStyles={BottomSheetStyles} >
+            <View style={BottomSheetViewStyles.MainView}>
+              <View style={BottomSheetViewStyles.ButtonContainer}>
+                <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                  countrySheetRef.current.close()
+                }}>
+                  <SvgXml xml={_Cross}
+                    width={windowHeight / 26}
+                    height={windowHeight / 26}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <View style={BottomSheetViewStyles.Body}>
+
+                <View style={BottomSheetViewStyles.TitleBar}>
+                  <Text style={BottomSheetViewStyles.Title}>{LanguageConfiguration.Country_code[Configurations.language]}</Text>
+                </View>
+
+
+                <FlatList
+                  data={classStateData.Countryarr}
+                  contentContainerStyle={BottomSheetViewStyles.FlatListChild}
+                  renderItem={({ item, index }) => {
+                    if (classStateData.Countryarr != '' || classStateData.Countryarr != null) {
+                      return (
+                        <TouchableOpacity style={{
+                          width: '100%',
+                        }}
+                          onPress={() => {
+                            setState({ country_code: item.country_code, country_name: item.name, country_short_code: item.country_short_code });
+                            countrySheetRef.current.close()
+                          }}
+                        >
+                          <View style={{
+                            width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                            marginLeft: 15,
+                            borderBottomColor: Colors.gray6,
+                            borderBottomWidth: (index == (classStateData.Countryarr.length - 1)) ? 0 : 1,
+                          }}>
+                            <Text style={{
+                              color: '#041A27',
+                              fontSize: 15,
+                              fontFamily: Font.headingfontfamily,
+                              paddingTop: 15,
+                              paddingBottom: 15,
+                              width: '94.5%',
+                            }}>{item.name}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    }
+                  }}
+                  keyExtractor={(item, index) => index.toString()}>
+
+
+                </FlatList>
+              </View>
+            </View>
+
+          </RBSheet>
+
+          <View style={{ paddingBottom: (mobileW * 14) / 100 }}>
+
+            <View
+              style={{
+                width: "100%",
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: vs(16),
+              }}>
+              <View style={{ justifyContent: 'center' }}>
+                <Image
+                  style={{
+                    width: (mobileW * 40) / 100,
+                    height: (mobileW * 40) / 100,
+                    alignSelf: 'center',
+                    resizeMode: 'contain',
+                  }}
+                  resizeMode='contain'
+                  source={Icons.LogoWithText} />
+              </View>
+
+              <TouchableHighlight
+                underlayColor={Colors.Highlight}
+                onPress={() => {
+                  navigation.pop();
+                }}
+                style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
+              >
+                <SvgXml xml={
+                  Configurations.textalign == "right"
+                    ? rightArrow : leftArrow
+                } height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
+
+              </TouchableHighlight>
+            </View>
+
+
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 2) / 100,
+              }}>
+              <Text
+                style={{
+                  fontSize: Font.headingblack,
+                  fontFamily: Font.blackheadingfontfamily,
+                  textAlign: Configurations.textRotate
+                }}>
+                {LanguageConfiguration.Signup[Configurations.language]}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 1) / 100,
+              }}>
+              <Text
+                style={{
+                  textAlign: Configurations.textRotate,
+                  fontSize: Font.headinggray,
+                  fontFamily: Font.headingfontfamily,
+                  color: Colors.placeholder_text,
+                }}>
+                {LanguageConfiguration.Signuptext1[Configurations.language]}
+              </Text>
+            </View>
+
+            <DropDownboxSec
+              lableText={(classStateData.selectuserType == -1) ? LanguageConfiguration.UserTypeText[Configurations.language] : UserTypes[classStateData.selectuserType].title}
+              boxPressAction={() => { userTypeSheetRef.current.open() }}
+            />
+
+
+            <RBSheet
+              ref={userTypeSheetRef}
+              {...BottomSheetProps}
+              customStyles={BottomSheetStyles} >
+              <View style={BottomSheetViewStyles.MainView}>
+                <View style={BottomSheetViewStyles.ButtonContainer}>
+                  <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
+                    userTypeSheetRef.current.close()
+                  }}>
+                    <SvgXml xml={_Cross}
+                      width={windowHeight / 26}
+                      height={windowHeight / 26}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={BottomSheetViewStyles.Body}>
+
+                  <View style={BottomSheetViewStyles.TitleBar}>
+                    <Text style={BottomSheetViewStyles.Title}>Select User Type</Text>
+                  </View>
+
+                  <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
+                    {
+                      UserTypes.map((data, index) => {
+                        return (
+                          <TouchableOpacity style={{
+                            width: '100%',
+                          }} onPress={() => {
+                            setState({
+                              selectuserType: index,
+                            })
+                            if (index == 0 || index == 3 || index == 4) {
+                              getSpecialities(index)
+                            }
+                            userTypeSheetRef.current.close()
+                          }} key={'ddd' + index}>
+                            <View style={{
+                              width: (Platform.OS == "ios") ? '95%' : '94.5%',
+                              marginLeft: 15,
+                              borderBottomColor: Colors.gray6,
+                              borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
+                            }}>
+                              <Text style={{
+                                color: '#041A27',
+                                fontSize: 15,
+                                fontFamily: Font.headingfontfamily,
+                                paddingTop: 15,
+                                paddingBottom: 15,
+                                width: '94.5%',
+                              }}>{data.title}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        )
+                      })
+                    }
+                  </KeyboardAwareScrollView>
+                </View>
+              </View>
+
+            </RBSheet>
+
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 2) / 100,
+              }}>
+              <AuthInputBoxSec
+                mainContainer={{
+                  width: '100%',
+                }}
+                // icon={layer9_icon}
+                lableText={(classStateData.selectuserType != -1 && UserTypes[classStateData.selectuserType]?.value == "lab") ? "Lab Name" : LanguageConfiguration.textinputname[Configurations.language]}
+                inputRef={(ref) => {
+                  nameInput = ref;
+                }}
+                onChangeText={(text) =>
+                  setState({ name: text })
+                }
+                value={classStateData.name}
+                keyboardType="default"
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  emailInput.focus();
+                }}
+              />
+
+
+            </View>
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 2) / 100,
+              }}>
+              <AuthInputBoxSec
+                mainContainer={{
+                  width: '100%',
+                }}
+                // icon={layer9_icon}
+                lableText={LanguageConfiguration.Mobileno[Configurations.language]}
+                inputRef={(ref) => {
+                  emailInput = ref;
+                }}
+                onChangeText={(text) =>
+                  setState({ email: text })
+                }
+                value={classStateData.email}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  mobileInput.focus();
+                }}
+              />
+
+            </View>
+
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 4) / 100,
+              }}>
+              <Text
+                style={{
+                  textAlign: Configurations.textRotate,
+                  fontSize: Font.headinggray,
+                  fontFamily: Font.headingfontfamily,
+                  color: Colors.placeholder_text,
+                }}>
+                {LanguageConfiguration.selectcountrytitle[Configurations.language]}
+              </Text>
+            </View>
+
+            <DropDownboxSec
+              lableText={classStateData.country_name.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.country_name}
+              boxPressAction={() => { countrySheetRef.current.open() }}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '90%', alignSelf: 'center' }}>
+              <View
+                style={{
+                  width: '20%',
+                  alignSelf: 'center',
+                  marginTop: (mobileW * 2.3) / 100,
+                }}>
+                <AuthInputBoxSec
+                  mainContainer={{
+                    width: '100%',
+                  }}
+                  inputFieldStyle={{
+                    textAlign: 'center',
+                    marginBottom: (mobileW * 4) / 100,
+                  }}
+                  // icon={layer9_icon}
+                  lableText={LanguageConfiguration.CC_code[Configurations.language]}
+                  inputRef={(ref) => {
+                    country_codeInput = ref;
+                  }}
+                  onChangeText={(text) =>
+                    setState({ country_code: text })
+                  }
+                  maxLength={3}
+                  editable={false}
+                  value={classStateData.country_code}
+                  keyboardType="number-pad"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    //passwordInput.focus();
+                  }}
+                />
+              </View>
+
+              <View
+                style={{
+                  width: '78%',
+                  alignSelf: 'center',
+                  marginTop: (mobileW * 2) / 100,
+                }}>
+                <AuthInputBoxSec
+                  mainContainer={{
+                    width: '100%',
+                  }}
+                  // icon={layer9_icon}
+                  lableText={LanguageConfiguration.textinputnumber[Configurations.language]}
+                  inputRef={(ref) => {
+                    mobileInput = ref;
+                  }}
+                  maxLength={9}
+                  onChangeText={(text) =>
+                    setState({ mobile: text })
+                  }
+                  value={classStateData.mobile}
+                  keyboardType="number-pad"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    passwordInput.focus();
+                  }}
+                />
+                <View
+                  style={{
+                    width: '89%',
+                    marginTop: (mobileW * 0.5) / 100,
+                  }}>
+                  <Text
+                    style={{
+                      textAlign: Configurations.textRotate,
+                      fontSize: Font.textsize,
+                      fontFamily: Font.headingfontfamily,
+                      color: Colors.textgray,
+                    }}>
+                    {LanguageConfiguration.mobletexttitle[Configurations.language]}
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            {
+              (classStateData.selectuserType != -1 && UserTypes[classStateData.selectuserType].value == "lab") ?
+                null :
+                <>
+                  {/* ------------------------------------------------------------dob-----------      */}
+                  <View style={{
+                    width: '90%', height: 48, alignSelf: 'center', marginTop: mobileW * 3 / 100, flexDirection: 'row',
+                    borderColor: Colors.field_border_color, borderWidth: 1, borderRadius: (mobileW * 1) / 100,
+                  }}>
+                    <TouchableOpacity onPress={() => { setState({ isDatePickerVisibletwo: true }) }} style={{ width: '100%', flexDirection: 'row' }}>
+                      <View style={{ width: '1%' }}>
+                      </View>
+                      <View style={{ width: '100%', height: Font.placeholder_height, marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row' }}>
+                        <Text style={{
+                          width: '78%', textAlign: Configurations.textRotate, color: Colors.placeholder_text,
+                          fontFamily: Font.Regular,
+                          fontSize: Font.placeholdersize,
+                        }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[Configurations.language] : classStateData.dob_date}</Text>
+                        <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
+
+                          <Image source={Icons.DatePicker}
+                            style={{ height: 25, width: 25 }}>
+                          </Image>
+                        </View>
+                      </View>
+
+
+                    </TouchableOpacity>
+
+                    {classStateData.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.5 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
+                      <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.dob[Configurations.language]}</Text>
+                    </View>}
+
+                  </View>
+                  <DateTimePicker
+                    dateFormat={"YYYY-MM-DD"}
+                    isVisible={classStateData.isDatePickerVisibletwo}
+                    mode="date"
+                    value={classStateData.date_new}
+                    maximumDate={new Date()}
+                    onConfirm={(date) => {
+                      setDate(date),
+                        setState({ isDatePickerVisibletwo: false })
+                    }}
+                    onCancel={() => { setState({ isDatePickerVisibletwo: false }) }}
+                  />
+
+                  <View
+                    style={{
+                      width: '90%',
+                      alignSelf: 'center',
+                      marginTop: (mobileW * 3) / 100,
+                      marginBottom: (mobileW * 2 / 100),
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <View style={{ width: '23%' }}>
+                      <Text
+                        style={{
+                          color: Colors.placeholder_text,
+                          fontFamily: Font.Regular,
+                          fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
+                          textAlign: Configurations.textRotate,
+                        }}>
+                        {LanguageConfiguration.Gender[Configurations.language]}
+                      </Text>
+                    </View>
+
+
+                    <View
+                      style={{
+                        width: '70%',
+                        alignSelf: 'center',
+
+
+                        flexDirection: 'row',
+
+                      }}>
+                      <View style={{ width: '30%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                          {/* {classStateData.mabtn == false && */}
+                          <TouchableOpacity onPress={() => { setState({ mabtn: true, febtn: false, gender: 'Male' }); }}
+                            style={{
+                              width: '100%',
+                              alignSelf: 'center',
+                              flexDirection: 'row',
+                            }}>
+                            <Icon style={{ alignSelf: 'center' }}
+                              name={(classStateData.mabtn == false) ? "circle-thin" : "dot-circle-o"}
+                              size={22}
+                              color={(classStateData.mabtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+
+                            <View style={{ width: '70%', alignSelf: 'center' }}>
+                              <Text
+                                style={{
+                                  marginLeft: mobileW * 1.5 / 100,
+                                  textAlign: Configurations.textRotate,
+                                  color: Colors.placeholder_text,
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.placeholdersize,
+                                }}>
+                                {LanguageConfiguration.male[Configurations.language]}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+
+
+
+                        </View>
+
+
+                      </View>
+
+                      <View
+                        style={{
+                          width: '33%',
+                          alignSelf: 'center',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          // justifyContent:'space-between'
+                        }}>
+                        <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
+                          {/* {classStateData.fbtn == false && */}
+                          <TouchableOpacity onPress={() => { setState({ febtn: true, mabtn: false, gender: 'Female' }) }}
+                            style={{
+                              width: '100%',
+                              alignSelf: 'center',
+                              flexDirection: 'row',
+                              alignItems: 'center'
+                            }}>
+                            <Icon style={{ alignSelf: 'center' }}
+                              name={(classStateData.febtn == false) ? "circle-thin" : "dot-circle-o"}
+                              size={22}
+                              color={(classStateData.febtn == false) ? '#8F98A7' : '#0168B3'}></Icon>
+
+                            <Text
+                              style={{
+                                textAlign: Configurations.textRotate,
+                                marginLeft: mobileW * 1.5 / 100,
+                                color: Colors.placeholder_text,
+                                fontFamily: Font.Regular,
+                                fontSize: Font.placeholdersize,
+                                // alignSelf: 'center',
+                              }}>
+                              {LanguageConfiguration.female[Configurations.language]}
+                            </Text>
+
+                          </TouchableOpacity>
+                        </View>
+
+                      </View>
+                    </View>
+                  </View>
+                </>
+            }
+
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 2) / 100,
+                flexDirection: 'row',
+              }}>
+              <AuthInputBoxSec
+                mainContainer={{
+                  width: '100%',
+                }}
+                lableText={LanguageConfiguration.password[Configurations.language]}
+                inputRef={(ref) => {
+                  passwordInput = ref;
+                }}
+                onChangeText={(text) =>
+                  setState({ password: text })
+                }
+                value={classStateData.password}
+                keyboardType="default"
+                autoCapitalize="none"
+                returnKeyLabel="done"
+                returnKeyType="done"
+                secureTextEntry={classStateData.isSecurePassword}
+                disableImg={true}
+                iconName={classStateData.isSecurePassword ? 'eye-off' : 'eye'}
+                iconPressAction={() => {
+                  setState({
+                    isSecurePassword: !classStateData.isSecurePassword,
+                  });
+                }}
+                onSubmitEditing={() => {
+                  confirmInput.focus()
+                }}
+              />
+
+            </View>
+
+            <View
+              style={{
+                width: '89%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 0.5) / 100,
+              }}>
+              <Text
+                style={{
+                  textAlign: Configurations.textRotate,
+                  fontSize: Font.textsize,
+                  fontFamily: Font.headingfontfamily,
+                  color: Colors.textgray,
+                }}>
+                {LanguageConfiguration.Signuptext3[Configurations.language]}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 2) / 100,
+                flexDirection: 'row',
+              }}>
+              <AuthInputBoxSec
+                mainContainer={{
+                  width: '100%',
+                }}
+                lableText={LanguageConfiguration.confirmpassword1[Configurations.language]}
+                inputRef={(ref) => {
+                  confirmInput = ref;
+                }}
+                onChangeText={(text) =>
+                  setState({ confirm: text })
+                }
+                value={classStateData.confirm}
+                keyboardType="default"
+                autoCapitalize="none"
+                returnKeyLabel="next"
+                returnKeyType="next"
+                secureTextEntry={classStateData.isSecurePassword1}
+                disableImg={true}
+                iconName={classStateData.isSecurePassword1 ? 'eye-off' : 'eye'}
+                iconPressAction={() => {
+                  setState({
+                    isSecurePassword1: !classStateData.isSecurePassword1,
+                  });
+                }}
+                onSubmitEditing={() => {
+                }}
+              />
+
+            </View>
+            <View
+              style={{
+                width: '89%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 0.5) / 100,
+
+              }}>
+              <Text
+                style={{
+                  textAlign: Configurations.textRotate,
+                  fontSize: Font.textsize,
+                  fontFamily: Font.headingfontfamily,
+                  color: Colors.textgray,
+                }}>
+                {LanguageConfiguration.Signuptext4[Configurations.language]}
+              </Text>
+            </View>
+
+            {
+              (classStateData.selectuserType == 0 || classStateData.selectuserType == 3 || classStateData.selectuserType == 4) &&
+              <>
+                {renderIDNumber()}
+                {renderSpeExpCer()}
+                {renderExpRegid()}
+              </>
+            }
+
+            {
+              (classStateData.selectuserType == 1 || classStateData.selectuserType == 2) &&
+              <>
+                {renderIDNumber()}
+                {renderExpCer()}
+                {renderExp()}
+              </>
+            }
+
+            {
+              (classStateData.selectuserType != -1 && UserTypes[classStateData.selectuserType].value == "lab") &&
+              <>
+                {renderHealthIDNumber()}
+                {renderCRC()}
+              </>
+            }
+
+            <Button
+              text={LanguageConfiguration.btntext[Configurations.language]}
+              onPress={() => onSignup()}
+              onLoading={classStateData.isLoadingInButton}
+            />
+
+            <View
+              style={{
+                width: '80%',
+                alignSelf: 'center',
+                marginTop: (mobileW * 10) / 100, flexDirection: 'row'
+              }}>
+              <View
+                style={{
+                  width: '100%',
+
+                  alignSelf: 'center',
+                }}>
+                <Text
+                  style={{
+                    textAlign: Configurations.textalign,
+                    fontSize: (mobileW * 3.5) / 100,
+                    fontFamily: Font.headingfontfamily,
+                    color: Colors.placeholder_text,
+                    textAlign: 'center', alignSelf: 'center'
+                  }}>
+                  {LanguageConfiguration.termsandconditiontext1[Configurations.language]}
+                </Text>
+                <Text
+                  onPress={() => {
+                    navigation.navigate(ScreenReferences.TermsAndConditions, {
+                      contantpage: 2,
+                      content: Configurations.term_url_eng,
+                      content_ar: Configurations.term_url_ar
+
+                    });
+                  }}
+                  style={{
+                    textAlign: Configurations.textalign,
+                    fontSize: (mobileW * 3.5) / 100,
+                    fontFamily: Font.terms_text_font_family,
+                    color: Colors.terms_text_color_blue, flexDirection: 'row', width: '100%', textAlign: 'center'
+
+                  }}>
+                  {LanguageConfiguration.termsandconditiontext2[Configurations.language]}
+                  <Text
+                    style={{
+                      textAlign: Configurations.textalign,
+                      fontSize: (mobileW * 3.5) / 100,
+                      fontFamily: Font.headingfontfamily,
+                      color: Colors.placeholder_text,
+                      textAlign: 'center', alignSelf: 'center'
+                    }}>
+                    {LanguageConfiguration.termsandconditiontext3[Configurations.language]}
+                  </Text>
+                  <Text
+                    onPress={() => {
+                      navigation.navigate(ScreenReferences.TermsAndConditions, {
+                        contantpage: 1,
+                        content: Configurations.privacy_url_eng, content_ar: Configurations.privacy_url_ar
+                      });
+                    }}
+                    style={{
+                      textAlign: Configurations.textalign,
+                      fontSize: (mobileW * 3.6) / 100,
+                      fontFamily: Font.SemiBold,
+                      color: Colors.terms_text_color_blue,
+
+                    }}>
+                    {LanguageConfiguration.termsandconditiontext4[Configurations.language]}
+                  </Text>
+                </Text>
+
+              </View>
+            </View>
+
+            <View
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                borderColor: Colors.bordercolor,
+                borderBottomWidth: 1,
+                marginTop: (mobileW * 6) / 100,
+              }}>
+
+            </View>
+
+            <View
+              style={{
+                width: '90%',
+                flexDirection: 'row',
+                alignSelf: 'center',
+                marginTop: (mobileW * 5) / 100,
+                justifyContent: 'space-between'
+              }}>
+
+              <Text
+                style={{
+                  textAlign: Configurations.textalign,
+                  fontSize: (mobileW * 3.8) / 100,
+                  fontFamily: Font.Medium,
+                  color: Colors.placeholder_text,
+                }}>
+                {LanguageConfiguration.allreadyhaveaccounttext[Configurations.language]}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Login');
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: Configurations.textalign,
+                    fontSize: (mobileW * 3.5) / 100,
+                    fontFamily: Font.terms_text_font_family,
+                    color: Colors.textblue,
+                    alignSelf: 'flex-end',
+
+                  }}>
+                  {LanguageConfiguration.loginheretext[Configurations.language]}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
+    </ScrollView>
   );
 }
 
+const styles = StyleSheet.create({
+  roundButtonAttachmentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: vs(8),
+    margin: vs(8),
+    borderRadius: vs(8),
+    backgroundColor: Colors.White,
+    elevation: 4,
+    shadowColor: Colors.lightGrey,
+    shadowOpacity: 0.5,
+    shadowOffset: { height: 1 },
+    width: vs(80)
+  }
+})

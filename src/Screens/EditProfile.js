@@ -1203,6 +1203,7 @@ export default EditProfile = ({ navigation, route }) => {
           </View>
 
           <DropDownboxSec
+          mainContainer={{width:'90%'}}
             lableText={classStateData.work_area.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.work_area}
             boxPressAction={() => {
             }}

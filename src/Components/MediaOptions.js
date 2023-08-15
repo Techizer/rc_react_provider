@@ -39,7 +39,7 @@ const MediaOptions = ({
 
     return (
         <Modal
-            animationType='slide'
+            animationType='fade'
             visible={visible}
             transparent
             presentationStyle='overFullScreen'
@@ -81,7 +81,7 @@ const MediaOptions = ({
                             {
                                 options.map((item, index) => {
                                     return (
-                                        <View style={{ alignItems: 'center', marginLeft: index == 0 ? 0 : (windowWidth * 8) / 100 }}>
+                                        <View key={index} style={{ alignItems: 'center', marginLeft: index == 0 ? 0 : (windowWidth * 8) / 100 }}>
                                             <TouchableOpacity
                                                 disabled={(item.id == '4') ? true : false}
                                                 activeOpacity={0.8}

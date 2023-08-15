@@ -3,6 +3,7 @@ import { FBPushNotifications } from './FirebasePushNotifications';
 import { getReduxState, setConnection, setLogout, setUserData } from './ReduxStates';
 import { API, Configurations } from './Utils';
 import NetInfo from "@react-native-community/netinfo";
+import { UserTypes } from './Constants';
 
 const Network = (state) => {
   setConnection(state.isConnected)
@@ -92,8 +93,51 @@ const callRejectNotification = async (details) => {
     });
 };
 
+const getSpecialities = async (i) => {
+  try {
+    const url = Configurations.baseURL + "api-provider-get-speciality";
+    const data = new FormData();
+    data.append('service_type', UserTypes[i].value)
+
+    const obj = await API.post(url, data, 1);
+
+    if (obj.status == true) {
+      // console.log('specialities...', obj);
+      const modifiedResult = obj.result.map(item => ({ title: item.name, value: item.name }));
+      return modifiedResult;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("getSpecialities-error ------- " + error);
+    return false;
+  }
+
+}
+
+const getServiceCountries = async () => {
+  try {
+    const url = Configurations.baseURL + "api-medical-service-area";
+
+    const obj = await API.get(url, 1)
+    if (obj.status == true) {
+      // console.log('countries...', obj.result);
+      const modifiedResult = obj.result.map(item => ({ title: item.country_short_code, value: item.country_code, name: item.name }));
+      return modifiedResult
+    } else {
+      return false;
+    }
+
+  } catch (error) {
+    console.log("getServiceCountries-error ------- " + error);
+  }
+}
+
+
 export {
+  Network,
   CheckSession,
   callRejectNotification,
-  Network
+  getSpecialities,
+  getServiceCountries
 }

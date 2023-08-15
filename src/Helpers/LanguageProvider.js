@@ -53,18 +53,21 @@ class LanguageProvider {
 
   //-------------------------------------------------------------------------signup------------------------------------------
   Signup = ['Sign up', ' التسجيل  '];
-  Signuptext1 = ['Register to open your Account', 'قم بالتسجيل لفتح حسابك   '];
+  FinishSignup = ['Almost Finished...', ''];
+  Signuptext1 = ['Before you start to register please make sure you have a clear photo of the following documents.', ''];
+  Signuptext2 = ['Provide SA National ID number starting with number (1) or resident ID number starting with number (2) ', 'ادخل رقم الهوية الوطنية تبدأ برقم (1) أو رقم هوية مقيم تبدأ برقم (2)'];
+  Signuptext3 = ['Must be at least 8 characters.', ' .يجب أن لا تقل عن 8 أحرف أو أرقام '];
+  Signuptext4 = ['Both passwords must match.', ' .يجب أن تتطابق كلمتا المرور  '];
+  Signuptext5 = ['Register to open a new account.', ''];
   textinputname = ['Full Name', ' الاسم الكامل  '];
   textinputnumber = ['Mobile Number', 'رقم الهاتف المحمول ']
   //--------------------------------------------change(2-3)
 
   textinputemails = ['Email Address', 'البريد الالكتروني  '];
-  selectcountrytitle = ['Where do you want to give your Medical service?', 'أين تريد تقديم الخدمة الطبية الخاصة بك؟'];
+  serviceLocation = ['Where do you want to give your Medical services?', 'أين تريد تقديم الخدمة الطبية الخاصة بك؟'];
   mobletexttitle = ['Please enter valid mobile number', 'الرجاء إدخال رقم هاتف محمول صحيح'];
   textinputnationalid = ['ID number', 'رقم الهوية'];
-  Signuptext2 = ['Provide SA National ID number starting with number (1) or resident ID number starting with number (2) ', 'ادخل رقم الهوية الوطنية تبدأ برقم (1) أو رقم هوية مقيم تبدأ برقم (2)'];
-  Signuptext3 = ['Must be at least 8 characters.', ' .يجب أن لا تقل عن 8 أحرف أو أرقام '];
-  Signuptext4 = ['Both passwords must match.', ' .يجب أن تتطابق كلمتا المرور  '];
+  
   //--------------------------------------------change(2-3)
   confirmpassword1 = ['Confirm Password', 'تأكيد كلمة المرور '];
 

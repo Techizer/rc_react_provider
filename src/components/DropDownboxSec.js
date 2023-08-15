@@ -35,11 +35,11 @@ const DropDownboxSec = ({
   return (
     <>
       <View style={[styles.mainContainer, mainContainer, {
-         marginTop: (dHeight) ? 0 : (mobileW * 2) / 100,
       }]}>
         <TouchableOpacity
           onPress={boxPressAction}
           disabled={isDisabled}
+          activeOpacity={0.7}
         >
           <View style={{
             width: '95%', alignSelf: 'center', justifyContent: 'center',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mainContainer: {
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
     marginTop: (mobileW * 2) / 100,
     backgroundColor: Colors.tab_background_color, //Colors.optboxcolor,
@@ -95,23 +95,17 @@ const styles = StyleSheet.create({
   },
   inputLayout: {
     width: "100%",
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
   },
   textBoxStyle: {
     width: '100%',
-    color: Colors.placeholder_text_color,
-    fontSize: Font.placeholdersize,
+    color: Colors.DarkGrey,
+    fontSize: Font.xlarge,
     textAlign: Configurations.textalign,
     justifyContent: 'center',
-    // alignItems: 'center',
     textAlignVertical: 'center',
-    // height: 48, //(mobileW * 12) / 100,
     fontFamily: Font.headingfontfamily,
     borderRadius: (mobileW * 1) / 100,
-    // paddingTop: ((mobileW * 12) / 100) / 2.5,
     paddingLeft: 4,
-    // backgroundColor: 'red'
   },
   errorLayout: {
     backgroundColor: "red",

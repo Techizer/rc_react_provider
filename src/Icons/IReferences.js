@@ -47,6 +47,7 @@ export const Icons = {
     Rocket: require('./rocketicon.png'),
     RocketGrey: require('./ic_grey_rocket_rtl.png'),
     GreenTick: require('./ic_tick_green.png'),
+    Tick: require('./tick.png'),
 
     LogoWithText: require('./rc-logo3x.png'),
     NeedSupoort: require('./Path51083x.png'),

@@ -311,7 +311,7 @@ const MainStack = navigation => {
     // When the application is opened from a quit state.
     messaging().getInitialNotification()
       .then(async remoteMessage => {
-        console.log('getInitialNotification', remoteMessage);
+        // console.log('getInitialNotification', remoteMessage);
       });
 
     // When the application is running, but in the background.
