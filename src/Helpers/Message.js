@@ -12,8 +12,10 @@ class MessageFunctionsProvider {
 			text1: 'Alert!',
 			text2: message,
 			position: 'top',
-			topOffset: StatusbarHeight + windowHeight / 25
-
+			topOffset: StatusbarHeight + windowHeight / 25,
+			text1Style: {
+				fontSize: 50, // Adjust this value as needed
+			  },
 		});
 
 	}
@@ -218,6 +220,8 @@ class MessageTextProvider {
 
 	//======================new msg=================
 	emptyName = ['Please enter your name!', 'الرجاء إدخال  الاسم  ']
+	emptyFirstName = ['Please enter your first name!', 'الرجاء إدخال  الاسم  ']
+	emptyLastName = ['Please enter your last name!', 'الرجاء إدخال  الاسم  ']
 	emptyEmail = ['Email can not be empty', 'لا يمكن أن يكون البريد الإلكتروني فارغًا  ']
 	validEmail = ['Please enter valid email id', 'الرجاء إدخال معرف بريد إلكتروني صالح  ']
 	emptymobileNumber = ['Please enter mobile number!', 'الرجاء إدخال رقم الهاتف المحمول  '];

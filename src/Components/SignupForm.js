@@ -33,6 +33,7 @@ export default SignupForm = ({ navigation }) => {
 
     const [classStateData, setClassStateData] = useState({
         name: '',
+        lName: '',
         email: '',
         number: '',
         id: '',
@@ -49,13 +50,13 @@ export default SignupForm = ({ navigation }) => {
         imageType: '',
         userType: null,
         dob: '',
-        gender: 'none',
+        gender: '',
         hosp_moh_lic_no: '',
         hosp_reg_no: '',
         profileImage: null,
         id_image: null,
         certificate: null,
-        scfhs_image: null
+        scfhs_image: null,
     })
     const [progress, setProgress] = useState(0)
     const [dropdown, setDropdown] = useState(-1)
@@ -66,10 +67,7 @@ export default SignupForm = ({ navigation }) => {
     const [confirmSecurePass, setConfirmSecurepass] = useState(true)
     const [isDatePicker, setIsDatePicker] = useState(false)
     const [mediaOptions, setMediaOptions] = useState(false);
-
-
-    const specialitySheetRef = useRef()
-    const attachmentOptionSheetRef = useRef()
+    const [isRegistered, setIsRegistered] = useState(false);
 
     const fNameRef = useRef()
     const lNameRef = useRef()
@@ -109,6 +107,26 @@ export default SignupForm = ({ navigation }) => {
             backgroundColor: Colors.white_color,
             justifyContent: 'center',
             alignItems: 'center'
+        },
+        finalTextOne: {
+            fontSize: (windowWidth * 10) / 100,
+            color: Colors.Green,
+            fontFamily: Font.Regular,
+            alignSelf: 'center'
+        },
+        finalTextTwo: {
+            fontSize: Font.xxxlarge,
+            color: Colors.textblue,
+            fontFamily: Font.Regular,
+            alignSelf: 'center',
+            textAlign: 'center'
+        },
+        finalTextThree: {
+            fontSize: Font.xxxlarge,
+            color: Colors.textblue,
+            fontFamily: Font.Regular,
+            alignSelf: 'center',
+            textAlign: 'center'
         }
     })
 
@@ -144,6 +162,7 @@ export default SignupForm = ({ navigation }) => {
                         setDropdownTitle('Select User Type')
                         setIsDropdown(!isDropdown)
                         setDropdownList(UserTypes)
+                        resetState()
                     }}
                 />
 
@@ -170,7 +189,7 @@ export default SignupForm = ({ navigation }) => {
                     mainContainer={{
                         width: '100%',
                     }}
-                    lableText={(classStateData.userType != null && classStateData.userType?.value == "lab") ? "Lab Name" : 'First Name'}
+                    lableText={'First Name'}
                     inputRef={fNameRef}
                     onChangeText={(text) =>
                         setState({ name: text })
@@ -188,12 +207,12 @@ export default SignupForm = ({ navigation }) => {
                         width: '100%',
                         marginTop: (windowWidth / 35)
                     }}
-                    lableText={(classStateData.userType != null && classStateData.userType?.value == "lab") ? "Lab Name" : 'Last Name'}
+                    lableText={'Last Name'}
                     inputRef={lNameRef}
                     onChangeText={(text) =>
-                        setState({ name: text })
+                        setState({ lName: text })
                     }
-                    value={classStateData.name}
+                    value={classStateData.lName}
                     keyboardType="default"
                     autoCapitalize="none"
                     returnKeyType="next"
@@ -212,7 +231,7 @@ export default SignupForm = ({ navigation }) => {
                         setState({ email: text })
                     }
                     value={classStateData.email}
-                    keyboardType="default"
+                    keyboardType="email-address"
                     autoCapitalize="none"
                     returnKeyType="next"
                     onSubmitEditing={() => {
@@ -307,7 +326,7 @@ export default SignupForm = ({ navigation }) => {
                             value={classStateData.selectedCountry && `+${classStateData.selectedCountry.value}`}
                             keyboardType="number-pad"
                             autoCapitalize="none"
-                            returnKeyType="next"
+                            returnKeyType="done"
                             onSubmitEditing={() => {
                                 //passwordInput.focus();
                             }}
@@ -356,130 +375,135 @@ export default SignupForm = ({ navigation }) => {
                     </View>
                 </View>
 
-                <View style={{
-                    width: '100%', height: 48, alignSelf: 'center', marginTop: (windowWidth / 35), flexDirection: 'row',
-                    borderColor: Colors.field_border_color, borderWidth: 1, borderRadius: (mobileW * 1) / 100,
-                }}>
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => { setIsDatePicker(true) }} style={{ width: '100%', flexDirection: 'row' }}>
-                        <View style={{ width: '1%' }}>
-                        </View>
-                        <View style={{ width: '100%', height: Font.placeholder_height, marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row' }}>
-                            <Text style={{
-                                width: '78%',
-                                textAlign: Configurations.textRotate,
-                                color: Colors.DarkGrey,
-                                fontSize: Font.xlarge,
-                                fontFamily: Font.Regular,
-                            }}>{classStateData.dob.length <= 0 ? LanguageConfiguration.dob[Configurations.language] : classStateData.dob}</Text>
-                            <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
-
-                                <Image source={Icons.DatePicker}
-                                    style={{ height: 25, width: 25 }}>
-                                </Image>
-                            </View>
-                        </View>
-
-
-                    </TouchableOpacity>
-
-                </View>
-
-                <View
-                    style={{
-                        width: '100%',
-                        marginTop: windowWidth / 15,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
-                    <View style={{ width: '23%' }}>
-                        <Text
-                            style={{
-                                color: Colors.placeholder_text,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.xlarge,
-                                textAlign: Configurations.textRotate,
-                            }}>
-                            {LanguageConfiguration.Gender[Configurations.language]}
-                        </Text>
-                    </View>
-
-
-                    <View
-                        style={{
-                            width: '70%',
-                            alignSelf: 'center',
-                            flexDirection: 'row',
+                {
+                    classStateData.userType.value != 'lab' &&
+                    <>
+                        <View style={{
+                            width: '100%', height: 48, alignSelf: 'center', marginTop: (windowWidth / 35), flexDirection: 'row',
+                            borderColor: Colors.field_border_color, borderWidth: 1, borderRadius: (mobileW * 1) / 100,
                         }}>
-                        <View style={{ width: '30%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                onPress={() => { setIsDatePicker(true) }} style={{ width: '100%', flexDirection: 'row' }}>
+                                <View style={{ width: '1%' }}>
+                                </View>
+                                <View style={{ width: '100%', height: Font.placeholder_height, marginLeft: mobileW * 2 / 100, alignItems: 'center', flexDirection: 'row' }}>
+                                    <Text style={{
+                                        width: '78%',
+                                        textAlign: Configurations.textRotate,
+                                        color: Colors.DarkGrey,
+                                        fontSize: Font.xlarge,
+                                        fontFamily: Font.Regular,
+                                    }}>{classStateData.dob.length <= 0 ? LanguageConfiguration.dob[Configurations.language] : classStateData.dob}</Text>
+                                    <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
-                                <TouchableOpacity onPress={() => { setState({ gender: 'Male' }); }}
-                                    style={{
-                                        width: '100%',
-                                        alignSelf: 'center',
-                                        flexDirection: 'row',
-                                    }}>
-                                    <Icon style={{ alignSelf: 'center' }}
-                                        name={(classStateData.gender == 'Male') ? "dot-circle-o" : "circle-thin"}
-                                        size={22}
-                                        color={(classStateData.gender == 'Male') ? '#0168B3' : '#8F98A7'}></Icon>
-
-                                    <View style={{ width: '70%', alignSelf: 'center' }}>
-                                        <Text
-                                            style={{
-                                                marginLeft: mobileW * 1.5 / 100,
-                                                textAlign: Configurations.textRotate,
-                                                color: Colors.placeholder_text,
-                                                fontFamily: Font.Regular,
-                                                fontSize: Font.xlarge,
-                                            }}>
-                                            {LanguageConfiguration.male[Configurations.language]}
-                                        </Text>
+                                        <Image source={Icons.DatePicker}
+                                            style={{ height: 25, width: 25 }}>
+                                        </Image>
                                     </View>
-                                </TouchableOpacity>
-                            </View>
+                                </View>
+
+
+                            </TouchableOpacity>
+
                         </View>
 
                         <View
                             style={{
-                                width: '33%',
-                                alignSelf: 'center',
+                                width: '100%',
+                                marginTop: windowWidth / 15,
                                 flexDirection: 'row',
                                 alignItems: 'center',
                             }}>
-                            <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
-                                <TouchableOpacity onPress={() => { setState({ gender: 'Female' }) }}
+                            <View style={{ width: '23%' }}>
+                                <Text
                                     style={{
-                                        width: '100%',
-                                        alignSelf: 'center',
-                                        flexDirection: 'row',
-                                        alignItems: 'center'
+                                        color: Colors.placeholder_text,
+                                        fontFamily: Font.Regular,
+                                        fontSize: Font.xlarge,
+                                        textAlign: Configurations.textRotate,
                                     }}>
-                                    <Icon style={{ alignSelf: 'center' }}
-                                        name={(classStateData.gender == 'Female') ? "dot-circle-o" : "circle-thin"}
-                                        size={22}
-                                        color={(classStateData.gender == 'Female') ? '#0168B3' : '#8F98A7'}></Icon>
-
-                                    <Text
-                                        style={{
-                                            textAlign: Configurations.textRotate,
-                                            marginLeft: mobileW * 1.5 / 100,
-                                            color: Colors.placeholder_text,
-                                            fontFamily: Font.Regular,
-                                            fontSize: Font.xlarge,
-                                            // alignSelf: 'center',
-                                        }}>
-                                        {LanguageConfiguration.female[Configurations.language]}
-                                    </Text>
-
-                                </TouchableOpacity>
+                                    {LanguageConfiguration.Gender[Configurations.language]}
+                                </Text>
                             </View>
 
+
+                            <View
+                                style={{
+                                    width: '70%',
+                                    alignSelf: 'center',
+                                    flexDirection: 'row',
+                                }}>
+                                <View style={{ width: '30%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center' }}>
+
+                                        <TouchableOpacity onPress={() => { setState({ gender: 'Male' }); }}
+                                            style={{
+                                                width: '100%',
+                                                alignSelf: 'center',
+                                                flexDirection: 'row',
+                                            }}>
+                                            <Icon style={{ alignSelf: 'center' }}
+                                                name={(classStateData.gender == 'Male') ? "dot-circle-o" : "circle-thin"}
+                                                size={22}
+                                                color={(classStateData.gender == 'Male') ? '#0168B3' : '#8F98A7'}></Icon>
+
+                                            <View style={{ width: '70%', alignSelf: 'center' }}>
+                                                <Text
+                                                    style={{
+                                                        marginLeft: mobileW * 1.5 / 100,
+                                                        textAlign: Configurations.textRotate,
+                                                        color: Colors.placeholder_text,
+                                                        fontFamily: Font.Regular,
+                                                        fontSize: Font.xlarge,
+                                                    }}>
+                                                    {LanguageConfiguration.male[Configurations.language]}
+                                                </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View
+                                    style={{
+                                        width: '33%',
+                                        alignSelf: 'center',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}>
+                                    <View style={{ width: '100%', alignSelf: 'center', marginLeft: mobileW * 2 / 100 }}>
+                                        <TouchableOpacity onPress={() => { setState({ gender: 'Female' }) }}
+                                            style={{
+                                                width: '100%',
+                                                alignSelf: 'center',
+                                                flexDirection: 'row',
+                                                alignItems: 'center'
+                                            }}>
+                                            <Icon style={{ alignSelf: 'center' }}
+                                                name={(classStateData.gender == 'Female') ? "dot-circle-o" : "circle-thin"}
+                                                size={22}
+                                                color={(classStateData.gender == 'Female') ? '#0168B3' : '#8F98A7'}></Icon>
+
+                                            <Text
+                                                style={{
+                                                    textAlign: Configurations.textRotate,
+                                                    marginLeft: mobileW * 1.5 / 100,
+                                                    color: Colors.placeholder_text,
+                                                    fontFamily: Font.Regular,
+                                                    fontSize: Font.xlarge,
+                                                    // alignSelf: 'center',
+                                                }}>
+                                                {LanguageConfiguration.female[Configurations.language]}
+                                            </Text>
+
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+                            </View>
                         </View>
-                    </View>
-                </View>
+                    </>
+                }
 
                 <View
                     style={{
@@ -545,282 +569,503 @@ export default SignupForm = ({ navigation }) => {
     const FourthStep = () => {
         return (
             <>
-                <AuthInputBoxSec
-                    mainContainer={{
-                        width: '100%',
-                        marginTop: (windowWidth / 20)
-                    }}
-                    lableText={'Highest Qualification'}
-                    inputRef={qualRef}
-                    onChangeText={(text) =>
-                        setState({ qualification: text })
-                    }
-                    value={classStateData.qualification}
-                    keyboardType="default"
-                    autoCapitalize="none"
-                    returnKeyLabel="next"
-                    returnKeyType="next"
-                    onSubmitEditing={() => {
-                        expRef.current.focus()
-                    }}
-                />
+                {
+                    (classStateData.userType != null && classStateData.userType.value != 'lab') &&
+                    <>
+                        <AuthInputBoxSec
+                            mainContainer={{
+                                width: '100%',
+                                marginTop: (windowWidth / 20)
+                            }}
+                            lableText={'Highest Qualification'}
+                            inputRef={qualRef}
+                            onChangeText={(text) =>
+                                setState({ qualification: text })
+                            }
+                            value={classStateData.qualification}
+                            keyboardType="default"
+                            autoCapitalize="none"
+                            returnKeyLabel="done"
+                            returnKeyType="done"
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss()
+                            }}
+                        />
 
-                <View
-                    style={{
-                        width: '100%',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginTop: (windowWidth / 50)
-                    }}>
-                    <Text
-                        numberOfLines={1}
-                        style={{
-                            color: Colors.DarkGrey,
-                            fontFamily: Font.Regular,
-                            fontSize: Font.medium,
-                            width: '60%'
-                        }}>{classStateData.certificate ? classStateData.certificate.name : 'Upload certificate copy'}</Text>
-
-                    <TouchableOpacity
-                        onPress={() => {
-                            setMediaOptions(true)
-                            setState({ imageType: 'certificate' });
-                        }}
-                        activeOpacity={0.7}
-                        style={{
-                            width: (windowWidth / 3.3),
-                            height: (windowWidth / 10),
-                            borderRadius: (windowWidth / 10),
-                            justifyContent: classStateData.certificate ? 'space-between' : 'center',
-                            alignItems: 'center',
-                            backgroundColor: Colors.buttoncolorblue,
-                            flexDirection: 'row'
-                        }}>
-                        <Text
+                        <View
                             style={{
-                                color: Colors.white_color,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.large,
-                                paddingHorizontal: classStateData.certificate ? '12%' : 0,
-                            }} numberOfLines={1}>
-                            {'Upload'}
-                        </Text>
-                        {
-                            classStateData.certificate &&
-                            <View style={{
-                                width: (windowWidth / 10),
-                                height: (windowWidth / 10),
-                                borderRadius: (windowWidth / 10),
-                                justifyContent: 'center',
+                                width: '100%',
                                 alignItems: 'center',
-                                backgroundColor: Colors.Green
-
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: (windowWidth / 50)
                             }}>
-                                <Image source={Icons.Tick} style={{
-                                    width: (windowWidth / 20),
-                                    height: (windowWidth / 20),
-                                    tintColor: Colors.white_color
-                                }} />
-                            </View>
-                        }
-                    </TouchableOpacity>
-                </View>
+                            <Text
+                                numberOfLines={1}
+                                style={{
+                                    color: Colors.DarkGrey,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.medium,
+                                    width: '60%'
+                                }}>{classStateData.certificate ? classStateData.certificate.name : 'Upload certificate copy'}</Text>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setMediaOptions(true)
+                                    setState({ imageType: 'certificate' });
+                                }}
+                                activeOpacity={0.7}
+                                style={{
+                                    width: (windowWidth / 3.3),
+                                    height: (windowWidth / 10),
+                                    borderRadius: (windowWidth / 10),
+                                    justifyContent: classStateData.certificate ? 'space-between' : 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: Colors.buttoncolorblue,
+                                    flexDirection: 'row'
+                                }}>
+                                <Text
+                                    style={{
+                                        color: Colors.white_color,
+                                        fontFamily: Font.Regular,
+                                        fontSize: Font.large,
+                                        paddingHorizontal: classStateData.certificate ? '12%' : 0,
+                                    }} numberOfLines={1}>
+                                    {'Upload'}
+                                </Text>
+                                {
+                                    classStateData.certificate &&
+                                    <View style={{
+                                        width: (windowWidth / 10),
+                                        height: (windowWidth / 10),
+                                        borderRadius: (windowWidth / 10),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.Green
+
+                                    }}>
+                                        <Image source={Icons.Tick} style={{
+                                            width: (windowWidth / 20),
+                                            height: (windowWidth / 20),
+                                            tintColor: Colors.white_color
+                                        }} />
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                        </View>
 
 
-                <AuthInputBoxSec
-                    mainContainer={{
-                        width: '100%',
-                        marginTop: (windowWidth / 35)
-                    }}
-                    lableText={'Years of Experience'}
-                    inputRef={expRef}
-                    onChangeText={(text) =>
-                        setState({ experience: text })
-                    }
-                    value={classStateData.experience}
-                    keyboardType="default"
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    onSubmitEditing={() => {
-                        idRef.current.focus();
-                    }}
-                />
+                        <AuthInputBoxSec
+                            mainContainer={{
+                                width: '100%',
+                                marginTop: (windowWidth / 35)
+                            }}
+                            lableText={'Years of Experience'}
+                            inputRef={expRef}
+                            onChangeText={(text) =>
+                                setState({ experience: text })
+                            }
+                            value={classStateData.experience}
+                            keyboardType="number-pad"
+                            autoCapitalize="none"
+                            returnKeyType="done"
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss()
+                            }}
+                        />
 
-                <AuthInputBoxSec
-                    mainContainer={{
-                        width: '100%',
-                        marginTop: (windowWidth / 20)
-                    }}
-                    lableText={'Enter your ID number'}
-                    inputRef={idRef}
-                    onChangeText={(text) =>
-                        setState({ id_number: text })
-                    }
-                    value={classStateData.id_number}
-                    keyboardType="default"
-                    autoCapitalize="none"
-                    returnKeyLabel="next"
-                    returnKeyType="next"
-                    onSubmitEditing={() => {
-                        licenseRef.current.focus()
-                    }}
-                />
+                        <AuthInputBoxSec
+                            mainContainer={{
+                                width: '100%',
+                                marginTop: (windowWidth / 20)
+                            }}
+                            lableText={'Enter your ID number'}
+                            inputRef={idRef}
+                            onChangeText={(text) =>
+                                setState({ id_number: text })
+                            }
+                            value={classStateData.id_number}
+                            keyboardType="number-pad"
+                            autoCapitalize="none"
+                            returnKeyLabel="done"
+                            returnKeyType="done"
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss()
+                            }}
+                        />
 
-                <View
-                    style={{
-                        width: '100%',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginTop: (windowWidth / 50)
-                    }}>
-                    <Text
-                        numberOfLines={1}
-                        style={{
-                            color: Colors.DarkGrey,
-                            fontFamily: Font.Regular,
-                            fontSize: Font.medium,
-                            width: '60%'
-                        }}>{classStateData.id_image ? classStateData.id_image.name : 'Upload your ID copy'}</Text>
-
-                    <TouchableOpacity
-                        onPress={() => {
-                            setMediaOptions(true)
-                            setState({ imageType: 'id_image' });
-                        }}
-                        activeOpacity={0.7}
-                        style={{
-                            width: (windowWidth / 3.3),
-                            height: (windowWidth / 10),
-                            borderRadius: (windowWidth / 10),
-                            justifyContent: classStateData.id_image ? 'space-between' : 'center',
-                            alignItems: 'center',
-                            backgroundColor: Colors.buttoncolorblue,
-                            flexDirection: 'row'
-                        }}>
-                        <Text
+                        <View
                             style={{
-                                color: Colors.white_color,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.large,
-                                paddingHorizontal: classStateData.id_image ? '12%' : 0,
-                            }} numberOfLines={1}>
-                            {'Upload'}
-                        </Text>
-                        {
-                            classStateData.id_image &&
-                            <View style={{
-                                width: (windowWidth / 10),
-                                height: (windowWidth / 10),
-                                borderRadius: (windowWidth / 10),
-                                justifyContent: 'center',
+                                width: '100%',
                                 alignItems: 'center',
-                                backgroundColor: Colors.Green
-
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: (windowWidth / 50)
                             }}>
-                                <Image source={Icons.Tick} style={{
-                                    width: (windowWidth / 20),
-                                    height: (windowWidth / 20),
-                                    tintColor: Colors.white_color
-                                }} />
-                            </View>
-                        }
-                    </TouchableOpacity>
-                </View>
+                            <Text
+                                numberOfLines={1}
+                                style={{
+                                    color: Colors.DarkGrey,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.medium,
+                                    width: '60%'
+                                }}>{classStateData.id_image ? classStateData.id_image.name : 'Upload your ID copy'}</Text>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setMediaOptions(true)
+                                    setState({ imageType: 'id_image' });
+                                }}
+                                activeOpacity={0.7}
+                                style={{
+                                    width: (windowWidth / 3.3),
+                                    height: (windowWidth / 10),
+                                    borderRadius: (windowWidth / 10),
+                                    justifyContent: classStateData.id_image ? 'space-between' : 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: Colors.buttoncolorblue,
+                                    flexDirection: 'row'
+                                }}>
+                                <Text
+                                    style={{
+                                        color: Colors.white_color,
+                                        fontFamily: Font.Regular,
+                                        fontSize: Font.large,
+                                        paddingHorizontal: classStateData.id_image ? '12%' : 0,
+                                    }} numberOfLines={1}>
+                                    {'Upload'}
+                                </Text>
+                                {
+                                    classStateData.id_image &&
+                                    <View style={{
+                                        width: (windowWidth / 10),
+                                        height: (windowWidth / 10),
+                                        borderRadius: (windowWidth / 10),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.Green
+
+                                    }}>
+                                        <Image source={Icons.Tick} style={{
+                                            width: (windowWidth / 20),
+                                            height: (windowWidth / 20),
+                                            tintColor: Colors.white_color
+                                        }} />
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                        </View>
+                    </>
+
+                }
 
 
-                <AuthInputBoxSec
-                    mainContainer={{
-                        width: '100%',
-                        marginTop: (windowWidth / 20)
-                    }}
-                    lableText={'Enter your Healthcare License number'}
-                    inputRef={licenseRef}
-                    onChangeText={(text) =>
-                        setState({ scfhs_number: text })
-                    }
-                    value={classStateData.scfhs_number}
-                    keyboardType="default"
-                    autoCapitalize="none"
-                    returnKeyLabel="next"
-                    returnKeyType="next"
-                    onSubmitEditing={() => {
-                        Keyboard.dismiss()
-                    }}
-                />
 
-                <View
-                    style={{
-                        width: '100%',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginTop: (windowWidth / 50)
-                    }}>
-                    <Text
-                        numberOfLines={1}
-                        style={{
-                            color: Colors.DarkGrey,
-                            fontFamily: Font.Regular,
-                            fontSize: Font.medium,
-                            width: '60%'
-                        }}>{classStateData.scfhs_image ? classStateData.scfhs_image.name : 'Upload your License copy'}</Text>
 
-                    <TouchableOpacity
-                        onPress={() => {
-                            setMediaOptions(true)
-                            setState({ imageType: 'scfhs_image' });
-                        }}
-                        activeOpacity={0.7}
-                        style={{
-                            width: (windowWidth / 3.3),
-                            height: (windowWidth / 10),
-                            borderRadius: (windowWidth / 10),
-                            justifyContent: classStateData.scfhs_image ? 'space-between' : 'center',
-                            alignItems: 'center',
-                            backgroundColor: Colors.buttoncolorblue,
-                            flexDirection: 'row'
-                        }}>
-                        <Text
+
+                {
+                    (classStateData.userType != null && classStateData.userType.value != 'babysitter' && classStateData.userType.value != 'caregiver' && classStateData.userType.value != 'lab') &&
+                    <>
+                        <AuthInputBoxSec
+                            mainContainer={{
+                                width: '100%',
+                                marginTop: (windowWidth / 20)
+                            }}
+                            lableText={'Enter your Health Registration ID'}
+                            inputRef={licenseRef}
+                            onChangeText={(text) =>
+                                setState({ scfhs_number: text })
+                            }
+                            value={classStateData.scfhs_number}
+                            keyboardType="number-pad"
+                            autoCapitalize="none"
+                            returnKeyLabel="done"
+                            returnKeyType="done"
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss()
+                            }}
+                        />
+
+                        <View
                             style={{
-                                color: Colors.white_color,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.large,
-                                paddingHorizontal: classStateData.scfhs_image ? '12%' : 0,
-                            }} numberOfLines={1}>
-                            {'Upload'}
-                        </Text>
-                        {
-                            classStateData.scfhs_image &&
-                            <View style={{
-                                width: (windowWidth / 10),
-                                height: (windowWidth / 10),
-                                borderRadius: (windowWidth / 10),
-                                justifyContent: 'center',
+                                width: '100%',
                                 alignItems: 'center',
-                                backgroundColor: Colors.Green
-
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: (windowWidth / 50)
                             }}>
-                                <Image source={Icons.Tick} style={{
-                                    width: (windowWidth / 20),
-                                    height: (windowWidth / 20),
-                                    tintColor: Colors.white_color
-                                }} />
-                            </View>
-                        }
-                    </TouchableOpacity>
-                </View>
+                            <Text
+                                numberOfLines={1}
+                                style={{
+                                    color: Colors.DarkGrey,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.medium,
+                                    width: '60%'
+                                }}>{'Upload Health Registration ID'}</Text>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setMediaOptions(true)
+                                    setState({ imageType: 'scfhs_image' });
+                                }}
+                                activeOpacity={0.7}
+                                style={{
+                                    width: (windowWidth / 3.3),
+                                    height: (windowWidth / 10),
+                                    borderRadius: (windowWidth / 10),
+                                    justifyContent: classStateData.scfhs_image ? 'space-between' : 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: Colors.buttoncolorblue,
+                                    flexDirection: 'row'
+                                }}>
+                                <Text
+                                    style={{
+                                        color: Colors.white_color,
+                                        fontFamily: Font.Regular,
+                                        fontSize: Font.large,
+                                        paddingHorizontal: classStateData.scfhs_image ? '12%' : 0,
+                                    }} numberOfLines={1}>
+                                    {'Upload'}
+                                </Text>
+                                {
+                                    classStateData.scfhs_image &&
+                                    <View style={{
+                                        width: (windowWidth / 10),
+                                        height: (windowWidth / 10),
+                                        borderRadius: (windowWidth / 10),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.Green
+
+                                    }}>
+                                        <Image source={Icons.Tick} style={{
+                                            width: (windowWidth / 20),
+                                            height: (windowWidth / 20),
+                                            tintColor: Colors.white_color
+                                        }} />
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                }
+
+
+                {
+                    (classStateData.userType != null && classStateData.userType.value == 'lab') &&
+                    <>
+                        <AuthInputBoxSec
+                            mainContainer={{
+                                width: '100%',
+                                marginTop: (windowWidth / 20)
+                            }}
+                            lableText={'MOH License Number'}
+                            maxLength={15}
+                            onChangeText={(text) =>
+                                setState({ hosp_moh_lic_no: text })
+                            }
+                            value={classStateData.hosp_moh_lic_no}
+                            keyboardType="number-pad"
+                            autoCapitalize="none"
+                            returnKeyLabel="done"
+                            returnKeyType="done"
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss()
+                            }}
+                        />
+
+                        <View
+                            style={{
+                                width: '100%',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: (windowWidth / 50)
+                            }}>
+                            <Text
+                                numberOfLines={1}
+                                style={{
+                                    color: Colors.DarkGrey,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.medium,
+                                    width: '60%'
+                                }}>{classStateData.id_image ? classStateData.id_image.name : 'Upload MOH License'}</Text>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setMediaOptions(true)
+                                    setState({ imageType: 'id_image' });
+                                }}
+                                activeOpacity={0.7}
+                                style={{
+                                    width: (windowWidth / 3.3),
+                                    height: (windowWidth / 10),
+                                    borderRadius: (windowWidth / 10),
+                                    justifyContent: classStateData.id_image ? 'space-between' : 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: Colors.buttoncolorblue,
+                                    flexDirection: 'row'
+                                }}>
+                                <Text
+                                    style={{
+                                        color: Colors.white_color,
+                                        fontFamily: Font.Regular,
+                                        fontSize: Font.large,
+                                        paddingHorizontal: classStateData.id_image ? '12%' : 0,
+                                    }} numberOfLines={1}>
+                                    {'Upload'}
+                                </Text>
+                                {
+                                    classStateData.id_image &&
+                                    <View style={{
+                                        width: (windowWidth / 10),
+                                        height: (windowWidth / 10),
+                                        borderRadius: (windowWidth / 10),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.Green
+
+                                    }}>
+                                        <Image source={Icons.Tick} style={{
+                                            width: (windowWidth / 20),
+                                            height: (windowWidth / 20),
+                                            tintColor: Colors.white_color
+                                        }} />
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                        </View>
+
+                        <AuthInputBoxSec
+                            mainContainer={{
+                                width: '100%',
+                                marginTop: (windowWidth / 20)
+                            }}
+                            lableText={'Registration Number'}
+                            maxLength={15}
+                            onChangeText={(text) =>
+                                setState({ hosp_reg_no: text })
+                            }
+                            value={classStateData.hosp_reg_no}
+                            keyboardType="number-pad"
+                            autoCapitalize="none"
+                            returnKeyLabel="done"
+                            returnKeyType="done"
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss()
+                            }}
+                        />
+
+                        <View
+                            style={{
+                                width: '100%',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: (windowWidth / 50)
+                            }}>
+                            <Text
+                                numberOfLines={1}
+                                style={{
+                                    color: Colors.DarkGrey,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.medium,
+                                    width: '60%'
+                                }}>{classStateData.certificate ? classStateData.certificate.name : 'Upload certificate copy'}</Text>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setMediaOptions(true)
+                                    setState({ imageType: 'certificate' });
+                                }}
+                                activeOpacity={0.7}
+                                style={{
+                                    width: (windowWidth / 3.3),
+                                    height: (windowWidth / 10),
+                                    borderRadius: (windowWidth / 10),
+                                    justifyContent: classStateData.certificate ? 'space-between' : 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: Colors.buttoncolorblue,
+                                    flexDirection: 'row'
+                                }}>
+                                <Text
+                                    style={{
+                                        color: Colors.white_color,
+                                        fontFamily: Font.Regular,
+                                        fontSize: Font.large,
+                                        paddingHorizontal: classStateData.certificate ? '12%' : 0,
+                                    }} numberOfLines={1}>
+                                    {'Upload'}
+                                </Text>
+                                {
+                                    classStateData.certificate &&
+                                    <View style={{
+                                        width: (windowWidth / 10),
+                                        height: (windowWidth / 10),
+                                        borderRadius: (windowWidth / 10),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.Green
+
+                                    }}>
+                                        <Image source={Icons.Tick} style={{
+                                            width: (windowWidth / 20),
+                                            height: (windowWidth / 20),
+                                            tintColor: Colors.white_color
+                                        }} />
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                }
+
 
             </>
         )
     }
 
-    const setState = (payload, resolver) => {
+    const FinalStep = () => {
+        return (
+            <>
+                <Text style={styles.finalTextOne}>{'THANK YOU!\n'}</Text>
+                <Text style={styles.finalTextTwo}>{'You have successfully finished registering a new account.\n\n\n\n\n\n'}</Text>
+                <Text style={styles.finalTextThree}>{`Your request is now under review and you’ll receive an email confirmation once it’s approved`}</Text>
+            </>
+        )
+    }
+
+    const resetState = (payload) => {
+        setClassStateData({
+            name: '',
+            lName: '',
+            email: '',
+            number: '',
+            id: '',
+            id_number: '',
+            speciality: null,
+            qualification: '',
+            experience: '',
+            scfhs_number: '',
+            selectedCountry: null,
+            password: '',
+            confirm: '',
+            mobile: '',
+            isLoadingInButton: false,
+            imageType: '',
+            dob: '',
+            gender: '',
+            hosp_moh_lic_no: '',
+            hosp_reg_no: '',
+            profileImage: null,
+            id_image: null,
+            certificate: null,
+            scfhs_image: null,
+        })
+    }
+
+    const setState = (payload) => {
         setClassStateData(prev => ({ ...prev, ...payload }))
-        if (resolver) {
-            resolver()
-        }
     }
 
     const onSelction = async (item, index) => {
@@ -939,899 +1184,237 @@ export default SignupForm = ({ navigation }) => {
         setState({ dob: date1 })
     }
 
-    const renderIDNumber = () => {
-        return (
-            <>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 8) / 100,
-                    }}>
-                    <Text
-                        style={{
-                            textAlign: Configurations.textRotate,
-                            fontSize: Font.buttontextsize,
-                            fontFamily: Font.Bold,
-                            color: Colors.textblack,
-                        }}>
-                        Identity Number
-                    </Text>
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        // icon={layer9_icon}
-                        lableText={'Provide ID Number'}
-                        inputRef={(ref) => {
-                            id_numberInput = ref;
-                        }}
-                        maxLength={15}
-                        onChangeText={(text) =>
-                            setState({ id_number: text })
-                        }
-                        value={classStateData.id_number}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="next"
-                        returnKeyType="next"
-                        onSubmitEditing={() => {
-                            qualificationInput.focus()
-                        }}
-                    />
+    const checkIsValid = (val) => {
 
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity activeOpacity={0.9}
-                        style={{
-                            width: '45%', flexDirection: 'row',
-                            paddingLeft: mobileW * 1 / 100
-                        }}
-                        onPress={() => {
-                            setState({
-                                imageType: 'id_image'
-                            });
-
-                        }}
-                    >
-                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-                            <Text
-                                style={{
-                                    color: Colors.textblue,
-                                    fontFamily: Font.Regular,
-                                    fontSize: Font.Remember,
-                                }}>
-                                Upload Photocopy of ID
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-
-
-
-                    <View style={{ width: '55%', alignSelf: 'center', }}>
-                        <Text
-                            numberOfLines={1}
-                            style={{
-                                color: Colors.textgray,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.Forgot,
-                                alignSelf: 'flex-end',
-                                textAlign: Configurations.textalign,
-                            }}>
-                            {(classStateData.id_image != undefined) ? classStateData.id_image.filename.trim() : 'No Attachment'}
-                        </Text>
-                    </View>
-                </View>
-            </>
-        )
-    }
-
-    const renderSpeExpCer = () => {
-        return (
-            <>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 8) / 100,
-                    }}>
-                    <Text
-                        style={{
-                            textAlign: Configurations.textRotate,
-                            fontSize: Font.buttontextsize,
-                            fontFamily: Font.Bold,
-                            color: Colors.textblack,
-                        }}>
-                        Speciality, Experience & Certificates
-                    </Text>
-                </View>
-                <View
-                    style={{
-                        width: '100%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                    }}>
-                    <DropDownboxSec
-                        lableText={(classStateData.speciality == '') ? 'Speciality' : classStateData.speciality}
-                        boxPressAction={() => {
-                            specialitySheetRef.current.open()
-                        }}
-                    />
-
-                    <RBSheet
-                        ref={specialitySheetRef}
-                        {...BottomSheetProps}
-                        customStyles={BottomSheetStyles} >
-                        <View style={BottomSheetViewStyles.MainView}>
-                            <View style={BottomSheetViewStyles.ButtonContainer}>
-                                <TouchableOpacity style={BottomSheetViewStyles.Button} onPress={() => {
-                                    specialitySheetRef.current.close()
-                                }}>
-                                    <SvgXml xml={_Cross}
-                                        width={windowHeight / 26}
-                                        height={windowHeight / 26}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={BottomSheetViewStyles.Body}>
-
-                                <View style={BottomSheetViewStyles.TitleBar}>
-                                    <Text style={BottomSheetViewStyles.Title}>Speciality</Text>
-                                </View>
-
-                                <KeyboardAwareScrollView contentContainerStyle={BottomSheetViewStyles.ScrollContainer}>
-                                    {
-                                        classStateData.specialityArr.map((data, index) => {
-                                            return (
-                                                <TouchableOpacity style={{
-                                                    width: '100%',
-                                                }} onPress={() => {
-                                                    setState({
-                                                        speciality: data.name
-                                                    })
-                                                    specialitySheetRef.current.close()
-                                                }}>
-                                                    <View style={{
-                                                        width: (Platform.OS == "ios") ? '95%' : '94.5%',
-                                                        marginLeft: 15,
-                                                        borderBottomColor: Colors.gray6,
-                                                        borderBottomWidth: (index == (UserTypes.length - 1)) ? 0 : 1,
-                                                    }}>
-                                                        <Text style={{
-                                                            color: '#041A27',
-                                                            fontSize: 15,
-                                                            fontFamily: Font.headingfontfamily,
-                                                            // marginLeft: 15,
-                                                            paddingTop: 15,
-                                                            paddingBottom: 15,
-                                                            width: '94.5%',
-
-                                                            // backgroundColor: 'red'
-                                                        }}>{data.name}</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            )
-                                        })
-                                    }
-                                </KeyboardAwareScrollView>
-                            </View>
-                        </View>
-
-                    </RBSheet>
-
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        // icon={layer9_icon}
-                        lableText={'Highest Qualification'}
-                        inputRef={(ref) => {
-                            qualificationInput = ref;
-                        }}
-                        onChangeText={(text) =>
-                            setState({ qualification: text })
-                        }
-                        value={classStateData.qualification}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="next"
-                        returnKeyType="next"
-                        onSubmitEditing={() => {
-                            experienceInput.focus()
-                        }}
-                    />
-
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity activeOpacity={0.9}
-                        style={{
-                            width: '45%', flexDirection: 'row',
-                            paddingLeft: mobileW * 1 / 100
-                        }}
-                        onPress={() => {
-                            setState({
-                                imageType: 'certificate'
-                            });
-
-                        }}
-                    >
-                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-                            <Text
-                                style={{
-                                    color: Colors.textblue,
-                                    fontFamily: Font.Regular,
-                                    fontSize: Font.Remember,
-                                }}>
-                                Upload Certificate
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <View style={{ width: '55%', alignSelf: 'center', }}>
-                        <Text
-                            style={{
-                                color: Colors.textgray,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.Forgot,
-                                alignSelf: 'flex-end',
-                                textAlign: Configurations.textalign,
-                            }} numberOfLines={1}>
-                            {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
-                        </Text>
-                    </View>
-                </View>
-            </>
-        )
-    }
-
-    const renderExpRegid = () => {
-        return (
-            <>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        // icon={layer9_icon}
-                        lableText={'Years of Experience'}
-                        inputRef={(ref) => {
-                            experienceInput = ref;
-                        }}
-                        onChangeText={(text) =>
-                            setState({ experience: text })
-                        }
-                        value={classStateData.experience}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="next"
-                        returnKeyType="next"
-                        onSubmitEditing={() => {
-                            scfhs_numberInput.focus()
-                        }}
-                    />
-
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        lableText={'Health License ID'}
-                        inputRef={(ref) => {
-                            scfhs_numberInput = ref;
-                        }}
-                        onChangeText={(text) =>
-                            setState({ scfhs_number: text })
-                        }
-                        maxLength={11}
-                        value={classStateData.scfhs_number}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="done"
-                        returnKeyType="done"
-                        onSubmitEditing={() => {
-                        }}
-                    />
-
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity activeOpacity={0.9}
-                        style={{
-                            width: '55%', flexDirection: 'row',
-                            paddingLeft: mobileW * 1 / 100
-                        }}
-                        onPress={() => {
-                            setState({
-                                imageType: 'scfhs_image'
-                            });
-
-                        }}
-                    >
-                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-                            <Text
-                                style={{
-                                    color: Colors.textblue,
-                                    fontFamily: Font.Regular,
-                                    fontSize: Font.Remember,
-                                }}>
-                                Upload Photocopy of Health License
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <View style={{ width: '45%', alignSelf: 'center', }}>
-                        <Text
-                            onPress={() => {
-
-                            }}
-                            style={{
-                                color: Colors.textgray,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.Forgot,
-                                alignSelf: 'flex-end',
-                                textAlign: Configurations.textalign,
-                            }} numberOfLines={1}>
-                            {(classStateData.scfhs_image != undefined) ? classStateData.scfhs_image.filename.trim() : 'No Attachment'}
-                        </Text>
-                    </View>
-                </View>
-            </>
-        )
-    }
-
-    const renderExpCer = () => {
-        return (
-            <>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 8) / 100,
-                    }}>
-                    <Text
-                        style={{
-                            textAlign: Configurations.textRotate,
-                            fontSize: Font.buttontextsize,
-                            fontFamily: Font.Bold,
-                            color: Colors.textblack,
-                        }}>
-                        Experience & Certificates
-                    </Text>
-                </View>
-
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        lableText={'Highest Qualification'}
-                        inputRef={(ref) => {
-                            qualificationInput = ref;
-                        }}
-                        onChangeText={(text) =>
-                            setState({ qualification: text })
-                        }
-                        value={classStateData.qualification}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="next"
-                        returnKeyType="next"
-                        onSubmitEditing={() => {
-                            experienceInput.focus()
-                        }}
-                    />
-
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity activeOpacity={0.9}
-                        style={{
-                            width: '45%', flexDirection: 'row',
-                            paddingLeft: mobileW * 1 / 100
-                        }}
-                        onPress={() => {
-                            setState({
-                                imageType: 'certificate',
-                            });
-
-                        }}
-                    >
-                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-                            <Text
-                                style={{
-                                    color: Colors.textblue,
-                                    fontFamily: Font.Regular,
-                                    fontSize: Font.Remember,
-                                }}>
-                                Upload Certificate
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-
-
-
-                    <View style={{ width: '55%', alignSelf: 'center', }}>
-                        <Text
-                            onPress={() => {
-
-                            }}
-                            style={{
-                                color: Colors.textgray,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.Forgot,
-                                alignSelf: 'flex-end',
-                                textAlign: Configurations.textalign,
-                            }} numberOfLines={1}>
-                            {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
-                        </Text>
-                    </View>
-                </View>
-            </>
-        )
-    }
-
-    const renderExp = () => {
-        return (
-            <>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        // icon={layer9_icon}
-                        lableText={'Years of Experience'}
-                        inputRef={(ref) => {
-                            experienceInput = ref;
-                        }}
-                        onChangeText={(text) =>
-                            setState({ experience: text })
-                        }
-                        value={classStateData.experience}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="next"
-                        returnKeyType="next"
-                        onSubmitEditing={() => {
-                            scfhs_numberInput.focus()
-                        }}
-                    />
-
-                </View>
-
-            </>
-        )
-    }
-
-    const renderHealthIDNumber = () => {
-        return (
-            <>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 8) / 100,
-                    }}>
-                    <Text
-                        style={{
-                            textAlign: Configurations.textRotate,
-                            fontSize: Font.buttontextsize,
-                            fontFamily: Font.Bold,
-                            color: Colors.textblack,
-                        }}>
-                        Health Registration ID
-                    </Text>
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        // icon={layer9_icon}
-                        lableText={'Health Registration ID'}
-                        inputRef={(ref) => {
-                            hosp_moh_lic_noInput = ref;
-                        }}
-                        maxLength={15}
-                        onChangeText={(text) =>
-                            setState({ hosp_moh_lic_no: text })
-                        }
-                        value={classStateData.hosp_moh_lic_no}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="next"
-                        returnKeyType="next"
-                        onSubmitEditing={() => {
-                        }}
-                    />
-
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity activeOpacity={0.9}
-                        style={{
-                            width: '45%', flexDirection: 'row',
-                            paddingLeft: mobileW * 1 / 100
-                        }}
-                        onPress={() => {
-                            setState({
-                                imageType: 'id_image',
-                            });
-
-                        }}
-                    >
-                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-                            <Text
-                                style={{
-                                    color: Colors.textblue,
-                                    fontFamily: Font.Regular,
-                                    // paddingLeft:mobileW*2/100,
-                                    // textAlign: Configurations.textalign,
-                                    fontSize: Font.Remember,
-                                }}>
-                                Upload Photocopy of ID
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <View style={{ width: '55%', alignSelf: 'center', }}>
-                        <Text
-                            onPress={() => {
-
-                            }}
-                            numberOfLines={1}
-                            style={{
-                                color: Colors.textgray,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.Forgot,
-                                alignSelf: 'flex-end',
-                                textAlign: Configurations.textalign,
-                            }}>
-                            {(classStateData.id_image != undefined) ? classStateData.id_image.filename.trim() : 'No Attachment'}
-                        </Text>
-                    </View>
-                </View>
-            </>
-        )
-    }
-
-    const renderCRC = () => {
-        return (
-            <>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 8) / 100,
-                    }}>
-                    <Text
-                        style={{
-                            textAlign: Configurations.textRotate,
-                            fontSize: Font.buttontextsize,
-                            fontFamily: Font.Bold,
-                            color: Colors.textblack,
-                        }}>
-                        Company Registration Certificate
-                    </Text>
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <AuthInputBoxSec
-                        mainContainer={{
-                            width: '100%',
-                        }}
-                        // icon={layer9_icon}
-                        lableText={'Registration Number'}
-                        inputRef={(ref) => {
-                            hosp_reg_noInput = ref;
-                        }}
-                        maxLength={15}
-                        onChangeText={(text) =>
-                            setState({ hosp_reg_no: text })
-                        }
-                        value={classStateData.hosp_reg_no}
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        returnKeyLabel="next"
-                        returnKeyType="next"
-                        onSubmitEditing={() => {
-                            // qualificationInput.focus()
-                        }}
-                    />
-
-                </View>
-                <View
-                    style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: (mobileW * 2) / 100,
-                        flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity activeOpacity={0.9}
-                        style={{
-                            width: '45%', flexDirection: 'row',
-                            paddingLeft: mobileW * 1 / 100
-                        }}
-                        onPress={() => {
-                            setState({
-                                imageType: 'certificate'
-                            });
-                        }}
-                    >
-                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-
-                            <Text
-                                style={{
-                                    color: Colors.textblue,
-                                    fontFamily: Font.Regular,
-                                    // paddingLeft:mobileW*2/100,
-                                    // textAlign: Configurations.textalign,
-                                    fontSize: Font.Remember,
-                                }}>
-                                Upload Certificate
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <View style={{ width: '55%', alignSelf: 'center', }}>
-                        <Text
-                            onPress={() => {
-
-                            }}
-                            numberOfLines={1}
-                            style={{
-                                color: Colors.textgray,
-                                fontFamily: Font.Regular,
-                                fontSize: Font.Forgot,
-                                alignSelf: 'flex-end',
-                                textAlign: Configurations.textalign,
-                            }}>
-                            {(classStateData.certificate != undefined) ? classStateData.certificate.filename.trim() : 'No Attachment'}
-                        </Text>
-                    </View>
-                </View>
-            </>
-        )
-    }
-
-    const checkIsValid = () => {
-
+        let conditionsFailed = false;
         var digits = classStateData.id.toString().split('');
         var realDigits = digits.map(Number)
 
-        if (classStateData.userType == -1) {
-            MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
-            return false;
-        }
-        if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
-            MessageFunctions.showError(MessageTexts.emptyName[Configurations.language])
-            return false;
-        }
-        let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if (classStateData.email.trim() <= 0) {
-            MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
-            return false;
-        }
-        if (regemail.test(classStateData.email.trim()) !== true) {
-            MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
-            return false
-        }
-        if (classStateData.selectedCountry.value.length <= 0 || classStateData.selectedCountry.value.trim().length <= 0) {
-            MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
-            return false;
-        }
-        if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
-            MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
-            return false;
-        }
-        if (classStateData.selectedCountry.title == 'UAE') {
-            if (realDigits[0] == 0 || realDigits[0] == 1 || realDigits[0] == 2 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 8 || realDigits[0] == 9) {
-                MessageFunctions.showError(MessageTexts.validIDnumberUAE[Configurations.language])
-                return false
-            }
-        } else {
-            if (realDigits[0] == 0 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 7 || realDigits[0] == 8 || realDigits[0] == 9) {
-                MessageFunctions.showError(MessageTexts.validIDnumber[Configurations.language])
-                return false
-            }
-        }
-        if (UserTypes[classStateData.userType].value != "lab") {
-            if (classStateData.dob.length <= 0 || classStateData.dob.trim().length <= 0) {
-                MessageFunctions.showError("Please choose your date of birth")
+        if (val == 50) {
+            if (classStateData.userType == null) {
+                MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
                 return false;
             }
-            if (classStateData.gender.length <= 0 || classStateData.gender.trim().length <= 0) {
-                MessageFunctions.showError("Please choose your gender")
+            if ((classStateData.userType != null
+                && (classStateData.userType.value == 'doctor'
+                    ||
+                    classStateData.userType.value == 'nurse'
+                    ||
+                    classStateData.userType.value == 'physiotherapy'
+                )) && classStateData.speciality == null) {
+                MessageFunctions.showError('Please select your speciality')
                 return false;
-            }
-        }
-        if (classStateData.password.length <= 0) {
-            MessageFunctions.showError(MessageTexts.validataionnewpass[Configurations.language])
-            return false;
-        }
-        if (classStateData.password.length <= 7) {
-            MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
-            return false;
-        }
-        if (classStateData.confirm.length <= 0) {
-            MessageFunctions.showError(MessageTexts.emptyconfirmPassword[Configurations.language])
-            return false;
-        }
-        if (classStateData.confirm.length <= 7) {
-            MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
-            return false;
-        }
-        if (classStateData.confirm != classStateData.password) {
-            MessageFunctions.showError(MessageTexts.Password_notmatch[Configurations.language])
-            return false;
-        }
-        if (UserTypes[classStateData.userType].value != "lab") {
-            if ((classStateData.id_number.length < 10 || classStateData.id_number.trim().length < 10)) {
-                MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
-                return false;
-            }
+            } else {
+                setProgress(val)
 
-            if ((classStateData.id_number.length > 15 || classStateData.id_number.trim().length > 15)) {
-                MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
-                return false;
             }
-        } else {
-            if (classStateData.hosp_moh_lic_no.length <= 0 || classStateData.hosp_moh_lic_no.trim().length <= 0) {
-                MessageFunctions.showError("Please enter health registration ID")
-                return false;
+        }
+        if (val == 75) {
+            if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
+                MessageFunctions.showError(MessageTexts.emptyFirstName[Configurations.language])
+                conditionsFailed = true;
+                return
             }
-            if ((classStateData.hosp_moh_lic_no.length < 10 || classStateData.hosp_moh_lic_no.trim().length < 10)) {
-                MessageFunctions.showError("Please enter health registration ID between 10 to 15 characters or digits")
-                return false;
+            if (classStateData.lName.length <= 0 || classStateData.lName.trim().length <= 0) {
+                MessageFunctions.showError(MessageTexts.emptyLastName[Configurations.language])
+                conditionsFailed = true;
+                return
             }
+            let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (classStateData.email.trim() <= 0) {
+                MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (regemail.test(classStateData.email.trim()) !== true) {
+                MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (classStateData.password.length <= 0) {
+                MessageFunctions.showError(MessageTexts.validataionnewpass[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (classStateData.password.length <= 7) {
+                MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (classStateData.confirm.length <= 0) {
+                MessageFunctions.showError(MessageTexts.emptyconfirmPassword[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (classStateData.confirm.length <= 7) {
+                MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (classStateData.confirm != classStateData.password) {
+                MessageFunctions.showError(MessageTexts.Password_notmatch[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (conditionsFailed) {
+                return false;
+            } else {
+                setProgress(val)
+            }
+        }
 
-            if ((classStateData.hosp_moh_lic_no.length > 15 || classStateData.hosp_moh_lic_no.trim().length > 15)) {
-                MessageFunctions.showError("Please enter health registration ID between 10 to 15 characters or digits")
-                return false;
+        if (val == 100) {
+            console.log(classStateData.gender);
+            if (classStateData.selectedCountry == null) {
+                MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
+                conditionsFailed = true;
+                return
             }
-        }
-        if (classStateData.id_image.path == '') {
-            MessageFunctions.showError("Please upload ID image")
-            return false;
-        }
-        if (UserTypes[classStateData.userType].value != "lab") {
-            if (classStateData.userType == 0 || classStateData.userType == 3 || classStateData.userType == 4) {
-                if (classStateData.speciality.length <= 0 || classStateData.speciality.trim().length <= 0) {
-                    MessageFunctions.showError("Please select speciality")
-                    return false;
+            if (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0) {
+                MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
+                conditionsFailed = true;
+                return
+            }
+            if (classStateData.selectedCountry.title == 'UAE') {
+                if (realDigits[0] == 0 || realDigits[0] == 1 || realDigits[0] == 2 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 8 || realDigits[0] == 9) {
+                    MessageFunctions.showError(MessageTexts.validIDnumberUAE[Configurations.language])
+                    conditionsFailed = true;
+                    return
+                }
+            } else {
+                if (realDigits[0] == 0 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 7 || realDigits[0] == 8 || realDigits[0] == 9) {
+                    MessageFunctions.showError(MessageTexts.validIDnumber[Configurations.language])
+                    conditionsFailed = true;
+                    return
                 }
             }
-
-
-            if (classStateData.qualification.length <= 0 || classStateData.qualification.trim().length <= 0) {
-                MessageFunctions.showError("Please enter your qualification")
-                return false;
+            if (classStateData.userType.value != "lab") {
+                if (classStateData.dob.length <= 0 || classStateData.dob.trim().length <= 0) {
+                    MessageFunctions.showError("Please choose your date of birth")
+                    conditionsFailed = true;
+                    return
+                }
+                if (classStateData.gender.length <= 0 || classStateData.gender.trim().length <= 0) {
+                    MessageFunctions.showError("Please choose your gender")
+                    conditionsFailed = true;
+                    return
+                }
             }
-        } else {
-            if (classStateData.hosp_reg_no.length <= 0 || classStateData.hosp_reg_no.trim().length <= 0) {
-                MessageFunctions.showError("Please enter company registration certificate number")
-                return false;
-            }
-            if ((classStateData.hosp_reg_no.length < 8 || classStateData.hosp_reg_no.trim().length < 8)) {
-                MessageFunctions.showError("Please enter minimum 8 or 11 digits company registration certificate number")
-                return false;
+            if (classStateData.profileImage == null) {
+                MessageFunctions.showError("Please add a professional photo")
+                conditionsFailed = true;
+                return
             }
 
-            if (classStateData.hosp_reg_no.length > 11 || classStateData.hosp_reg_no.trim().length > 11) {
-                MessageFunctions.showError("Please enter minimum 8 or 11 digits company registration certificate number")
+            if (conditionsFailed) {
                 return false;
+            } else {
+                setProgress(val)
             }
         }
-        if (classStateData.certificate.path == '') {
-            MessageFunctions.showError("Please upload cerificate image")
-            return false;
-        }
-        if (UserTypes[classStateData.userType].value != "lab") {
-            if (classStateData.experience.length <= 0 || classStateData.experience.trim().length <= 0) {
-                MessageFunctions.showError("Please enter your years of experience")
-                return false;
+
+        if (val == 125) {
+            if (classStateData.userType.value == "lab") {
+                if (classStateData.hosp_moh_lic_no.length <= 0 || classStateData.hosp_moh_lic_no.trim().length <= 0) {
+                    MessageFunctions.showError("Please enter MOH license number")
+                    conditionsFailed = true;
+                    return
+                }
+                if ((classStateData.hosp_moh_lic_no.length < 10 || classStateData.hosp_moh_lic_no.trim().length < 10)) {
+                    MessageFunctions.showError("Please enter health registration ID between 10 to 15 digits")
+                    conditionsFailed = true;
+                    return
+                }
+                if ((classStateData.hosp_moh_lic_no.length > 15 || classStateData.hosp_moh_lic_no.trim().length > 15)) {
+                    MessageFunctions.showError("Please enter health registration ID between 10 to 15 digits")
+                    conditionsFailed = true;
+                    return
+                }
+
+                if (classStateData.id_image == null) {
+                    MessageFunctions.showError("Please upload MOH license")
+                    conditionsFailed = true;
+                    return
+                }
+
+                if (classStateData.hosp_reg_no.length <= 0 || classStateData.hosp_reg_no.trim().length <= 0) {
+                    MessageFunctions.showError("Please enter company registration certificate number")
+                    conditionsFailed = true;
+                    return
+                }
+                if ((classStateData.hosp_reg_no.length < 8 || classStateData.hosp_reg_no.trim().length < 8)) {
+                    MessageFunctions.showError("Please enter minimum 8 or 11 digits company registration certificate number")
+                    conditionsFailed = true;
+                    return
+                }
+
+                if (classStateData.hosp_reg_no.length > 11 || classStateData.hosp_reg_no.trim().length > 11) {
+                    MessageFunctions.showError("Please enter minimum 8 or 11 digits company registration certificate number")
+                    conditionsFailed = true;
+                    return
+                }
+
+                if (classStateData.certificate == null) {
+                    MessageFunctions.showError("Please upload company registration certificate")
+                    conditionsFailed = true;
+                    return
+                }
+
+            } else {
+                if (classStateData.qualification.length <= 0 || classStateData.qualification.trim().length <= 0) {
+                    MessageFunctions.showError("Please enter your qualification")
+                    conditionsFailed = true;
+                    return
+                }
+                if (classStateData.certificate == null) {
+                    MessageFunctions.showError("Please upload cerificate image")
+                    conditionsFailed = true;
+                    return
+                }
+                if (classStateData.experience.length <= 0 || classStateData.experience.trim().length <= 0) {
+                    MessageFunctions.showError("Please enter your years of experience")
+                    conditionsFailed = true;
+                    return
+                }
+                if ((classStateData.id_number.length < 10 || classStateData.id_number.trim().length < 10)) {
+                    MessageFunctions.showError("Please enter ID Number between 10 to 15 characters or digits")
+                    conditionsFailed = true;
+                    return
+                }
+
+                if ((classStateData.id_number.length > 15 || classStateData.id_number.trim().length > 15)) {
+                    MessageFunctions.showError("Please enter ID Number between 10 to 15 digits")
+                    conditionsFailed = true;
+                    return
+                }
+                if (classStateData.id_image == null) {
+                    MessageFunctions.showError("Please upload ID image")
+                    conditionsFailed = true;
+                    return
+                }
+                if ((classStateData.userType.value != 'babysitter' && classStateData.userType.value != 'caregiver' && classStateData.userType.value != 'lab')) {
+                    if ((classStateData.scfhs_number.length < 8 || classStateData.scfhs_number.trim().length < 8)) {
+                        MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
+                        conditionsFailed = true;
+                        return
+                    }
+
+                    if (classStateData.scfhs_number.length > 11 || classStateData.scfhs_number.trim().length > 11) {
+                        MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
+                        conditionsFailed = true;
+                        return
+                    }
+                    if (classStateData.scfhs_image == null) {
+                        MessageFunctions.showError("Please upload Health License Certificate")
+                        conditionsFailed = true;
+                        return
+                    }
+                }
             }
-
-            if (classStateData.userType == 0 || classStateData.userType == 3 || classStateData.userType == 4) {
-                if ((classStateData.scfhs_number.length < 8 || classStateData.scfhs_number.trim().length < 8)) {
-                    MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
-                    return false;
-                }
-
-                if (classStateData.scfhs_number.length > 11 || classStateData.scfhs_number.trim().length > 11) {
-                    MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
-                    return false;
-                }
-                if (classStateData.scfhs_image.path == '') {
-                    MessageFunctions.showError("Please upload Health License File")
-                    return false;
-                }
+            if (conditionsFailed) {
+                return false;
+            } else {
+                onSignup()
             }
         }
 
@@ -1851,12 +1434,11 @@ export default SignupForm = ({ navigation }) => {
             const localFCM = await FBPushNotifications.getFcmToken()
 
             let url = Configurations.baseURL + "api-service-provider-registration";
-            console.log("url", url)
             var phone_number_send = classStateData.selectedCountry.value + classStateData.mobile
             var data = new FormData();
 
-            data.append('service_type', UserTypes[classStateData.userType].value)
-            data.append('name', classStateData.name)
+            data.append('service_type', classStateData.userType.value)
+            data.append('name', `${classStateData.name} ${classStateData.lName}`)
             data.append('email', classStateData.email.trim())
             data.append('mobile_number', phone_number_send)
             data.append('work_area', classStateData.selectedCountry.name)
@@ -1867,7 +1449,7 @@ export default SignupForm = ({ navigation }) => {
             data.append('device_type', Configurations.device_type)
             data.append('device_lang', 'ENG')
             data.append('fcm_token', localFCM)
-
+            data.append('profileImg', classStateData.profileImage)
             data.append('id_number', classStateData.id_number)
             data.append('speciality', classStateData.speciality)
             data.append('qualification', classStateData.qualification)
@@ -1876,44 +1458,32 @@ export default SignupForm = ({ navigation }) => {
             data.append('hosp_moh_lic_no', classStateData.hosp_moh_lic_no)
             data.append('hosp_reg_no', classStateData.hosp_reg_no)
 
-            if (classStateData.id_image.path != '') {
+            if (classStateData.id_image != null) {
 
-                data.append('id_image', {
-                    uri: classStateData.id_image.path,
-                    type: classStateData.id_image.mime, //'image/jpg',
-                    name: (Platform.OS == 'ios') ? classStateData.id_image.filename : 'image',
-                })
+                data.append('id_image', classStateData.id_image)
             }
-            if (classStateData.certificate.path != '') {
+            if (classStateData.certificate != null) {
 
-                data.append('certificate', {
-                    uri: classStateData.certificate.path,
-                    type: classStateData.certificate.mime, //'image/jpg',
-                    name: (Platform.OS == 'ios') ? classStateData.certificate.filename : 'image',
-                })
+                data.append('certificate', classStateData.certificate)
             }
-            if (classStateData.userType == 0 || classStateData.userType == 3 || classStateData.userType == 4) {
-                if (classStateData.scfhs_image.path != '') {
+            if (classStateData.userType.value == 'doctor' || classStateData.userType.value == 'nurse' || classStateData.userType.value == 'physiotherapy') {
+                if (classStateData.scfhs_image != null) {
 
-                    data.append('scfhs_image', {
-                        uri: classStateData.scfhs_image.path,
-                        type: classStateData.scfhs_image.mime, //'image/jpg',
-                        name: (Platform.OS == 'ios') ? classStateData.scfhs_image.filename : 'image',
-                    })
+                    data.append('scfhs_image', classStateData.scfhs_image)
                 }
             }
             else {
                 data.append('scfhs_image', "")
             }
 
+            // console.log({ data: data._parts });
             API.post(url, data, 1).then((obj) => {
 
-                console.log('obj mess', obj.message)
+                console.log('Signup Response', obj.message)
                 if (obj.status == true) {
 
                     setTimeout(() => {
-                        navigation.goBack()
-                        MessageFunctions.showSuccess(obj.message)
+                        setIsRegistered(true)
                     }, 500);
 
                 } else {
@@ -1924,17 +1494,18 @@ export default SignupForm = ({ navigation }) => {
                     return false;
                 }
             }).catch((error) => {
-                console.log("-------- error ------- ", error)
+                console.log("Signup-error ------- ", error)
             }).finally(() => {
                 setState({
                     isLoadingInButton: false
                 })
+                setTimeout(() => {
+                    navigation.pop()
+                }, 5000);
             })
 
         } else return isValid
     }
-
-
 
     return (
         <View style={{
@@ -1944,9 +1515,15 @@ export default SignupForm = ({ navigation }) => {
 
             <RegistrationSteps
                 onNext={(val) => {
-                    setProgress(val)
+                    if (val == 25) {
+                        setProgress(val)
+                    } else {
+                        checkIsValid(val)
+                    }
                 }}
                 progress={progress}
+                loading={classStateData.isLoadingInButton}
+                completed={isRegistered}
             />
 
             <View style={{
@@ -1954,11 +1531,10 @@ export default SignupForm = ({ navigation }) => {
             }}>
                 <KeyboardAwareScrollView
                     // keyboardOpeningTime={200}
-                    extraScrollHeight={50}
                     enableOnAndroid={true}
                     keyboardShouldPersistTaps='handled'
                     contentContainerStyle={{
-                        justifyContent: 'center',
+                        height: '100%'
 
                     }}
                     showsVerticalScrollIndicator={false}>
@@ -1987,67 +1563,74 @@ export default SignupForm = ({ navigation }) => {
                                 source={Icons.LogoWithText} />
                         </View>
 
-                        <TouchableHighlight
-                            underlayColor={Colors.Highlight}
-                            onPress={() => {
-                                if (progress != 0) {
-                                    setProgress(pre => pre - 25)
-                                } else {
-                                    navigation.pop()
-                                }
-                            }}
-                            style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
-                        >
-                            <SvgXml xml={
-                                Configurations.textalign == "right"
-                                    ? rightArrow : leftArrow
-                            } height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
+                        {
+                            !isRegistered &&
+                            <TouchableHighlight
+                                underlayColor={Colors.Highlight}
+                                onPress={() => {
+                                    if (progress != 0) {
+                                        setProgress(pre => pre - 25)
+                                    } else {
+                                        navigation.pop()
+                                    }
+                                }}
+                                style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
+                            >
+                                <SvgXml xml={
+                                    Configurations.textalign == "right"
+                                        ? rightArrow : leftArrow
+                                } height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
 
-                        </TouchableHighlight>
+                            </TouchableHighlight>
+                        }
                     </View>
+
 
                     <View style={{
                         width: '90%',
                         alignSelf: 'center'
                     }}>
                         {
-                            progress == 0 ?
-                                <View>
-                                    <Text
-                                        style={{
-                                            textAlign: Configurations.textRotate,
-                                            fontSize: Font.xxxlarge,
-                                            fontFamily: Font.Regular,
-                                            color: Colors.Black,
-                                        }}>
-                                        {LanguageConfiguration.Signuptext1[Configurations.language]}
-                                    </Text>
-                                </View>
-                                :
-                                <View>
-                                    {
-                                        (progress == 25 || progress == 50) &&
+                            !isRegistered &&
+                            (
+                                progress == 0 ?
+                                    <View>
                                         <Text
                                             style={{
-                                                fontSize: Font.headingblack,
-                                                fontFamily: Font.blackheadingfontfamily,
                                                 textAlign: Configurations.textRotate,
+                                                fontSize: Font.xxxlarge,
+                                                fontFamily: Font.Regular,
                                                 color: Colors.Black,
                                             }}>
-                                            {LanguageConfiguration.Signup[Configurations.language]}
+                                            {LanguageConfiguration.Signuptext1[Configurations.language]}
                                         </Text>
-                                    }
-                                    <Text
-                                        style={{
-                                            textAlign: Configurations.textRotate,
-                                            fontSize: progress == 100 ? Font.xxlarge : Font.large,
-                                            fontFamily: Font.Regular,
-                                            color: Colors.Black,
-                                            marginTop: (windowWidth / 60),
-                                        }}>
-                                        {progress == 75 ? LanguageConfiguration.serviceLocation[Configurations.language] : progress == 100 ? LanguageConfiguration.FinishSignup[Configurations.language] : LanguageConfiguration.Signuptext5[Configurations.language]}
-                                    </Text>
-                                </View>
+                                    </View>
+                                    :
+                                    <View>
+                                        {
+                                            (progress == 25 || progress == 50) &&
+                                            <Text
+                                                style={{
+                                                    fontSize: Font.headingblack,
+                                                    fontFamily: Font.blackheadingfontfamily,
+                                                    textAlign: Configurations.textRotate,
+                                                    color: Colors.Black,
+                                                }}>
+                                                {LanguageConfiguration.Signup[Configurations.language]}
+                                            </Text>
+                                        }
+                                        <Text
+                                            style={{
+                                                textAlign: Configurations.textRotate,
+                                                fontSize: progress == 100 ? Font.xxlarge : Font.large,
+                                                fontFamily: Font.Regular,
+                                                color: Colors.Black,
+                                                marginTop: (windowWidth / 60),
+                                            }}>
+                                            {progress == 75 ? LanguageConfiguration.serviceLocation[Configurations.language] : progress == 100 ? LanguageConfiguration.FinishSignup[Configurations.language] : LanguageConfiguration.Signuptext5[Configurations.language]}
+                                        </Text>
+                                    </View>
+                            )
                         }
 
 
@@ -2082,13 +1665,22 @@ export default SignupForm = ({ navigation }) => {
                                                 {ThirdStep()}
                                             </View>
                                             :
-                                            <View style={{ marginTop: 0 }}>
-                                                {FourthStep()}
-                                            </View>
+                                            (progress == 100 && !isRegistered) ?
+                                                <View style={{ marginTop: 0 }}>
+                                                    {FourthStep()}
+                                                </View>
+                                                :
+                                                (isRegistered) ?
+                                                    <View style={{ marginTop: 0 }}>
+                                                        {FinalStep()}
+                                                    </View>
+                                                    :
+                                                    null
                         }
 
 
                     </View>
+
 
 
                 </KeyboardAwareScrollView>

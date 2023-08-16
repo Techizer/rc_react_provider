@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Animated, {
     Easing,
     useSharedValue,
@@ -7,8 +7,21 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+    BallIndicator,
+    BarIndicator,
+    DotIndicator,
+    MaterialIndicator,
+    PacmanIndicator,
+    PulseIndicator,
+    SkypeIndicator,
+    UIActivityIndicator,
+    WaveIndicator,
+} from 'react-native-indicators';
+
 import { Circle, Svg } from 'react-native-svg';
 import { Colors, Font, windowWidth } from '../Helpers/Utils';
+import { Icons } from '../Icons/IReferences';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -16,7 +29,9 @@ const RegistrationSteps = ({
     progress = 0,
     radius = windowWidth / 7,
     strokeWidth = 6,
-    onNext = () => { }
+    onNext = () => { },
+    loading,
+    completed
 }) => {
 
 
@@ -31,7 +46,7 @@ const RegistrationSteps = ({
             position: 'absolute',
             bottom: 0,
             alignSelf: 'center',
-            zIndex:9999
+            zIndex: 9999
         },
     });
 
@@ -54,6 +69,7 @@ const RegistrationSteps = ({
     return (
         <View style={styles.container}>
             <TouchableOpacity
+                disabled={completed}
                 activeOpacity={0.7}
                 onPress={() => {
                     onNext(progress + 25)
@@ -62,20 +78,35 @@ const RegistrationSteps = ({
                     height: windowWidth / 4.2,
                     width: windowWidth / 4.2,
                     borderRadius: windowWidth / 7,
-                    backgroundColor: Colors.buttoncolorblue,
+                    backgroundColor: completed ? Colors.Green : Colors.buttoncolorblue,
                     position: 'absolute',
                     zIndex: 9999,
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                <Text
-                    style={{
-                        fontSize: Font.xxxlarge,
-                        fontFamily: Font.Regular,
-                        color: Colors.white_color,
-                    }}>
-                    {progress == 100 ? 'FINISH' : 'NEXT'}
-                </Text>
+                {
+                    loading ?
+                        <BarIndicator color='white' size={(windowWidth / 15)} count={5} />
+                        :
+                        completed ?
+                            <Image source={Icons.Tick}
+                                style={{
+                                    height: windowWidth / 9,
+                                    width: windowWidth / 9,
+                                    tintColor: Colors.white_color
+                                }}
+                            />
+                            :
+                            <Text
+                                style={{
+                                    fontSize: Font.xxxlarge,
+                                    fontFamily: Font.Regular,
+                                    color: Colors.white_color,
+                                }}>
+                                {progress == 100 ? 'FINISH' : 'NEXT'}
+                            </Text>
+                }
+
             </TouchableOpacity>
             <Svg width={radius * 2} height={radius * 2} viewBox={`0 0 ${radius * 2} ${radius * 2}`}>
                 <Circle

@@ -1215,7 +1215,7 @@ export default Signup = ({ navigation, route }) => {
   return (
     <View
       pointerEvents={classStateData.isLoadingInButton ? 'none' : 'auto'}
-      style={{ flex: 1, justifyContent: 'center', backgroundColor: Colors.white_color, paddingTop: insets.top, paddingBottom: (insets.bottom) }}>
+      style={{ flex: 1, backgroundColor: Colors.white_color, paddingTop: insets.top, paddingBottom: (insets.bottom) }}>
 
       <SignupForm
         navigation={navigation}
