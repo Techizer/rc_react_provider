@@ -260,37 +260,37 @@ export default NeedSupport = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={LanguageConfiguration.supporttext[Configurations.language]}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+      />
+      
+      <KeyboardAwareScrollView>
+        <View style={{ width: '100%', backgroundColor: Colors.tab_background_color, paddingBottom: mobileW * 2 / 100 }}>
+        </View>
 
-<KeyboardAwareScrollView>
-          <View style={{ width: '100%', backgroundColor: Colors.tab_background_color, paddingBottom: mobileW * 2 / 100 }}>
+        <View style={{ alignItems: 'center', width: '90%', alignSelf: 'center', flexDirection: 'row', marginTop: mobileW * 3 / 100 }}>
+          <View style={{ width: '8%', alignSelf: 'center' }}>
+            <Image style={{ width: mobileW * 5 / 100, height: mobileW * 5 / 100, resizeMode: 'contain' }}
+              source={Icons.NeedSupoort}>
+            </Image>
           </View>
+          <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, }}>{LanguageConfiguration.NeedSupport[Configurations.language]} </Text>
+        </View>
 
-          <View style={{ alignItems: 'center', width: '90%', alignSelf: 'center', flexDirection: 'row', marginTop: mobileW * 3 / 100 }}>
-            <View style={{ width: '8%', alignSelf: 'center' }}>
-              <Image style={{ width: mobileW * 5 / 100, height: mobileW * 5 / 100, resizeMode: 'contain' }}
-                source={Icons.NeedSupoort}>
-              </Image>
-            </View>
-            <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, }}>{LanguageConfiguration.NeedSupport[Configurations.language]} </Text>
-          </View>
+        <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 3 / 100 }} />
 
-          <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 3 / 100 }} />
-
-          <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 2 / 100 }}>
-            <Text style={{ textAlign: Configurations.textRotate, fontSize: mobileW * 3.5 / 100, color: '#707070', fontFamily: Font.Regular, }}>{LanguageConfiguration.need_text[Configurations.language]} </Text>
-          </View>
+        <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 2 / 100 }}>
+          <Text style={{ textAlign: Configurations.textRotate, fontSize: mobileW * 3.5 / 100, color: '#707070', fontFamily: Font.Regular, }}>{LanguageConfiguration.need_text[Configurations.language]} </Text>
+        </View>
 
 
-          <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
-            <Text style={{ textAlign: Configurations.textRotate, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, }}>{LanguageConfiguration.select_topic_text[Configurations.language]} </Text>
-          </View>
+        <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
+          <Text style={{ textAlign: Configurations.textRotate, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, }}>{LanguageConfiguration.select_topic_text[Configurations.language]} </Text>
+        </View>
 
-          <View style={{
-            width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100, flexDirection: 'row',
-          }}>
-            { !isLoading ? 
-              <TouchableOpacity onPress={() => {
+        <View style={{
+          width: '90%', alignSelf: 'center', marginTop: mobileW * 3 / 100, flexDirection: 'row',
+        }}>
+          {!isLoading ?
+            <TouchableOpacity onPress={() => {
               topicSelectSheetRef.current.open()
             }}
               style={{ width: '100%', backgroundColor: Colors.backgroundcolor, borderColor: Colors.bordercolor, borderWidth: 1, borderRadius: mobileW * 1 / 100 }}>
@@ -307,37 +307,37 @@ export default NeedSupport = ({ navigation, route }) => {
                   </Image>
                 </View>
               </View>
-            </TouchableOpacity> : 
-            <ActivityIndicator color={Colors.textblue}/>
-            }
+            </TouchableOpacity> :
+            <ActivityIndicator color={Colors.textblue} />
+          }
+        </View>
+        <TouchableOpacity style={{
+          width: '90%', alignSelf: 'center', marginTop: mobileW * 6 / 100,
+          borderColor: classStateData.selectissuefocus == true ? '#0057A5' : Colors.bordercolor, borderWidth: mobileW * 0.3 / 100, borderRadius: mobileW * 2 / 100, height: mobileW * 40 / 100
+        }} onPress={() => {
+          issueRef.current.focus()
+        }} activeOpacity={1}>
+          <View style={{ width: '95%', alignSelf: 'center', }}>
+            <TextInput
+              style={{ marginTop: mobileW * 2 / 100, backgroundColor: '#fff', width: '100%', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: Configurations.textalign, fontFamily: Font.placeholderfontfamily, paddingVertical: mobileW * 3 / 100 }}
+              maxLength={250}
+              multiline={true}
+              placeholder={classStateData.selectissuefocus != true ? LanguageConfiguration.text_input_topic[Configurations.language] : null}
+              placeholderTextColor={Colors.placeholder_text}
+              onChangeText={(txt) => { setState({ message: txt }) }}
+              ref={issueRef}
+              keyboardType='default'
+              returnKeyLabel='done'
+            />
           </View>
-          <TouchableOpacity style={{
-            width: '90%', alignSelf: 'center', marginTop: mobileW * 6 / 100,
-            borderColor: classStateData.selectissuefocus == true ? '#0057A5' : Colors.bordercolor, borderWidth: mobileW * 0.3 / 100, borderRadius: mobileW * 2 / 100, height: mobileW * 40 / 100
-          }} onPress={() => {
-            issueRef.current.focus()
-          }} activeOpacity={1}>
-            <View style={{ width: '95%', alignSelf: 'center', }}>
-              <TextInput
-                style={{ marginTop: mobileW * 2 / 100, backgroundColor: '#fff', width: '100%', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: Configurations.textalign, fontFamily: Font.placeholderfontfamily, paddingVertical: mobileW * 3 / 100 }}
-                maxLength={250}
-                multiline={true}
-                placeholder={classStateData.selectissuefocus != true ? LanguageConfiguration.text_input_topic[Configurations.language] : null}
-                placeholderTextColor={Colors.placeholder_text}
-                onChangeText={(txt) => { setState({ message: txt }) }}
-                ref={issueRef}
-                keyboardType='default'
-                returnKeyLabel='done'
-              />
-            </View>
-            {classStateData.selectissuefocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
-              <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.text_input_topic[Configurations.language]}</Text>
-            </View>}
-          </TouchableOpacity>
+          {classStateData.selectissuefocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
+            <Text style={{ color: '#0057A5', textAlign: Configurations.textalign }}>{LanguageConfiguration.text_input_topic[Configurations.language]}</Text>
+          </View>}
+        </TouchableOpacity>
 
-          <Button onLoading={isOnButtonLoading} onPress={onSubmit} text={LanguageConfiguration.submitbtntext[Configurations.language]} />
+        <Button onLoading={isOnButtonLoading} onPress={onSubmit} text={LanguageConfiguration.submitbtntext[Configurations.language]} />
 
-        </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
 
     </View>
   )

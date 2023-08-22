@@ -215,8 +215,7 @@ const renderTabBar = props => {
             rightIcon={false}
             navigation={navigation}
             title={(routes.length !== 1) ? 'Price List': routes[0]?.title + ' Price List'}
-            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+/>
           {
             (routes.length > 0) &&
             <TabView

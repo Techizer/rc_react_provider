@@ -104,10 +104,6 @@ const ServiceAddress = ({ navigation, route }) => {
             <ScreenHeader
                 leftIcon={true}
                 title={'Service Address | Pickup Point'}
-                style={{
-                    paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0,
-                    height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight
-                }}
                 onBackPress={() => {
                     navigation.goBack()
                 }}

@@ -1,7 +1,7 @@
 import { View, Text, FlatList, Dimensions, StatusBar, Platform, Image, TextInput, KeyboardAvoidingView, Pressable, StyleSheet, Keyboard, TouchableHighlight, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import DocumentPicker from 'react-native-document-picker'
-import { getIsAppointmentChatEnabled } from '../Helpers/AppFunctions'
+import { getIsAppointmentChatEnabled, GetThumbnail } from '../Helpers/AppFunctions'
 import ScreenHeader from '../Components/ScreenHeader'
 import firestore from '@react-native-firebase/firestore'
 import { Configurations } from '../Provider/configProvider'
@@ -33,7 +33,7 @@ headerHeight += (Platform.OS === 'ios') ? 28 : -60
 
 
 const Chat = ({ navigation, route }) => {
-    const [room, setRoom] = useState<MessageRoom>()
+    const [room, setRoom] = useState()
     const [isAutoResendable, setIsAutoResendable] = useState<Boolean>(true)
     const [messageInput, setMessageInput] = useState<string>('')
     const insets = useSafeAreaInsets()
@@ -60,14 +60,12 @@ const Chat = ({ navigation, route }) => {
     const [attachment, setAttachment] = useState([])
     const [type, setType] = useState('')
 
-    console.log('Main DateTime', moment(appointment?.bookingDate));
-
-
     useEffect(() => {
         firestore()
             .collection(`Chats-${Configurations.mode}`)
             .doc(appointment?.order)
             .onSnapshot(documentSnapshot => {
+                const groupedMessages = [];
                 if (!documentSnapshot.exists) {
                     const thisRoom = new MessageRoom({
                         ID: appointment?.order,
@@ -102,9 +100,21 @@ const Chat = ({ navigation, route }) => {
                     const roomDetails = documentSnapshot?.data()
                     // console.log({ roomDetails });
                     roomDetails?.MessageRoomDetails?.Messages?.reverse()
-                    console.log('Room', room?.MessageRoomDetails.Messages);
+                    roomDetails?.MessageRoomDetails?.Messages?.forEach((message: any) => {
+                        const messageDate = message?.MessageDetails.DateTime?.toDate();
+                        const messageDateString = messageDate.toDateString();
 
-                    setRoom(roomDetails)
+
+                        const existingGroup = groupedMessages.find((group) => group.date === messageDateString);
+
+                        if (existingGroup) {
+                            existingGroup.messages.push(message);
+                        } else {
+                            groupedMessages.push({ date: messageDateString, messages: [message] });
+                        }
+                    });
+                    setRoom(groupedMessages)
+
                 }
             })
     }, [])
@@ -131,42 +141,46 @@ const Chat = ({ navigation, route }) => {
         Media
             .launchGellery(true)
             .then((obj) => {
+                setMediaOptions(false)
                 // console.log('Galleryopen..............', obj);
                 const fileName = obj?.path.split('/')
-                const source = {
-                    name: Platform.OS == 'ios' ? obj.filename : fileName[fileName.length - 1],
-                    type: obj.mime,
-                    uri: obj?.path,
+                let source = {
+                    data: {
+                        name: Platform.OS == 'ios' ? obj.filename : fileName[fileName.length - 1],
+                        type: obj.mime,
+                        uri: obj?.path,
+                    }
                 };
                 tempArr.push(source)
                 setAttachment(tempArr)
                 setType('image')
-                setMediaOptions(false)
             })
             .catch((error) => {
+                setMediaOptions(false)
                 console.log('Galleryopen-error', error);
             });
 
     };
 
     const Camerapopen = async () => {
-
-
         let tempArr = []
         Media
             .launchCamera(true)
             .then((obj) => {
+                setMediaOptions(false)
                 const fileName = obj?.path.split('/')
-                const source = {
-                    name: fileName[fileName.length - 1],
-                    type: obj.mime,
-                    uri: obj?.path,
+                let source = {
+                    data: {
+                        name: fileName[fileName.length - 1],
+                        type: obj.mime,
+                        uri: obj?.path,
+                    }
                 };
                 tempArr.push(source)
                 setAttachment(tempArr)
                 setType('image')
-                setMediaOptions(false)
             }).catch((error) => {
+                setMediaOptions(false)
                 console.log('Camerapopen..............', error);
             });
 
@@ -214,18 +228,28 @@ const Chat = ({ navigation, route }) => {
                     DocumentPicker.types.pdf,
                 ],
             });
-            console.log('Document Pick Response', res);
-            const source = {
-                name: res[0].name,
-                type: res[0].type,
-                uri: res[0].uri,
+            setMediaOptions(false)
+            // console.log('Document Pick Response', res);
+            let source = {
+                data: {
+                    name: res[0].name,
+                    type: res[0].type,
+                    uri: res[0].uri,
+                }
             };
+            const result = await GetThumbnail(res[0].fileCopyUri)
+            source = {
+                data: {
+                    ...source.data
+                },
+                thumbnail: result.uri
+            }
             tempArr.push(source)
             setAttachment(tempArr)
             setType('pdf')
-            setMediaOptions(false)
 
         } catch (err) {
+            setMediaOptions(false)
             if (DocumentPicker.isCancel(err)) {
                 console.log('You did not select any file')
             } else {
@@ -239,12 +263,12 @@ const Chat = ({ navigation, route }) => {
         let url = Configurations.baseURL + "api-chat-image";
         var data = new FormData();
         for (var i = 0; i < attachment.length; i++) {
-            data.append("chat_image[]", attachment[i]);
+            data.append("chat_image[]", attachment[i]?.data);
         }
 
-        console.log({msg});
-        console.log({attachment});
-        
+        console.log({ msg });
+        console.log({ attachment });
+
 
         API.post(url, data, 1)
             .then(async (obj) => {
@@ -270,6 +294,8 @@ const Chat = ({ navigation, route }) => {
 
     const onSendMessage = async () => {
 
+        const messageDate = new Date();
+        const messageDateString = messageDate.toDateString();
         if (attachment.length == 0) {
             if (isAutoResendable) {
                 setIsAutoResendable(false)
@@ -287,10 +313,21 @@ const Chat = ({ navigation, route }) => {
                     Shown: true,
                     SYSTEM: false
                 })
-                setRoom(r => {
-                    r?.MessageRoomDetails.Messages.unshift(newMessage)
-                    return r
-                })
+                setRoom((prevMessages) => {
+                    const updatedMessages = [...prevMessages];
+
+                    const lastGroup = updatedMessages[updatedMessages.length - 1];
+                    if (lastGroup && lastGroup.date === messageDateString) {
+                        lastGroup.messages.push(newMessage);
+                    } else {
+                        updatedMessages.push({
+                            date: messageDateString,
+                            messages: [newMessage],
+                        });
+                    }
+
+                    return updatedMessages;
+                });
                 setMessageInput('')
                 await firestore()
                     .collection(`Chats-${Configurations.mode}`)
@@ -304,8 +341,8 @@ const Chat = ({ navigation, route }) => {
             const newMessage = new Message({
                 Body: messageInput,
                 DateTime: new Date(),
-                DocPaths: type === 'pdf' ? [attachment[0].uri] : [],
-                ImagePaths: type === 'image' ? [attachment[0].uri] : [],
+                DocPaths: type === 'pdf' ? [attachment[0].data.uri, attachment[0].thumbnail, attachment[0]?.data.name] : [],
+                ImagePaths: type === 'image' ? [attachment[0].data.uri] : [],
                 Milliseconds: moment().valueOf(),
                 NumChars: messageInput.length,
                 ReadBit: 1,
@@ -315,11 +352,25 @@ const Chat = ({ navigation, route }) => {
                 SYSTEM: false
             })
             setAttachment([])
-            setRoom(r => {
-                r?.MessageRoomDetails.Messages.unshift(newMessage)
-                return r
-            })
+            setRoom((prevMessages) => {
+                const updatedMessages = [...prevMessages];
+
+                const lastGroup = updatedMessages[0];
+                console.log(lastGroup.date);
+
+                if (lastGroup && lastGroup.date === messageDateString) {
+                    lastGroup.messages.unshift(newMessage);
+                } else {
+                    updatedMessages.unshift({
+                        date: messageDateString,
+                        messages: [newMessage],
+                    });
+                }
+
+                return updatedMessages;
+            });
             setMessageInput('')
+            return
             UploadFile(newMessage)
 
 
@@ -330,6 +381,7 @@ const Chat = ({ navigation, route }) => {
         return (
             <ChatMessage
                 Item={item}
+                navigation={navigation}
             />
         )
     }
@@ -383,24 +435,24 @@ const Chat = ({ navigation, route }) => {
                         </View>
                     )
                 }}
-                style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }}
+
             />
 
             <KeyboardAvoidingView
                 style={styles.mainContainer}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? vs(28) : 0}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? (-13) : 0}
             >
                 <View style={styles.content}>
                     <FlatList
                         style={{ flex: 1, zIndex: 2 }}
                         contentContainerStyle={{ paddingHorizontal: '2%', zIndex: 3, paddingBottom: vs(28), paddingTop: vs(32) }}
-                        data={room?.MessageRoomDetails?.Messages}
+                        data={room}
                         keyExtractor={(i, _i) => 'message' + _i}
                         inverted={true}
                         renderItem={renderMessageItem}
                         showsVerticalScrollIndicator={false}
-                        ItemSeparatorComponent={() => (<View style={{ marginVertical: vs(6) }} />)}
+                        ItemSeparatorComponent={() => (<View style={{ marginVertical: vs(1.2) }} />)}
                     // ListEmptyComponent={() => (<Text style={{ width: '100%', alignSelf: 'center', textAlign: 'center' }} >No Messages</Text>)}
                     />
                 </View>
@@ -414,12 +466,12 @@ const Chat = ({ navigation, route }) => {
                 }}>
 
                     {
-                        !isEnabled ?
+                        isEnabled ?
                             <Button
                                 text={'FOLLOW UP CONSULTATION'}
-                                btnStyle={{ backgroundColor:Colors.orange }}
+                                btnStyle={{ backgroundColor: Colors.orange }}
                                 isDisabled={false}
-                                onPress={()=>navigation.pop()}
+                                onPress={() => navigation.pop()}
                             />
                             :
                             <View
@@ -454,7 +506,7 @@ const Chat = ({ navigation, route }) => {
                                                 {
                                                     type === 'image' ?
                                                         <Image
-                                                            source={{ uri: attachment[0].uri }}
+                                                            source={{ uri: attachment[0].data.uri }}
                                                             style={{ height: 50, width: 50, borderRadius: (windowWidth * 2) / 100, }}
                                                         />
                                                         :
@@ -473,7 +525,7 @@ const Chat = ({ navigation, route }) => {
                                                         width: '75%',
                                                     }}
                                                 >
-                                                    {attachment[0].name}
+                                                    {attachment[0].data.name}
                                                 </Text>
                                             </View>
                                             <TouchableHighlight
@@ -505,7 +557,7 @@ const Chat = ({ navigation, route }) => {
                                             <TextInput
                                                 placeholder='Write your message here..'
                                                 placeholderTextColor={'#515C6F'}
-                                                style={{ width: '100%', color: Colors.Black, fontSize: Font.small }}
+                                                style={{ width: '100%', color: Colors.Black, fontSize: Font.medium }}
                                                 multiline
                                                 value={messageInput}
                                                 returnKeyType='next'

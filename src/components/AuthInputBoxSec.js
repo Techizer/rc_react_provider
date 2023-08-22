@@ -56,6 +56,7 @@ const AuthInputBoxSec = (props) => {
               label={lableText}
               editable={editable}
               mode='outlined'
+              blurOnSubmit={false}
               outlineColor={Colors.field_border_color}
               activeOutlineColor={Colors.placholderactive}
               secureTextEntry={secureTextEntry}

@@ -11,6 +11,7 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout } from '../Redux/Actions/UserActions';
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const windowWidth = Dimensions.get('window').width
 
 export default Drawer = ({ navigation, route }) => {
@@ -23,6 +24,7 @@ export default Drawer = ({ navigation, route }) => {
   } = useSelector(state => state.StorageReducer)
 
   const dispatch = useDispatch()
+  const insets = useSafeAreaInsets()
 
   const logoutApi = async () => {
     const fcm_token = await FBPushNotifications.getFcmToken()
@@ -49,7 +51,7 @@ export default Drawer = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, }}>
+    <View style={{ flex: 1, paddingTop: insets.top }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, backgroundColor: Colors.White, paddingBottom: Platform.OS === 'ios' ? vs(150) : vs(65) }}>
@@ -67,7 +69,7 @@ export default Drawer = ({ navigation, route }) => {
               }, 350);
             }}
             activeOpacity={0.7}
-            style={{ width: '100%', alignItems: "center", flexDirection: 'row', paddingTop: vs(20), height: vs(140), backgroundColor: Colors.White }}>
+            style={{ width: '100%', alignItems: "center", flexDirection: 'row', paddingTop: vs(20), backgroundColor: Colors.White }}>
 
             <View style={{ width: '31%' }} >
               {
@@ -356,6 +358,6 @@ export default Drawer = ({ navigation, route }) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

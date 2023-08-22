@@ -88,7 +88,7 @@ export default Transaction = ({ navigation }) => {
         return <Withdrawal page={'hourly'} jumpTo={jumpTo} {...props} {...{ navigation }} />;
     }
   };
-  
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -110,8 +110,7 @@ export default Transaction = ({ navigation }) => {
             rightIcon={false}
             navigation={navigation}
             title={'Transaction & More'}
-            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+          />
 
 
           <TabView

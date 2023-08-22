@@ -201,7 +201,8 @@ export default Splash = ({ navigation, route }) => {
 
     <View style={{
       width: '100%', alignSelf: 'center', flex: 1,
-      backgroundColor: Colors.white_color
+      backgroundColor: Colors.white_color,
+      justifyContent:'center'
     }}>
       <StatusBar
         barStyle="dark-content"

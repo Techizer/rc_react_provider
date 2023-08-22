@@ -36,7 +36,6 @@ const ScreenHeader = ({
     rightIcon,
     leftIcon,
     notiCount,
-    style = {},
     renderHeaderWOBack
 }) => {
     const iconSize = notiCount > 0 ? s(20) : s(18)
@@ -45,12 +44,12 @@ const ScreenHeader = ({
         <View
             style={[{
                 width: windowWidth,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderBottomColor: Colors.bordercolor,
-                height: headerHeight + StatusbarHeight,
-                paddingTop: (Platform.OS === 'ios') ? StatusbarHeight : 0
-            }, style]}
+                backgroundColor: Colors.white_color,
+                height: windowHeight / 9,
+                paddingTop: windowHeight / 22,
+                borderBottomWidth: 0.9,
+                borderBottomColor: Colors.Border
+            }]}
         >
             <View
                 style={{

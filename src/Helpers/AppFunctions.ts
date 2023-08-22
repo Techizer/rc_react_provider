@@ -1,5 +1,6 @@
 import moment from "moment-timezone"
-
+import PdfThumbnail from "react-native-pdf-thumbnail";
+ 
 export const getIsAppointmentChatEnabled = (appointmentDate?: Date, apppointmentStatus?: String): Boolean => {
 
 
@@ -50,7 +51,9 @@ export const getISChatImplemented = (appointmentDate: string, appointmentTime: s
 
     return sixHoursOrMorePassed
 
+}
 
-
-
+export const GetThumbnail = async (url: string) => {
+    const result = await PdfThumbnail.generate(url, 0);
+    return result;
 }

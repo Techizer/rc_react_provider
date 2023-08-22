@@ -922,8 +922,7 @@ export default EditProfile = ({ navigation, route }) => {
           navigation={navigation}
           notiCount={classStateData.notification_count > 0 ? classStateData.notification_count : false}
           title={LanguageConfiguration.EditProfile[Configurations.language]}
-          style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+        />
         <RBSheet
           ref={attachmentOptionSheetRef}
           {...BottomSheetProps}
@@ -1203,7 +1202,7 @@ export default EditProfile = ({ navigation, route }) => {
           </View>
 
           <DropDownboxSec
-          mainContainer={{width:'90%'}}
+            mainContainer={{ width: '90%' }}
             lableText={classStateData.work_area.length <= 0 ? LanguageConfiguration.select[Configurations.language] : classStateData.work_area}
             boxPressAction={() => {
             }}

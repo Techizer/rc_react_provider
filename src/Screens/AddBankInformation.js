@@ -136,7 +136,7 @@ export default AddBankInformation = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={'Add Bank Information'}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+      />
 
 
       <KeyboardAwareScrollView contentContainerStyle={{
@@ -318,7 +318,7 @@ export default AddBankInformation = ({ navigation, route }) => {
             mainContainer={{
               width: '100%',
             }}
-            
+
             lableText={'Bank Account Address'}
             inputRef={bankAddress}
             onChangeText={(text) =>

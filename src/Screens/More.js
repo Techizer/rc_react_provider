@@ -42,8 +42,7 @@ export default More = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={LanguageConfiguration.supporttext[Configurations.language]}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+      />
 
       <View style={{ width: '55%', alignSelf: 'center', marginRight: mobileW * 2 / 100, marginTop: mobileW * 10 / 100 }}>
         <Image style={{ height: mobileW * 30 / 100, width: mobileW * 45 / 100, resizeMode: 'contain', alignSelf: 'center', alignItems: 'center', }}

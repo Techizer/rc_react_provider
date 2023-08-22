@@ -346,6 +346,7 @@ export default Login = ({ navigation, route }) => {
                       isSecurePassword: !classStateData?.isSecurePassword,
                     })
                   }}
+                  onSubmitEditing={()=>Keyboard.dismiss()}
                 />
 
               </View>

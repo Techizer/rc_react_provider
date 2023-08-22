@@ -156,8 +156,8 @@ export default Notifications = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={LanguageConfiguration.NotificationsList[Configurations.language]}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+      />
+      
       <Modal
         animationType="fade"
         transparent={true}
@@ -200,7 +200,7 @@ export default Notifications = ({ navigation, route }) => {
       }
 
       {!classStateData.isReadAll &&
-        <TouchableOpacity 
+        <TouchableOpacity
           activeOpacity={0.7}
           onPress={ReadAll}
           style={{

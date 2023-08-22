@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, FlatList, View, Alert, StyleSheet, Image, TouchableOpacity, Platform, BackHandler } from 'react-native';
-import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, localStorage, MessageFunctions, MessageHeadings } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, localStorage, MessageFunctions, MessageHeadings, windowHeight } from '../Helpers/Utils';
 import Styles from '../Styles';
 import { DashBoardBox } from '../Components'
 import CircularProgress from 'react-native-circular-progress-indicator';
@@ -497,11 +497,9 @@ export default Home = ({ navigation, route }) => {
         <View style={styles_new.headerstyle}>
           <View
             style={{
-              padding: (mobileW * 2.5) / 100,
               flexDirection: 'row',
               width: '95%',
               alignSelf: 'center',
-              paddingTop: (mobileW * 3) / 100,
               backgroundColor: Colors.white_color,
               alignItems: 'center',
             }}>
@@ -645,11 +643,8 @@ const styles_new = StyleSheet.create({
     backgroundColor: '#fff',
     paddingVertical: mobileW * 2 / 100,
     borderBottomColor: Colors.LIGHT_CLIENT_BORDER,
-    borderBottomWidth: 1,
-    // shadowOpacity: 0.3,
-    // shadowColor:'#000',
-    // shadowOffset: {width:1,height:1},
-    // elevation:5,
+    height: windowHeight / 9,
+    paddingTop: windowHeight / 22,
 
   },
   headerstyle_new: {

@@ -9,7 +9,7 @@ const deviceWidth = Dimensions.get('window').width;
 
 export default TermsAndConditions = ({ navigation, route }) => {
 
-  const {pageName, contentArray, content} = route?.params
+  const { pageName, contentArray, content } = route?.params
 
   const windowHeight = Math.round(Dimensions.get("window").height);
   const windowWidth = Math.round(Dimensions.get("window").width);
@@ -17,7 +17,7 @@ export default TermsAndConditions = ({ navigation, route }) => {
   const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
   let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
   headerHeight += (Platform.OS === 'ios') ? 28 : -60
-  
+
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -33,7 +33,7 @@ export default TermsAndConditions = ({ navigation, route }) => {
           if (pageName == 2) return LanguageConfiguration.TermsandConditions[Configurations.language]
           if (pageName == 1) return LanguageConfiguration.PrivacyPolicy[Configurations.language]
         })()}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+      />
 
       {Configurations.language == 1 ?
         <WebView

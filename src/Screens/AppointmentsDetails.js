@@ -613,7 +613,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
             rightIcon={false}
             navigation={navigation}
             title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
-            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+          />
 
           <AppLoader loading={explicitLoader} />
 
@@ -634,10 +634,6 @@ export default AppointmentsDetails = ({ navigation, route }) => {
               key={'main-view'}
               style={{
                 flex: 1,
-                marginBottom: (mobileW * 40) / 100,
-                shadowOpacity: 0.3,
-                shadowColor: '#000',
-                shadowOffset: { width: 2, height: 2 },
                 elevation: 2,
                 paddingVertical: vs(9),
                 backgroundColor: Colors.White,
@@ -651,8 +647,6 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                     justifyContent: 'space-between',
                     width: "100%",
                     alignSelf: "center",
-                    borderBottomWidth: 1.5,
-                    borderBottomColor: Colors.backgroundcolor,
                     paddingBottom: vs(5),
                     paddingHorizontal: s(13),
 
@@ -2317,7 +2311,6 @@ export default AppointmentsDetails = ({ navigation, route }) => {
             rightIcon={false}
             navigation={navigation}
             title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
-            style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }}
           />
 
           <KeyboardAwareScrollView>
@@ -2434,7 +2427,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
+        />
     </>
   }
 

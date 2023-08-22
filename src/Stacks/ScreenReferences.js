@@ -32,5 +32,6 @@ export const ScreenReferences = {
     Withdrawal: "Withdrawal",
     AddBankInformation: "AddBankInformation",
 
-    ChatScreen: 'Chat'
+    ChatScreen: 'Chat',
+    FileView: 'FileView'
 }

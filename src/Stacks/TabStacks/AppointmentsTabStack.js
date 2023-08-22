@@ -113,8 +113,8 @@ export default AppointmentsTabStack = ({ navigation }) => {
         notiCount={noticount}
         navigation={navigation}
         title={LanguageConfiguration.MyAppointments[Configurations.language]}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+      />
+      
       {/* tabheadings */}
 
       {/* <TabView

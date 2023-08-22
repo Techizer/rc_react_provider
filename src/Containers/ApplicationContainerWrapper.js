@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react"
-import { SafeAreaView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { Colors, Font, Media, MessageFunctions, MessageTexts, Configurations } from '../Helpers/Utils';
 import AppLoader from '../Components/AppLoader'
 import * as Animatable from 'react-native-animatable';
@@ -63,20 +63,22 @@ export const ApplicationContainerWrapper = ({ navigation, route, children }) => 
 
   }
 
+  
+
   return (
     <AppContext.Provider
       value={{ ...funcs }}
     >
       <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
-        <SafeAreaView style={{ flex: 0, backgroundColor: Colors.statusbarcolor }} />
-        <StatusBar
+
+        {/* <StatusBar
           hidden={false}
           StatusBarStyle='light-content'
           backgroundColor={Colors.statusbarcolor}
           translucent={false}
           networkActivityIndicatorVisible={true}
         >
-        </StatusBar>
+        </StatusBar> */}
 
         {children}
 

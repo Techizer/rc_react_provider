@@ -25,7 +25,7 @@ export default MyProfile = ({ navigation, route }) => {
 
   const dispatch = useDispatch()
 
-  console.log({profileData});
+  console.log({ profileData });
 
   useEffect(() => {
     navigation.addListener('focus', () => {
@@ -107,8 +107,7 @@ export default MyProfile = ({ navigation, route }) => {
           navigation={navigation}
           notiCount={notificationsCount > 0 ? notificationsCount : false}
           title={'My Profile'}
-          style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+        />
         <KeyboardAwareScrollView contentContainerStyle={{ paddingBottom: mobileW * 15 / 100 }} showsVerticalScrollIndicator={false}>
           <View style={{
             backgroundColor: 'white',
@@ -220,7 +219,7 @@ export default MyProfile = ({ navigation, route }) => {
                       name={"email-outline"}
                       size={(mobileW * 4.5) / 100}
                       color={Colors.placeholder_textcolorlight} />
-                      <Text
+                    <Text
                       style={{
                         color: Colors.placeholder_textcolorlight,
                         fontFamily: Font.Regular,

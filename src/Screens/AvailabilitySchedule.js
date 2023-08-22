@@ -160,7 +160,7 @@ export default AvailabilitySchedule = ({ navigation }) => {
       <ScreenHeader onBackPress={() => {
         navigation.goBack();
       }} leftIcon navigation={navigation} title={LanguageConfiguration.scheduleavailability_heading[Configurations.language]} 
-      style={{paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight}}/>
+      />
       <View
         style={{
           flex: 1,

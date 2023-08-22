@@ -45,6 +45,7 @@ import { API } from '../Helpers/API';
 import { Configurations } from '../Provider/configProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { callRejectNotification, CheckSession, Network } from '../Helpers/APIFunctions';
+import FileView from '../Screens/FileView';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -355,12 +356,12 @@ const MainStack = navigation => {
 
   useEffect(() => {
     const checkConnectivity = NetInfo.addEventListener(state => {
-        Network(state)
+      Network(state)
     });
     return () => {
-        checkConnectivity()
+      checkConnectivity()
     }
-}, [])
+  }, [])
 
   // useMemo(() => {
   //   if (appState === 'active') {
@@ -543,6 +544,12 @@ const MainStack = navigation => {
         <Stack.Screen
           name={ScreenReferences.OTP}
           component={OTP}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+
+        <Stack.Screen
+          name={ScreenReferences.FileView}
+          component={FileView}
           options={{ headerShown: false, gestureEnabled: false }}
         />
 

@@ -78,6 +78,7 @@ export default SignupForm = ({ navigation }) => {
     const expRef = useRef()
     const idRef = useRef()
     const licenseRef = useRef()
+    const numberRef = useRef()
 
     const dispatch = useDispatch()
     const insets = useSafeAreaInsets()
@@ -309,7 +310,7 @@ export default SignupForm = ({ navigation }) => {
                 <View style={{ marginTop: (windowWidth / 35), flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', alignSelf: 'center' }}>
                     <View
                         style={{
-                            width: '20%',
+                            width: '22%',
                         }}>
                         <AuthInputBoxSec
                             mainContainer={{
@@ -319,9 +320,8 @@ export default SignupForm = ({ navigation }) => {
                                 textAlign: 'center',
                                 marginBottom: (mobileW * 4) / 100,
                             }}
-                            // icon={layer9_icon}
                             lableText={LanguageConfiguration.CC_code[Configurations.language]}
-                            maxLength={3}
+                            maxLength={4}
                             editable={false}
                             value={classStateData.selectedCountry && `+${classStateData.selectedCountry.value}`}
                             keyboardType="number-pad"
@@ -335,17 +335,14 @@ export default SignupForm = ({ navigation }) => {
 
                     <View
                         style={{
-                            width: '78%',
+                            width: '76%',
                         }}>
                         <AuthInputBoxSec
                             mainContainer={{
                                 width: '100%',
                             }}
-                            // icon={layer9_icon}
+                            inputRef={numberRef}
                             lableText={LanguageConfiguration.textinputnumber[Configurations.language]}
-                            inputRef={(ref) => {
-                                mobileInput = ref;
-                            }}
                             maxLength={9}
                             onChangeText={(text) =>
                                 setState({ mobile: text })
@@ -508,10 +505,10 @@ export default SignupForm = ({ navigation }) => {
                 <View
                     style={{
                         width: '90%',
-                        marginTop: windowWidth / 10,
+                        paddingVertical: windowWidth / 25,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
                     }}>
                     <Text
                         style={{
@@ -541,10 +538,11 @@ export default SignupForm = ({ navigation }) => {
 
                         <TouchableOpacity
                             activeOpacity={0.7}
-                            style={{ paddingVertical: (windowWidth * 3) / 100 }}
+                            style={{ paddingVertical: (windowWidth * 3) / 100, }}
                             onPress={() => {
                                 setState({ imageType: 'profile' });
                                 setMediaOptions(true)
+                                numberRef && numberRef?.current?.blur()
                             }}
                         >
                             <Text
@@ -777,7 +775,7 @@ export default SignupForm = ({ navigation }) => {
                                 setState({ scfhs_number: text })
                             }
                             value={classStateData.scfhs_number}
-                            keyboardType="number-pad"
+                            keyboardType="default"
                             autoCapitalize="none"
                             returnKeyLabel="done"
                             returnKeyType="done"
@@ -801,7 +799,7 @@ export default SignupForm = ({ navigation }) => {
                                     fontFamily: Font.Regular,
                                     fontSize: Font.medium,
                                     width: '60%'
-                                }}>{'Upload Health Registration ID'}</Text>
+                                }}>{classStateData.scfhs_image ? classStateData.scfhs_image.name : 'Upload Health Registration ID'}</Text>
 
                             <TouchableOpacity
                                 onPress={() => {
@@ -1074,9 +1072,8 @@ export default SignupForm = ({ navigation }) => {
             (
                 setState({ userType: item, speciality: null }),
                 await getSpecialities(index).then((data) => {
-
                     setDropdownList(data)
-
+                }).finally(() => {
                 })
             )
             :
@@ -1321,7 +1318,7 @@ export default SignupForm = ({ navigation }) => {
                     return
                 }
                 if ((classStateData.hosp_moh_lic_no.length < 10 || classStateData.hosp_moh_lic_no.trim().length < 10)) {
-                    MessageFunctions.showError("Please enter health registration ID between 10 to 15 digits")
+                    MessageFunctions.showError("Please enter  MOH license number between 10 to 15 digits")
                     conditionsFailed = true;
                     return
                 }
@@ -1394,18 +1391,18 @@ export default SignupForm = ({ navigation }) => {
                 }
                 if ((classStateData.userType.value != 'babysitter' && classStateData.userType.value != 'caregiver' && classStateData.userType.value != 'lab')) {
                     if ((classStateData.scfhs_number.length < 8 || classStateData.scfhs_number.trim().length < 8)) {
-                        MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
+                        MessageFunctions.showError("Please enter minimum 8 or 11 digits Health Registration ID")
                         conditionsFailed = true;
                         return
                     }
 
                     if (classStateData.scfhs_number.length > 11 || classStateData.scfhs_number.trim().length > 11) {
-                        MessageFunctions.showError("Please enter minimum 8 or 11 digits Health License ID")
+                        MessageFunctions.showError("Please enter minimum 8 or 11 digits Health Registration ID")
                         conditionsFailed = true;
                         return
                     }
                     if (classStateData.scfhs_image == null) {
-                        MessageFunctions.showError("Please upload Health License Certificate")
+                        MessageFunctions.showError("Please upload Health Registration Certificate")
                         conditionsFailed = true;
                         return
                     }
@@ -1451,7 +1448,7 @@ export default SignupForm = ({ navigation }) => {
             data.append('fcm_token', localFCM)
             data.append('profileImg', classStateData.profileImage)
             data.append('id_number', classStateData.id_number)
-            data.append('speciality', classStateData.speciality)
+            data.append('speciality', classStateData.speciality ? classStateData.speciality.value : '')
             data.append('qualification', classStateData.qualification)
             data.append('experience', classStateData.experience)
             data.append('scfhs_number', classStateData.scfhs_number)
@@ -1477,6 +1474,7 @@ export default SignupForm = ({ navigation }) => {
             }
 
             // console.log({ data: data._parts });
+            // return
             API.post(url, data, 1).then((obj) => {
 
                 console.log('Signup Response', obj.message)
@@ -1485,12 +1483,14 @@ export default SignupForm = ({ navigation }) => {
                     setTimeout(() => {
                         setIsRegistered(true)
                     }, 500);
+                    setTimeout(() => {
+                        navigation.pop()
+                    }, 5000);
 
                 } else {
                     setTimeout(() => {
                         MessageFunctions.showError(obj.message)
                     }, 200)
-                    // }
                     return false;
                 }
             }).catch((error) => {
@@ -1499,192 +1499,170 @@ export default SignupForm = ({ navigation }) => {
                 setState({
                     isLoadingInButton: false
                 })
-                setTimeout(() => {
-                    navigation.pop()
-                }, 5000);
             })
 
         } else return isValid
     }
 
     return (
-        <View style={{
-            flex: 1,
+        <View style={{ flex: 1, backgroundColor: Colors.white_color, paddingTop: insets.top, paddingBottom: (insets.bottom) }}>
 
-        }}>
+            <KeyboardAwareScrollView
+                // keyboardOpeningTime={200}
+                enableOnAndroid={true}
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={{
+                    paddingBottom: windowWidth / 3,
 
-            <RegistrationSteps
-                onNext={(val) => {
-                    if (val == 25) {
-                        setProgress(val)
-                    } else {
-                        checkIsValid(val)
-                    }
                 }}
-                progress={progress}
-                loading={classStateData.isLoadingInButton}
-                completed={isRegistered}
-            />
+                showsVerticalScrollIndicator={false}>
 
-            <View style={{
-                paddingBottom: windowWidth / 3,
-            }}>
-                <KeyboardAwareScrollView
-                    // keyboardOpeningTime={200}
-                    enableOnAndroid={true}
-                    keyboardShouldPersistTaps='handled'
-                    contentContainerStyle={{
-                        height: '100%'
 
-                    }}
-                    showsVerticalScrollIndicator={false}>
+                {/* <View style={{ height: windowHeight}}> */}
 
 
 
 
-
-
-
-                    <View
-                        style={{
-                            width: "100%",
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                        <View style={{ justifyContent: 'center' }}>
-                            <Image
-                                style={{
-                                    width: (mobileW * 40) / 100,
-                                    height: (mobileW * 40) / 100,
-                                    alignSelf: 'center',
-                                }}
-                                resizeMode='contain'
-                                source={Icons.LogoWithText} />
-                        </View>
-
-                        {
-                            !isRegistered &&
-                            <TouchableHighlight
-                                underlayColor={Colors.Highlight}
-                                onPress={() => {
-                                    if (progress != 0) {
-                                        setProgress(pre => pre - 25)
-                                    } else {
-                                        navigation.pop()
-                                    }
-                                }}
-                                style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <SvgXml xml={
-                                    Configurations.textalign == "right"
-                                        ? rightArrow : leftArrow
-                                } height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
-
-                            </TouchableHighlight>
-                        }
+                <View
+                    style={{
+                        width: "100%",
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                    <View style={{ justifyContent: 'center' }}>
+                        <Image
+                            style={{
+                                width: (mobileW * 40) / 100,
+                                height: (mobileW * 40) / 100,
+                                alignSelf: 'center',
+                            }}
+                            resizeMode='contain'
+                            source={Icons.LogoWithText} />
                     </View>
 
+                    {
+                        !isRegistered &&
+                        <TouchableHighlight
+                            underlayColor={Colors.Highlight}
+                            onPress={() => {
+                                if (progress != 0) {
+                                    setProgress(pre => pre - 25)
+                                } else {
+                                    navigation.pop()
+                                }
+                            }}
+                            style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
+                        >
+                            <SvgXml xml={
+                                Configurations.textalign == "right"
+                                    ? rightArrow : leftArrow
+                            } height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
 
-                    <View style={{
-                        width: '90%',
-                        alignSelf: 'center'
-                    }}>
-                        {
-                            !isRegistered &&
-                            (
-                                progress == 0 ?
-                                    <View>
-                                        <Text
-                                            style={{
-                                                textAlign: Configurations.textRotate,
-                                                fontSize: Font.xxxlarge,
-                                                fontFamily: Font.Regular,
-                                                color: Colors.Black,
-                                            }}>
-                                            {LanguageConfiguration.Signuptext1[Configurations.language]}
-                                        </Text>
-                                    </View>
-                                    :
-                                    <View>
-                                        {
-                                            (progress == 25 || progress == 50) &&
-                                            <Text
-                                                style={{
-                                                    fontSize: Font.headingblack,
-                                                    fontFamily: Font.blackheadingfontfamily,
-                                                    textAlign: Configurations.textRotate,
-                                                    color: Colors.Black,
-                                                }}>
-                                                {LanguageConfiguration.Signup[Configurations.language]}
-                                            </Text>
-                                        }
-                                        <Text
-                                            style={{
-                                                textAlign: Configurations.textRotate,
-                                                fontSize: progress == 100 ? Font.xxlarge : Font.large,
-                                                fontFamily: Font.Regular,
-                                                color: Colors.Black,
-                                                marginTop: (windowWidth / 60),
-                                            }}>
-                                            {progress == 75 ? LanguageConfiguration.serviceLocation[Configurations.language] : progress == 100 ? LanguageConfiguration.FinishSignup[Configurations.language] : LanguageConfiguration.Signuptext5[Configurations.language]}
-                                        </Text>
-                                    </View>
-                            )
-                        }
+                        </TouchableHighlight>
+                    }
+                </View>
 
 
-
-
-                        {
+                <View style={{
+                    width: '90%',
+                    alignSelf: 'center'
+                }}>
+                    {
+                        !isRegistered &&
+                        (
                             progress == 0 ?
-
-                                <View style={{ marginTop: (windowWidth / 12) }}>
-                                    {
-                                        DocTypes.map((item, index) => {
-                                            return (
-                                                <RenderDocTypes key={index} item={item} index={index} />
-                                            )
-                                        })
-                                    }
+                                <View>
+                                    <Text
+                                        style={{
+                                            textAlign: Configurations.textRotate,
+                                            fontSize: Font.xxxlarge,
+                                            fontFamily: Font.Regular,
+                                            color: Colors.Black,
+                                        }}>
+                                        {LanguageConfiguration.Signuptext1[Configurations.language]}
+                                    </Text>
                                 </View>
                                 :
+                                <View>
+                                    {
+                                        (progress == 25 || progress == 50) &&
+                                        <Text
+                                            style={{
+                                                fontSize: Font.headingblack,
+                                                fontFamily: Font.blackheadingfontfamily,
+                                                textAlign: Configurations.textRotate,
+                                                color: Colors.Black,
+                                            }}>
+                                            {LanguageConfiguration.Signup[Configurations.language]}
+                                        </Text>
+                                    }
+                                    <Text
+                                        style={{
+                                            textAlign: Configurations.textRotate,
+                                            fontSize: progress == 100 ? Font.xxlarge : Font.large,
+                                            fontFamily: Font.Regular,
+                                            color: Colors.Black,
+                                            marginTop: (windowWidth / 60),
+                                        }}>
+                                        {progress == 75 ? LanguageConfiguration.serviceLocation[Configurations.language] : progress == 100 ? LanguageConfiguration.FinishSignup[Configurations.language] : LanguageConfiguration.Signuptext5[Configurations.language]}
+                                    </Text>
+                                </View>
+                        )
+                    }
 
-                                progress == 25 ?
+
+
+
+                    {
+                        progress == 0 ?
+
+                            <View style={{ marginTop: (windowWidth / 12) }}>
+                                {
+                                    DocTypes.map((item, index) => {
+                                        return (
+                                            <RenderDocTypes key={index} item={item} index={index} />
+                                        )
+                                    })
+                                }
+                            </View>
+                            :
+
+                            progress == 25 ?
+                                <View style={{ marginTop: (windowWidth / 12) }}>
+                                    {FirstStep()}
+                                </View>
+                                :
+                                progress == 50 ?
                                     <View style={{ marginTop: (windowWidth / 12) }}>
-                                        {FirstStep()}
+                                        {SecondStep()}
                                     </View>
                                     :
-                                    progress == 50 ?
-                                        <View style={{ marginTop: (windowWidth / 12) }}>
-                                            {SecondStep()}
+                                    progress == 75 ?
+                                        <View style={{ marginTop: 0 }}>
+                                            {ThirdStep()}
                                         </View>
                                         :
-                                        progress == 75 ?
+                                        (progress == 100 && !isRegistered) ?
                                             <View style={{ marginTop: 0 }}>
-                                                {ThirdStep()}
+                                                {FourthStep()}
                                             </View>
                                             :
-                                            (progress == 100 && !isRegistered) ?
+                                            (isRegistered) ?
                                                 <View style={{ marginTop: 0 }}>
-                                                    {FourthStep()}
+                                                    {FinalStep()}
                                                 </View>
                                                 :
-                                                (isRegistered) ?
-                                                    <View style={{ marginTop: 0 }}>
-                                                        {FinalStep()}
-                                                    </View>
-                                                    :
-                                                    null
-                        }
+                                                null
+                    }
 
 
-                    </View>
+                </View>
+
+                {/* </View> */}
 
 
-
-                </KeyboardAwareScrollView>
-            </View>
+            </KeyboardAwareScrollView>
 
             <DateTimePicker
                 dateFormat={"YYYY-MM-DD"}
@@ -1723,6 +1701,20 @@ export default SignupForm = ({ navigation }) => {
                     }
                 }}
             />
+
+            <RegistrationSteps
+                onNext={(val) => {
+                    if (val == 25) {
+                        setProgress(val)
+                    } else {
+                        checkIsValid(val)
+                    }
+                }}
+                progressValue={0.8}
+                loading={classStateData.isLoadingInButton}
+                completed={isRegistered}
+            />
+
         </View>
     );
 }

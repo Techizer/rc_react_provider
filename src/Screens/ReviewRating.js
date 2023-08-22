@@ -16,7 +16,7 @@ export default ReviewRating = ({ navigation, route }) => {
     loginUserData,
     ratings
   } = useSelector(state => state.StorageReducer)
-  
+
   const [isLoading, setIsLoading] = useState(!ratings ? true : false)
 
   useEffect(() => {
@@ -71,8 +71,7 @@ export default ReviewRating = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={'Rating & Review'}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+      />
       <FlatList
         data={(isLoading && !ratings) ? [1, 2, 3, 4, 5, 6, 7] : ratings}
         contentContainerStyle={{
@@ -298,8 +297,8 @@ export default ReviewRating = ({ navigation, route }) => {
           <View style={{
             marginVertical: (mobileW * 1) / 100
           }} />
-        )} 
-        keyExtractor={(i, _i) => ('rr'+_i)}/>
+        )}
+        keyExtractor={(i, _i) => ('rr' + _i)} />
     </View>
 
 

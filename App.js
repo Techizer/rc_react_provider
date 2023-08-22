@@ -57,6 +57,12 @@ const App = (props) => {
 
   const usingHermes = typeof HermesInternal === 'object' && HermesInternal !== null;
 
+  ((Platform.OS === 'android') ? () => {
+    StatusBar.setTranslucent(true)
+    StatusBar.setBackgroundColor('transparent')
+    StatusBar.setBarStyle('dark-content')
+  } : () => { })()
+  
   useEffect(() => {
     // global.deviceTimezone = moment.tz.guess()
     // moment.tz.setDefault(global.deviceTimezone)
@@ -64,6 +70,8 @@ const App = (props) => {
 
   }, [])
 
+
+  
 
   return (
 
@@ -88,27 +96,6 @@ const App = (props) => {
 
 console.log({ DEV: __DEV__ });
 
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: 'white',
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: 'white',
-  },
-  footer: {
-    color: 'black',
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
 
 // export default Sentry.wrap(App);
 export default App;

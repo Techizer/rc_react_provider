@@ -108,7 +108,7 @@ const LabPackageDetails = ({ navigation, route }) => {
 
     API.post(url, data).then((obj) => {
       if (obj.status == true) {
-        console.log({UpdatedLabPackage: obj});
+        console.log({ UpdatedLabPackage: obj });
         MessageFunctions.showSuccess(obj.message)
       } else {
         MessageFunctions.showError(obj.message)
@@ -142,8 +142,7 @@ const LabPackageDetails = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={LanguageConfiguration.PackageDetails[Configurations.language]}
-        style={{ paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0, height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight }} />
-
+      />
       <ScrollView>
         <>
           {labDetailsData != null && labDetailsData != "" && (
@@ -317,11 +316,11 @@ const LabPackageDetails = ({ navigation, route }) => {
                   )}
                   {labDetailsData.task_sub_content != null && (
                     <View
-                    style={{
-                      width: "100%",
-                      alignSelf: "flex-start",
-                      backgroundColor: "#FFF2D9",
-                    }}
+                      style={{
+                        width: "100%",
+                        alignSelf: "flex-start",
+                        backgroundColor: "#FFF2D9",
+                      }}
                     >
                       <Text
                         style={{
