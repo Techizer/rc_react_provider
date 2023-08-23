@@ -55,6 +55,7 @@ const Chat = ({ navigation, route }) => {
     const isNextChatEnabled = getIsAppointmentChatEnabled(appointment?.bookingDate, appointment?.acceptance_status)
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
     const [mediaOptions, setMediaOptions] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
     const [docs, setDocs] = useState([]);
 
     const [attachment, setAttachment] = useState([])
@@ -98,7 +99,8 @@ const Chat = ({ navigation, route }) => {
                         })
                 } else {
                     const roomDetails = documentSnapshot?.data()
-                    // console.log({ roomDetails });
+                    // console.log({ roomDetails: roomDetails.MessageRoomDetails.Provider.IsTyping });
+                    setIsTyping(roomDetails.MessageRoomDetails.Patient.IsTyping)
                     roomDetails?.MessageRoomDetails?.Messages?.reverse()
                     roomDetails?.MessageRoomDetails?.Messages?.forEach((message: any) => {
                         const messageDate = message?.MessageDetails.DateTime?.toDate();
@@ -122,12 +124,12 @@ const Chat = ({ navigation, route }) => {
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
-            () => setIsKeyboardVisible(true)
+            keyboardDidShow
         );
 
         const keyboardDidHideListener = Keyboard.addListener(
             'keyboardDidHide',
-            () => setIsKeyboardVisible(false)
+            keyboardDidHide
         );
 
         return () => {
@@ -135,6 +137,19 @@ const Chat = ({ navigation, route }) => {
             keyboardDidHideListener.remove();
         };
     }, [])
+
+    const keyboardDidShow = async () => {
+        await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Provider.IsTyping': true }).finally(() => {
+
+        })
+    };
+
+    const keyboardDidHide = async () => {
+        await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Provider.IsTyping': false }).finally(()=>{
+            navigation.pop()
+        })
+
+    };
 
     const Galleryopen = () => {
         let tempArr = []
@@ -263,11 +278,10 @@ const Chat = ({ navigation, route }) => {
         let url = Configurations.baseURL + "api-chat-image";
         var data = new FormData();
         for (var i = 0; i < attachment.length; i++) {
-            data.append("chat_image[]", attachment[i]?.data);
+            data.append("chat_image", attachment[i]?.data);
+            data.append("thumbnail", "");
+            data.append("name", "");
         }
-
-        console.log({ msg });
-        console.log({ attachment });
 
 
         API.post(url, data, 1)
@@ -275,9 +289,9 @@ const Chat = ({ navigation, route }) => {
                 if (obj.status == true) {
                     console.log("UploadFile-res...", obj);
                     if (type === 'image') {
-                        msg.MessageDetails.ImagePaths = obj.result
+                        msg.MessageDetails.ImagePaths = obj.result.image
                     } else {
-                        msg.MessageDetails.DocPaths = obj.result
+                        msg.MessageDetails.DocPaths = obj.result.image
                     }
                     await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Messages': firestore.FieldValue.arrayUnion(msg) }).finally(() => {
                         setIsAutoResendable(true)
@@ -370,7 +384,6 @@ const Chat = ({ navigation, route }) => {
                 return updatedMessages;
             });
             setMessageInput('')
-            return
             UploadFile(newMessage)
 
 
@@ -395,7 +408,9 @@ const Chat = ({ navigation, route }) => {
             <ScreenHeader
                 navigation={navigation}
                 leftIcon
-                onBackPress={() => { navigation.goBack() }}
+                onBackPress={() => {
+                    keyboardDidHide()
+                }}
                 renderHeaderWOBack={() => {
                     return (
                         <View style={{
@@ -428,7 +443,7 @@ const Chat = ({ navigation, route }) => {
                                     color: '#8F98A7',
                                     fontFamily: Font.Medium,
                                     fontSize: Font.xsmall
-                                }} allowFontScaling={false}>{`Consultation ID: ${appointment?.order}`}</Text>
+                                }} allowFontScaling={false}>{isTyping ? 'Typing...' : `Consultation ID: ${appointment?.order}`}</Text>
 
                             </View>
 

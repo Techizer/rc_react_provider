@@ -18,6 +18,7 @@ const Button = ({
 }) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.6}
       onPress={onPress}
       disabled={isDisabled}
       style={[((isBlank != undefined && isBlank === true) ? styles.mainContainer1 : styles.mainContainer), {

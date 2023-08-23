@@ -41,13 +41,6 @@ const ChatMessage = ({
                     const { Body, SYSTEM, ImagePaths, DocPaths } = message.MessageDetails
                     const isMine = JSON.parse(message.MessageDetails.SenderID == loginUserData?.user_id)
                     var time = moment(message.MessageDetails.Milliseconds).format('h:mm A')
-
-                    // const Image=()=>{
-
-                    // }
-                    // const Image=()=>{
-
-                    // }
                     return (
                         <View style={{
                             width: '100%',
@@ -57,7 +50,7 @@ const ChatMessage = ({
                             marginBottom: SYSTEM ? vs(8) : vs(5),
                         }}>
                             <View style={{
-                                maxWidth: SYSTEM ? (windowWidth / 1.3) : (windowWidth / 1.6),
+                                maxWidth: SYSTEM ? (windowWidth / 1.3) : (windowWidth / 1.4),
                                 alignItems: SYSTEM ? 'center' : isMine ? 'flex-end' : 'flex-start',
                             }}>
                                 <Pressable
@@ -115,7 +108,7 @@ const ChatMessage = ({
                                                                 />
 
                                                                 <Text
-                                                                numberOfLines={1}
+                                                                    numberOfLines={1}
                                                                     style={{
                                                                         fontSize: Font.small,
                                                                         fontFamily: Font.Regular,
@@ -157,7 +150,7 @@ const ChatMessage = ({
                                                         fontFamily: Font.Regular,
                                                         fontSize: Font.xsmall,
                                                         width: '100%',
-                                                        marginTop: vs(3),
+                                                        marginTop: vs(16),
 
 
                                                     }}>
@@ -168,33 +161,29 @@ const ChatMessage = ({
                                             </View>
                                             :
                                             <>
-                                                <View style={{
-                                                    flexDirection: 'row',
-                                                }}>
-                                                    <Text
-                                                        onTextLayout={onTextLayout}
-                                                        style={{
-                                                            textAlign: SYSTEM ? 'left' : 'left',
-                                                            color: SYSTEM ? '#A47C32' : isMine ? '#FFFFFF' : '#0C1016',
-                                                            fontFamily: Font.Regular,
-                                                            fontSize: SYSTEM ? Font.small : Font.medium,
+                                                <Text
+                                                    onTextLayout={onTextLayout}
+                                                    style={{
+                                                        textAlign: SYSTEM ? 'left' : 'left',
+                                                        color: SYSTEM ? '#A47C32' : isMine ? '#FFFFFF' : '#0C1016',
+                                                        fontFamily: Font.Regular,
+                                                        fontSize: SYSTEM ? Font.small : Font.medium,
 
 
-                                                        }} >{Body}</Text>
+                                                    }} >{Body}</Text>
 
-                                                    {!SYSTEM &&
-                                                        <Text style={{
-                                                            textAlign: 'right',
-                                                            color: isMine ? Colors.white_color : '#8F98A7',
-                                                            fontFamily: Font.Regular,
-                                                            fontSize: Font.xsmall,
-                                                            marginTop: vs(5),
-                                                            alignSelf: 'flex-end'
-                                                        }}>
-                                                            {time}
-                                                        </Text>
-                                                    }
-                                                </View>
+                                                {!SYSTEM &&
+                                                    <Text style={{
+                                                        textAlign: 'right',
+                                                        color: isMine ? Colors.white_color : '#8F98A7',
+                                                        fontFamily: Font.Regular,
+                                                        fontSize: Font.xsmall,
+                                                        marginTop: windowWidth / 40,
+                                                        alignSelf: 'flex-end'
+                                                    }}>
+                                                        {time}
+                                                    </Text>
+                                                }
 
                                                 {/* {
                                                     lengthMore ?

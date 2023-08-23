@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Progress from 'react-native-progress';
 import {
     BallIndicator,
     BarIndicator,
@@ -23,6 +24,7 @@ import Animated, {
 import { Circle, Svg } from 'react-native-svg';
 import { Colors, Font, windowWidth } from '../Helpers/Utils';
 import { Icons } from '../Icons/IReferences';
+import Button from './Button';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -57,16 +59,8 @@ const RegistrationSteps = ({
         },
     });
 
-
-    // useEffect(() => {
-    //     animatedProgress.value = withTiming(progress, {
-    //         duration: 500,
-    //         easing: Easing.linear,
-    //     });
-    // }, [progress]);
-
     useEffect(() => {
-        console.log({progressValue});
+        console.log({ progressValue });
         progress = withTiming(progressValue);
     }, [progressValue]);
 
@@ -74,7 +68,7 @@ const RegistrationSteps = ({
         progress.value,
         [0, 1],
         [0, 300]
-      );
+    );
 
     const animatedProps = useAnimatedProps(() => {
         const normalizedProgress = Math.min(100, Math.max(0, animatedProgress.value));
@@ -87,19 +81,19 @@ const RegistrationSteps = ({
 
     const getProgressBarStyle = () => {
         const interpolatedWidth = interpolate(
-          progressValue,
-          [0, 1],
-          [0, 300] // Change this value to match the desired width
+            progressValue,
+            [0, 1],
+            [0, 300] // Change this value to match the desired width
         );
-    
+
         return useAnimatedStyle(() => {
-          return {
-            width: interpolatedWidth,
-            height: '100%',
-            backgroundColor: 'blue',
-          };
+            return {
+                width: interpolatedWidth,
+                height: '100%',
+                backgroundColor: 'blue',
+            };
         });
-      };
+    };
     return (
         // <View style={styles.container}>
         //     <TouchableOpacity
@@ -167,10 +161,15 @@ const RegistrationSteps = ({
         //     </Svg>
         // </View>
 
-        <View style={styles.progressBar}>
-            <Animated.View style={getProgressBarStyle()} />
-        </View>
+        <>
+           
 
+            <Button
+                text={progress == 100 ? 'FINISH' : 'NEXT'}
+                onPress={() => onNext(progress + 25)}
+                onLoading={loading}
+            />
+        </>
 
     );
 

@@ -7,9 +7,9 @@
 #import <React/RCTRootView.h>
 #import <React/RCTI18nUtil.h>
 #import <Firebase.h>
-#import <AuthenticationServices/AuthenticationServices.h>
-#import <SafariServices/SafariServices.h>
-#import <FBSDKCoreKit/FBSDKCoreKit-swift.h>
+// #import <AuthenticationServices/AuthenticationServices.h>
+// #import <SafariServices/SafariServices.h>
+// #import <FBSDKCoreKit/FBSDKCoreKit-swift.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -39,7 +39,7 @@ static void InitializeFlipper(UIApplication *application) {
   InitializeFlipper(application);
 #endif
      [FIRApp configure];
-    [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+  // [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
    [[RCTI18nUtil sharedInstance] allowRTL:NO];
    [[RCTI18nUtil sharedInstance] forceRTL:NO];

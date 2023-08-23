@@ -1,30 +1,22 @@
-import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform, StyleSheet } from 'react-native';
+import { TouchableHighlight, Keyboard, FlatList, Modal, Text, View, StatusBar, SafeAreaView, ScrollView, TouchableOpacity, Image, Platform, StyleSheet, ActivityIndicator } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Animated, {
-    Easing,
-    useSharedValue,
-    useAnimatedProps,
-    withTiming,
-} from 'react-native-reanimated';
 import { SvgXml, Circle, Svg } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { vs, s } from 'react-native-size-matters';
 import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import RBSheet from "react-native-raw-bottom-sheet";
+import * as Progress from 'react-native-progress';
 
 import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, Media, windowHeight, windowWidth } from '../Helpers/Utils';
-import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
+import { AuthInputBoxSec, DropDownboxSec, Button } from '.'
 import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { _Cross, leftArrow, rightArrow, dummyUser, roundCheck } from '../Icons/SvgIcons/Index';
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import { DocTypes, UserTypes } from '../Helpers/Constants';
-import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
 import { setAppState } from '../Redux/Actions/UserActions';
-import RegistrationSteps from './RegistrationSteps';
 import ListBottomSheet from './ListBottomSheet';
 import { getServiceCountries, getSpecialities } from '../Helpers/APIFunctions';
 import MediaOptions from './MediaOptions';
@@ -57,6 +49,16 @@ export default SignupForm = ({ navigation }) => {
         id_image: null,
         certificate: null,
         scfhs_image: null,
+        emailOTP: '',
+        sendEmailOTP: false,
+        isEmailOTPSent: false,
+        isVerifyingEmail: false,
+        isEmailVerified: false,
+        numberOTP: '',
+        sendNumberOTP: false,
+        isNmbrOTPSent: false,
+        isVerifyingNumber: false,
+        isNmbrVerified: false
     })
     const [progress, setProgress] = useState(0)
     const [dropdown, setDropdown] = useState(-1)
@@ -239,6 +241,103 @@ export default SignupForm = ({ navigation }) => {
                         passRef.current.focus();
                     }}
                 />
+
+                {
+                    classStateData.email != '' &&
+
+                    <View style={{
+                        marginTop: (windowWidth / 35),
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        width: '100%',
+                    }}>
+
+                        {
+                            classStateData.isEmailOTPSent ?
+
+                                <>
+                                    {
+                                        classStateData.isVerifyingEmail ?
+                                            < ActivityIndicator size={'small'} color={Colors.DarkGrey} />
+                                            :
+                                            <TouchableOpacity
+                                                activeOpacity={0.6}
+                                                onPress={() => {
+                                                    VerifyOTP()
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontSize: Font.medium,
+                                                        fontFamily: Font.Medium,
+                                                        color: classStateData?.isEmailVerified ? Colors.Green : Colors.buttoncolorblue
+                                                    }}
+                                                >{classStateData?.isEmailVerified ? 'Verified' : 'Verify OTP'}</Text>
+                                            </TouchableOpacity>
+                                    }
+
+                                    {
+                                        !classStateData.isEmailVerified &&
+                                        <View
+                                            style={{
+                                                width: '22%',
+                                            }}>
+                                            <AuthInputBoxSec
+                                                mainContainer={{
+                                                    width: '100%',
+                                                }}
+                                                inputFieldStyle={{
+                                                    textAlign: 'center',
+                                                    marginBottom: (mobileW * 4) / 100,
+                                                }}
+                                                lableText={'OTP'}
+                                                maxLength={4}
+                                                onChangeText={(text) =>
+                                                    setState({ emailOTP: text })
+                                                }
+                                                value={classStateData.emailOTP}
+                                                keyboardType="number-pad"
+                                                autoCapitalize="none"
+                                                returnKeyType="done"
+                                                onSubmitEditing={() => {
+                                                    Keyboard.dismiss()
+                                                }}
+                                            />
+                                        </View>
+                                    }
+                                </>
+                                :
+
+                                <>
+                                    {
+                                        classStateData.sendEmailOTP == true ?
+                                            <ActivityIndicator size={'small'} color={Colors.DarkGrey} />
+                                            :
+                                            <TouchableOpacity
+                                                activeOpacity={0.6}
+                                                onPress={() => {
+                                                    SendOTP()
+                                                }}
+                                                style={{
+                                                    height: windowHeight / 40,
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontSize: Font.medium,
+                                                        fontFamily: Font.Medium,
+                                                        color: Colors.buttoncolorblue
+                                                    }}
+                                                >{'Send OTP'}</Text>
+                                            </TouchableOpacity>
+                                    }
+                                </>
+                        }
+                    </View>
+                }
+
                 <AuthInputBoxSec
                     mainContainer={{
                         width: '100%',
@@ -371,6 +470,103 @@ export default SignupForm = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
+
+                {
+                    (classStateData.selectedCountry && classStateData.mobile != '') &&
+
+                    <View style={{
+                        marginTop: (windowWidth / 35),
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        width: '100%',
+                    }}>
+
+                        {
+                            classStateData.isNmbrOTPSent ?
+
+                                <>
+                                    {
+                                        classStateData.isVerifyingNumber ?
+                                            < ActivityIndicator size={'small'} color={Colors.DarkGrey} />
+                                            :
+                                            <TouchableOpacity
+                                                activeOpacity={0.6}
+                                                onPress={() => {
+                                                    VerifyOTP()
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontSize: Font.medium,
+                                                        fontFamily: Font.Medium,
+                                                        color: classStateData?.isNmbrVerified ? Colors.Green : Colors.buttoncolorblue
+                                                    }}
+                                                >{classStateData?.isNmbrVerified ? 'Verified' : 'Verify OTP'}</Text>
+                                            </TouchableOpacity>
+                                    }
+
+                                    {
+                                        !classStateData.isNmbrVerified &&
+                                        <View
+                                            style={{
+                                                width: '22%',
+                                            }}>
+                                            <AuthInputBoxSec
+                                                mainContainer={{
+                                                    width: '100%',
+                                                }}
+                                                inputFieldStyle={{
+                                                    textAlign: 'center',
+                                                    marginBottom: (mobileW * 4) / 100,
+                                                }}
+                                                lableText={'OTP'}
+                                                maxLength={4}
+                                                onChangeText={(text) =>
+                                                    setState({ numberOTP: text })
+                                                }
+                                                value={classStateData.numberOTP}
+                                                keyboardType="number-pad"
+                                                autoCapitalize="none"
+                                                returnKeyType="done"
+                                                onSubmitEditing={() => {
+                                                    Keyboard.dismiss()
+                                                }}
+                                            />
+                                        </View>
+                                    }
+                                </>
+                                :
+
+                                <>
+                                    {
+                                        classStateData.sendNumberOTP == true ?
+                                            <ActivityIndicator size={'small'} color={Colors.DarkGrey} />
+                                            :
+                                            <TouchableOpacity
+                                                activeOpacity={0.6}
+                                                onPress={() => {
+                                                    SendOTP()
+                                                }}
+                                                style={{
+                                                    height: windowHeight / 40,
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontSize: Font.medium,
+                                                        fontFamily: Font.Medium,
+                                                        color: Colors.buttoncolorblue
+                                                    }}
+                                                >{'Send OTP'}</Text>
+                                            </TouchableOpacity>
+                                    }
+                                </>
+                        }
+                    </View>
+                }
+
 
                 {
                     classStateData.userType.value != 'lab' &&
@@ -1187,7 +1383,7 @@ export default SignupForm = ({ navigation }) => {
         var digits = classStateData.id.toString().split('');
         var realDigits = digits.map(Number)
 
-        if (val == 50) {
+        if (val == 25) {
             if (classStateData.userType == null) {
                 MessageFunctions.showError(MessageTexts.emptyUsertype[Configurations.language])
                 return false;
@@ -1202,11 +1398,12 @@ export default SignupForm = ({ navigation }) => {
                 MessageFunctions.showError('Please select your speciality')
                 return false;
             } else {
-                setProgress(val)
+                setProgress(val + 25)
 
             }
         }
-        if (val == 75) {
+
+        if (val == 50) {
             if (classStateData.name.length <= 0 || classStateData.name.trim().length <= 0) {
                 MessageFunctions.showError(MessageTexts.emptyFirstName[Configurations.language])
                 conditionsFailed = true;
@@ -1253,14 +1450,19 @@ export default SignupForm = ({ navigation }) => {
                 conditionsFailed = true;
                 return
             }
+            if (!classStateData.isEmailVerified) {
+                MessageFunctions.showError('Please verify your email.')
+                conditionsFailed = true;
+                return
+            }
             if (conditionsFailed) {
                 return false;
             } else {
-                setProgress(val)
+                setProgress(val + 25)
             }
         }
 
-        if (val == 100) {
+        if (val == 75) {
             console.log(classStateData.gender);
             if (classStateData.selectedCountry == null) {
                 MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
@@ -1302,15 +1504,20 @@ export default SignupForm = ({ navigation }) => {
                 conditionsFailed = true;
                 return
             }
+            if (!classStateData.isNmbrVerified) {
+                MessageFunctions.showError('Please verify your number.')
+                conditionsFailed = true;
+                return
+            }
 
             if (conditionsFailed) {
                 return false;
             } else {
-                setProgress(val)
+                setProgress(val + 25)
             }
         }
 
-        if (val == 125) {
+        if (val == 100) {
             if (classStateData.userType.value == "lab") {
                 if (classStateData.hosp_moh_lic_no.length <= 0 || classStateData.hosp_moh_lic_no.trim().length <= 0) {
                     MessageFunctions.showError("Please enter MOH license number")
@@ -1418,6 +1625,144 @@ export default SignupForm = ({ navigation }) => {
         return true
     }
 
+    const SendOTP = async () => {
+        let conditionsFailed = false;
+        let regemail = '';
+        let phone_number = '';
+        if (progress == 50) {
+            regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        } else if (progress == 75) {
+            phone_number = classStateData.selectedCountry.value + classStateData.mobile
+        }
+        Keyboard.dismiss()
+
+        if (progress == 50 && regemail.test(classStateData.email.trim()) !== true) {
+            MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
+            conditionsFailed = true;
+            return
+        }
+
+        if (progress == 75 && !!!phone_number) {
+            MessageFunctions.showError('Please enter your number')
+            conditionsFailed = true;
+            return
+        }
+
+        if (conditionsFailed) {
+            return false
+        } else {
+            if (progress == 50) {
+                setState({ sendEmailOTP: true })
+            } else {
+                setState({ sendNumberOTP: true })
+            }
+
+            let url = Configurations.baseURL + "api-send-otp";
+            var data = new FormData();
+            if (progress == 50) {
+                data.append('otptype', 'email')
+                data.append('emailId', classStateData.email)
+            } else {
+                data.append('otptype', 'mobile')
+                data.append('phone_number', phone_number)
+                data.append('work_area', classStateData.selectedCountry.name)
+            }
+
+            console.log(data._parts);
+            API.post(url, data, 1).then((obj) => {
+
+                console.log('Send OTP Response', obj)
+                if (obj.status == true) {
+                    if (progress == 50) {
+                        setState({ isEmailOTPSent: true })
+                        MessageFunctions.showSuccess('OTP sent to your email')
+                    } else {
+                        setState({ isNmbrOTPSent: true })
+                        MessageFunctions.showSuccess('OTP sent to your number')
+                    }
+                } else {
+                    MessageFunctions.showError(obj?.message)
+                }
+            }).catch((error) => {
+                console.log("Send OTP-error ------- ", error)
+            }).finally(() => {
+                if (progress == 50) {
+                    setState({ sendEmailOTP: false })
+                } else {
+                    setState({ sendNumberOTP: false })
+                }
+            })
+        }
+
+
+    }
+
+    const VerifyOTP = async () => {
+        let conditionsFailed = false;
+        Keyboard.dismiss()
+        let phone_number = '';
+
+        if (progress == 50 && (classStateData.emailOTP == '' || !!!classStateData.emailOTP)) {
+            MessageFunctions.showError('Please enter OTP sent to your email.')
+            conditionsFailed = true;
+            return
+        }
+        if (progress == 75 && (classStateData.numberOTP == '' || !!!classStateData.numberOTP)) {
+            MessageFunctions.showError('Please enter OTP sent to your number.')
+            conditionsFailed = true;
+            return
+        }
+
+
+        if (conditionsFailed) {
+            return false
+        } else {
+            if (progress == 50) {
+                setState({ isVerifyingEmail: true })
+            } else {
+                phone_number = classStateData.selectedCountry.value + classStateData.mobile
+                setState({ isVerifyingNumber: true })
+            }
+
+            let url = Configurations.baseURL + "api-verification";
+            var data = new FormData();
+            if (progress == 50) {
+                data.append('otptype', 'email')
+                data.append('emailId', classStateData.email)
+                data.append('code', classStateData.emailOTP)
+            } else {
+                data.append('otptype', 'mobile')
+                data.append('phone_number', phone_number)
+                data.append('code', numberOTP)
+            }
+
+            API.post(url, data, 1).then((obj) => {
+
+                console.log('Verify OTP Response', obj)
+                if (obj.status == true) {
+                    if (progress == 50) {
+                        setState({ isVerifyingEmail: false, isEmailVerified: true })
+                    } else {
+                        setState({ isVerifyingNumber: false, isNmbrVerified: true })
+                        MessageFunctions.showSuccess('OTP sent to your number')
+                    }
+                } else {
+                    MessageFunctions.showError(obj?.message)
+                }
+            }).catch((error) => {
+                console.log("Send OTP-error ------- ", error)
+            }).finally(() => {
+                if (progress == 50) {
+                    setState({ isVerifyingEmail: false })
+                } else {
+                    setState({ isVerifyingNumber: false })
+                }
+            })
+        }
+
+
+    }
+
     const onSignup = async () => {
         Keyboard.dismiss()
         const isValid = checkIsValid()
@@ -1505,7 +1850,26 @@ export default SignupForm = ({ navigation }) => {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: Colors.white_color, paddingTop: insets.top, paddingBottom: (insets.bottom) }}>
+        <View
+            pointerEvents={classStateData.isLoadingInButton ? 'none' : 'auto'}
+            style={{ flex: 1, backgroundColor: Colors.white_color, paddingTop: insets.top, paddingBottom: (insets.bottom) }}>
+
+
+
+            <View style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingHorizontal: '5%'
+            }}>
+                <Progress.Bar color={Colors.buttoncolorblue} progress={(progress >= 25) ? 1 : 0} width={windowWidth / 4.7} />
+                <Progress.Bar color={Colors.buttoncolorblue} progress={progress >= 50 ? 1 : 0} width={windowWidth / 4.7} />
+                <Progress.Bar color={Colors.buttoncolorblue} progress={progress >= 75 ? 1 : 0} width={windowWidth / 4.7} />
+                <Progress.Bar color={Colors.buttoncolorblue} progress={progress >= 100 ? 1 : 0} width={windowWidth / 4.7} />
+
+            </View>
+
 
             <KeyboardAwareScrollView
                 // keyboardOpeningTime={200}
@@ -1548,6 +1912,14 @@ export default SignupForm = ({ navigation }) => {
                             onPress={() => {
                                 if (progress != 0) {
                                     setProgress(pre => pre - 25)
+                                    if (progress == 50 || progress == 75) {
+                                        setState({
+                                            sendEmailOTP: false,
+                                            sendNumberOTP: false,
+                                            isVerifyingEmail: false,
+                                            isVerifyingNumber: false
+                                        })
+                                    }
                                 } else {
                                     navigation.pop()
                                 }
@@ -1702,18 +2074,29 @@ export default SignupForm = ({ navigation }) => {
                 }}
             />
 
-            <RegistrationSteps
-                onNext={(val) => {
-                    if (val == 25) {
-                        setProgress(val)
-                    } else {
-                        checkIsValid(val)
-                    }
-                }}
-                progressValue={0.8}
-                loading={classStateData.isLoadingInButton}
-                completed={isRegistered}
-            />
+            <View
+                style={{
+                    width: "100%",
+                    position: 'absolute',
+                    bottom: 0,
+                    paddingHorizontal: 13,
+                    backgroundColor: Colors.white_color,
+                    paddingTop: (windowWidth * 2) / 100,
+                    paddingBottom: Platform.OS == 'ios' ? insets.bottom - 15 : (windowWidth * 2) / 100,
+                    alignItems: "center",
+                }}>
+                <Button
+                    text={classStateData.isRegistered ? 'COMPLETED' : progress == 100 ? 'FINISH' : 'NEXT'}
+                    onPress={() => {
+                        if (progress == 0) {
+                            setProgress(25)
+                        } else {
+                            checkIsValid(progress)
+                        }
+                    }}
+                    onLoading={classStateData.isLoadingInButton}
+                />
+            </View>
 
         </View>
     );
