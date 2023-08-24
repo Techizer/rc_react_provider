@@ -35,7 +35,7 @@ import OTP from '../Screens/OTP';
 import ServiceAddress from '../Screens/ServiceAddress';
 import { ScreenReferences } from './ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
-import { onUserLogout, setAppState, setLastScreen, setVideoCall, setVideoCallData, setVideoCallStatus } from '../Redux/Actions/UserActions';
+import { DeviceConnection, onUserLogout, setAppState, setLastScreen, setVideoCall, setVideoCallData, setVideoCallStatus } from '../Redux/Actions/UserActions';
 import { NavigationContainer } from '@react-navigation/native';
 import { useRef } from 'react';
 import Chat from '../Screens/Chat';
@@ -355,6 +355,9 @@ const MainStack = navigation => {
   }, []);
 
   useEffect(() => {
+    NetInfo.fetch().then(state => {
+      dispatch(DeviceConnection(state.isConnected))
+    });
     const checkConnectivity = NetInfo.addEventListener(state => {
       Network(state)
     });

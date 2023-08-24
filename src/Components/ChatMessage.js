@@ -41,6 +41,7 @@ const ChatMessage = ({
                     const { Body, SYSTEM, ImagePaths, DocPaths } = message.MessageDetails
                     const isMine = JSON.parse(message.MessageDetails.SenderID == loginUserData?.user_id)
                     var time = moment(message.MessageDetails.Milliseconds).format('h:mm A')
+
                     return (
                         <View style={{
                             width: '100%',
@@ -86,11 +87,19 @@ const ChatMessage = ({
                                                             <View style={{
                                                                 height: (windowWidth / 4.4),
                                                                 width: '100%',
+                                                                justifyContent:'center',
+                                                                alignItems:'center'
                                                             }}>
-                                                                <Image
+                                                                {/* <Image
                                                                     source={{ uri: DocPaths[1] }}
                                                                     style={{ height: '100%', width: '100%', borderTopLeftRadius: 8, borderTopRightRadius: 8, }}
                                                                     resizeMode='cover'
+                                                                /> */}
+
+                                                                <Image
+                                                                    source={Icons.Pdf}
+                                                                    style={{ height: '90%', width: '90%', alignSelf:'center' }}
+                                                                    resizeMode='contain'
                                                                 />
 
                                                             </View>
@@ -99,13 +108,8 @@ const ChatMessage = ({
                                                                 flexDirection: 'row',
                                                                 height: '30%',
                                                                 alignItems: 'center',
-                                                                paddingHorizontal: '3%'
                                                             }}>
-                                                                <Image
-                                                                    source={Icons.Pdf}
-                                                                    style={{ height: 22, width: 22, }}
-                                                                    resizeMode='contain'
-                                                                />
+
 
                                                                 <Text
                                                                     numberOfLines={1}
@@ -113,7 +117,7 @@ const ChatMessage = ({
                                                                         fontSize: Font.small,
                                                                         fontFamily: Font.Regular,
                                                                         paddingHorizontal: '3%'
-                                                                    }}>{DocPaths[2]}</Text>
+                                                                    }}>{DocPaths[1]}</Text>
                                                             </View>
                                                         </View>
                                                         :

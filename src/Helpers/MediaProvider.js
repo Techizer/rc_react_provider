@@ -47,7 +47,7 @@ class MediaProvider {
       return new Promise((resolve, reject) => {
          ImagePicker.openPicker({
             mediaType: 'photo',
-            cropping: false,
+            cropping: true,
             includeBase64: true,
             includeExif: true,
             compressImageQuality: 0.5,

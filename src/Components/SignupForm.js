@@ -1474,6 +1474,12 @@ export default SignupForm = ({ navigation }) => {
                 conditionsFailed = true;
                 return
             }
+            if (classStateData.mobile.length < 9 || classStateData.mobile.trim().length < 9) {
+                MessageFunctions.showError('Invalid Number')
+                conditionsFailed = true;
+                return
+            }
+
             if (classStateData.selectedCountry.title == 'UAE') {
                 if (realDigits[0] == 0 || realDigits[0] == 1 || realDigits[0] == 2 || realDigits[0] == 3 || realDigits[0] == 4 || realDigits[0] == 5 || realDigits[0] == 6 || realDigits[0] == 8 || realDigits[0] == 9) {
                     MessageFunctions.showError(MessageTexts.validIDnumberUAE[Configurations.language])
@@ -1626,6 +1632,7 @@ export default SignupForm = ({ navigation }) => {
     }
 
     const SendOTP = async () => {
+        console.log({progress});
         let conditionsFailed = false;
         let regemail = '';
         let phone_number = '';
@@ -1642,8 +1649,21 @@ export default SignupForm = ({ navigation }) => {
             return
         }
 
-        if (progress == 75 && !!!phone_number) {
-            MessageFunctions.showError('Please enter your number')
+        if (progress==75 && classStateData.selectedCountry == null) {
+            console.log('if');
+            MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
+            conditionsFailed = true;
+            return
+        }
+        if (progress==75 && (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0)) {
+            console.log('iffff');
+            MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
+            conditionsFailed = true;
+            return
+        }
+        if (progress==75 && (classStateData.mobile.length < 9 || classStateData.mobile.trim().length < 9)) {
+            console.log('iffff');
+            MessageFunctions.showError('Invalid Number')
             conditionsFailed = true;
             return
         }
@@ -1733,7 +1753,7 @@ export default SignupForm = ({ navigation }) => {
             } else {
                 data.append('otptype', 'mobile')
                 data.append('phone_number', phone_number)
-                data.append('code', numberOTP)
+                data.append('code', classStateData.numberOTP)
             }
 
             API.post(url, data, 1).then((obj) => {
@@ -1861,7 +1881,8 @@ export default SignupForm = ({ navigation }) => {
                 width: '100%',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingHorizontal: '5%'
+                paddingHorizontal: '5%',
+                marginTop: windowWidth / 20
             }}>
                 <Progress.Bar color={Colors.buttoncolorblue} progress={(progress >= 25) ? 1 : 0} width={windowWidth / 4.7} />
                 <Progress.Bar color={Colors.buttoncolorblue} progress={progress >= 50 ? 1 : 0} width={windowWidth / 4.7} />

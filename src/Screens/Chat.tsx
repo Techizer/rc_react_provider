@@ -145,8 +145,8 @@ const Chat = ({ navigation, route }) => {
     };
 
     const keyboardDidHide = async () => {
-        await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Provider.IsTyping': false }).finally(()=>{
-            navigation.pop()
+        await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Provider.IsTyping': false }).finally(() => {
+
         })
 
     };
@@ -252,13 +252,8 @@ const Chat = ({ navigation, route }) => {
                     uri: res[0].uri,
                 }
             };
-            const result = await GetThumbnail(res[0].fileCopyUri)
-            source = {
-                data: {
-                    ...source.data
-                },
-                thumbnail: result.uri
-            }
+            // const result = await GetThumbnail(res[0].fileCopyUri)
+
             tempArr.push(source)
             setAttachment(tempArr)
             setType('pdf')
@@ -280,7 +275,7 @@ const Chat = ({ navigation, route }) => {
         for (var i = 0; i < attachment.length; i++) {
             data.append("chat_image", attachment[i]?.data);
             data.append("thumbnail", "");
-            data.append("name", "");
+            data.append("name", attachment[i]?.data.name);
         }
 
 
@@ -289,10 +284,11 @@ const Chat = ({ navigation, route }) => {
                 if (obj.status == true) {
                     console.log("UploadFile-res...", obj);
                     if (type === 'image') {
-                        msg.MessageDetails.ImagePaths = obj.result.image
+                        msg.MessageDetails.ImagePaths = [obj.result.image]
                     } else {
-                        msg.MessageDetails.DocPaths = obj.result.image
+                        msg.MessageDetails.DocPaths = [obj.result.image, msg.MessageDetails.DocPaths[1]]
                     }
+
                     await firestore().collection(`Chats-${Configurations.mode}`).doc(appointment?.order).update({ 'MessageRoomDetails.Messages': firestore.FieldValue.arrayUnion(msg) }).finally(() => {
                         setIsAutoResendable(true)
                     })
@@ -355,7 +351,7 @@ const Chat = ({ navigation, route }) => {
             const newMessage = new Message({
                 Body: messageInput,
                 DateTime: new Date(),
-                DocPaths: type === 'pdf' ? [attachment[0].data.uri, attachment[0].thumbnail, attachment[0]?.data.name] : [],
+                DocPaths: type === 'pdf' ? [attachment[0].data.uri, attachment[0]?.data.name] : [],
                 ImagePaths: type === 'image' ? [attachment[0].data.uri] : [],
                 Milliseconds: moment().valueOf(),
                 NumChars: messageInput.length,
@@ -410,6 +406,7 @@ const Chat = ({ navigation, route }) => {
                 leftIcon
                 onBackPress={() => {
                     keyboardDidHide()
+                    navigation.pop()
                 }}
                 renderHeaderWOBack={() => {
                     return (
@@ -442,7 +439,8 @@ const Chat = ({ navigation, route }) => {
                                 <Text style={{
                                     color: '#8F98A7',
                                     fontFamily: Font.Medium,
-                                    fontSize: Font.xsmall
+                                    fontSize: Font.xsmall,
+                                    fontStyle: isTyping ? 'italic' : 'normal'
                                 }} allowFontScaling={false}>{isTyping ? 'Typing...' : `Consultation ID: ${appointment?.order}`}</Text>
 
                             </View>
@@ -481,7 +479,7 @@ const Chat = ({ navigation, route }) => {
                 }}>
 
                     {
-                        isEnabled ?
+                        !isEnabled ?
                             <Button
                                 text={'FOLLOW UP CONSULTATION'}
                                 btnStyle={{ backgroundColor: Colors.orange }}
@@ -598,11 +596,11 @@ const Chat = ({ navigation, route }) => {
                                             }}>
                                             <View
                                                 style={{
-                                                    width: (windowWidth * 4.9) / 100,
-                                                    height: (windowWidth * 4.9) / 100,
+                                                    width: '100%',
+                                                    height: windowWidth / 20,
                                                     borderRadius: (windowWidth * 20) / 100,
                                                     justifyContent: 'center',
-                                                    alignItems: 'center'
+                                                    alignItems: 'center',
                                                 }}>
                                                 <SvgXml xml={Attachment} width={(windowWidth * 4.5) / 100} height={(windowWidth * 4.5) / 100} />
                                             </View>

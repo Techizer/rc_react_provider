@@ -25,12 +25,14 @@ global.myLongitude = 'NA';
 
 export default Login = ({ navigation, route }) => {
 
+  const { shouldAutoLogin, userEmail, userPassword } = useSelector(state => state.StorageReducer)
+
   const [classStateData, setClassStateData] = useState({
     isSecurePassword: true,
-    email: '',
-    password: '',
+    email: userEmail,
+    password: userPassword,
     device_lang: 'AR',
-    isRememberChecked: false,
+    isRememberChecked: shouldAutoLogin,
     isLoadingInButton: false,
   })
 
@@ -77,7 +79,7 @@ export default Login = ({ navigation, route }) => {
 
   const checkIsValid = () => {
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    
+
     if (classStateData?.email.trim().length <= 0) {
       MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
       return false;
@@ -346,7 +348,7 @@ export default Login = ({ navigation, route }) => {
                       isSecurePassword: !classStateData?.isSecurePassword,
                     })
                   }}
-                  onSubmitEditing={()=>Keyboard.dismiss()}
+                  onSubmitEditing={() => Keyboard.dismiss()}
                 />
 
               </View>
@@ -466,7 +468,7 @@ export default Login = ({ navigation, route }) => {
         </KeyboardAwareScrollView>
       </ScrollView>
 
-   
+
     </GestureRecognizer>
   );
 

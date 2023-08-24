@@ -426,6 +426,7 @@ const AppointmentItem = ({
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     onPress={() => {
+                                        console.log({deviceConnection});
                                         if (!deviceConnection) {
                                             dispatch(setNoInternet(true))
                                         } else {
