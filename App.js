@@ -94,8 +94,5 @@ const App = (props) => {
 
 }
 
-console.log({ DEV: __DEV__ });
-
-
 // export default Sentry.wrap(App);
 export default App;

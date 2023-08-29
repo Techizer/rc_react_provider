@@ -3,11 +3,21 @@ def REACT_NATIVE_VERSION = new File(['node', '--print', "JSON.parse(require('fs'
 buildscript {
     ext {
         buildToolsVersion = "30.0.3"
-        minSdkVersion = 21
-        compileSdkVersion = 32
-        targetSdkVersion = 32
+        minSdkVersion = 23
+        compileSdkVersion = 33
+        targetSdkVersion = 33
         ndkVersion = "20.1.5948944"
         kotlinVersion = '1.5.30'
+    }
+    subprojects { subproject ->
+        afterEvaluate{
+            if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+                android {
+                    compileSdkVersion rootProject.ext.compileSdkVersion
+     buildToolsVersion rootProject.ext.buildToolsVersion
+                }
+            }
+        }
     }
     repositories {
         google()

@@ -874,17 +874,8 @@ export default EditProfile = ({ navigation, route }) => {
   return (
     //
     <View style={{ flex: 1 }}>
-      <SafeAreaView
-        style={{ backgroundColor: Colors.statusbar_color, flex: 0 }}
-      />
 
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={Colors.statusbarcolor}
-        hidden={false}
-        translucent={false}
-        networkActivityIndicatorVisible={true}
-      />
+      
 
       {
         (classStateData.isDatePickerVisibletwo && user_type == "lab") ?
@@ -1197,7 +1188,7 @@ export default EditProfile = ({ navigation, route }) => {
                 fontFamily: Font.headingfontfamily,
                 color: Colors.placeholder_text,
               }}>
-              {LanguageConfiguration.selectcountrytitle[Configurations.language]}
+              {LanguageConfiguration.CC_code[Configurations.language]}
             </Text>
           </View>
 

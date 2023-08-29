@@ -195,30 +195,30 @@ export default Home = ({ navigation, route }) => {
     API
       .post(url, data, 1)
       .then((completionData) => {
-        // console.log({ completionData });
+        // console.log({ completionData:completionData?.result?.pending_appointment });
 
         if (profileCompletion?.total_complete != completionData?.result?.total_complete) {
           dispatch(setProfileCompletionData(completionData?.result))
         }
-        state.HomeHealthcareServiceAppointments[0].actionColor = '#FFD553'
-        state.HomeHealthcareServiceAppointments[0].actionTextColor = '#886701'
-        state.HomeHealthcareServiceAppointments[0].actionMessage = completionData?.result?.pending_appointment
+        state.HomeHealthcareServiceAppointments[1].actionColor = '#FFD553'
+        state.HomeHealthcareServiceAppointments[1].actionTextColor = '#886701'
+        state.HomeHealthcareServiceAppointments[1].actionMessage = completionData?.result?.pending_appointment
 
-        state.HomeHealthcareServiceAppointments[1].actionColor = completionData?.result?.availability_schedule == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[1].actionTextColor = completionData?.result?.availability_schedule == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[1].actionMessage = completionData?.result?.availability_schedule == 0 ? 'Incomplete Setup' : 'Completed'
+        state.HomeHealthcareServiceAppointments[2].actionColor = completionData?.result?.availability_schedule == 0 ? '#EB8C8C' : '#86D348'
+        state.HomeHealthcareServiceAppointments[2].actionTextColor = completionData?.result?.availability_schedule == 0 ? '#900000' : '#347401'
+        state.HomeHealthcareServiceAppointments[2].actionMessage = completionData?.result?.availability_schedule == 0 ? 'Incomplete Setup' : 'Completed'
 
-        state.HomeHealthcareServiceAppointments[2].actionColor = completionData?.result?.price_section == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[2].actionTextColor = completionData?.result?.price_section == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[2].actionMessage = completionData?.result?.price_section == 0 ? 'Incomplete Setup' : 'Completed'
+        state.HomeHealthcareServiceAppointments[3].actionColor = completionData?.result?.price_section == 0 ? '#EB8C8C' : '#86D348'
+        state.HomeHealthcareServiceAppointments[3].actionTextColor = completionData?.result?.price_section == 0 ? '#900000' : '#347401'
+        state.HomeHealthcareServiceAppointments[3].actionMessage = completionData?.result?.price_section == 0 ? 'Incomplete Setup' : 'Completed'
 
-        state.HomeHealthcareServiceAppointments[3].actionColor = completionData?.result?.address == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[3].actionTextColor = completionData?.result?.address == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[3].actionMessage = completionData?.result?.address == 0 ? 'Incomplete Setup' : 'Completed'
+        state.HomeHealthcareServiceAppointments[4].actionColor = completionData?.result?.address == 0 ? '#EB8C8C' : '#86D348'
+        state.HomeHealthcareServiceAppointments[4].actionTextColor = completionData?.result?.address == 0 ? '#900000' : '#347401'
+        state.HomeHealthcareServiceAppointments[4].actionMessage = completionData?.result?.address == 0 ? 'Incomplete Setup' : 'Completed'
 
-        state.HomeHealthcareServiceAppointments[5].actionColor = completionData?.result?.profile_section == 0 ? '#EB8C8C' : '#86D348'
-        state.HomeHealthcareServiceAppointments[5].actionTextColor = completionData?.result?.profile_section == 0 ? '#900000' : '#347401'
-        state.HomeHealthcareServiceAppointments[5].actionMessage = completionData?.result?.profile_section == 0 ? 'Incomplete Setup' : 'Completed'
+        // state.HomeHealthcareServiceAppointments[5].actionColor = completionData?.result?.profile_section == 0 ? '#EB8C8C' : '#86D348'
+        // state.HomeHealthcareServiceAppointments[5].actionTextColor = completionData?.result?.profile_section == 0 ? '#900000' : '#347401'
+        // state.HomeHealthcareServiceAppointments[5].actionMessage = completionData?.result?.profile_section == 0 ? 'Incomplete Setup' : 'Completed'
 
 
         setState(prev => ({

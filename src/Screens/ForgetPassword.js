@@ -75,9 +75,6 @@ export default ForgetPassword = ({ navigation, route }) => {
       <KeyboardAwareScrollView>
 
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <SafeAreaView
-            style={{ backgroundColor: Colors.statusbarcolor, flex: 0 }}
-          />
 
           <StatusBar
             barStyle="dark-content"

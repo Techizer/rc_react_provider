@@ -58,7 +58,9 @@ export default SignupForm = ({ navigation }) => {
         sendNumberOTP: false,
         isNmbrOTPSent: false,
         isVerifyingNumber: false,
-        isNmbrVerified: false
+        isNmbrVerified: false,
+        isTerms: false,
+        isPolicy: false,
     })
     const [progress, setProgress] = useState(0)
     const [dropdown, setDropdown] = useState(-1)
@@ -1215,6 +1217,148 @@ export default SignupForm = ({ navigation }) => {
                 }
 
 
+                <View style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: windowWidth / 10
+                }}>
+
+                    <View style={{ width: 30 }}>
+                        <TouchableOpacity
+                            activeOpacity={0.9}
+                            style={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: 5,
+                                borderWidth: classStateData.isTerms ? 0 : 0.5,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: classStateData.isTerms ? Colors.buttoncolorblue : Colors.white_color
+                            }}
+                            onPress={() => {
+                                setState({
+                                    isTerms: !classStateData.isTerms
+                                })
+                            }}>
+                            {
+                                classStateData.isTerms &&
+                                <Image
+                                    style={{
+                                        height: 12,
+                                        width: 12,
+                                        resizeMode: 'contain',
+                                        tintColor: 'white'
+                                    }}
+                                    source={Icons.Tick}></Image>
+                            }
+
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text
+                            style={{
+                                color: Colors.regulartextcolor,
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                            }}>
+                            {`I've read and agreed on `}
+
+                        </Text>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => {
+                                navigation.navigate(ScreenReferences.TermsAndConditions, {
+                                    contantpage: 2,
+                                    content: Configurations.term_url_eng,
+                                    content_ar: Configurations.term_url_ar
+
+                                });
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: Colors.buttoncolorblue,
+                                    fontFamily: Font.Medium,
+                                    fontSize: Font.Remember,
+                                }}>
+                                {`Terms of Service`}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: windowWidth / 30
+                }}>
+
+                    <View style={{ width: 30 }}>
+                        <TouchableOpacity
+                            activeOpacity={0.9}
+                            style={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: 5,
+                                borderWidth: classStateData.isPolicy ? 0 : 0.5,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: classStateData.isPolicy ? Colors.buttoncolorblue : Colors.white_color
+                            }}
+                            onPress={() => {
+                                setState({
+                                    isPolicy: !classStateData.isPolicy
+                                })
+                            }}>
+                            {
+                                classStateData.isPolicy &&
+                                <Image
+                                    style={{
+                                        height: 12,
+                                        width: 12,
+                                        resizeMode: 'contain',
+                                        tintColor: 'white'
+                                    }}
+                                    source={Icons.Tick}></Image>
+                            }
+
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text
+                            style={{
+                                color: Colors.regulartextcolor,
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
+                            }}>
+                            {`I've read and agreed on `}
+
+                        </Text>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => {
+                                navigation.navigate(ScreenReferences.TermsAndConditions, {
+                                    contantpage: 1,
+                                    content: Configurations.privacy_url_eng, content_ar: Configurations.privacy_url_ar
+                                });
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: Colors.buttoncolorblue,
+                                    fontFamily: Font.Medium,
+                                    fontSize: Font.Remember,
+                                }}>
+                                {`Privacy Policy`}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
             </>
         )
     }
@@ -1505,6 +1649,7 @@ export default SignupForm = ({ navigation }) => {
                     return
                 }
             }
+
             if (classStateData.profileImage == null) {
                 MessageFunctions.showError("Please add a professional photo")
                 conditionsFailed = true;
@@ -1621,6 +1766,19 @@ export default SignupForm = ({ navigation }) => {
                     }
                 }
             }
+
+            if (!classStateData.isTerms) {
+                MessageFunctions.showError('Please agree to our Terms & Conditions')
+                conditionsFailed = true;
+                return
+            }
+
+            if (!classStateData.isPolicy) {
+                MessageFunctions.showError('Please agree to our Privacy Policies')
+                conditionsFailed = true;
+                return
+            }
+
             if (conditionsFailed) {
                 return false;
             } else {
@@ -1632,7 +1790,7 @@ export default SignupForm = ({ navigation }) => {
     }
 
     const SendOTP = async () => {
-        console.log({progress});
+        console.log({ progress });
         let conditionsFailed = false;
         let regemail = '';
         let phone_number = '';
@@ -1649,19 +1807,19 @@ export default SignupForm = ({ navigation }) => {
             return
         }
 
-        if (progress==75 && classStateData.selectedCountry == null) {
+        if (progress == 75 && classStateData.selectedCountry == null) {
             console.log('if');
             MessageFunctions.showError(MessageTexts.emptyCountrycode[Configurations.language])
             conditionsFailed = true;
             return
         }
-        if (progress==75 && (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0)) {
+        if (progress == 75 && (classStateData.mobile.length <= 0 || classStateData.mobile.trim().length <= 0)) {
             console.log('iffff');
             MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
             conditionsFailed = true;
             return
         }
-        if (progress==75 && (classStateData.mobile.length < 9 || classStateData.mobile.trim().length < 9)) {
+        if (progress == 75 && (classStateData.mobile.length < 9 || classStateData.mobile.trim().length < 9)) {
             console.log('iffff');
             MessageFunctions.showError('Invalid Number')
             conditionsFailed = true;
@@ -1704,6 +1862,7 @@ export default SignupForm = ({ navigation }) => {
                     MessageFunctions.showError(obj?.message)
                 }
             }).catch((error) => {
+                MessageFunctions.showError('Something went wrong, please try again later.')
                 console.log("Send OTP-error ------- ", error)
             }).finally(() => {
                 if (progress == 50) {
@@ -2109,11 +2268,16 @@ export default SignupForm = ({ navigation }) => {
                 <Button
                     text={classStateData.isRegistered ? 'COMPLETED' : progress == 100 ? 'FINISH' : 'NEXT'}
                     onPress={() => {
-                        if (progress == 0) {
-                            setProgress(25)
-                        } else {
-                            checkIsValid(progress)
-                        }
+                        isRegistered ?
+                            (navigation.pop())
+                            :
+                            (
+                                progress == 0 ?
+                                    setProgress(25)
+                                    :
+                                    checkIsValid(progress)
+
+                            )
                     }}
                     onLoading={classStateData.isLoadingInButton}
                 />
