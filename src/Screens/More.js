@@ -26,13 +26,6 @@ export default More = ({ navigation, route }) => {
       width: '100%', alignSelf: 'center', flex: 1,
       backgroundColor: Colors.white_color
     }}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={Colors.statusbarcolor}
-        hidden={false}
-        translucent={false}
-        networkActivityIndicatorVisible={true}
-      />
 
       <ScreenHeader
         onBackPress={() => {

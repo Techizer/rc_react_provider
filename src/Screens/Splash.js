@@ -204,13 +204,6 @@ export default Splash = ({ navigation, route }) => {
       backgroundColor: Colors.white_color,
       justifyContent:'center'
     }}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={Colors.statusbarcolor}
-        hidden={false}
-        translucent={false}
-        networkActivityIndicatorVisible={true}
-      />
 
       <Image style={{ height: mobileW * 80 / 100, width: mobileW * 95 / 100, resizeMode: 'contain', alignSelf: 'center', marginTop: mobileW * 15 / 100 }}
         source={Icons.SplashLogo}>
@@ -247,8 +240,7 @@ export default Splash = ({ navigation, route }) => {
 
           }}
           style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
-          <StatusBar backgroundColor={'#fff'} barStyle='default' hidden={false} translucent={false}
-            networkActivityIndicatorVisible={true} />
+         
           <View style={{ borderRadius: 20, width: mobileW * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
 
             <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>

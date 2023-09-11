@@ -151,14 +151,6 @@ export default OTP = ({ navigation, route }) => {
           style={{ backgroundColor: Colors.statusbar_color, flex: 0 }}
         />
 
-        <StatusBar
-          barStyle="dark-content"
-          backgroundColor={Colors.statusbarcolor}
-          hidden={false}
-          translucent={false}
-          networkActivityIndicatorVisible={true}
-        />
-
         <View style={{ paddingBottom: (mobileW * 8) / 100 }}>
           <View style={{ width: '95%', alignSelf: 'center', marginTop: mobileW * 5 / 100, flexDirection: 'row' }}>
             <View style={{ width: '10%', alignSelf: 'center', marginTop: mobileW * 25 / 100 }}>

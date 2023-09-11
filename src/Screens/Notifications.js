@@ -165,8 +165,7 @@ export default Notifications = ({ navigation, route }) => {
 
         onRequestClose={() => { setState({ isModalVisible: false }) }}>
         <View style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
-          <StatusBar backgroundColor={'#fff'} barStyle='default' hidden={false} translucent={false}
-            networkActivityIndicatorVisible={true} />
+         
           <View style={{ borderRadius: 20, width: mobileW * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
 
             <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", paddingVertical: mobileW * 3 / 100 }}>

@@ -17,6 +17,7 @@ import Styles from "../Styles";
 import { Icons } from "../Icons/IReferences";
 import { useSelector } from "react-redux";
 import { vs } from "react-native-size-matters";
+import StickyButton from "../Components/StickyButton";
 
 const LabPackageDetails = ({ navigation, route }) => {
   const { packageId, providerId } = route.params;
@@ -463,26 +464,28 @@ const LabPackageDetails = ({ navigation, route }) => {
                 height: mobileW * 22 / 100,
 
               }}>
-                <Button
-                  text={'SAVE PACKAGE'}
-                  // onLoading={workAreastate.loading}
-                  customStyles={
-                    {
-                      mainContainer: {
-                        marginTop: 0,
-                        // opacity: 0.3
-                      }
-                    }
-                  }
-                  onPress={() => submitPress()}
-                // isDisabled={(workAreastate.taskArr.length > 0) ? false : true}
-                // isBlank={false}
-                />
+
               </View>
             </>
           )}
         </>
       </ScrollView>
+
+      <StickyButton
+        text={'SAVE PACKAGE'}
+        // onLoading={workAreastate.loading}
+        customStyles={
+          {
+            mainContainer: {
+              marginTop: 0,
+              // opacity: 0.3
+            }
+          }
+        }
+        onPress={() => submitPress()}
+      // isDisabled={(workAreastate.taskArr.length > 0) ? false : true}
+      // isBlank={false}
+      />
     </View>
   );
 };

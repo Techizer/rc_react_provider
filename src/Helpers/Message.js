@@ -12,7 +12,7 @@ class MessageFunctionsProvider {
 			text1: 'Alert!',
 			text2: message,
 			position: 'top',
-			topOffset: StatusbarHeight + windowHeight / 70,
+			topOffset: StatusbarHeight + windowHeight / 100,
 			text1Style: {
 				fontSize: 50, // Adjust this value as needed
 			  },
@@ -26,7 +26,7 @@ class MessageFunctionsProvider {
 			text1: 'Congratulations!',
 			text2: message,
 			position: 'top',
-			topOffset: StatusbarHeight + windowHeight / 70
+			topOffset: StatusbarHeight + windowHeight / 100
 		});
 	}
 

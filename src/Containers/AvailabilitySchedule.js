@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Text, View, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
 
-import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight } from '../Helpers/Utils';
+import { Colors, Font, MessageFunctions, Configurations, mobileW, API, windowHeight, windowWidth } from '../Helpers/Utils';
 import Styles from '../Screens/Styles';
 import { Button } from '../Components'
 import { Arrow, Cross, _Cross } from '../Icons/SvgIcons/Index';
@@ -13,6 +13,7 @@ import { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
 import { SvgXml } from 'react-native-svg';
+import StickyButton from '../Components/StickyButton';
 
 const timeArray = [
   { value: '00:00 AM' },
@@ -907,30 +908,26 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
               </View>
             </ScrollView>
 
-            <View style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 15,
-              height: mobileW * 22 / 100
-            }}>
-              <Button
-                text={'SAVE SCHEDULE'}
-                onLoading={state.isOnButtonLoading}
-                customStyles={
-                  {
-                    mainContainer: {
-                      marginTop: 0
-                    }
+
+
+            <StickyButton
+              text={'SAVE SCHEDULE'}
+              onLoading={state.isOnButtonLoading}
+              customStyles={
+                {
+                  mainContainer: {
+                    marginTop: 0
                   }
                 }
-                onPress={() => submitPress()}
-              />
-            </View>
-          </View> :
+              }
+              onPress={() => submitPress()}
+            />
+          </View>
+          :
 
           <FlatList
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+            contentContainerStyle={{ paddingBottom: windowWidth * 10 / 100 }}
             data={[1, 2, 3, 4, 5, 6, 7]}
             ListHeaderComponent={() => (
               <View

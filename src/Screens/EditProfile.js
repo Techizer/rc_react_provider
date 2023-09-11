@@ -1,7 +1,7 @@
 import { Text, View, StatusBar, SafeAreaView, TouchableOpacity, Image, Modal, Keyboard, Platform, Dimensions, StyleSheet } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, MessageHeadings, Media, windowWidth, windowHeight } from '../Helpers/Utils';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import MonthPicker from 'react-native-month-year-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -16,6 +16,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { BottomSheetProps, BottomSheetStylesForSmall, BottomSheetViewStyles } from '../Styles/Sheet';
 import { SvgXml } from 'react-native-svg';
 import { dummyUser, _Cross } from '../Icons/SvgIcons/Index';
+import StickyButton from '../Components/StickyButton';
 
 export default EditProfile = ({ navigation, route }) => {
 
@@ -54,7 +55,7 @@ export default EditProfile = ({ navigation, route }) => {
     gender: profileData['gender'],
     febtn: (profileData['gender'] == 'Female') ? true : false,
     mabtn: (profileData['gender'] == 'Male') ? true : false,
-    profile_img: profileData['image'],
+    profile_img: Configurations.img_url3 + profileData['image'],
     isDatePickerVisibletwo: false,
     profile_image: '',
     notification_count: '',
@@ -67,6 +68,12 @@ export default EditProfile = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
   const attachmentOptionSheetRef = useRef()
+  const nameRef = useRef()
+  const numberRef = useRef()
+  const qualRef = useRef()
+  const expRef = useRef()
+  const aboutRef = useRef()
+
 
   const user_type = loginUserData?.user_type || ''
 
@@ -145,9 +152,6 @@ export default EditProfile = ({ navigation, route }) => {
 
   const Galleryopen = () => {
     Media.launchGellery(true).then((obj) => {
-      console.log(obj);
-      console.log(obj.path);
-      // editImage(obj.path);
       if (classStateData.img_type == 0) {
         setState({ cover_img: obj.path })
       }
@@ -376,9 +380,10 @@ export default EditProfile = ({ navigation, route }) => {
             value={classStateData.id_number}
             keyboardType="default"
             autoCapitalize="none"
-            returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyLabel="done"
+            returnKeyType="done"
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
 
@@ -450,10 +455,11 @@ export default EditProfile = ({ navigation, route }) => {
             value={classStateData.speciality}
             keyboardType="default"
             autoCapitalize="none"
-            returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyLabel="done"
+            returnKeyType="done"
             editable={false}
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
         </View>
@@ -475,9 +481,10 @@ export default EditProfile = ({ navigation, route }) => {
             value={classStateData.qualification}
             keyboardType="default"
             autoCapitalize="none"
-            returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyLabel="done"
+            returnKeyType="done"
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
 
@@ -532,9 +539,10 @@ export default EditProfile = ({ navigation, route }) => {
             value={classStateData.experience}
             keyboardType="default"
             autoCapitalize="none"
-            returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyLabel="done"
+            returnKeyType="done"
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
 
@@ -562,6 +570,7 @@ export default EditProfile = ({ navigation, route }) => {
             returnKeyLabel="done"
             returnKeyType="done"
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
 
@@ -637,8 +646,9 @@ export default EditProfile = ({ navigation, route }) => {
             keyboardType="default"
             autoCapitalize="none"
             returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyType="done"
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
 
@@ -697,8 +707,9 @@ export default EditProfile = ({ navigation, route }) => {
             keyboardType="default"
             autoCapitalize="none"
             returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyType="done"
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
 
@@ -748,8 +759,9 @@ export default EditProfile = ({ navigation, route }) => {
             keyboardType="default"
             autoCapitalize="none"
             returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyType="done"
             onSubmitEditing={() => {
+              Keyboard.dismiss()
             }}
           />
 
@@ -827,7 +839,10 @@ export default EditProfile = ({ navigation, route }) => {
             keyboardType="default"
             autoCapitalize="none"
             returnKeyLabel="next"
-            returnKeyType="next"
+            returnKeyType="done"
+            onSubmitEditing={() => {
+              Keyboard.dismiss()
+            }}
           />
 
         </View>
@@ -864,18 +879,11 @@ export default EditProfile = ({ navigation, route }) => {
     )
   }
 
-  const windowHeight = Math.round(Dimensions.get("window").height);
-  const windowWidth = Math.round(Dimensions.get("window").width);
-  const deviceHeight = Dimensions.get('screen').height;
-  const StatusbarHeight = (Platform.OS === 'ios' ? windowHeight * 0.03695 : StatusBar.currentHeight)
-  let headerHeight = deviceHeight - windowHeight + StatusbarHeight;
-  headerHeight += (Platform.OS === 'ios') ? 28 : -60
-
   return (
     //
     <View style={{ flex: 1 }}>
 
-      
+
 
       {
         (classStateData.isDatePickerVisibletwo && user_type == "lab") ?
@@ -977,7 +985,8 @@ export default EditProfile = ({ navigation, route }) => {
 
         <KeyboardAwareScrollView contentContainerStyle={{
           backgroundColor: Colors.White,
-          paddingBottom: vs(8)
+          paddingBottom: windowWidth / 5,
+          // height: windowHeight
         }}>
 
           <View
@@ -1019,7 +1028,7 @@ export default EditProfile = ({ navigation, route }) => {
                         alignSelf: 'center',
 
                       }}
-                      source={{ uri: Configurations.img_url3 + classStateData.profile_img }}
+                      source={{ uri: classStateData.profile_img }}
                     />
 
                 }
@@ -1160,6 +1169,7 @@ export default EditProfile = ({ navigation, route }) => {
               mainContainer={{
                 width: '100%',
               }}
+              inputRef={nameRef}
               lableText={LanguageConfiguration.textinputname[Configurations.language]}
               onChangeText={(text) =>
                 setState({ name: text })
@@ -1170,6 +1180,7 @@ export default EditProfile = ({ navigation, route }) => {
               returnKeyLabel='done'
               returnKeyType='done'
               onSubmitEditing={() => {
+                Keyboard.dismiss()
               }}
             />
 
@@ -1224,8 +1235,9 @@ export default EditProfile = ({ navigation, route }) => {
                 value={classStateData.country_code}
                 keyboardType="number-pad"
                 autoCapitalize="none"
-                returnKeyType="next"
+                returnKeyType="done"
                 onSubmitEditing={() => {
+                  Keyboard.dismiss()
                 }}
               />
 
@@ -1246,12 +1258,14 @@ export default EditProfile = ({ navigation, route }) => {
                 onChangeText={(text) =>
                   setState({ mobile: text })
                 }
+                inputRef={numberRef}
                 value={classStateData.mobile}
                 keyboardType="number-pad"
                 autoCapitalize="none"
                 returnKeyLabel='done'
                 returnKeyType='done'
                 onSubmitEditing={() => {
+                  Keyboard.dismiss()
                 }}
               />
               <View
@@ -1289,8 +1303,9 @@ export default EditProfile = ({ navigation, route }) => {
               editable={false}
               keyboardType="email-address"
               autoCapitalize="none"
-              returnKeyType="next"
+              returnKeyType="done"
               onSubmitEditing={() => {
+                Keyboard.dismiss()
               }}
             />
 
@@ -1372,7 +1387,10 @@ export default EditProfile = ({ navigation, route }) => {
                   value={classStateData.address}
                   keyboardType="default"
                   autoCapitalize="none"
-                  returnKeyType="next"
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    Keyboard.dismiss()
+                  }}
                 />
               </View> :
               <View
@@ -1543,12 +1561,37 @@ export default EditProfile = ({ navigation, route }) => {
               multiline={true}
               keyboardType="default"
               autoCapitalize="none"
-              returnKeyType="next"
+              returnKeyType="done"
+              onSubmitEditing={() => {
+                Keyboard.dismiss()
+              }}
             />
           </View>
 
-          <Button
-            text={LanguageConfiguration.submitbtntext[Configurations.language]}
+
+
+          {/* {
+            Platform.OS == 'android' &&
+
+            <StickyButton
+              text={LanguageConfiguration.submitbtntext[Configurations.language]}
+              onPress={() => onEditProfileClick()}
+              onLoading={isOnLoadingButton}
+              customStyles={{
+                mainContainer: {
+                  marginBottom: vs(28),
+                  width: '90%'
+                }
+              }}
+            />
+          } */}
+
+        </KeyboardAwareScrollView>
+
+        {
+
+          <StickyButton
+            text={'SAVE'}
             onPress={() => onEditProfileClick()}
             onLoading={isOnLoadingButton}
             customStyles={{
@@ -1558,8 +1601,8 @@ export default EditProfile = ({ navigation, route }) => {
               }
             }}
           />
+        }
 
-        </KeyboardAwareScrollView>
       </View>
 
     </View>

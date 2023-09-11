@@ -30,9 +30,8 @@ const ServiceAddress = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [isFetchedSuccess, setIsFetchedSuccess] = useState(false)
     const [isEditable, setIsEditable] = useState(false)
+
     const isFocused = useIsFocused()
-    const sheetRef = useRef();
-    const mapRef = useRef()
 
     const { isMTrue, lat, lng, id, googleAddress } = route?.params || { isMTrue: false, lat: 0, lng: 0, id: 0, googleAddress: '' }
 
@@ -45,10 +44,12 @@ const ServiceAddress = ({ navigation, route }) => {
 
     useEffect(() => {
         getAddresses()
-        if (sheetRef && isFocused) {
+        if (isFocused) {
             if (isMTrue) {
-                sheetRef.current.open()
-            } else sheetRef.current.close()
+                setAddressSheet(true)
+            } else {
+                setAddressSheet(false)
+            }
         }
 
     }, [isMTrue])
@@ -158,7 +159,7 @@ const ServiceAddress = ({ navigation, route }) => {
                         index={0}
                         addressDetails={addressList[0]}
                         showModal={(val) => {
-                            sheetRef.current.open()
+                            setAddressSheet(true)
                         }}
                         navigation={navigation}
                         selected={selectedAddress}
@@ -258,9 +259,9 @@ const ServiceAddress = ({ navigation, route }) => {
 
             <AddressInputPopup
                 navigation={navigation}
-                refe={sheetRef}
+                visible={addressSheet}
                 onRequestClose={() => {
-                    sheetRef.current.close()
+                    setAddressSheet(false)
                 }}
                 navToBackThen={false}
                 shouldShowEditParam

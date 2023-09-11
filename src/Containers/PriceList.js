@@ -7,7 +7,8 @@ import {
   MessageFunctions,
   Configurations,
   mobileW,
-  API
+  API,
+  windowWidth
 } from '../Helpers/Utils';
 
 import Styles from '../Styles';
@@ -16,6 +17,7 @@ import { Button } from '../Components'
 import { useSelector } from 'react-redux';
 import { s, vs } from 'react-native-size-matters';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import StickyButton from '../Components/StickyButton';
 
 export default PriceList = ({ navigation, route, pageName, page }) => {
   const [classStateData, setClassStateData] = useState({
@@ -467,7 +469,16 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
 
         {
           !classStateData.isLoading ?
-            <KeyboardAwareScrollView>
+          <KeyboardAwareScrollView
+          extraScrollHeight={50}
+          enableOnAndroid={true}
+          keyboardShouldPersistTaps='handled'
+          contentContainerStyle={{
+              justifyContent: 'center',
+              paddingBottom: windowWidth/3
+          }}
+          showsVerticalScrollIndicator={false}>
+
               {
                 (classStateData.taskArr.length > 0) &&
                 classStateData.taskArr.map((item, index) => {
@@ -582,8 +593,8 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                         flexDirection: 'row'
                       }}>
                         <SkeletonPlaceholder.Item width='11%' height={s(28)} borderRadius={s(4)} />
-                        <SkeletonPlaceholder.Item width='56%' height={s(28)} borderRadius={s(4)} marginLeft={'3%'}/>
-                        <SkeletonPlaceholder.Item width='16%' height={s(28)} borderRadius={s(4)} marginLeft={'14%'}/>
+                        <SkeletonPlaceholder.Item width='56%' height={s(28)} borderRadius={s(4)} marginLeft={'3%'} />
+                        <SkeletonPlaceholder.Item width='16%' height={s(28)} borderRadius={s(4)} marginLeft={'14%'} />
                       </View>
 
                     </SkeletonPlaceholder>
@@ -603,20 +614,14 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
       </View>
 
       {!classStateData.isLoading &&
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: 15,
-          height: mobileW * 22 / 100,
-        }}>
-          <Button
-            text={'SUBMIT'}
-            onLoading={classStateData.isLoadingInPostButton}
-            customStyles={{ mainContainer: { marginTop: 0 } }}
-            onPress={() => submitPress()}
-            isDisabled={(classStateData.taskArr.length > 0) ? false : true}
-          />
-        </View>
+
+        <StickyButton
+          text={'SUBMIT'}
+          onLoading={classStateData.isLoadingInPostButton}
+          customStyles={{ mainContainer: { marginTop: 0 } }}
+          onPress={() => submitPress()}
+          isDisabled={(classStateData.taskArr.length > 0) ? false : true}
+        />
       }
     </View>
   );

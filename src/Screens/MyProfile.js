@@ -88,14 +88,6 @@ export default MyProfile = ({ navigation, route }) => {
         style={{ backgroundColor: Colors.statusbarcolor, flex: 0 }}
       />
 
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={Colors.statusbarcolor}
-        hidden={false}
-        translucent={false}
-        networkActivityIndicatorVisible={true}
-      />
-
       <View style={{ flex: 1, }}>
 
         <ScreenHeader

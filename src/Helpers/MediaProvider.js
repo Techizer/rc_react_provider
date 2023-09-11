@@ -29,12 +29,13 @@ class MediaProvider {
          ImagePicker.openCamera({
             useFrontCamera: useFrontCamera,
             mediaType: 'photo',
-            width: 200,
-            height: 200,
+            width: 500,
+            height: 500,
             cropping: cropvalue,
+            cropperCircleOverlay:cropvalue,
             includeBase64: true,
             includeExif: true,
-            compressImageQuality: 0.4,
+            // compressImageQuality: 0.4,
          }).then((res) => {
             resolve(res);
          }).catch((error) => {
@@ -43,14 +44,17 @@ class MediaProvider {
       })
    }
    launchGellery = async (crop) => {
-      let cropvalue = !!crop
+      let cropvalue = crop == null ? false : crop
       return new Promise((resolve, reject) => {
          ImagePicker.openPicker({
             mediaType: 'photo',
-            cropping: true,
+            width: 500,
+            height: 500,
+            cropping: cropvalue,
+            cropperCircleOverlay:cropvalue,
             includeBase64: true,
             includeExif: true,
-            compressImageQuality: 0.5,
+            // compressImageQuality: 0.5,
             // multiple: true
          }).then((res) => {
             resolve(res);

@@ -8,6 +8,7 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
 import ScreenHeader from '../Components/ScreenHeader';
 import { vs } from 'react-native-size-matters';
+import StickyButton from '../Components/StickyButton';
 
 
 export default AddBankInformation = ({ navigation, route }) => {
@@ -120,13 +121,6 @@ export default AddBankInformation = ({ navigation, route }) => {
       width: '100%', alignSelf: 'center', flex: 1,
       backgroundColor: Colors.white_color
     }}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={Colors.statusbarcolor}
-        hidden={false}
-        translucent={false}
-        networkActivityIndicatorVisible={true}
-      />
 
       <ScreenHeader
         onBackPress={() => {
@@ -380,7 +374,7 @@ export default AddBankInformation = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
-        <Button
+        <StickyButton
           text={LanguageConfiguration.submitbtntext[Configurations.language]}
           onPress={onUpdate}
           onLoading={isOnButtonLoading}

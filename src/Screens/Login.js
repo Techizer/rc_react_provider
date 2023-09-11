@@ -1,4 +1,4 @@
-import { Modal, Text, Dimensions, View, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, Keyboard } from 'react-native';
+import { Text, Dimensions, View, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions, windowHeight } from '../Helpers/Utils';
@@ -68,14 +68,22 @@ export default Login = ({ navigation, route }) => {
 
 
   useEffect(() => {
-    navigation.addListener('focus', payload =>
-      dispatch(onUserLogout()),
-      BackHandler.addEventListener('hardwareBackPress', handleBackPress)
-    );
-    navigation.addListener('blur', payload =>
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
-    );
-  }, [])
+    const focusListener = navigation.addListener('focus', () => {
+      // Add the hardware back press event listener when the screen is focused
+      BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    });
+
+    const blurListener = navigation.addListener('blur', () => {
+      // Remove the hardware back press event listener when the screen is blurred
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    });
+
+    // Clean up listeners when the component is unmounted
+    return () => {
+      focusListener();
+      blurListener();
+    };
+  }, [navigation]); 
 
   const checkIsValid = () => {
     let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -197,14 +205,6 @@ export default Login = ({ navigation, route }) => {
           <View style={{ flex: 1 }}>
             <SafeAreaView
               style={{ backgroundColor: Colors.statusbarcolor, flex: 0 }}
-            />
-
-            <StatusBar
-              barStyle="dark-content"
-              backgroundColor={Colors.statusbarcolor}
-              hidden={false}
-              translucent={false}
-              networkActivityIndicatorVisible={true}
             />
 
             <View

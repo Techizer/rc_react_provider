@@ -63,10 +63,8 @@ export default Drawer = ({ navigation, route }) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setTimeout(() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
-                navigation.navigate(ScreenReferences.EditProfile);
-              }, 350);
+              // navigation.dispatch(DrawerActions.closeDrawer())
+              navigation.navigate(ScreenReferences.EditProfile);
             }}
             activeOpacity={0.7}
             style={{ width: '100%', alignItems: "center", flexDirection: 'row', paddingTop: vs(20), backgroundColor: Colors.White }}>
@@ -115,10 +113,8 @@ export default Drawer = ({ navigation, route }) => {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() => {
-                    setTimeout(() => {
-                      navigation.dispatch(DrawerActions.closeDrawer())
-                      navigation.navigate(ScreenReferences.EditProfile);
-                    }, 350);
+                    // navigation.dispatch(DrawerActions.closeDrawer())
+                    navigation.navigate(ScreenReferences.EditProfile);
                   }}>
                   <Text
                     style={{
@@ -177,8 +173,8 @@ export default Drawer = ({ navigation, route }) => {
               leftIcon={DrawerIcons.MyAppointment}
 
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer()),
-                  navigation.navigate(ScreenReferences.AppointmentsTabStack)
+                // navigation.dispatch(DrawerActions.closeDrawer()),
+                navigation.navigate(ScreenReferences.AppointmentsTabStack)
               }}
 
               title={LanguageConfiguration.MyAppointments[Configurations.language]}
@@ -211,7 +207,7 @@ export default Drawer = ({ navigation, route }) => {
               leftIcon={DrawerIcons.ScheduleAvailability}
 
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
+                // navigation.dispatch(DrawerActions.closeDrawer())
                 navigation.navigate(ScreenReferences.AvailabilityScheduleTabStack)
               }}
 
@@ -228,7 +224,7 @@ export default Drawer = ({ navigation, route }) => {
               leftIcon={DrawerIcons.PriceList}
 
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
+                // navigation.dispatch(DrawerActions.closeDrawer())
                 navigation.navigate(ScreenReferences.PriceListTabStack)
               }}
 
@@ -245,7 +241,7 @@ export default Drawer = ({ navigation, route }) => {
               leftIcon={DrawerIcons.ServiceAddress}
 
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
+                // navigation.dispatch(DrawerActions.closeDrawer())
                 navigation.navigate(ScreenReferences.ServiceAddress)
               }}
 
@@ -277,7 +273,7 @@ export default Drawer = ({ navigation, route }) => {
               leftIcon={DrawerIcons.ProfileSettings}
 
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
+                // navigation.dispatch(DrawerActions.closeDrawer())
                 navigation.navigate(ScreenReferences.ShowProfile);
               }}
 
@@ -292,7 +288,7 @@ export default Drawer = ({ navigation, route }) => {
               }
               leftIcon={DrawerIcons.TransactionsAndMore}
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
+                // navigation.dispatch(DrawerActions.closeDrawer())
                 navigation.navigate(ScreenReferences.TransactionTabStack);
               }}
               title={'Transaction & More'}
@@ -306,7 +302,7 @@ export default Drawer = ({ navigation, route }) => {
               }
               leftIcon={DrawerIcons.ReviewAndRating}
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
+                // navigation.dispatch(DrawerActions.closeDrawer())
                 navigation.navigate(ScreenReferences.ReviewRating);
               }}
               title={'Review & Rating'}
@@ -319,7 +315,7 @@ export default Drawer = ({ navigation, route }) => {
               }
               leftIcon={DrawerIcons.SupportAndMore}
               onPress={() => {
-                navigation.dispatch(DrawerActions.closeDrawer())
+                // navigation.dispatch(DrawerActions.closeDrawer())
                 navigation.navigate(ScreenReferences.More);
               }}
               title={'Support & More'}
@@ -347,9 +343,7 @@ export default Drawer = ({ navigation, route }) => {
                 });
               }}
               title={LanguageConfiguration.Logout[Configurations.language]}
-              titleStyle={{
-                color: 'grey'
-              }}
+             
             />
 
             <View style={{ width: '92%', height: 0, backgroundColor: 'lightgrey', marginVertical: vs(16), alignSelf: 'flex-end', opacity: 0.5 }}></View>
