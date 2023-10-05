@@ -1,6 +1,6 @@
 import { Text, View, ScrollView, SafeAreaView, StatusBar, Image, TouchableHighlight, Keyboard } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Colors, Font, Configurations, mobileW, LanguageConfiguration, MessageFunctions, MessageTexts, API } from '../Helpers/Utils';
+import { Colors, Font, Configurations, mobileW, LanguageConfiguration, MessageFunctions, MessageTexts, API, windowWidth } from '../Helpers/Utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { AuthInputBoxSec, Button } from '../Components'
@@ -125,8 +125,8 @@ export default ForgetPassword = ({ navigation, route }) => {
             <Text style={{
               color: Colors.textblack,
               textAlign: Configurations.textRotate,
-              fontSize: Font.headingblack,
-              fontFamily: Font.blackheadingfontfamily,
+              fontSize: Font.xxxlarge,
+              fontFamily: Font.Regular,
             }}>{LanguageConfiguration.Forgot[Configurations.language]} </Text>
           </View>
 
@@ -134,8 +134,8 @@ export default ForgetPassword = ({ navigation, route }) => {
           <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 1 / 100 }}>
             <Text style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.headinggray,
-              fontFamily: Font.headingfontfamily,
+              fontSize: Font.medium,
+              fontFamily: Font.Regular,
               color: Colors.placeholder_text,
             }}>{LanguageConfiguration.Forgottext[Configurations.language]}</Text>
           </View>

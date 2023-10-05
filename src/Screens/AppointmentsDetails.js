@@ -27,6 +27,7 @@ import { getISChatImplemented } from '../Helpers/AppFunctions';
 import firestore from '@react-native-firebase/firestore'
 import { Message } from '../Schemas/MessageRoomSchema';
 import { setAppState, setVideoCall, setVideoCallData, setVideoCallStatus } from '../Redux/Actions/UserActions';
+import MediaOptions from '../Components/MediaOptions';
 
 export default AppointmentsDetails = ({ navigation, route }) => {
 
@@ -42,6 +43,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
     isChat: false
   })
   const [explicitLoader, setExplicitLoader] = useState(false)
+  const [mediaOptions, setMediaOptions] = useState(false);
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -645,17 +648,18 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                   style={{
                     flexDirection: "row",
                     justifyContent: 'space-between',
-                    width: "100%",
+                    width: "90%",
                     alignSelf: "center",
                     paddingBottom: vs(5),
-                    paddingHorizontal: s(13),
+                    borderBottomWidth: 1,
+                    borderBottomColor: Colors.Border,
 
                   }}>
 
                   <Text
                     style={{
                       fontSize: Font.small,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       color: Colors.Theme
                     }}
                   >
@@ -664,7 +668,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                   <Text
                     style={{
                       fontSize: Font.small,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       color: item?.acceptance_status === 'Pending' ? Colors.Yellow : (item?.acceptance_status === 'Completed' || item?.acceptance_status === 'Accepted') ? Colors.Green : Colors.Red,
                     }}
                   >
@@ -689,10 +693,19 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                           marginTop: vs(5)
                         }} />
                         :
-                        <Image
-                          source={{ uri: Configurations.img_url3 + item.provider_image }}
-                          style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, borderColor: Colors.Highlight }}
-                        />
+                        <View style={{
+                          height: s(80),
+                          width: s(80),
+                          borderRadius: s(100),
+                          backgroundColor: Colors.Border,
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}>
+                          <Image
+                            source={{ uri: Configurations.img_url3 + item.provider_image }}
+                            style={{ height: s(75), width: s(75), borderRadius: s(85), borderWidth: 0.5, borderColor: Colors.Highlight }}
+                          />
+                        </View>
                     }
                   </View>
 
@@ -706,7 +719,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           color: Colors.Theme,
                           fontSize: Font.small,
                           alignSelf: 'flex-start',
@@ -718,7 +731,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                           style={{
                             color: "#FCFFFE",
                             backgroundColor: "#FFA800",
-                            fontFamily: Font.Medium,
+                            fontFamily: Font.Regular,
                             fontSize: Font.medium,
                             padding: (windowWidth * 2) / 100,
                             marginTop: -3,
@@ -732,7 +745,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                     </View>
                     <Text
                       style={{
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         fontSize: Font.medium,
                         paddingVertical: (windowWidth * 1.1) / 100,
                         color: Colors.DarkGrey,
@@ -763,7 +776,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: Font.small,
                       color: Colors.darkText,
                       alignSelf: 'flex-start',
@@ -796,7 +809,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: Font.small,
                           color: Colors.detailTitles,
                           alignSelf: 'flex-start',
@@ -823,7 +836,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: Font.small,
                           color: Colors.detailTitles,
                           alignSelf: 'flex-start',
@@ -850,7 +863,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: Font.small,
                           color: Colors.detailTitles,
                           alignSelf: 'flex-start',
@@ -867,7 +880,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                     style={{
                       width: "100%",
                       alignSelf: "center",
-                      borderTopWidth: 1.5,
+                      borderTopWidth: 1,
                       borderTopColor: '#D8D8D8',
                       marginTop: vs(10),
                       paddingTop: vs(8)
@@ -890,7 +903,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: Font.small,
                           color: Colors.DarkGrey,
                           textTransform: "uppercase",
@@ -914,7 +927,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       paddingHorizontal: s(13)
                     }}>
                     <Text style={{
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: Font.small,
                       color: Colors.Theme,
                       alignSelf: 'flex-start',
@@ -930,7 +943,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                           justifyContent: 'space-between',
                           flexDirection: 'row',
                           alignItems: 'center',
-                          borderBottomWidth: 1.5,
+                          borderBottomWidth: 1,
                           borderColor: Colors.gainsboro,
                         }}>
 
@@ -948,12 +961,12 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       (item.symptom_text != "") &&
                       <View
                         style={{
-                          borderBottomWidth: 1.5,
+                          borderBottomWidth: 1,
                           borderColor: Colors.gainsboro,
                           paddingVertical: vs(9)
                         }}>
                         <Text style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: Font.small,
                           color: Colors.detailTitles,
                           alignSelf: 'flex-start',
@@ -1021,7 +1034,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               });
                             }}
                             style={{
-                              fontFamily: Font.Medium,
+                              fontFamily: Font.Regular,
                               fontSize: Font.small,
                               color: Colors.Theme,
                             }}
@@ -1107,7 +1120,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       paddingHorizontal: s(13),
                     }}>
                     <Text style={{
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: Font.small,
                       color: Colors.Theme,
                       alignSelf: 'flex-start',
@@ -1205,8 +1218,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       paddingVertical: (windowWidth * 2.5) / 100,
                     }}>
                     <Text style={{
-                      fontFamily: Font.Medium,
-                      fontSize: Font.regulartext_size,
+                      fontFamily: Font.Regular,
+                      fontSize: Font.medium,
                       color: Colors.Theme,
                       alignSelf: 'flex-start',
                       paddingBottom: (windowWidth * 4) / 100,
@@ -1236,16 +1249,16 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               <Text
                                 numberOfLines={1}
                                 style={{
-                                  fontFamily: Font.Medium,
-                                  fontSize: Font.smallheadingfont,
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.xlarge,
                                   color: Colors.darkgraytextheading,
                                   textAlign: Configurations.textRotate,
                                   marginTop: (mobileW * 1) / 100,
                                   marginBottom: (mobileW * 2) / 100,
                                 }}>{rItem.report}</Text>
                               <Text style={{
-                                fontFamily: Font.Medium,
-                                fontSize: Font.ssubtext,
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
                                 color: Colors.gray4,
                                 textAlign: Configurations.textRotate,
                                 marginBottom: (mobileW * 1) / 100,
@@ -1258,8 +1271,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               }}>
                                 <Text style={{
                                   textAlign: 'right',
-                                  fontFamily: Font.Medium,
-                                  fontSize: Font.tabtextsize,
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.large,
                                   color: Colors.theme_color,
                                   marginBottom: (mobileW * 3) / 100,
                                 }}>Download</Text>
@@ -1293,7 +1306,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               textAlign: 'center',
                               color: Colors.theme_color,
                               fontFamily: Font.Regular,
-                              fontSize: Font.buttontextsize,
+                              fontSize: Font.large,
                             }}>UPLOAD</Text>
                           </TouchableOpacity>
                         </View>
@@ -1330,8 +1343,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                                   alignItems: 'center',
                                 }}>
                                   <Text style={{
-                                    fontFamily: Font.Medium,
-                                    fontSize: Font.headingfont_booking,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.xlarge,
                                     color: Colors.theme_color,
                                     textTransform: 'uppercase',
                                   }}>Report Attachment</Text>
@@ -1391,13 +1404,13 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                                       justifyContent: 'center'
                                     }}>
                                       <Text style={{
-                                        fontFamily: Font.Medium,
-                                        fontSize: Font.headingfont_booking,
+                                        fontFamily: Font.Regular,
+                                        fontSize: Font.xlarge,
                                         color: Colors.darkgraytextheading,
                                       }}>Tap or click to upload</Text>
                                       <Text style={{
                                         fontFamily: Font.Regular,
-                                        fontSize: Font.headinggray,
+                                        fontSize: Font.medium,
                                         color: Colors.darkgraytextheading,
                                       }}>Maximum file size allowed 10 MB</Text>
                                     </View>
@@ -1439,8 +1452,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                                                 lineBreakMode={'tail'}
                                                 style={{
                                                   width: '80%',
-                                                  fontFamily: Font.Medium,
-                                                  fontSize: Font.headinggray,
+                                                  fontFamily: Font.Regular,
+                                                  fontSize: Font.medium,
                                                   color: Colors.darkgraytextheading,
                                                   textAlign: Configurations.textRotate,
                                                   marginTop: (mobileW * 2) / 100,
@@ -1483,7 +1496,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                                               </View>
                                               <Text style={{
                                                 fontFamily: Font.Regular,
-                                                fontSize: Font.smallheadingfont,
+                                                fontSize: Font.xlarge,
                                                 color: Colors.darkgraytextheading,
                                                 textAlign: 'right',
                                                 width: '20%'
@@ -1555,7 +1568,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                   }}>
                     <Text
                       style={{
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         fontSize: Font.small,
                         color: Colors.darkText,
                         alignSelf: 'center',
@@ -1592,7 +1605,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                         <Text
                           style={{
                             color: Colors.DarkGrey,
-                            fontFamily: Font.Medium,
+                            fontFamily: Font.Regular,
                             fontSize: Font.small,
                             textAlign: Configurations.textalign,
                             alignSelf: 'flex-start',
@@ -1647,8 +1660,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               <Text
                                 style={{
                                   color: Colors.textblue,
-                                  fontFamily: Font.Medium,
-                                  fontSize: Font.sregulartext_size,
+                                  fontFamily: Font.Regular,
+                                  fontSize: Font.small,
                                   textAlign: Configurations.textRotate,
                                   marginLeft: mobileW * 6.5 / 100,
                                   marginTop: mobileW * 2 / 100,
@@ -1690,8 +1703,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                           <Text
                             style={{
                               color: Colors.lightgraytext,
-                              fontFamily: Font.Medium,
-                              fontSize: Font.sregulartext_size,
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
                               textAlign: Configurations.textalign,
                               marginHorizontal: (mobileW * 3) / 100,
                             }}>
@@ -1703,8 +1716,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                             <Text
                               style={{
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
-                                fontSize: Font.sregulartext_size,
+                                fontFamily: Font.Regular,
+                                fontSize: Font.small,
                                 textAlign: Configurations.textRotate,
                                 marginLeft: mobileW * 2 / 100,
                                 width: '96%'
@@ -1724,16 +1737,23 @@ export default AppointmentsDetails = ({ navigation, route }) => {
 
 
                 {((item?.acceptance_status == 'Accepted' || item?.acceptance_status == 'Completed') && (item.service_type == "Doctor")) &&
-                  <TouchableOpacity style={{
-                    marginHorizontal: '3%',
-                    marginBottom: vs(16)
-                  }}
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={{
+                      marginHorizontal: '3%',
+                      marginBottom: vs(16),
+                      backgroundColor: Colors.buttoncolorblue,
+                      width: windowWidth / 3.4,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 4
+                    }}
                     onPress={() => {
                       navigation.navigate(ScreenReferences.ChatScreen, { chatOptions, isEnabled: (classStateData.isChat) })
                     }} >
                     <Text style={{
-                      color: Colors.textblue,
-                      fontFamily: Font.Medium
+                      color: Colors.white_color,
+                      fontFamily: Font.Regular
                     }}>Chat with patient</Text>
                   </TouchableOpacity>
                 }
@@ -1753,7 +1773,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                         <View style={{
                           width: '60%',
                         }}>
-                          <Text allowFontScaling={false} style={{ fontSize: Font.medium, color: Colors.lightgraytext, width: '96%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>Enter OTP to complete</Text>
+                          <Text allowFontScaling={false} style={{ fontSize: Font.small, color: Colors.lightgraytext, width: '96%', textAlign: Configurations.textRotate, fontFamily: Font.Regular }}>Enter OTP to complete</Text>
                         </View>
                         <View style={{
                           backgroundColor: '#F7F8FA',
@@ -1778,8 +1798,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               })
                             }}
                             value={classStateData.otp}
-                            placeholder='Enter OTP'
-                            placeholderTextColor={'#354052'}
+                            placeholder='OTP'
+                            placeholderTextColor={Colors.lightGrey}
                             keyboardType="number-pad"
                             returnKeyLabel='done'
                             returnKeyType='done'
@@ -1808,8 +1828,8 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                     </> :
                     <>
                       <View style={{ width: '90%', alignSelf: 'center', paddingVertical: mobileW * 2 / 100, flexDirection: 'row', borderTopWidth: 1, borderTopColor: Colors.bordercolor }}>
-                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Medium }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
-                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '25%', textAlign: 'right', fontFamily: Font.Medium }}>{item.OTP}</Text>
+                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '75%', textAlign: Configurations.textRotate, fontFamily: Font.Regular }}>{LanguageConfiguration.appointment_closed_otp_text[Configurations.language]}</Text>
+                        <Text style={{ fontSize: mobileW * 3.5 / 100, color: Colors.lightgraytext, width: '25%', textAlign: 'right', fontFamily: Font.Regular }}>{item.OTP}</Text>
                       </View>
                     </> : null
 
@@ -1852,7 +1872,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                     }}>
                     <Text
                       style={{
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         fontSize: Font.small,
                         alignSelf: 'flex-start',
                         color: Colors.darkText,
@@ -1863,7 +1883,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       style={{
                         justifyContent: "center",
                         paddingVertical: (windowWidth * 2) / 100,
-                        borderBottomWidth: 1.5,
+                        borderBottomWidth: 1,
                         borderColor: '#CCCCCC',
                       }}>
 
@@ -1905,6 +1925,62 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       }
 
                     </View>
+
+                    {
+                      !!item?.coupondiscount &&
+                      <View style={{
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#00000029',
+                        paddingBottom: vs(10),
+                      }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: 'center',
+                            // justifyContent: "space-between",
+                            marginTop: vs(10),
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                            }}>
+                            {`Coupon`}
+                          </Text>
+
+                        </View>
+
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: 'center',
+                            justifyContent: "space-between",
+                            marginTop: vs(5),
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                            }}>
+                            {`${item.couponcode} (${item.coupondiscount + '%'})`}
+                          </Text>
+
+                          <Text
+                            style={{
+                              fontFamily: Font.Regular,
+                              fontSize: Font.small,
+                              color: Colors.detailTitles,
+                            }}>
+                            {`- ${item.couponamount} ${loginUserData.currency_symbol}`}
+                          </Text>
+                        </View>
+
+
+                      </View>
+                    }
+
                     {
                       (item.appointment_type != "Online" || item.service_type == 'Lab') &&
                       <View
@@ -1969,7 +2045,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: Font.small,
                           color: Colors.darkText,
                         }}>
@@ -1977,7 +2053,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: Font.small,
                           color: Colors.darkText,
                         }}>
@@ -2006,6 +2082,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                   <View
                     style={{
                       flexDirection: 'row',
+                      alignItems: 'center'
                     }}>
                     {Configurations.language == 0 ?
                       <Image
@@ -2026,7 +2103,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                       style={{
                         color: Colors.theme_color,
                         fontSize: (mobileW * 3.7) / 100,
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         marginTop: 0.5,
                         marginLeft: mobileW * 2 / 100
                       }}>{item.price}
@@ -2060,7 +2137,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               textAlign: 'center',
                               color: Colors.white_color,
                               textTransform: 'uppercase',
-                              fontFamily: Font.SemiBold,
+                              fontFamily: Font.Regular,
                               fontSize: mobileW * 3 / 100,
                             }}>Accept</Text>
                         </TouchableOpacity>
@@ -2081,103 +2158,13 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                               textAlign: 'center',
                               color: Colors.white_color,
                               textTransform: 'uppercase',
-                              fontFamily: Font.SemiBold,
+                              fontFamily: Font.Regular,
                               fontSize: mobileW * 3 / 100,
                             }}>Reject</Text>
                         </TouchableOpacity>
                       </>
                     </View>
                   }
-
-
-
-                  {
-                    item.acceptance_status == 'Accepted' &&
-                    <View>
-                      {
-                        (item.acceptance_status == 'Accepted' && UploadprecriptionBtn == true &&
-                          item.service_type == "Doctor" && item.provider_prescription == null) &&
-                        <>
-                          <TouchableOpacity onPress={() => {
-
-                            attachmentOptionSheetRef.current.open()
-                          }}
-
-                            style={{
-                              backgroundColor: Colors.orange,
-                              // width: mobileW * 39 / 100,
-                              borderRadius: (mobileW * 1) / 100,
-                              // paddingVertical: (mobileW * 1.5) / 100,
-                              padding: (mobileW * 2) / 100,
-                              justifyContent: 'center',
-                              marginBottom: 6
-                            }}>
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                color: Colors.white_color,
-                                textTransform: 'uppercase',
-                                fontFamily: Font.SemiBold,
-                                fontSize: mobileW * 3 / 100,
-                              }}>UPLOAD Prescription</Text>
-                          </TouchableOpacity>
-                        </>
-                      }
-
-
-                      {
-                        (item.acceptance_status == 'Accepted' &&
-                          item.service_type == "Doctor" &&
-                          item.appointment_type == "Online" && VideoCallBtn == true) &&
-                        item.booking_type === 'online_task' &&
-                        <>
-                          <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={() => {
-                              var videoDetails = {
-                                fromUserId: loginUserData?.user_id,
-                                fromUserName: loginUserData?.first_name,
-                                order_id: item?.order_id,
-                                room_name: "rootvideo_room_" + loginUserData?.user_id + "_" + item?.patient_id,
-                                toUserId: item?.patient_id,
-                                toUserName: item?.patient_name,
-                                type: 'doctor_to_patient_video_call',
-                                image: item?.patient_image,
-                                isPage: "outGoing",
-                              };
-                              dispatch(setVideoCallData(videoDetails))
-                              dispatch(setVideoCallStatus(1))
-                              setTimeout(() => {
-                                dispatch(setVideoCall(true))
-                              }, 500);
-                            }}
-                            style={{
-                              backgroundColor: Colors.Green,
-                              borderRadius: (mobileW * 1) / 100,
-                              padding: (mobileW * 2) / 100,
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                              alignSelf: 'flex-end',
-                            }} >
-                            <SvgXml xml={VideoCall} />
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                color: Colors.white_color,
-                                textTransform: 'uppercase',
-                                fontFamily: Font.SemiBold,
-                                fontSize: mobileW * 3 / 100,
-                                marginLeft: s(7)
-                              }}
-                            >VIDEO CALL</Text>
-                          </TouchableOpacity>
-
-                        </>
-                      }
-
-                    </View>
-                  }
-
 
                   {item.acceptance_status == 'Completed' &&
                     <View style={{ alignItems: 'flex-end' }}>
@@ -2224,7 +2211,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
                           textAlign: 'center',
                           color: '#FF4500',
                           textTransform: 'uppercase',
-                          fontFamily: Font.SemiBold,
+                          fontFamily: Font.Regular,
                           fontSize: Font.medium,
                         }}>{LanguageConfiguration.Refunde[Configurations.language]}
 
@@ -2234,12 +2221,102 @@ export default AppointmentsDetails = ({ navigation, route }) => {
 
 
                 </View>
+              </View>
+
+
+            </View>
+
+            {
+              item.acceptance_status == 'Accepted' &&
+              <View style={{ paddingHorizontal: s(10), width: '100%', flexDirection: 'row', alignItems: 'center', height: UploadprecriptionBtn == true ? windowWidth / 8 : 0, backgroundColor: '#FFF2D9' }}>
+                {
+                  (item.acceptance_status == 'Accepted' && UploadprecriptionBtn == true &&
+                    item.service_type == "Doctor" && item.provider_prescription == null) &&
+                  <>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={() => {
+                        setMediaOptions(true)
+                      }}
+
+                      style={{
+                        backgroundColor: Colors.orange,
+                        width: mobileW / 2.5,
+                        borderRadius: (mobileW * 1.2) / 100,
+                        paddingVertical: (mobileW * 1.5) / 100,
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: Colors.white_color,
+                          textTransform: 'uppercase',
+                          fontFamily: Font.Regular,
+                          fontSize: mobileW * 3 / 100,
+                        }}>UPLOAD Prescription</Text>
+                    </TouchableOpacity>
+                  </>
+                }
+
+
+                {
+                  (item.acceptance_status == 'Accepted' &&
+                    item.service_type == "Doctor" &&
+                    item.appointment_type == "Online" && VideoCallBtn == true) &&
+                  item.booking_type === 'online_task' &&
+                  <>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        var videoDetails = {
+                          fromUserId: loginUserData?.user_id,
+                          fromUserName: loginUserData?.first_name,
+                          order_id: item?.order_id,
+                          room_name: "rootvideo_room_" + loginUserData?.user_id + "_" + item?.patient_id,
+                          toUserId: item?.patient_id,
+                          toUserName: item?.patient_name,
+                          type: 'doctor_to_patient_video_call',
+                          image: item?.patient_image,
+                          isPage: "outGoing",
+                        };
+                        dispatch(setVideoCallData(videoDetails))
+                        dispatch(setVideoCallStatus(1))
+                        setTimeout(() => {
+                          dispatch(setVideoCall(true))
+                        }, 500);
+                      }}
+                      style={{
+                        backgroundColor: Colors.Green,
+                        borderRadius: (mobileW * 1.2) / 100,
+                        paddingVertical: (mobileW * 1) / 100,
+                        justifyContent: 'center',
+                        width: mobileW / 3.5,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        marginLeft: 10
+                      }} >
+                      <SvgXml xml={VideoCall} />
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: Colors.white_color,
+                          textTransform: 'uppercase',
+                          fontFamily: Font.Regular,
+                          fontSize: mobileW * 3 / 100,
+                          marginLeft: s(7)
+                        }}
+                      >VIDEO CALL</Text>
+                    </TouchableOpacity>
+
+                  </>
+                }
 
               </View>
-            </View>
+            }
+
           </KeyboardAwareScrollView>
 
-          <RBSheet
+          {/* <RBSheet
             ref={attachmentOptionSheetRef}
             {...BottomSheetProps}
             customStyles={BottomSheetStylesForSmall} >
@@ -2297,7 +2374,24 @@ export default AppointmentsDetails = ({ navigation, route }) => {
               </View>
             </View>
 
-          </RBSheet>
+          </RBSheet> */}
+
+          <MediaOptions
+            length={2}
+            visible={mediaOptions}
+            onRequestClose={() => {
+              setMediaOptions(false)
+            }}
+            selectedOption={(val) => {
+              if (val == '1') {
+                openDocumentPicker()
+              } else if (val == '3') {
+                openGalleryPicker()
+              } else {
+
+              }
+            }}
+          />
 
 
         </View>
@@ -2427,7 +2521,7 @@ export default AppointmentsDetails = ({ navigation, route }) => {
         rightIcon={false}
         navigation={navigation}
         title={LanguageConfiguration.AppointmentDetails[Configurations.language]}
-        />
+      />
     </>
   }
 

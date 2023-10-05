@@ -336,7 +336,7 @@ export default Home = ({ navigation, route }) => {
                 strokeLinecap={'butt'}
                 radius={mobileW / 7.5}
                 progressValueColor='#0888D1'
-                delay={1000}
+                delay={1500}
               />
 
               <View style={{
@@ -392,7 +392,7 @@ export default Home = ({ navigation, route }) => {
 
               <Text style={{
                 color: Colors.textblack,
-                fontFamily: Font.Medium,
+                fontFamily: Font.Regular,
                 fontSize: Font.medium
               }}>
                 {cProgress >= 100 ? `Profile Complete` : 'Profile In Progress'}
@@ -445,7 +445,7 @@ export default Home = ({ navigation, route }) => {
                 <Text style={{
                   flex: 5,
                   color: Colors.White,
-                  fontFamily: Font.Medium,
+                  fontFamily: Font.Regular,
                   fontSize: Font.medium
                 }}>
                   {'Complete Now to Appear In Booking App'}
@@ -552,7 +552,7 @@ export default Home = ({ navigation, route }) => {
                   textAlign: Configurations.textalign,
                   fontSize: mobileW * 4.5 / 100,
                   color: Colors.textblack,
-                  fontFamily: Font.Medium,
+                  fontFamily: Font.Regular,
                   alignSelf: 'center'
                 }}>
                   {LanguageConfiguration.dashboardtext[Configurations.language]}
@@ -732,8 +732,8 @@ const styles_new = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: '#4C94DB',
     textAlign: 'center',
-    color: Colors.whiteColor,
-    fontFamily: Font.ExtraBold,
+    color: Colors.white_color,
+    fontFamily: Font.Bold,
     fontSize: (mobileW * 4.2) / 100,
   },
 
@@ -769,7 +769,7 @@ const styles_new = StyleSheet.create({
     // width: '90%',
     // alignSelf: 'flex-end',
     alignSelf: 'center',
-    fontSize: Font.ssregulartext_size,
+    fontSize: Font.small,
     fontFamily: Font.Light,
     // backgroundColor: 'red',
     // color: Colors.gray3,
@@ -828,7 +828,7 @@ const styles_new = StyleSheet.create({
   },
   insideviewtext: {
     alignSelf: 'flex-end',
-    fontFamily: Font.ExtraBold,
+    fontFamily: Font.Bold,
     fontSize: Font.bigheadingfont,
     color: '#4B4B4B',
     marginRight: (mobileW * 0.2) / 100,
@@ -843,7 +843,7 @@ const styles_new = StyleSheet.create({
   },
   insideviewname: {
     alignSelf: 'center',
-    fontFamily: Font.ExtraBold,
+    fontFamily: Font.Bold,
     fontSize: Font.mini,
     color: '#4B4B4B',
   },

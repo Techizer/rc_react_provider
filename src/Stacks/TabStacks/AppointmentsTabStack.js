@@ -83,7 +83,7 @@ export default AppointmentsTabStack = ({ navigation }) => {
   //         textTransform: 'capitalize',
   //         fontSize: (mobileW * 3.25) / 100,
   //         textAlign: 'center',
-  //         fontFamily: Font.Medium,
+  //         fontFamily: Font.Regular,
   //       }}
   //     />
   //   );
@@ -152,7 +152,7 @@ export default AppointmentsTabStack = ({ navigation }) => {
           tabBarLabelStyle: {
             textTransform: 'none',
             fontSize: Font.medium,
-            fontFamily: Font.Medium
+            fontFamily: Font.Regular
           }
         }} initialRouteName='Upcoming' >
         <Tab.Screen

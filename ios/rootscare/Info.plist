@@ -98,6 +98,9 @@
 		<string>Rubik-Regular.ttf</string>
 		<string>Rubik-SemiBold.ttf</string>
 		<string>Rubik-SemiBoldItalic.ttf</string>
+		<string>Helvetica-Bold.ttf</string>
+		<string>Helvetica.ttf</string>
+		<string>Helvetica-Light.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

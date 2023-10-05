@@ -63,15 +63,15 @@ Button.defaultProps = { customStyles: {} };
 //   },
 //   buttonText: {
 //     color: Colors.textwhite,
-//     fontFamily: Font.Medium,
-//     fontSize: Font.buttontextsize,
+//     fontFamily: Font.Regular,
+//     fontSize: Font.large,
 //     textAlign: Configurations.textalign,
 //     alignSelf: 'center',
 //   },
 //   buttonText1: {
 //     color: Colors.textblue,
-//     fontFamily: Font.Medium,
-//     fontSize: Font.buttontextsize,
+//     fontFamily: Font.Regular,
+//     fontSize: Font.large,
 //     textAlign: Configurations.textalign,
 //     alignSelf: 'center',
 //   },
@@ -84,7 +84,7 @@ Button.defaultProps = { customStyles: {} };
 
 const styles = StyleSheet.create({
   mainContainer: {
-    width: '94%',
+    width: '90%',
     height: 40,
     alignSelf: 'center',
     borderRadius: (windowWidth * 2) / 100,
@@ -108,15 +108,15 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontFamily: Font.Medium,
-    fontSize: Font.buttontext_size,
+    fontFamily: Font.Regular,
+    fontSize: Font.medium,
     textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
-    fontFamily: Font.Medium,
-    fontSize: Font.buttontext_size,
+    fontFamily: Font.Regular,
+    fontSize: Font.medium,
     textAlign: Configurations.textalign,
     alignSelf: 'center',
   }

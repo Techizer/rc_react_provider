@@ -51,8 +51,8 @@ const DrawerSubMenu = ({
                   <Text
                     style={{
                       color: Colors.white_color,
-                      fontFamily: Font.Medium,
-                      fontSize: Font.headingfont_booking,
+                      fontFamily: Font.Regular,
+                      fontSize: Font.xlarge,
                       textAlign: Configurations.textRotate,
                     }}>
                     {menuTitle}
@@ -97,8 +97,8 @@ const DrawerSubMenu = ({
                   <Text
                     style={{
                       color: Colors.white_color,
-                      fontFamily: Font.Medium,
-                      fontSize: Font.headingfont_booking,
+                      fontFamily: Font.Regular,
+                      fontSize: Font.xlarge,
                       textAlign: Configurations.textRotate,
                     }}>
                     {menuTitle}
@@ -107,7 +107,7 @@ const DrawerSubMenu = ({
                     style={{
                       color: Colors.gainsboro,
                       fontFamily: Font.Regular,
-                      fontSize: (mobileW * 2.9) / 100, //</View>Font.textsize,
+                      fontSize: (mobileW * 2.9) / 100, //</View>Font.small,
                       textAlign: Configurations.textRotate,
                       marginVertical: (mobileW * 1) / 100,
                       marginBottom: (mobileW * 4) / 100,
@@ -162,15 +162,15 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.textwhite,
-    fontFamily: Font.Medium,
-    fontSize: Font.buttontextsize,
+    fontFamily: Font.Regular,
+    fontSize: Font.large,
     textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
-    fontFamily: Font.Medium,
-    fontSize: Font.buttontextsize,
+    fontFamily: Font.Regular,
+    fontSize: Font.large,
     textAlign: Configurations.textalign,
     alignSelf: 'center',
   },

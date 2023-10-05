@@ -353,7 +353,7 @@ export default EditProfile = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -405,7 +405,7 @@ export default EditProfile = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }}>
@@ -429,7 +429,7 @@ export default EditProfile = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -506,7 +506,7 @@ export default EditProfile = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }} numberOfLines={1}>
@@ -595,7 +595,7 @@ export default EditProfile = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }} numberOfLines={1}>
@@ -619,7 +619,7 @@ export default EditProfile = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -673,7 +673,7 @@ export default EditProfile = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }} numberOfLines={1}>
@@ -731,7 +731,7 @@ export default EditProfile = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -787,7 +787,7 @@ export default EditProfile = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }}>
@@ -811,7 +811,7 @@ export default EditProfile = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -867,7 +867,7 @@ export default EditProfile = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }}>
@@ -1041,9 +1041,9 @@ export default EditProfile = ({ navigation, route }) => {
               <View style={{ width: '100%', alignSelf: 'center' }}>
                 <Text style={{
                   color: Colors.placeholder_text_color,
-                  // fontFamily: Font.blackheadingfontfamily, 
-                  // fontSize: Font.tabtextsize, 
-                  fontFamily: Font.Medium, fontSize: 18,
+                  // fontFamily: Font.Regular, 
+                  // fontSize: Font.large, 
+                  fontFamily: Font.Regular, fontSize: 18,
                   textAlign: Configurations.textRotate,
                 }}>{classStateData.name}</Text>
               </View>
@@ -1195,8 +1195,8 @@ export default EditProfile = ({ navigation, route }) => {
             <Text
               style={{
                 textAlign: Configurations.textRotate,
-                fontSize: Font.headinggray,
-                fontFamily: Font.headingfontfamily,
+                fontSize: Font.medium,
+                fontFamily: Font.Regular,
                 color: Colors.placeholder_text,
               }}>
               {LanguageConfiguration.CC_code[Configurations.language]}
@@ -1267,6 +1267,7 @@ export default EditProfile = ({ navigation, route }) => {
                 onSubmitEditing={() => {
                   Keyboard.dismiss()
                 }}
+                editable={false}
               />
               <View
                 style={{
@@ -1276,8 +1277,8 @@ export default EditProfile = ({ navigation, route }) => {
                 <Text
                   style={{
                     textAlign: Configurations.textRotate,
-                    fontSize: Font.textsize,
-                    fontFamily: Font.headingfontfamily,
+                    fontSize: Font.small,
+                    fontFamily: Font.Regular,
                     color: Colors.textgray,
                   }}>
                   {LanguageConfiguration.mobletexttitle[Configurations.language]}
@@ -1320,8 +1321,8 @@ export default EditProfile = ({ navigation, route }) => {
             <Text
               style={{
                 textAlign: Configurations.textRotate,
-                fontSize: Font.headinggray,
-                fontFamily: Font.headingfontfamily,
+                fontSize: Font.medium,
+                fontFamily: Font.Regular,
                 color: Colors.placeholder_text,
               }}>
               {(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}
@@ -1346,7 +1347,7 @@ export default EditProfile = ({ navigation, route }) => {
                   width: '78%', textAlign: Configurations.textRotate,
                   color: Colors.placeholder_text,
                   fontFamily: Font.Regular,
-                  fontSize: Font.placeholdersize,
+                  fontSize: Font.medium,
                 }}>{classStateData?.dob_date?.length <= 0 ? (user_type == "lab") ? (classStateData?.experience != '') ? classStateData?.experience : "Year of Establishment" : LanguageConfiguration.dob[Configurations.language] : classStateData?.dob_date}</Text>
                 <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
@@ -1362,8 +1363,8 @@ export default EditProfile = ({ navigation, route }) => {
             {classStateData?.dobfocus == true && <View style={{ position: 'absolute', backgroundColor: 'white', left: mobileW * 4 / 100, top: -mobileW * 2.1 / 100, paddingHorizontal: mobileW * 1 / 100 }}>
               <Text style={{
                 color: classStateData?.dob_date.length <= 0 ? '#0057A5' : Colors.gray4,
-                fontSize: Font.sregulartext_size,
-                fontFamily: Font.placeholderfontfamily,
+                fontSize: Font.small,
+                fontFamily: Font.Regular,
                 textAlign: Configurations.textalign
               }}>{(user_type == "lab") ? "Year of Establishment" : LanguageConfiguration.dob[Configurations.language]}</Text>
             </View>}
@@ -1407,7 +1408,7 @@ export default EditProfile = ({ navigation, route }) => {
                     style={{
                       color: Colors.placeholder_text,
                       fontFamily: Font.Regular,
-                      fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
+                      fontSize: Font.medium, //</View></View>(mobileW * 4.1) / 100,
                       textAlign: Configurations.textRotate,
                     }}>
                     {LanguageConfiguration.Gender[Configurations.language]}
@@ -1444,7 +1445,7 @@ export default EditProfile = ({ navigation, route }) => {
                               textAlign: Configurations.textRotate,
                               color: Colors.placeholder_text,
                               fontFamily: Font.Regular,
-                              fontSize: Font.placeholdersize,
+                              fontSize: Font.medium,
                             }}>
                             {LanguageConfiguration.male[Configurations.language]}
                           </Text>
@@ -1484,7 +1485,7 @@ export default EditProfile = ({ navigation, route }) => {
                             marginLeft: mobileW * 1.5 / 100,
                             color: Colors.placeholder_text,
                             fontFamily: Font.Regular,
-                            fontSize: Font.placeholdersize,
+                            fontSize: Font.medium,
                             // alignSelf: 'center',
                           }}>
                           {LanguageConfiguration.female[Configurations.language]}
@@ -1545,9 +1546,9 @@ export default EditProfile = ({ navigation, route }) => {
                 width: '100%',
                 height: mobileW * 30 / 100,
                 color: Colors.textblack,
-                fontSize: Font.placeholdersize,
+                fontSize: Font.medium,
                 textAlign: Configurations.textalign,
-                fontFamily: Font.placeholderfontfamily,
+                fontFamily: Font.Regular,
                 textAlignVertical: 'top',
                 alignSelf: 'flex-start'
 

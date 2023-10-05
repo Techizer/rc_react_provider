@@ -154,7 +154,7 @@ const Chat = ({ navigation, route }) => {
     const Galleryopen = () => {
         let tempArr = []
         Media
-            .launchGellery(true)
+            .launchGellery(false)
             .then((obj) => {
                 setMediaOptions(false)
                 // console.log('Galleryopen..............', obj);
@@ -180,7 +180,7 @@ const Chat = ({ navigation, route }) => {
     const Camerapopen = async () => {
         let tempArr = []
         Media
-            .launchCamera(true)
+            .launchCamera(false)
             .then((obj) => {
                 setMediaOptions(false)
                 const fileName = obj?.path.split('/')
@@ -432,13 +432,13 @@ const Chat = ({ navigation, route }) => {
                             <View style={{ flex: 1, justifyContent: 'center', }}>
                                 <Text style={{
                                     color: Colors.Black,
-                                    fontFamily: Font.SemiBold,
+                                    fontFamily: Font.Regular,
                                     fontSize: Font.medium
                                 }} allowFontScaling={false} >{patient?.name}</Text>
 
                                 <Text style={{
                                     color: '#8F98A7',
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     fontSize: Font.xsmall,
                                     fontStyle: isTyping ? 'italic' : 'normal'
                                 }} allowFontScaling={false}>{isTyping ? 'Typing...' : `Consultation ID: ${appointment?.order}`}</Text>
@@ -473,7 +473,7 @@ const Chat = ({ navigation, route }) => {
                 <View style={{
                     width: '100%',
                     backgroundColor: Colors.White,
-                    paddingBottom: (Platform.OS == 'ios') ? insets.bottom - (windowWidth * 3) / 100 : vs(9),
+                    paddingBottom: (Platform.OS == 'ios') ? insets.bottom - vs(5) : vs(9),
                     paddingVertical: vs(9),
                     paddingHorizontal: s(13),
                 }}>

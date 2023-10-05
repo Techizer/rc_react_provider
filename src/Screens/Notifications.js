@@ -146,7 +146,6 @@ export default Notifications = ({ navigation, route }) => {
         width: '100%',
         alignSelf: 'center',
       }}>
-      <SafeAreaView style={{ flex: 0 }}></SafeAreaView>
 
       <ScreenHeader
         onBackPress={() => {
@@ -172,7 +171,7 @@ export default Notifications = ({ navigation, route }) => {
 
               <View style={{ alignSelf: 'flex-start', width: mobileW * 50 / 100, paddingBottom: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row' }}>
                 <Image style={{ width: mobileW * 6 / 100, height: mobileW * 6 / 100 }} source={Icons.Logo}></Image>
-                <Text style={{ fontFamily: Font.Medium, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.Notification[Configurations.language]}</Text>
+                <Text style={{ fontFamily: Font.Regular, color: '#000', fontSize: mobileW * 5 / 100, paddingLeft: mobileW * 4 / 100 }}>{LanguageConfiguration.Notification[Configurations.language]}</Text>
               </View>
               <View style={{ alignSelf: 'flex-start', paddingVertical: mobileW * 1 / 100, paddingLeft: mobileW * 4 / 100, flexDirection: 'row', alignItems: 'center' }}>
 
@@ -194,7 +193,7 @@ export default Notifications = ({ navigation, route }) => {
 
       {(notifications == null || notifications.length === 0) && !classStateData.isLoading &&
         <View>
-          <Text style={{ textAlign: 'center', color: Colors.DarkGrey, fontFamily: Font.Medium, fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 60 / 100 }}>{classStateData.message}</Text>
+          <Text style={{ textAlign: 'center', color: Colors.DarkGrey, fontFamily: Font.Regular, fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 60 / 100 }}>{classStateData.message}</Text>
         </View>
       }
 
@@ -213,7 +212,7 @@ export default Notifications = ({ navigation, route }) => {
           <Text
             style={{
               fontSize: Font.large,
-              fontFamily: Font.Medium,
+              fontFamily: Font.Regular,
               color: Colors.Theme,
 
             }}
@@ -313,7 +312,7 @@ export default Notifications = ({ navigation, route }) => {
                 <Text
                   style={{
                     fontFamily: Font.Regular,
-                    fontSize: Font.sregulartext_size,
+                    fontSize: Font.small,
                     lineHeight: (mobileW * 4.2) / 100,
                     textAlign: Configurations.textRotate,
                     color: Colors.lightgraytext,
@@ -332,7 +331,7 @@ export default Notifications = ({ navigation, route }) => {
                   <Text
                     style={{
                       fontFamily: Font.Regular,
-                      fontSize: Font.sregulartext_size,
+                      fontSize: Font.small,
                       color: Colors.lightgraytext,
                     }}>
                     {item.datetime}{'  •  '}{item.date}

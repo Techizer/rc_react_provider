@@ -32,7 +32,7 @@ export default class OTPInput extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.reset !== prevProps.reset && this.props.reset) {
-           
+
             this.setState({
                 codeDigOne: '',
                 codeDigTwo: '',
@@ -69,19 +69,9 @@ export default class OTPInput extends Component {
                     onParentPress={() => { if (this.fieldCodeDigOne) this.fieldCodeDigOne.focus() }}
                     value={codeDigOne}
                     inputContainer={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '20%',
-                        height: 50,
-                        paddingHorizontal: 0,
-                        backgroundColor: Colors.white_color,
-                        borderRadius: 8,
-                        borderWidth: 1.5,
-                        borderColor: this.state.codeDigOne != '' ? Colors.buttoncolorblue : Colors.lightGrey
-
+                        borderColor: this.state.codeDigOne != '' ? Colors.buttoncolorblue : Colors.lightGrey,
 
                     }}
-                    inputStyle={{ fontSize: 24, fontFamily: Font.Regular, textAlign: 'center' }}
                     autoCapitalize={'none'}
                     placeholder={''}
                     caretHidden={true}
@@ -109,18 +99,9 @@ export default class OTPInput extends Component {
                     value={codeDigTwo}
                     hideLabel={true}
                     inputContainer={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '20%',
-                        height: 50,
-                        paddingHorizontal: 0,
-                        backgroundColor: Colors.white_color,
-                        borderRadius: 8,
-                        borderWidth: 1.5,
-                        borderColor: this.state.codeDigTwo != '' ? Colors.buttoncolorblue : Colors.lightGrey
+                        borderColor: this.state.codeDigTwo != '' ? Colors.buttoncolorblue : Colors.lightGrey,
 
                     }}
-                    inputStyle={{ fontSize: 24, fontFamily: Font.Regular, textAlign: 'center' }}
                     autoCapitalize={'none'}
                     placeholder={''}
                     caretHidden={true}
@@ -151,18 +132,8 @@ export default class OTPInput extends Component {
                     value={codeDigThree}
                     hideLabel={true}
                     inputContainer={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '20%',
-                        height: 50,
-                        paddingHorizontal: 0,
-                        backgroundColor: Colors.white_color,
-                        borderRadius: 8,
-                        borderWidth: 1.5,
                         borderColor: this.state.codeDigThree != '' ? Colors.buttoncolorblue : Colors.lightGrey
-
                     }}
-                    inputStyle={{ fontSize: 24, fontFamily: Font.Regular, textAlign: 'center' }}
                     autoCapitalize={'none'}
                     placeholder={''}
                     caretHidden={true}
@@ -192,17 +163,8 @@ export default class OTPInput extends Component {
                     value={codeDigFour}
                     hideLabel={true}
                     inputContainer={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '20%',
-                        height: 50,
-                        paddingHorizontal: 0,
-                        backgroundColor: Colors.white_color,
-                        borderRadius: 8,
-                        borderWidth: 1.5,
                         borderColor: this.state.codeDigFour != '' ? Colors.buttoncolorblue : Colors.lightGrey
                     }}
-                    inputStyle={{ fontSize: 24, fontFamily: Font.Regular, textAlign: 'center' }}
                     autoCapitalize={'none'}
                     placeholder={''}
                     caretHidden={true}

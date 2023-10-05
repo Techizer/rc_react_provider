@@ -61,8 +61,6 @@ export default ReviewRating = ({ navigation, route }) => {
         width: '100%',
         alignSelf: 'center',
       }}>
-      <SafeAreaView style={{ flex: 0 }}></SafeAreaView>
-
       <ScreenHeader
         onBackPress={() => {
           navigation.goBack();
@@ -155,7 +153,7 @@ export default ReviewRating = ({ navigation, route }) => {
                     <Text
                       style={{
                         fontFamily: Font.Regular,
-                        fontSize: Font.sregulartext_size,
+                        fontSize: Font.small,
                         lineHeight: (mobileW * 4.2) / 100,
                         textAlign: Configurations.textRotate,
                         color: Colors.lightgraytext,
@@ -182,7 +180,7 @@ export default ReviewRating = ({ navigation, route }) => {
                         <Text
                           style={{
                             fontFamily: Font.Regular,
-                            fontSize: Font.sregulartext_size,
+                            fontSize: Font.small,
                             color: Colors.lightgraytext,
                           }}>
                           Rated
@@ -205,7 +203,7 @@ export default ReviewRating = ({ navigation, route }) => {
                       <Text
                         style={{
                           fontFamily: Font.Regular,
-                          fontSize: Font.sregulartext_size,
+                          fontSize: Font.small,
                           color: Colors.textblue,
                           textAlign: 'right'
                         }}>

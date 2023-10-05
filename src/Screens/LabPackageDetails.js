@@ -160,7 +160,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                       marginTop: (mobileW * 3) / 100,
                       paddingHorizontal: (mobileW * 4) / 100,
                       color: "#000",
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: (mobileW * 4.5) / 100,
                       textAlign: "left",
                     }}
@@ -174,7 +174,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                       fontFamily: Font.Regular,
                       textAlign: "left",
                       color: Colors.theme_color,
-                      fontSize: Font.sregulartext_size,
+                      fontSize: Font.small,
                     }}
                   >
                     {labDetailsData.task_count}
@@ -197,9 +197,9 @@ const LabPackageDetails = ({ navigation, route }) => {
                           width: (mobileW * 18) / 100,
                           height: (mobileW * 7.3) / 100,
                           color: Colors.textblack,
-                          fontSize: Font.placeholdersize,
+                          fontSize: Font.medium,
                           //height: (mobileW * 12) / 100,
-                          fontFamily: Font.placeholderfontfamily,
+                          fontFamily: Font.Regular,
                           borderRadius: (mobileW * 1) / 100,
                           backgroundColor: '#E5E5E5', //Colors.tab_background_color,
                           textAlign: 'center',
@@ -225,7 +225,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                           paddingVertical: (mobileW * 2) / 100,
                           paddingHorizontal: (mobileW * 2) / 100,
                           textAlign: Configurations.textalign,
-                          fontFamily: Font.Medium,
+                          fontFamily: Font.Regular,
                           fontSize: (mobileW * 3.5) / 100,
                           color: Colors.tablightcolo,
                         }}
@@ -241,7 +241,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                           paddingHorizontal: (mobileW * 2) / 100,
                           fontFamily: Font.Regular,
                           textAlign: "left",
-                          fontSize: Font.sregulartext_size,
+                          fontSize: Font.small,
                           marginTop: (mobileW * 3) / 100,
                           color: Colors.tablightcolo,
                           // textDecorationLine: "line-through",
@@ -262,7 +262,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                         <Text
                           style={{
                             textAlign: Configurations.textalign,
-                            fontFamily: Font.Medium,
+                            fontFamily: Font.Regular,
                             fontSize: (mobileW * 4) / 100,
                           }}
                         >
@@ -294,7 +294,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                           fontFamily: Font.Regular,
                           marginTop: (mobileW * 2) / 100,
                           paddingHorizontal: (mobileW * 4) / 100,
-                          fontSize: Font.buttontext_size,
+                          fontSize: Font.medium,
                           textAlign: Configurations.textRotate,
                           color: Colors.lightgraytext,
                         }}
@@ -305,7 +305,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                         value={labDetailsData.task_content}
                         stylesheet={{
                           p: {
-                            fontSize: Font.subtext,
+                            fontSize: Font.medium,
                             paddingHorizontal: (mobileW * 4) / 100,
                             color: Colors.lightgraytext,
                             marginTop: (mobileW * 2) / 100,
@@ -326,7 +326,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                       <Text
                         style={{
                           fontFamily: Font.Regular,
-                          fontSize: Font.headingfont_booking,
+                          fontSize: Font.xlarge,
                           color: Colors.precautionText,
                           paddingHorizontal: (mobileW * 4) / 100,
                           marginTop: (mobileW * 2) / 100,
@@ -340,7 +340,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                         value={labDetailsData.task_sub_content}
                         stylesheet={{
                           p: {
-                            fontSize: Font.subtext,
+                            fontSize: Font.medium,
                             paddingHorizontal: (mobileW * 4) / 100,
                             color: Colors.lightgraytext,
                             marginTop: (mobileW * 2) / 100,
@@ -408,9 +408,9 @@ const LabPackageDetails = ({ navigation, route }) => {
                             <Text
                               style={{
                                 width: "90%",
-                                fontSize: Font.subtext,
+                                fontSize: Font.medium,
                                 color: Colors.theme_color,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 textAlign: "left",
                               }}
                             >
@@ -444,7 +444,7 @@ const LabPackageDetails = ({ navigation, route }) => {
                                 fontFamily: Font.Regular,
                                 textAlign: "left",
                                 color: Colors.subTaskColor,
-                                fontSize: Font.sregulartext_size,
+                                fontSize: Font.small,
                               }}
                             >
                               {item.subtask}

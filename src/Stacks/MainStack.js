@@ -44,7 +44,7 @@ import { MessageFunctions } from '../Helpers/Message';
 import { API } from '../Helpers/API';
 import { Configurations } from '../Provider/configProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { callRejectNotification, CheckSession, Network } from '../Helpers/APIFunctions';
+import { callRejectNotification, CheckSession, getNotifications, Network } from '../Helpers/APIFunctions';
 import FileView from '../Screens/FileView';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -417,6 +417,9 @@ const MainStack = navigation => {
           gestureDirection: 'horizontal',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
+        // onStateChange={(state) => {
+        //   getNotifications()
+        // }}
         initialRouteName={ScreenReferences.Splash}>
 
         <Stack.Screen

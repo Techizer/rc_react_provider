@@ -134,7 +134,7 @@ export default AddBankInformation = ({ navigation, route }) => {
 
 
       <KeyboardAwareScrollView contentContainerStyle={{
-        paddingBottom: vs(28)
+        paddingBottom: windowWidth / 2.5
       }}>
 
         <View style={{
@@ -366,7 +366,7 @@ export default AddBankInformation = ({ navigation, route }) => {
                   color: Colors.regulartextcolor,
                   fontFamily: Font.Regular,
                   width: '90%',
-                  fontSize: Font.Remember,
+                  fontSize: Font.medium,
                 }}>
                 By adding an account, you confirm that all the information provided is accurate and genuine.
               </Text>
@@ -374,20 +374,21 @@ export default AddBankInformation = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
-        <StickyButton
-          text={LanguageConfiguration.submitbtntext[Configurations.language]}
-          onPress={onUpdate}
-          onLoading={isOnButtonLoading}
-          isDisabled={!classStateData.isCheck}
-          customStyles={{
-            mainContainer: {
-              marginBottom: vs(16),
-              width: '90%'
-            }
-          }}
-        />
 
       </KeyboardAwareScrollView>
+
+      <StickyButton
+        text={LanguageConfiguration.submitbtntext[Configurations.language]}
+        onPress={onUpdate}
+        onLoading={isOnButtonLoading}
+        isDisabled={!classStateData.isCheck}
+        customStyles={{
+          mainContainer: {
+            marginBottom: vs(16),
+            width: '90%'
+          }
+        }}
+      />
 
     </View>
   )

@@ -427,7 +427,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                       style={{
                         textAlign: Configurations.textRotate,
                         color: Colors.placeholder_text_color,
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       {((page == "onlineconsultation") ?
@@ -454,7 +454,7 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                       style={{
                         textAlign: Configurations.textRotate,
                         color: Colors.placeholder_text_color,
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         fontSize: mobileW * 3.6 / 100,
                       }}>
                       Rate {(classStateData.currency_symbol) ? '(' + classStateData.currency_symbol + ')' : ''}
@@ -546,8 +546,8 @@ export default PriceList = ({ navigation, route, pageName, page }) => {
                                 width: (mobileW * 15) / 100,
                                 height: (mobileW * 7.3) / 100,
                                 color: Colors.textblack,
-                                fontSize: Font.placeholdersize,
-                                fontFamily: Font.placeholderfontfamily,
+                                fontSize: Font.medium,
+                                fontFamily: Font.Regular,
                                 borderRadius: (mobileW * 1) / 100,
                                 backgroundColor: '#E5E5E5',
                                 textAlign: 'center',

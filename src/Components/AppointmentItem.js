@@ -213,7 +213,7 @@ const AppointmentItem = ({
                         <Text
                             style={{
                                 fontSize: Font.medium,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 color: Colors.Theme
                             }}
                         >{item?.order_id}</Text>
@@ -221,7 +221,7 @@ const AppointmentItem = ({
                         <Text
                             style={{
                                 fontSize: Font.small,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 color: item?.acceptance_status === 'Pending' ? Colors.Yellow : (item?.acceptance_status === 'Completed' || item?.acceptance_status === 'Accepted') ? Colors.Green : Colors.Red,
                                 // textTransform: 'uppercase'
 
@@ -243,7 +243,7 @@ const AppointmentItem = ({
                             <Text
                                 style={{
                                     fontSize: Font.small,
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start'
                                 }}
@@ -272,7 +272,7 @@ const AppointmentItem = ({
                             <Text
                                 style={{
                                     fontSize: Font.small,
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
@@ -292,7 +292,7 @@ const AppointmentItem = ({
                             <Text
                                 style={{
                                     fontSize: Font.small,
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
@@ -323,7 +323,7 @@ const AppointmentItem = ({
                             <Text
                                 style={{
                                     fontSize: Font.small,
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
@@ -343,7 +343,7 @@ const AppointmentItem = ({
                             <Text
                                 style={{
                                     fontSize: Font.small,
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
@@ -363,7 +363,7 @@ const AppointmentItem = ({
                             <Text
                                 style={{
                                     fontSize: Font.small,
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     color: Colors.detailTitles,
                                     alignSelf: 'flex-start',
                                 }}
@@ -400,7 +400,7 @@ const AppointmentItem = ({
                             <Text
                                 style={{
                                     fontSize: Font.medium,
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     color: Colors.Theme
                                 }}
                             >{item?.price}</Text>
@@ -449,7 +449,7 @@ const AppointmentItem = ({
                                     <Text
                                         style={{
                                             fontSize: Font.small,
-                                            fontFamily: Font.SemiBold,
+                                            fontFamily: Font.Regular,
                                             color: Colors.White,
                                             marginLeft: s(7)
                                         }}
@@ -480,7 +480,7 @@ const AppointmentItem = ({
                                             textAlign: 'center',
                                             color: Colors.white_color,
                                             textTransform: 'uppercase',
-                                            fontFamily: Font.Medium,
+                                            fontFamily: Font.Regular,
                                             fontSize: mobileW * 3 / 100,
                                         }}>Accept</Text>
                                 </TouchableOpacity> :
@@ -508,8 +508,8 @@ const AppointmentItem = ({
                                             alignSelf: 'center',
                                             textAlign: 'center',
                                             color: Colors.white_color,
-                                            //  paddingHorizontal: (mobileW * 2) / 100,
-                                            fontFamily: Font.Medium,
+                                            textTransform: 'uppercase',
+                                            fontFamily: Font.Regular,
                                             fontSize: mobileW * 3 / 100,
                                         }}>{'Reject'}
 
@@ -563,7 +563,7 @@ const AppointmentItem = ({
                                                 alignSelf: 'center',
                                                 textAlign: 'center',
                                                 color: Colors.DarkGrey,
-                                                fontFamily: Font.MediumItalic,
+                                                fontFamily: Font.Regular,
                                                 fontSize: mobileW * 3 / 100,
                                             }}>{'Not rated yet'}
 

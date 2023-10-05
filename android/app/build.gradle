@@ -139,8 +139,8 @@ android {
         applicationId "com.rootscare.serviceprovider"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 40
-        versionName "3.7.4"
+        versionCode 41
+        versionName "3.7.5"
         multiDexEnabled true
     }
     splits {

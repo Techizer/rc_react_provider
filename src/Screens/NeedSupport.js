@@ -140,7 +140,7 @@ export default NeedSupport = ({ navigation, route }) => {
               source={Icons.NeedSupoort}>
             </Image>
           </View>
-          <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, }}>{LanguageConfiguration.NeedSupport[Configurations.language]} </Text>
+          <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.Regular, }}>{LanguageConfiguration.NeedSupport[Configurations.language]} </Text>
         </View>
 
         <View style={{ width: '90%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 3 / 100 }} />
@@ -151,7 +151,7 @@ export default NeedSupport = ({ navigation, route }) => {
 
 
         <View style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
-          <Text style={{ textAlign: Configurations.textRotate, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.buttonfontfamily, }}>{LanguageConfiguration.select_topic_text[Configurations.language]} </Text>
+          <Text style={{ textAlign: Configurations.textRotate, fontSize: mobileW * 3.7 / 100, color: Colors.textblack, fontFamily: Font.Regular, }}>{LanguageConfiguration.select_topic_text[Configurations.language]} </Text>
         </View>
 
         <View style={{
@@ -165,7 +165,7 @@ export default NeedSupport = ({ navigation, route }) => {
 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '95%', alignSelf: 'center' }}>
                 <Text
-                  style={{ alignSelf: 'center', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: Configurations.textRotate, paddingVertical: mobileW * 4 / 100, fontFamily: Font.placeholderfontfamily }}
+                  style={{ alignSelf: 'center', color: Colors.textblack, fontSize: Font.medium, textAlign: Configurations.textRotate, paddingVertical: mobileW * 4 / 100, fontFamily: Font.Regular }}
 
                 >{classStateData.select.length <= 0 ? LanguageConfiguration.select_issues_text[Configurations.language] : classStateData.select}</Text>
                 <View style={{ width: '10%', alignSelf: 'center' }}>
@@ -187,7 +187,7 @@ export default NeedSupport = ({ navigation, route }) => {
         }} activeOpacity={1}>
           <View style={{ width: '95%', alignSelf: 'center', }}>
             <TextInput
-              style={{ marginTop: mobileW * 2 / 100, backgroundColor: '#fff', width: '100%', color: Colors.textblack, fontSize: Font.placeholdersize, textAlign: Configurations.textalign, fontFamily: Font.placeholderfontfamily, paddingVertical: mobileW * 3 / 100 }}
+              style={{ marginTop: mobileW * 2 / 100, backgroundColor: '#fff', width: '100%', color: Colors.textblack, fontSize: Font.medium, textAlign: Configurations.textalign, fontFamily: Font.Regular, paddingVertical: mobileW * 3 / 100 }}
               maxLength={250}
               multiline={true}
               placeholder={classStateData.selectissuefocus != true ? LanguageConfiguration.text_input_topic[Configurations.language] : null}
@@ -284,7 +284,7 @@ export default NeedSupport = ({ navigation, route }) => {
                         <Text style={{
                           color: '#041A27',
                           fontSize: 15,
-                          fontFamily: Font.headingfontfamily,
+                          fontFamily: Font.Regular,
                           paddingTop: 15,
                           paddingBottom: 15,
                           width: '94.5%',
@@ -318,16 +318,16 @@ export default NeedSupport = ({ navigation, route }) => {
               <Image style={{ width: mobileW * 17 / 100, height: mobileW * 17 / 100, alignSelf: 'center', marginTop: mobileW * -7 / 100, resizeMode: 'contain' }}
                 source={require('../Icons/ryt_opp.png')}></Image>
             }
-            <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, }}>{LanguageConfiguration.thank[Configurations.language]}</Text>
-            <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign }}>{'Support ticket posted'}</Text>
-            <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.Medium, textAlign: Configurations.textalign, color: Colors.textgray }}>{'Your support ticket is under review by Rootscare resolution team. You will soon receive notification on the status.'}</Text>
+            <Text style={{ fontSize: mobileW * 8 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Regular, textAlign: Configurations.textalign, }}>{LanguageConfiguration.thank[Configurations.language]}</Text>
+            <Text style={{ fontSize: mobileW * 3.5 / 100, marginTop: mobileW * 5 / 100, fontFamily: Font.Regular, textAlign: Configurations.textalign }}>{'Support ticket posted'}</Text>
+            <Text style={{ fontSize: mobileW * 3 / 100, marginTop: mobileW * 2 / 100, fontFamily: Font.Regular, textAlign: Configurations.textalign, color: Colors.textgray }}>{'Your support ticket is under review by Rootscare resolution team. You will soon receive notification on the status.'}</Text>
 
             <TouchableOpacity onPress={() => {
               setState({ successmodal: false }), navigation.goBack();
             }}
 
               style={{ width: '15%', alignSelf: 'center', borderColor: Colors.bordercolorblue, borderWidth: 1, paddingVertical: mobileW * 2 / 100, marginTop: mobileW * 5 / 100, borderRadius: mobileW * 3 / 100 }}>
-              <Text style={{ fontSize: mobileW * 3 / 100, alignSelf: 'center', fontFamily: Font.Medium, textAlign: Configurations.textalign, alignSelf: 'center', color: Colors.terms_text_color_blue, }}>{LanguageConfiguration.close_txt[Configurations.language]}</Text>
+              <Text style={{ fontSize: mobileW * 3 / 100, alignSelf: 'center', fontFamily: Font.Regular, textAlign: Configurations.textalign, alignSelf: 'center', color: Colors.terms_text_color_blue, }}>{LanguageConfiguration.close_txt[Configurations.language]}</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

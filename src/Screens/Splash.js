@@ -1,6 +1,6 @@
 import { Text, View, Image, StatusBar, Modal, TouchableOpacity, Linking, Platform, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Colors, Font, Configurations, mobileW, LanguageConfiguration, API } from '../Helpers/Utils';
+import { Colors, Font, Configurations, windowWidth, LanguageConfiguration, API } from '../Helpers/Utils';
 global.add_location = 'NA';
 global.amount_total = 0;
 global.username = 'NA'
@@ -11,6 +11,9 @@ import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout, setUserFCMToken, setUserLoginData, setVideoCall, setVideoCallStatus } from '../Redux/Actions/UserActions';
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications'
+import { SvgXml } from 'react-native-svg';
+import { PatternLogo, SplashLogo, Splash_Logo } from '../Icons/SvgIcons/Index';
+import { vs } from 'react-native-size-matters';
 const appVersion = DeviceInfo.getVersion();
 
 export default Splash = ({ navigation, route }) => {
@@ -134,18 +137,16 @@ export default Splash = ({ navigation, route }) => {
               device_lang = 'AR'
             }
 
-            if (userEmail && userPassword && userEmail != '' && userPassword != '') {
+            if (userEmail && userEmail != '') {
 
-              let url = Configurations.baseURL + "api-service-provider-login";
+              let url = Configurations.baseURL + "api-service-provider-splash";
               var data = new FormData();
 
-              data.append('email', userEmail)
-              data.append('password', userPassword)
+              data.append('phone_number', userEmail)
               data.append('device_type', Configurations.device_type)
-              data.append('device_lang', device_lang)
               data.append('fcm_token', fcmToken)
-              data.append('user_type', loginUserData?.user_type)
 
+              // console.log(data._parts);
               API.post(url, data, 1).then((obj) => {
                 // console.log({ obj });
                 if (obj.status == true) {
@@ -202,32 +203,45 @@ export default Splash = ({ navigation, route }) => {
     <View style={{
       width: '100%', alignSelf: 'center', flex: 1,
       backgroundColor: Colors.white_color,
-      justifyContent:'center'
+      // justifyContent: 'center'
     }}>
 
-      <Image style={{ height: mobileW * 80 / 100, width: mobileW * 95 / 100, resizeMode: 'contain', alignSelf: 'center', marginTop: mobileW * 15 / 100 }}
-        source={Icons.SplashLogo}>
+      {/* <Image style={{ height: windowWidth * 80 / 100, width: windowWidth * 95 / 100, resizeMode: 'contain', alignSelf: 'center', marginTop: windowWidth * 15 / 100 }}
+        source={Icons.SplashLogo} /> */}
 
-      </Image>
-
-      <View style={{ width: '50%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 6 / 100 }}>
-
-
+      <View style={{ position: 'absolute', top: 0 }}>
+        <SvgXml xml={PatternLogo} />
       </View>
 
-      <View style={{ width: '50%', alignSelf: 'center', marginTop: mobileW * 3 / 100 }}>
-        <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{LanguageConfiguration.Splashtext1[state?.loanguage]} </Text>
+      <View style={{ marginTop: vs(110) }}>
+        <SvgXml xml={SplashLogo} style={{ alignSelf: 'center' }} />
       </View>
 
-      <View style={{ width: '50%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: mobileW * 0.3 / 100, marginTop: mobileW * 6 / 100 }}>
+      {/* <View style={{ width: '50%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: windowWidth * 0.3 / 100, marginTop: windowWidth * 6 / 100 }}></View> */}
 
 
+      <View style={{ width: '65%', alignSelf: 'center', marginTop: vs(25) }}>
+        <Text style={{ marginTop: windowWidth / 10, fontSize: 24, color: Colors.Black, fontFamily: Font.Bold, alignSelf: 'center', textAlign: 'center', lineHeight:36 }}>{LanguageConfiguration.Splashtext1[state?.loanguage]} </Text>
       </View>
 
-      <View style={{ width: '63%', alignSelf: 'center', marginTop: mobileW * 4 / 100 }}>
-        <Text style={{ marginTop: mobileW * 0.5 / 100, fontSize: mobileW * 4 / 100, color: Colors.splashtextcolor, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center' }}>{LanguageConfiguration.Splashtext2[state?.loanguage]} </Text>
+      {/* <View style={{ width: '50%', alignSelf: 'center', borderColor: Colors.bordercolor, borderBottomWidth: windowWidth * 0.3 / 100, marginTop: windowWidth * 6 / 100 }}></View> */}
 
+      <View style={{ width: '52%', alignSelf: 'center', marginTop: vs(20) }}>
+        <Text style={{ marginTop: windowWidth / 10, fontSize: Font.xlarge, color: Colors.Black, fontFamily: Font.Regular, alignSelf: 'center', textAlign: 'center', lineHeight:22 }}>{LanguageConfiguration.Splashtext2[state?.loanguage]} </Text>
       </View>
+
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', position: 'absolute', bottom: vs(40),  }}>
+        <Image style={{ height: windowWidth * 20 / 100, width: windowWidth * 20 / 100, resizeMode: 'contain', alignSelf: 'center' }}
+          source={Icons.SplashStamp} />
+
+        <View style={{ marginLeft: windowWidth / 20 }}>
+          <Text style={{ fontSize: Font.medium, color: Colors.Black, fontFamily: Font.Regular, lineHeight:20}}>{'Accredited by'} </Text>
+          <Text style={{ marginTop: 3, fontSize: Font.medium, color: Colors.Black, fontFamily: Font.Regular,lineHeight:20 }}>{'Chap Organization'} </Text>
+        </View>
+      </View>
+
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -240,18 +254,18 @@ export default Splash = ({ navigation, route }) => {
 
           }}
           style={{ backgroundColor: "#00000080", flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20, marginTop: -50 }}>
-         
-          <View style={{ borderRadius: 20, width: mobileW * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
+
+          <View style={{ borderRadius: 20, width: windowWidth * 90 / 100, position: 'absolute', alignSelf: 'center' }}>
 
             <View style={{ backgroundColor: '#fff', borderRadius: 2, width: "100%", }}>
 
               <View style={{
                 alignSelf: 'flex-start',
-                width: mobileW * 80 / 100,
-                height: mobileW * 14 / 100,
-                paddingVertical: mobileW * 3 / 100,
-                marginTop: mobileW * 2 / 100,
-                paddingLeft: mobileW * 4 / 100, flexDirection: 'row',
+                width: windowWidth * 80 / 100,
+                height: windowWidth * 14 / 100,
+                paddingVertical: windowWidth * 3 / 100,
+                marginTop: windowWidth * 2 / 100,
+                paddingLeft: windowWidth * 4 / 100, flexDirection: 'row',
               }}>
                 <HTMLView
                   value={state?.updTitle}
@@ -259,19 +273,19 @@ export default Splash = ({ navigation, route }) => {
                     h3: {
                       fontFamily: Font.Regular,
                       color: Colors.textblack, //'#000',
-                      fontSize: mobileW * 4.8 / 100,
+                      fontSize: windowWidth * 4.8 / 100,
                       opacity: 0.9
                     },
 
-                    paddingLeft: mobileW * 4 / 100
+                    paddingLeft: windowWidth * 4 / 100
                   }}
                 />
               </View>
               <View style={{
                 alignSelf: 'flex-start',
-                paddingVertical: mobileW * 1 / 100,
-                paddingLeft: mobileW * 4 / 100,
-                paddingRight: mobileW * 4 / 100,
+                paddingVertical: windowWidth * 1 / 100,
+                paddingLeft: windowWidth * 4 / 100,
+                paddingRight: windowWidth * 4 / 100,
                 flexDirection: 'row', alignItems: 'center',
                 // backgroundColor: 'red'
               }}>
@@ -282,7 +296,7 @@ export default Splash = ({ navigation, route }) => {
                     p: {
                       fontFamily: Font.Regular,
                       color: Colors.textblack,
-                      fontSize: mobileW * 4 / 100,
+                      fontSize: windowWidth * 4 / 100,
                       textAlign: 'left',
                       opacity: 0.9
                     },
@@ -295,7 +309,7 @@ export default Splash = ({ navigation, route }) => {
               <View style={{
                 flexDirection: 'row',
                 justifyContent: (state?.skipFlag) ? 'space-between' : 'flex-end',
-                width: '70%', paddingBottom: mobileW * 5 / 100, marginTop: mobileW * 9 / 100,
+                width: '70%', paddingBottom: windowWidth * 5 / 100, marginTop: windowWidth * 9 / 100,
                 alignSelf: 'flex-end', right: 16,
                 // backgroundColor: 'red'
               }}>
@@ -309,14 +323,14 @@ export default Splash = ({ navigation, route }) => {
                     createNewLoginSession()
                   }}
                     style={{
-                      width: mobileW * 35 / 100,
+                      width: windowWidth * 35 / 100,
                       flexDirection: 'row', alignSelf: 'center', justifyContent: 'flex-end',
 
                     }}>
                     <Text
                       style={{
                         fontFamily: Font.Regular,
-                        fontSize: mobileW * 3.8 / 100,
+                        fontSize: windowWidth * 3.8 / 100,
                         color: Colors.terms_text_color_blue, //Colors.bordercolorblue,
                         alignSelf: 'center'
                       }}>{state?.skipText}</Text>
@@ -329,15 +343,15 @@ export default Splash = ({ navigation, route }) => {
                 }}
                   activeOpacity={0.8}
                   style={{
-                    width: mobileW * 22 / 100,
-                    height: mobileW * 8 / 100,
+                    width: windowWidth * 22 / 100,
+                    height: windowWidth * 8 / 100,
                     justifyContent: 'center',
                     backgroundColor: '#549E36',
                     alignSelf: 'flex-end',
                   }}>
                   <Text style={{
                     fontFamily: Font.Regular,
-                    fontSize: mobileW * 3.8 / 100,
+                    fontSize: windowWidth * 3.8 / 100,
                     color: Colors.white_color, alignSelf: 'center'
                   }}>{LanguageConfiguration.Update[Configurations.language]}</Text>
                 </TouchableOpacity>
@@ -348,24 +362,24 @@ export default Splash = ({ navigation, route }) => {
                   style={{
                     borderTopWidth: 1,
                     borderTopColor: Colors.gray5,
-                    height: mobileW * 15 / 100,
+                    height: windowWidth * 15 / 100,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginLeft: mobileW * 4 / 100,
-                    marginRight: mobileW * 4 / 100,
+                    marginLeft: windowWidth * 4 / 100,
+                    marginRight: windowWidth * 4 / 100,
 
                   }}
                 >
                   <Text style={{
-                    fontFamily: Font.SemiBold,
-                    fontSize: mobileW * 3.5 / 100,
+                    fontFamily: Font.Regular,
+                    fontSize: windowWidth * 3.5 / 100,
                     color: Colors.placeholder_border,
                   }}>
                     {LanguageConfiguration.Help[Configurations.language]}
                   </Text>
                   <Text style={{
-                    fontFamily: Font.SemiBold,
-                    fontSize: mobileW * 3.5 / 100,
+                    fontFamily: Font.Regular,
+                    fontSize: windowWidth * 3.5 / 100,
                     color: Colors.terms_text_color_blue,
                     marginLeft: 6,
                   }} onPress={() => {

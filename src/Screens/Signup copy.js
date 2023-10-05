@@ -478,7 +478,7 @@ export default Signup = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -542,7 +542,7 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  fontSize: Font.Remember,
+                  fontSize: Font.medium,
                 }}>
                 Upload Photocopy of ID
               </Text>
@@ -558,7 +558,7 @@ export default Signup = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }}>
@@ -582,7 +582,7 @@ export default Signup = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -645,7 +645,7 @@ export default Signup = ({ navigation, route }) => {
                             <Text style={{
                               color: '#041A27',
                               fontSize: 15,
-                              fontFamily: Font.headingfontfamily,
+                              fontFamily: Font.Regular,
                               // marginLeft: 15,
                               paddingTop: 15,
                               paddingBottom: 15,
@@ -721,7 +721,7 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  fontSize: Font.Remember,
+                  fontSize: Font.medium,
                 }}>
                 Upload Certificate
               </Text>
@@ -733,7 +733,7 @@ export default Signup = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }} numberOfLines={1}>
@@ -833,7 +833,7 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  fontSize: Font.Remember,
+                  fontSize: Font.medium,
                 }}>
                 Upload Photocopy of Health License
               </Text>
@@ -848,7 +848,7 @@ export default Signup = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }} numberOfLines={1}>
@@ -872,7 +872,7 @@ export default Signup = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -935,7 +935,7 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   color: Colors.textblue,
                   fontFamily: Font.Regular,
-                  fontSize: Font.Remember,
+                  fontSize: Font.medium,
                 }}>
                 Upload Certificate
               </Text>
@@ -953,7 +953,7 @@ export default Signup = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }} numberOfLines={1}>
@@ -1015,7 +1015,7 @@ export default Signup = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -1080,7 +1080,7 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: Configurations.textalign,
-                  fontSize: Font.Remember,
+                  fontSize: Font.medium,
                 }}>
                 Upload Photocopy of ID
               </Text>
@@ -1096,7 +1096,7 @@ export default Signup = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }}>
@@ -1120,7 +1120,7 @@ export default Signup = ({ navigation, route }) => {
           <Text
             style={{
               textAlign: Configurations.textRotate,
-              fontSize: Font.buttontextsize,
+              fontSize: Font.large,
               fontFamily: Font.Bold,
               color: Colors.textblack,
             }}>
@@ -1185,7 +1185,7 @@ export default Signup = ({ navigation, route }) => {
                   fontFamily: Font.Regular,
                   // paddingLeft:mobileW*2/100,
                   // textAlign: Configurations.textalign,
-                  fontSize: Font.Remember,
+                  fontSize: Font.medium,
                 }}>
                 Upload Certificate
               </Text>
@@ -1201,7 +1201,7 @@ export default Signup = ({ navigation, route }) => {
               style={{
                 color: Colors.textgray,
                 fontFamily: Font.Regular,
-                fontSize: Font.Forgot,
+                fontSize: Font.medium,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
               }}>
@@ -1332,7 +1332,7 @@ export default Signup = ({ navigation, route }) => {
                             <Text style={{
                               color: '#041A27',
                               fontSize: 15,
-                              fontFamily: Font.headingfontfamily,
+                              fontFamily: Font.Regular,
                               paddingTop: 15,
                               paddingBottom: 15,
                               width: '94.5%',
@@ -1397,8 +1397,8 @@ export default Signup = ({ navigation, route }) => {
               }}>
               <Text
                 style={{
-                  fontSize: Font.headingblack,
-                  fontFamily: Font.blackheadingfontfamily,
+                  fontSize: Font.xxxlarge,
+                  fontFamily: Font.Regular,
                   textAlign: Configurations.textRotate
                 }}>
                 {LanguageConfiguration.Signup[Configurations.language]}
@@ -1414,8 +1414,8 @@ export default Signup = ({ navigation, route }) => {
               <Text
                 style={{
                   textAlign: Configurations.textRotate,
-                  fontSize: Font.headinggray,
-                  fontFamily: Font.headingfontfamily,
+                  fontSize: Font.medium,
+                  fontFamily: Font.Regular,
                   color: Colors.placeholder_text,
                 }}>
                 {LanguageConfiguration.Signuptext1[Configurations.language]}
@@ -1474,7 +1474,7 @@ export default Signup = ({ navigation, route }) => {
                               <Text style={{
                                 color: '#041A27',
                                 fontSize: 15,
-                                fontFamily: Font.headingfontfamily,
+                                fontFamily: Font.Regular,
                                 paddingTop: 15,
                                 paddingBottom: 15,
                                 width: '94.5%',
@@ -1557,8 +1557,8 @@ export default Signup = ({ navigation, route }) => {
               <Text
                 style={{
                   textAlign: Configurations.textRotate,
-                  fontSize: Font.headinggray,
-                  fontFamily: Font.headingfontfamily,
+                  fontSize: Font.medium,
+                  fontFamily: Font.Regular,
                   color: Colors.placeholder_text,
                 }}>
                 {LanguageConfiguration.selectcountrytitle[Configurations.language]}
@@ -1640,8 +1640,8 @@ export default Signup = ({ navigation, route }) => {
                   <Text
                     style={{
                       textAlign: Configurations.textRotate,
-                      fontSize: Font.textsize,
-                      fontFamily: Font.headingfontfamily,
+                      fontSize: Font.small,
+                      fontFamily: Font.Regular,
                       color: Colors.textgray,
                     }}>
                     {LanguageConfiguration.mobletexttitle[Configurations.language]}
@@ -1666,7 +1666,7 @@ export default Signup = ({ navigation, route }) => {
                         <Text style={{
                           width: '78%', textAlign: Configurations.textRotate, color: Colors.placeholder_text,
                           fontFamily: Font.Regular,
-                          fontSize: Font.placeholdersize,
+                          fontSize: Font.medium,
                         }}>{classStateData.dob_date.length <= 0 ? LanguageConfiguration.dob[Configurations.language] : classStateData.dob_date}</Text>
                         <View style={{ width: '15%', alignSelf: 'center', alignItems: 'flex-end' }}>
 
@@ -1711,7 +1711,7 @@ export default Signup = ({ navigation, route }) => {
                         style={{
                           color: Colors.placeholder_text,
                           fontFamily: Font.Regular,
-                          fontSize: Font.placeholdersize, //</View></View>(mobileW * 4.1) / 100,
+                          fontSize: Font.medium, //</View></View>(mobileW * 4.1) / 100,
                           textAlign: Configurations.textRotate,
                         }}>
                         {LanguageConfiguration.Gender[Configurations.language]}
@@ -1749,7 +1749,7 @@ export default Signup = ({ navigation, route }) => {
                                   textAlign: Configurations.textRotate,
                                   color: Colors.placeholder_text,
                                   fontFamily: Font.Regular,
-                                  fontSize: Font.placeholdersize,
+                                  fontSize: Font.medium,
                                 }}>
                                 {LanguageConfiguration.male[Configurations.language]}
                               </Text>
@@ -1791,7 +1791,7 @@ export default Signup = ({ navigation, route }) => {
                                 marginLeft: mobileW * 1.5 / 100,
                                 color: Colors.placeholder_text,
                                 fontFamily: Font.Regular,
-                                fontSize: Font.placeholdersize,
+                                fontSize: Font.medium,
                                 // alignSelf: 'center',
                               }}>
                               {LanguageConfiguration.female[Configurations.language]}
@@ -1853,8 +1853,8 @@ export default Signup = ({ navigation, route }) => {
               <Text
                 style={{
                   textAlign: Configurations.textRotate,
-                  fontSize: Font.textsize,
-                  fontFamily: Font.headingfontfamily,
+                  fontSize: Font.small,
+                  fontFamily: Font.Regular,
                   color: Colors.textgray,
                 }}>
                 {LanguageConfiguration.Signuptext3[Configurations.language]}
@@ -1907,8 +1907,8 @@ export default Signup = ({ navigation, route }) => {
               <Text
                 style={{
                   textAlign: Configurations.textRotate,
-                  fontSize: Font.textsize,
-                  fontFamily: Font.headingfontfamily,
+                  fontSize: Font.small,
+                  fontFamily: Font.Regular,
                   color: Colors.textgray,
                 }}>
                 {LanguageConfiguration.Signuptext4[Configurations.language]}
@@ -1963,7 +1963,7 @@ export default Signup = ({ navigation, route }) => {
                   style={{
                     textAlign: Configurations.textalign,
                     fontSize: (mobileW * 3.5) / 100,
-                    fontFamily: Font.headingfontfamily,
+                    fontFamily: Font.Regular,
                     color: Colors.placeholder_text,
                     textAlign: 'center', alignSelf: 'center'
                   }}>
@@ -1981,7 +1981,7 @@ export default Signup = ({ navigation, route }) => {
                   style={{
                     textAlign: Configurations.textalign,
                     fontSize: (mobileW * 3.5) / 100,
-                    fontFamily: Font.terms_text_font_family,
+                    fontFamily: Font.Regular,
                     color: Colors.terms_text_color_blue, flexDirection: 'row', width: '100%', textAlign: 'center'
 
                   }}>
@@ -1990,7 +1990,7 @@ export default Signup = ({ navigation, route }) => {
                     style={{
                       textAlign: Configurations.textalign,
                       fontSize: (mobileW * 3.5) / 100,
-                      fontFamily: Font.headingfontfamily,
+                      fontFamily: Font.Regular,
                       color: Colors.placeholder_text,
                       textAlign: 'center', alignSelf: 'center'
                     }}>
@@ -2006,7 +2006,7 @@ export default Signup = ({ navigation, route }) => {
                     style={{
                       textAlign: Configurations.textalign,
                       fontSize: (mobileW * 3.6) / 100,
-                      fontFamily: Font.SemiBold,
+                      fontFamily: Font.Regular,
                       color: Colors.terms_text_color_blue,
 
                     }}>
@@ -2041,7 +2041,7 @@ export default Signup = ({ navigation, route }) => {
                 style={{
                   textAlign: Configurations.textalign,
                   fontSize: (mobileW * 3.8) / 100,
-                  fontFamily: Font.Medium,
+                  fontFamily: Font.Regular,
                   color: Colors.placeholder_text,
                 }}>
                 {LanguageConfiguration.allreadyhaveaccounttext[Configurations.language]}
@@ -2056,7 +2056,7 @@ export default Signup = ({ navigation, route }) => {
                   style={{
                     textAlign: Configurations.textalign,
                     fontSize: (mobileW * 3.5) / 100,
-                    fontFamily: Font.terms_text_font_family,
+                    fontFamily: Font.Regular,
                     color: Colors.textblue,
                     alignSelf: 'flex-end',
 

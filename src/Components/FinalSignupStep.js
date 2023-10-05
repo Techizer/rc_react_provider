@@ -9,7 +9,7 @@ import { windowHeight, windowWidth } from "../Helpers/Utils";
 
 
 
-const ListBottomSheet = ({
+const FinalSignupStep = ({
     visible,
     onRequestClose,
     data,
@@ -20,6 +20,7 @@ const ListBottomSheet = ({
 }) => {
 
     const [subHeight, setHubHeight] = useState(0)
+
     const styles = StyleSheet.create({
 
         mainContainer: {
@@ -100,46 +101,7 @@ const ListBottomSheet = ({
                                 }}>{title}</Text>
 
 
-                            <FlatList
-                                data={data}
-                                contentContainerStyle={{ paddingTop: vs(10) }}
-                                renderItem={({ item, index }) => {
-                                    return (
-                                        <View>
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    onRequestClose()
-                                                    selection(item, index)
-                                                }}>
-                                                <View
-                                                    style={{
-                                                        width: "100%",
-                                                        alignSelf: "center",
-                                                        justifyContent: "flex-end",
-                                                    }}>
-                                                    <View
-                                                        style={{
-                                                            width: "98%",
-                                                            borderBottomColor: Colors.backgroundcolor,
-                                                            borderBottomWidth: index === (data.length - 1) ? 0 : 1,
-                                                            paddingVertical: vs(10),
-                                                        }}>
-                                                        <Text
-                                                            style={{
-                                                                color: Colors.Black,
-                                                                fontSize: Font.large,
-                                                                alignSelf: 'flex-start',
-                                                                paddingHorizontal: s(13)
-                                                            }} >
-                                                            {title=='Select Country' ?  `${item.name=='UAE' ? 'United Arab Emirates': item.name} (${item.title})` : item.title}
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                    );
-                                }}
-                            />
+                           
                         </View>
 
                     </View>
@@ -156,6 +118,6 @@ const ListBottomSheet = ({
 }
 
 
-export default ListBottomSheet;
+export default FinalSignupStep;
 
 

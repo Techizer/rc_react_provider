@@ -123,7 +123,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                     style={{
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: mobileW * 3.4 / 100,
                     }}>
                     ID
@@ -138,7 +138,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                     style={{
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: mobileW * 3.4 / 100,
                     }}>
                     Date
@@ -155,7 +155,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                     style={{
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: mobileW * 3.4 / 100,
                     }}>
                     Provider
@@ -181,7 +181,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                     style={{
                       textAlign: Configurations.textRotate,
                       color: Colors.placeholder_text_color,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: mobileW * 3.4 / 100,
                     }}>
                     Admin
@@ -205,7 +205,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                     style={{
                       textAlign: 'center',
                       color: Colors.placeholder_text_color,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: mobileW * 3.4 / 100,
                     }}>
                     Status
@@ -314,7 +314,7 @@ export default Transaction = ({ navigation, route, page, pageName }) => {
                           <Text
                             style={{
                               color: Colors[item?.paymentStatus],
-                              fontFamily: Font.Medium,
+                              fontFamily: Font.Regular,
                               fontSize: mobileW * 2.3 / 100,
                               textAlign: 'center'
 

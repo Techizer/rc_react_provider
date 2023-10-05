@@ -64,9 +64,9 @@ const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = 
                                 {
                                     (addressDetails.default === '0') &&
                                     (
-                                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginHorizontal: vs(2) }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: vs(2) }}>
                                             <SvgXml xml={roundCheck} />
-                                            <Text style={{ textAlign: Configurations.textRotate, fontSize: Font.xsmall, fontFamily: Font.Medium, color: Colors.theme_color, marginLeft: vs(4) }}>{'Default'}</Text>
+                                            <Text style={{ textAlign: Configurations.textRotate, fontSize: Font.xsmall, fontFamily: Font.Regular, color: Colors.theme_color, marginLeft: vs(4) }}>{'Default'}</Text>
                                         </View>
                                     )
                                 }
@@ -79,7 +79,7 @@ const AddressContainer = ({ index, addressDetails, selectedAddress, showModal = 
                                         selectedAddress(index)
                                     }}
                                     underlayColor={Colors.Highlight}
-                                    style={{ minWidth: '35%', height: vs(22), borderRadius: 4, alignItems: 'flex-end', justifyContent: 'center' }}>
+                                    style={{ width: vs(25), height: vs(25), borderRadius: 4, alignItems: 'flex-end', justifyContent: 'center' }}>
                                     <SvgXml xml={Edit} style={{
                                         height: vs(17),
                                         width: vs(17)

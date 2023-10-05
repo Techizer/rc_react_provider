@@ -34,8 +34,8 @@ class LanguageProvider {
   Help = ['Help', 'مساعدة']
   Update = ['UPDATE', 'تحديث']
   OK = ['OK', 'موافق  ']
-  Login = ['Welcome Back!', ' !أهلاً بعودتك    '];
-  Logintext = ['Please sign in to continue ', 'الرجاء تسجيل الدخول للاستمرار '];
+  Login = ['Login Here', ' !أهلاً بعودتك    '];
+  Logintext = ['Enter your phone number in order to send your OTP security code. ', 'الرجاء تسجيل الدخول للاستمرار '];
   UserTypeText = ['Select User Type', 'الرجاء تسجيل الدخول للاستمرار '];
   Mobileno = ['Email Address', 'البريد الالكتروني / رقم الهاتف المحمول'];
   password = ['Password', 'كلمة المرور  '];

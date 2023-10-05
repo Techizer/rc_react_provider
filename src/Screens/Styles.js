@@ -35,17 +35,17 @@ export default Styles = StyleSheet.create({
   headertext: {
     // color: Colors.whiteColor,
     textAlign: 'center',
-    fontFamily: Font.Medium,
+    fontFamily: Font.Regular,
     fontSize: (mobileW * 4) / 100,
   },
   headingtext: {
     // color: Colors.whiteColor,
     textAlign: Configurations.textalign,
-    fontFamily: Font.Medium,
+    fontFamily: Font.Regular,
     fontSize: mobileW * 3.7 / 100
   },
   textheading: {
-    fontFamily: Font.Medium,
+    fontFamily: Font.Regular,
     fontSize: mobileW * 3.85 / 100,
     color: Colors.placeholder_text_color
   },
@@ -56,7 +56,7 @@ export default Styles = StyleSheet.create({
   },
   cardtitle: {
     textAlign: Configurations.textalign,
-    fontFamily: Font.Medium,
+    fontFamily: Font.Regular,
     fontSize: (mobileW * 3.3) / 100,
   },
   details: {
@@ -81,10 +81,10 @@ export default Styles = StyleSheet.create({
   placeholder_style: {
     width: '100%',
     color: Colors.textblack,
-    fontSize: Font.placeholdersize,
+    fontSize: Font.medium,
     textAlign: Configurations.textRotate,
     height: (mobileW * 12) / 100,
-    fontFamily: Font.placeholderfontfamily,
+    fontFamily: Font.Regular,
     paddingLeft: mobileW * 2.5 / 100,
     borderRadius: (mobileW * 1) / 100,
   }

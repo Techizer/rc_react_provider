@@ -41,7 +41,7 @@ const DrawerItemContainer = ({
         },
         title: {
             color: Colors.Black,
-            fontFamily: Font.Medium,
+            fontFamily: Font.Regular,
             fontSize: 14,
             textAlign: Configurations.textRotate,
             opacity: (isGuest === 'true' && disable == true) ? 0.3 : 1

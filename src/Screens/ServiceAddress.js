@@ -43,8 +43,9 @@ const ServiceAddress = ({ navigation, route }) => {
     const lRot = Configurations.textRotate
 
     useEffect(() => {
-        getAddresses()
         if (isFocused) {
+            console.log('focused.....');
+            getAddresses()
             if (isMTrue) {
                 setAddressSheet(true)
             } else {
@@ -106,11 +107,14 @@ const ServiceAddress = ({ navigation, route }) => {
                 leftIcon={true}
                 title={'Service Address | Pickup Point'}
                 onBackPress={() => {
-                    navigation.goBack()
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: ScreenReferences.Home }],
+                      });
                 }}
                 navigation={navigation} />
 
-            <View style={{ backgroundColor: Colors.White, marginTop: vs(1), paddingHorizontal: s(13), paddingVertical: vs(15), flex: 1 }}>
+            <View style={{ backgroundColor: Colors.White, marginTop: vs(1), paddingHorizontal: s(13), paddingVertical: vs(15), }}>
                 <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center', paddingBottom: vs(20) }}>
 
                     <View style={{ width: '2%' }} />
@@ -118,8 +122,8 @@ const ServiceAddress = ({ navigation, route }) => {
                         <Text
                             style={{
                                 textAlign: Configurations.textRotate,
-                                fontSize: Font.regulartext_size,
-                                fontFamily: Font.SemiBold,
+                                fontSize: Font.medium,
+                                fontFamily: Font.Regular,
                                 color: Colors.textblack,
                             }}>{'Service Address'}</Text>
 
@@ -141,8 +145,8 @@ const ServiceAddress = ({ navigation, route }) => {
                                     <Text
                                         style={{
                                             textAlign: Configurations.textRotate,
-                                            fontSize: Font.sregulartext_size,
-                                            fontFamily: Font.Medium,
+                                            fontSize: Font.small,
+                                            fontFamily: Font.Regular,
                                             color: '#0888D1',
                                             marginLeft: s(5)
                                         }}>{'Add new address'.toUpperCase()}</Text>

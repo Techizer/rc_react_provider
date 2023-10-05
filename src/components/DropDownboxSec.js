@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     textAlign: Configurations.textalign,
     justifyContent: 'center',
     textAlignVertical: 'center',
-    fontFamily: Font.headingfontfamily,
+    fontFamily: Font.Regular,
     borderRadius: (mobileW * 1) / 100,
     paddingLeft: 4,
   },

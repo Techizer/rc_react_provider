@@ -46,6 +46,10 @@ export default Drawer = ({ navigation, route }) => {
         return false;
       }
     }).catch((error) => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ScreenReferences.Login }],
+      });
     })
 
   }
@@ -92,7 +96,7 @@ export default Drawer = ({ navigation, route }) => {
                   <Text
                     style={{
                       color: Colors.Black,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: Font.xxxlarge,
                       textAlign: Configurations.textRotate,
 
@@ -119,7 +123,7 @@ export default Drawer = ({ navigation, route }) => {
                   <Text
                     style={{
                       color: Colors.Theme,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: Font.medium,
                       textAlign: Configurations.textRotate,
                       marginTop: vs(5)
@@ -157,7 +161,7 @@ export default Drawer = ({ navigation, route }) => {
               <Text
                 style={{
                   color: Colors.Black,
-                  fontFamily: Font.Medium,
+                  fontFamily: Font.Regular,
                   fontSize: 14,
                   textAlign: Configurations.textRotate,
                 }}>
@@ -191,7 +195,7 @@ export default Drawer = ({ navigation, route }) => {
               <Text
                 style={{
                   color: Colors.Black,
-                  fontFamily: Font.Medium,
+                  fontFamily: Font.Regular,
                   fontSize: 14,
                   textAlign: Configurations.textRotate,
                 }}>
@@ -257,7 +261,7 @@ export default Drawer = ({ navigation, route }) => {
               <Text
                 style={{
                   color: Colors.Black,
-                  fontFamily: Font.Medium,
+                  fontFamily: Font.Regular,
                   fontSize: 14,
                   textAlign: Configurations.textRotate,
                 }}>
@@ -343,7 +347,7 @@ export default Drawer = ({ navigation, route }) => {
                 });
               }}
               title={LanguageConfiguration.Logout[Configurations.language]}
-             
+
             />
 
             <View style={{ width: '92%', height: 0, backgroundColor: 'lightgrey', marginVertical: vs(16), alignSelf: 'flex-end', opacity: 0.5 }}></View>

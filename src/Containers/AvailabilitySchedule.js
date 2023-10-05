@@ -428,7 +428,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
           >
             <ScrollView
               style={{ backgroundColor: 'white', marginTop: 0 }}
-              contentContainerStyle={{ paddingBottom: mobileW * 5 / 100 }}
+              contentContainerStyle={{  paddingBottom: windowWidth / 2.5 }}
               showsVerticalScrollIndicator={false}>
               <View style={{
                 flex: 1,
@@ -501,7 +501,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                   textAlign: Configurations.textRotate,
                                   color: (state.accept == false) ? Colors.placeholder_text : 'black',
                                   fontFamily: (state.accept == false) ? Font.Regular : Font.Regular,
-                                  fontSize: Font.placeholdersize + 1,
+                                  fontSize: Font.medium + 1,
                                 }}>
                                 Accept Booking
                               </Text>
@@ -547,7 +547,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                 textAlign: Configurations.textRotate,
                                 color: (state.hide == false) ? Colors.placeholder_text : 'black',
                                 fontFamily: (state.hide == false) ? Font.Regular : Font.Regular,
-                                fontSize: Font.placeholdersize + 1,
+                                fontSize: Font.medium + 1,
                               }}>
                               Hide Booking
                             </Text>
@@ -624,7 +624,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                             textAlign: Configurations.textRotate,
                                             fontFamily: Font.Regular,
                                             color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
-                                            fontSize: Font.placeholdersize + 1,
+                                            fontSize: Font.medium + 1,
                                           }}>
                                           15 Min Slots
                                         </Text>
@@ -689,7 +689,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                               textAlign: Configurations.textRotate,
                                               fontFamily: Font.Regular,
                                               color: (state.mabtn == false) ? Colors.placeholder_text : 'black',
-                                              fontSize: Font.placeholdersize + 1,
+                                              fontSize: Font.medium + 1,
                                             }}>
                                             45 Min Slots
                                           </Text>
@@ -772,7 +772,7 @@ export default AvailabilitySchedule = ({ navigation, route, page }) => {
                                         value={(item?.slot_day_enable == "1") ? true : false}
                                       />
                                       <Text style={{
-                                        fontFamily: Font.Medium,
+                                        fontFamily: Font.Regular,
                                         fontSize: mobileW * 4 / 100,
                                         color: (item?.slot_day_enable == "1") ? Colors.textblue : Colors.placeholder_textcolorlight,
                                         marginLeft: 10

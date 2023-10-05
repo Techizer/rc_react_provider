@@ -8,8 +8,10 @@ import {
     Text,
     TouchableOpacity,
     Image,
+    Pressable,
 } from 'react-native';
 import { Colors, Font } from '../Provider/Colorsfont';
+import { windowWidth } from '../Helpers/Utils';
 
 
 export default class FloatingLabelInputField extends Component {
@@ -28,109 +30,70 @@ export default class FloatingLabelInputField extends Component {
             onSubmitEditing,
             onFocus,
             onKeyPress,
-            leftIcon,
-            rightIcon,
-            rightText,
-            leftIconStyle,
-            rightIconStyle,
-            onRightIconPress,
-            rightIconContainerStyle,
-            hideLabel,
-            labelStyle,
-            labelContainerStyle,
             placeholderTextColor,
             leftComponent
         } = this.props
         const { isFocused } = this.state
 
         return (
-            <TouchableOpacity
+            <Pressable
                 activeOpacity={0.6}
                 onPress={() => {
                     if (this.textInputLocalRef) this.textInputLocalRef.focus()
                     if (onParentPress && typeof onParentPress == 'function') onParentPress()
                 }}
                 style={[styles.inputContainer, inputContainer,]}>
-                {leftComponent ?
-                    leftComponent
-                    :
-                    leftIcon &&
-                    <Image
-                        style={[styles.iconStyle, { marginRight: 5 }, leftIconStyle]}
-                        source={leftIcon}
+
+                <View style={{height:55, width:'100%', justifyContent:'center', alignItems:'center',}}>
+                    <TextInput
+                        {...this.props}
+                        ref={ref => {
+                            this.textInputLocalRef = ref
+                            if (fieldRef && typeof fieldRef == 'function') fieldRef(ref)
+                        }}
+                        style={[{ color: isFocused ? Colors.Black : Colors.Black, fontFamily: Font.Regular, fontSize:24 , textAlign:'center'}]}
+                        value={value}
+                        placeholder={isFocused ? '' : placeholder}
+                        placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#00B3EC'}
+                        onChangeText={(text) => {
+                            if (onChangeText && typeof onChangeText == 'function') onChangeText(text)
+                        }}
+                        onSubmitEditing={() => {
+                            if (onSubmitEditing && typeof onSubmitEditing == 'function') onSubmitEditing()
+                        }}
+                        onFocus={(event: Event) => {
+                            this.setState({ isFocused: true })
+                            if (onFocus && typeof onFocus == 'function') onFocus(event)
+                        }}
+                        onBlur={(event: Event) => {
+                            this.setState({ isFocused: false })
+                        }}
+                        onKeyPress={({ nativeEvent }) => { if (onKeyPress && typeof onKeyPress == 'function') onKeyPress(nativeEvent) }}
                     />
-                }
-                {!hideLabel && (isFocused || value?.length > 0) &&
-                    <View
-                        style={[{ position: 'absolute', top: -10, marginLeft: 10, backgroundColor: '#fff', paddingHorizontal: 5 }, labelContainerStyle]}>
-                        <Text style={[{}, labelStyle]}>
-                            {placeholder}
-                        </Text>
-                    </View>
-                }
-                <TextInput
-                    {...this.props}
-                    ref={ref => {
-                        this.textInputLocalRef = ref
-                        if (fieldRef && typeof fieldRef == 'function') fieldRef(ref)
-                    }}
-                    style={[styles.inputStyle, inputStyle, { color: isFocused ? Colors.Black : Colors.Black, fontFamily: Font.Regular }]}
-                    value={value}
-                    placeholder={isFocused ? '' : placeholder}
-                    placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#00B3EC'}
-                    onChangeText={(text) => {
-                        if (onChangeText && typeof onChangeText == 'function') onChangeText(text)
-                    }}
-                    onSubmitEditing={() => {
-                        if (onSubmitEditing && typeof onSubmitEditing == 'function') onSubmitEditing()
-                    }}
-                    onFocus={(event: Event) => {
-                        this.setState({ isFocused: true })
-                        if (onFocus && typeof onFocus == 'function') onFocus(event)
-                    }}
-                    onBlur={(event: Event) => {
-                        this.setState({ isFocused: false })
-                    }}
-                    onKeyPress={({ nativeEvent }) => { if (onKeyPress && typeof onKeyPress == 'function') onKeyPress(nativeEvent) }}
-                />
-                {
-                    rightIcon &&
-                    <TouchableOpacity
-                        activeOpacity={0.6}
-                        disabled={_.isNil(onRightIconPress)}
-                        style={[{ padding: 10 }, rightIconContainerStyle]}
-                        onPress={() => {
-                            if (onRightIconPress) onRightIconPress()
-                        }}>
-                        {rightText ?
-                            <Text style={{}}>{rightText}</Text>
-                            :
-                            <Image
-                                style={[styles.iconStyle, rightIconStyle]}
-                                source={rightIcon}
-                            />
-                        }
-                    </TouchableOpacity>
-                }
-            </TouchableOpacity >
+                    {/* <Text style={{fontSize:24}}>{'2'}</Text> */}
+                </View>
+
+            </Pressable >
         )
     }
 }
 
 const styles = StyleSheet.create({
     inputContainer: {
-        flexDirection: 'row',
         height: 55,
+        width: (windowWidth * 14) / 100,
         alignItems: 'center',
+        justifyContent: 'center',
         margin: 20,
-        paddingHorizontal: 15,
-        alignSelf: 'center',
+        backgroundColor: Colors.white_color,
+        borderRadius: 8,
+        borderWidth: 1.5,
     },
     labelContainerStyle: {
         // backgroundColor:'red'
     },
     inputStyle: {
-        flex: 1,
+        height: '100%'
     },
     iconStyle: {
         width: 20,

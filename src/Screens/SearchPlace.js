@@ -29,7 +29,6 @@ import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
-let ScreenHeight = Dimensions.get('window').height;
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
@@ -47,6 +46,7 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     })
 
     const sheetRef = useRef()
+
     const setState = (payload, cb = () => { }) => {
         setClassStateData(prev => ({ ...prev, ...payload }))
         cb()
@@ -74,16 +74,15 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
         latitude,
         longitude,
     }) => {
-        console.log({ data, details });
         setState(
             {
-                searchPlaceVisible: false,
+                searchPlaceVisible: true,
                 service_lat: latitude,
                 service_long: longitude,
                 service_address: data?.description,
             }
         );
-        sheetRef.current.open()
+
     };
 
     const getadddressfromlatlong = (event) => {
@@ -301,189 +300,154 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
     return (
         <View style={{
             flex: 1,
-            alignItems: "center",
+            // alignItems: "center",
             backgroundColor: Colors.White
         }}>
 
             <ScreenHeader navigation={navigation} title='Pickup Point for Service' leftIcon={true} onBackPress={() => {
-                navigation.canGoBack() && navigation.goBack()
-            }} style={{
-                paddingTop: (Platform.OS === 'ios') ? -StatusbarHeight : 0,
-                height: (Platform.OS === 'ios') ? headerHeight : headerHeight + StatusbarHeight
+                navigation.pop()
             }} />
-            <AddressInputPopup
-                navigation={navigation}
-                onRequestClose={() => {
-                    sheetRef.current.close()
-                }}
-                shouldShowEditParam={false}
-                addressIDParam={address_id}
-                addressTitleParam={''}
-                buildingNameParam={''}
-                nearestLandmarkParam={''}
-                latitudeParam={classStateData.service_lat}
-                longitudeParam={classStateData.service_long}
-                googleAddressParam={classStateData.service_address}
-                navToBackThen={true}
-                type={isNew ? 'addAddress' : 'editAddress'}
-                editedAddress={(val) => {
-                }}
-                refe={sheetRef}
-            />
 
 
-            <View style={{
-                position: 'absolute',
-                zIndex: 999,
-                width: '100%',
-                alignSelf: 'center',
-                top: (Platform.OS === 'ios') ? headerHeight + StatusbarHeight - (StatusbarHeight / 1.5) : headerHeight + StatusbarHeight,
-            }}>
-                <GooglePlacesAutocomplete
-                    ref={instance => {
-                        locationRef = instance;
-                    }}
 
-                    currentLocation={true}
-                    currentLocationLabel="Current location"
-                    nearbyPlacesAPI='GooglePlacesSearch'
-                    debounce={200}
-                    clearButtonMode={'while-editing'}
-                    placeholder='Search for area, street name..'
-                    placeholderTextColor="#7C7C7C"
-                    minLength={2}
-                    autoFocus={true}
-                    returnKeyType={'default'}
-                    fetchDetails={true}
-                    enablePoweredByContainer={false}
-                    renderLeftButton={() => (
-                        <View style={{
-                            justifyContent: 'center',
-                            alignItems: 'flex-end',
-
-                        }}>
-                            <Image
-                                source={require('../Icons/search.png')}
-                                style={{
-                                    width: 18,
-                                    height: 18,
-                                }} resizeMethod='scale' resizeMode='contain' >
-                            </Image>
-                        </View>
-
-                    )}
-                    query={{
-                        key: classStateData.place_key,
-                        language: 'en',
-                        components: `country:${classStateData.countryKey}`
-                        // types: 'geocode', //<=== use this to only show country cities
-                        // components: 'country:uk', //, <=== use this to restrict to country
-                    }}
-                    GooglePlacesDetailsQuery={{
-                        fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
-                    }}
-                    textInputProps={{
-                        placeholderTextColor: '#7C7C7C',
-                        backgroundColor: '#F2F3F2',
-                        fontFamily: Font.Regular,
-                        fontSize: 14,
-                        color: Colors.textblack,
-                    }}
-                    onFail={error => {
-                    }}
-                    onPress={(data, details = null) => {
-                        console.log({ data, details })
-                        setState(
-                            {
-                                latitude: details.geometry.location.lat,
-                                longitude: details.geometry.location.lng,
-                            },
-                            () => {
-                                console.log({ data });
-                                selectGooglePlace({
-                                    data,
-                                    details,
-                                    latitude: details.geometry.location.lat,
-                                    longitude: details.geometry.location.lng,
-                                });
-                            },
-                        );
-                    }}
-                    styles={{
-                        textInputContainer: {
-                            width: '100%',
-                            backgroundColor: '#F2F3F2',
-                            justifyContent: 'center',
-                            paddingHorizontal: 8,
-
-                        },
-                        textInput: {
-                            color: Colors.blackColor,
-                            textAlignVertical: 'center',
-                            justifyContent: 'center',
-                            paddingBottom: -(windowHeight / 300),
-                        },
-                        predefinedPlacesDescription: {
-                            color: '#000',
-                        },
-                        separator: {
-                            height: 0.5,
-                        },
-                        loader: {
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            height: 20,
-                        },
-                        listView: {
-                            zIndex: 2000
-                        }
-                    }}
-                />
-            </View>
 
             <KeyboardAwareScrollView
+                // extraScrollHeight={50}
+                enableOnAndroid={true}
+                keyboardShouldPersistTaps='handled'
                 contentContainerStyle={{
-                    width: '100%',
-                }}>
-                <View style={{
-                    marginTop: (Platform.OS === 'ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8,
-                    paddingTop: (windowWidth * 2) / 100,
-                    zIndex: 0
-                }}>
-                    <TouchableOpacity onPress={() => {
-                        getlatlong()
-                    }} style={{ flexDirection: 'row', width: '100%', alignSelf: 'flex-start', paddingTop: 4, paddingBottom: 32 }}>
-                        {
-                            (lLan === 0) &&
-                            <View style={{ width: '12%', alignItems: 'center' }}>
+                    justifyContent: 'center',
+                }}
+                showsVerticalScrollIndicator={false}>
+
+
+                <View style={{ marginTop: vs(7), flex: 1, width: '100%', backgroundColor: Colors.White }}>
+
+                    <GooglePlacesAutocomplete
+                        ref={instance => {
+                            locationRef = instance;
+                        }}
+
+                        currentLocation={true}
+                        currentLocationLabel="Current location"
+                        nearbyPlacesAPI='GooglePlacesSearch'
+                        debounce={200}
+                        clearButtonMode={'while-editing'}
+                        placeholder='Search for area, street name..'
+                        placeholderTextColor="#7C7C7C"
+                        minLength={2}
+                        autoFocus={true}
+                        returnKeyType={'default'}
+                        fetchDetails={true}
+                        enablePoweredByContainer={false}
+                        // renderLeftButton={() => (
+                        //     <View style={{
+                        //         justifyContent: 'center',
+                        //         alignItems: 'flex-end',
+
+                        //     }}>
+                        //         <Image
+                        //             source={require('../Icons/search.png')}
+                        //             style={{
+                        //                 width: 18,
+                        //                 height: 18,
+                        //             }} resizeMethod='scale' resizeMode='contain' >
+                        //         </Image>
+                        //     </View>
+
+                        // )}
+                        query={{
+                            key: classStateData.place_key,
+                            language: 'en',
+                            components: `country:${classStateData.countryKey}`
+                            // types: 'geocode', //<=== use this to only show country cities
+                            // components: 'country:uk', //, <=== use this to restrict to country
+                        }}
+                        GooglePlacesDetailsQuery={{
+                            fields: 'formatted_address,geometry,address_components,types,adr_address,place_id,plus_code'
+                        }}
+                        textInputProps={{
+                            placeholderTextColor: '#7C7C7C',
+                            backgroundColor: '#F2F3F2',
+                            fontFamily: Font.Regular,
+                            fontSize: 14,
+                            color: Colors.textblack,
+                        }}
+                        onFail={error => {
+                        }}
+                        onPress={(data, details = null) => {
+                            console.log({ data, details })
+                            setState(
+                                {
+                                    latitude: details.geometry.location.lat,
+                                    longitude: details.geometry.location.lng,
+                                },
+                                () => {
+                                    console.log({ data });
+                                    selectGooglePlace({
+                                        data,
+                                        details,
+                                        latitude: details.geometry.location.lat,
+                                        longitude: details.geometry.location.lng,
+                                    });
+                                },
+                            );
+                        }}
+                        styles={{
+                            textInputContainer: {
+                                width: '94%',
+                                // backgroundColor: '#F2F3F2',
+                                // justifyContent: 'center',
+                                alignSelf: 'center',
+                                // marginBottom:vs(10),
+                                // height:'70%'
+
+                            },
+                            textInput: {
+                                color: Colors.blackColor,
+                                textAlignVertical: 'center',
+                                justifyContent: 'center',
+                                paddingBottom: -(windowHeight / 300),
+                            },
+                            predefinedPlacesDescription: {
+                                color: '#000',
+                            },
+                            separator: {
+                                height: 0.5,
+                            },
+                            loader: {
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end',
+                                height: 20,
+                            },
+                            listView: {
+                                zIndex: 2000
+                            }
+                        }}
+                    />
+
+
+
+                    <View style={{ paddingHorizontal: s(13), marginVertical: vs(10) }}>
+                        <TouchableOpacity onPress={() => {
+                            getlatlong()
+                        }} style={{ flexDirection: 'row', width: '100%', alignSelf: 'center' }}>
+                            <View style={{ width: '9%' }}>
                                 <Image
                                     source={Icons.CurrentLocation}
                                     style={{
-                                        width: 22,
-                                        height: 22,
-                                    }} resizeMethod='scale' resizeMode='contain' >
-                                </Image>
+                                        width: 18,
+                                        height: 18,
+                                    }}></Image>
                             </View>
-                        }
-
-                        <View style={{ width: '88%' }}>
-                            <Text style={{ textAlign: lRot, fontSize: 16, fontFamily: Font.bold_font_family, color: '#17181A' }}>{LanguageConfiguration.Currentlocation[lLan]}</Text>
-                            <Text style={{ textAlign: lRot, fontSize: 14, fontFamily: Font.Regular, color: '#6D737E', marginTop: vs(4) }}>{LanguageConfiguration.Using_gpsofyoudevice[lLan]}</Text>
-                        </View>
-
-                        {
-                            (lLan === 1) &&
-                            <View style={{ width: '12%', alignItems: 'center' }}>
-                                <Image
-                                    source={Icons.CurrentLocation}
-                                    style={{
-                                        width: 22,
-                                        height: 22,
-                                    }} resizeMethod='scale' resizeMode='contain' >
-                                </Image>
+                            <View style={{ width: '91%', borderBottomWidth: 1, borderBottomColor: Colors.Border, paddingBottom: vs(12) }}>
+                                <Text style={{ alignSelf: 'flex-start', fontSize: Font.medium, fontFamily: Font.SemiBold, color: Colors.darkText }}>{LanguageConfiguration.Currentlocation[lLan]}</Text>
+                                <Text style={{ alignSelf: 'flex-start', fontSize: Font.small, fontFamily: Font.Regular, color: Colors.dullGrey, marginTop: vs(4) }}>{LanguageConfiguration.Using_gpsofyoudevice[lLan]}</Text>
                             </View>
-                        }
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
+
+
                     <View style={{ flexDirection: 'row', width: '94%', alignSelf: 'center', paddingVertical: 16, paddingHorizontal: 10, backgroundColor: '#E5E5E58D', borderRadius: 6 }}>
                         {
                             (lLan == 0) &&
@@ -517,8 +481,40 @@ export default SearchPlaceScreen = ({ navigation, route }) => {
                             </View>
                         }
                     </View>
+
                 </View>
+
+
+                {/* <View style={{
+                    marginTop: (Platform.OS === 'ios') ? headerHeight + 8 : headerHeight + StatusbarHeight + 8,
+                    paddingTop: (windowWidth * 2) / 100,
+                    zIndex: 0
+                }}>
+                    
+
+                   
+                </View> */}
             </KeyboardAwareScrollView>
+
+            <AddressInputPopup
+                visible={classStateData.searchPlaceVisible}
+                navigation={navigation}
+                onRequestClose={() => {
+                    setState({ searchPlaceVisible: false })
+                }}
+                shouldShowEditParam={false}
+                addressIDParam={address_id}
+                addressTitleParam={''}
+                buildingNameParam={''}
+                nearestLandmarkParam={''}
+                latitudeParam={classStateData.service_lat}
+                longitudeParam={classStateData.service_long}
+                googleAddressParam={classStateData.service_address}
+                navToBackThen={true}
+                type={isNew ? 'addAddress' : 'editAddress'}
+                editedAddress={(val) => {
+                }}
+            />
         </View>
     );
 

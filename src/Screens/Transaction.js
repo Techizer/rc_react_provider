@@ -25,7 +25,7 @@ const renderTabBar = props => (
       textTransform: 'capitalize',
       fontSize: (mobileW * 3.25) / 100,
       textAlign: 'center',
-      fontFamily: Font.Medium,
+      fontFamily: Font.Regular,
     }}
     renderLabel={({ focused, route }) => {
       return (
@@ -38,7 +38,7 @@ const renderTabBar = props => (
             textTransform: 'capitalize',
             fontSize: (mobileW * 3.5) / 100,
             textAlign: 'center',
-            fontFamily: Font.SemiBold,
+            fontFamily: Font.Regular,
           }}
         >
           {route.title}

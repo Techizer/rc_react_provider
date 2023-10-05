@@ -95,7 +95,7 @@ const ScreenHeader = ({
                             <Text
                                 style={{
                                     textAlign: "center",
-                                    fontFamily: Font.Medium,
+                                    fontFamily: Font.Regular,
                                     fontSize: (windowWidth * 4) / 100,
                                     color: Colors.darkText
                                 }}>{title}</Text>

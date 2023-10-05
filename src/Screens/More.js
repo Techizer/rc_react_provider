@@ -75,7 +75,7 @@ export default More = ({ navigation, route }) => {
         })
       }}
         style={{ width: '90%', justifyContent: 'space-between', alignSelf: 'center', marginTop: mobileW * 5 / 100, flexDirection: 'row' }}>
-        <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.ques_fontfamily, }}>
+        <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.Regular, }}>
           {LanguageConfiguration.termtxt[Configurations.language]} </Text>
 
         <View style={{ width: '5%', alignSelf: 'center', }}>
@@ -92,7 +92,7 @@ export default More = ({ navigation, route }) => {
 
       <TouchableOpacity onPress={() => { navigation.navigate(ScreenReferences.TermsAndConditions, { contantpage: 0, content: Configurations.about_url_eng, content_ar: Configurations.about_url_ar }) }}
         style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 5 / 100, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.ques_fontfamily, }}>{LanguageConfiguration.aboutrootcare[Configurations.language]} </Text>
+        <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.Regular, }}>{LanguageConfiguration.aboutrootcare[Configurations.language]} </Text>
         <View style={{ width: '5%', alignSelf: 'center', }}>
           <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
             source={Configurations.textalign == 'right' ? Icons.NextRTL : Icons.RightArrow}></Image>
@@ -104,7 +104,7 @@ export default More = ({ navigation, route }) => {
 
       <TouchableOpacity onPress={() => { navigation.navigate(ScreenReferences.TermsAndConditions, { contantpage: 1, content: Configurations.privacy_url_eng, content_ar: Configurations.privacy_url_ar }) }}
         style={{ width: '90%', alignSelf: 'center', marginTop: mobileW * 5 / 100, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.ques_fontfamily, }}>{LanguageConfiguration.privacy[Configurations.language]} </Text>
+        <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 3.8 / 100, color: Colors.textblack_new, fontFamily: Font.Regular, }}>{LanguageConfiguration.privacy[Configurations.language]} </Text>
         <View style={{ width: '5%', alignSelf: 'center', }}>
           <View style={{ width: '100%', alignSelf: 'center' }}>
             <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'center', resizeMode: 'contain', tintColor: Colors.textblack_new }}
@@ -125,7 +125,7 @@ export default More = ({ navigation, route }) => {
               source={Icons.NeedSupoort}>
             </Image>
           </View>
-          <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 4 / 100, color: Colors.textblack, fontFamily: Font.SemiBold, }}>{LanguageConfiguration.NeedSupport[Configurations.language]} </Text>
+          <Text style={{ textAlign: Configurations.textalign, fontSize: mobileW * 4 / 100, color: Colors.textblack, fontFamily: Font.Regular, }}>{LanguageConfiguration.NeedSupport[Configurations.language]} </Text>
         </View>
         <View style={{ width: '12%', alignSelf: 'center' }}>
           <Image style={{ width: mobileW * 3.5 / 100, height: mobileW * 3.5 / 100, alignSelf: 'flex-end', resizeMode: 'contain', tintColor: Colors.textblack_new }}

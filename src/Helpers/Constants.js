@@ -43,7 +43,20 @@ export const DocTypes = [{
 }]
 
 let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-
+const countries = [
+  {
+    id: '1',
+    icon: require('../Icons/saudia.png'),
+    code: '966'
+  },
+  {
+    id: '2',
+    icon: require('../Icons/uae.png'),
+    code: '971'
+  }
+]
 export {
-  regemail
+  regemail,
+  countries
 }
+

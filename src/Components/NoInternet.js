@@ -56,7 +56,7 @@ const NoInternet = ({
         },
         Title: {
             fontSize: Font.xxlarge,
-            fontFamily: Font.Medium,
+            fontFamily: Font.Regular,
             color: Colors.darkText,
         },
         Desc: {
@@ -81,7 +81,7 @@ const NoInternet = ({
         },
         BtnTitle: {
             fontSize: Font.large,
-            fontFamily: Font.Medium,
+            fontFamily: Font.Regular,
             color: Colors.White,
         }
     });

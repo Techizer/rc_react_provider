@@ -2,6 +2,7 @@ export const Icons = {
     YellowStar: require('./yellow_star.png'),
     UnfilledStar: require('./unfillstar.png'),
     SplashLogo: require('./Logo2x.png'),
+    SplashStamp: require('./stamp.png'),
     Logo: require('./logo.png'),
     CheckedBox: require('./ic_checkbox_marked.png'),
     UnCheckedBox: require('./ic_checkbox_grey_un.png'),
@@ -71,4 +72,8 @@ export const Icons = {
     Pdf: require('./pdf.png'),
 
     Connect: require('./plug.jpg'),
+
+    UAE: require('./uae.png'),
+    Saudia: require('./saudia.png'),
+
 }

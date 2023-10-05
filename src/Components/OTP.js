@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Modal, Text, TouchableOpacity, View, Image, StyleSheet, TouchableHighlight, Keyboard, FlatList, Alert, Platform, ActivityIndicator, } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SvgXml } from "react-native-svg";
 import { s, vs } from "react-native-size-matters";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -16,6 +16,11 @@ import { leftArrow } from "../Icons/SvgIcons/Index";
 import Button from "./Button";
 import StickyButton from "./StickyButton";
 import OTPInput from "./OTPInput";
+import { setRememberedEmail, setUserFCMToken, setUserLoginData } from "../Redux/Actions/UserActions";
+import { ScreenReferences } from "../Stacks/ScreenReferences";
+import { FBPushNotifications } from "../Helpers/FirebasePushNotifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 
 const OTP = ({
@@ -24,10 +29,14 @@ const OTP = ({
     contact,
     step,
     workArea,
+    type,
+    countryCode,
     status = () => { }
 }) => {
 
     const insets = useSafeAreaInsets()
+    const dispatch = useDispatch();
+    const { reset } = useNavigation();
 
     const styles = useMemo(() => {
         return StyleSheet.create({
@@ -57,7 +66,7 @@ const OTP = ({
             },
             title: {
                 fontSize: (windowWidth * 6) / 100,
-                fontFamily: Font.Medium,
+                fontFamily: Font.Regular,
                 color: Colors.Black
             },
             desc: {
@@ -108,8 +117,8 @@ const OTP = ({
 
     const resetState = () => {
         clearInterval(timerInterval)
-        setSecondsRemaining(60)
         onRequestClose()
+        setSecondsRemaining(60)
         setState({
             OTP: '',
             sendOTP: false,
@@ -118,6 +127,45 @@ const OTP = ({
             isVerified: false,
         })
     }
+
+    const secureEmail = (email) => {
+
+        const [username, domain] = email.split('@');
+        const firstThree = username.slice(0, 3);
+
+        const securedEmail = `${firstThree}****@${domain}`;
+
+        return securedEmail;
+    }
+
+
+    const secureNumber = (phoneNumber) => {
+
+        const firstThree = phoneNumber.slice(0, 3);
+        const lastThree = phoneNumber.slice(-3);
+
+        const securedPhoneNumber = `${firstThree}******${lastThree}`;
+        return securedPhoneNumber;
+    }
+
+    const showConfirmDialogReject = () => {
+        return Alert.alert(
+            "Cancel",
+            "Are you sure you want to reject this appointment?",
+            [
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        resetState()
+                    },
+                },
+                {
+                    text: "No",
+                },
+            ]
+        );
+    };
+
 
     const SendOTP = async () => {
         setState({ OTP: '' })
@@ -129,17 +177,26 @@ const OTP = ({
         } else {
 
             setState({ sendOTP: true })
-
-            let url = Configurations.baseURL + "api-send-otp";
+            let url = '';
             var data = new FormData();
-            if (step == 50) {
-                data.append('otptype', 'email')
-                data.append('emailId', contact)
+            if (type == 'Login') {
+                url = Configurations.baseURL + "api-login-send-otp";
+                data.append('countrycode', countryCode)
+                data.append('phone_number', `${contact}`)
+                data.append('type', `provider`)
+
             } else {
-                data.append('otptype', 'mobile')
-                data.append('phone_number', contact)
-                data.append('work_area', workArea)
+                url = Configurations.baseURL + "api-send-otp";
+                if (step == 50) {
+                    data.append('otptype', 'email')
+                    data.append('emailId', contact)
+                } else {
+                    data.append('otptype', 'mobile')
+                    data.append('phone_number', contact)
+                    data.append('work_area', workArea)
+                }
             }
+
 
             console.log(data._parts);
 
@@ -201,6 +258,7 @@ const OTP = ({
                 if (obj.status == true) {
                     setState({ isVerifying: false, isVerified: true })
                     status(true)
+                    onRequestClose()
                     resetState()
                 } else {
                     setState({ isVerifying: false })
@@ -213,6 +271,68 @@ const OTP = ({
             })
         }
 
+
+    }
+
+    const Login = async () => {
+
+        clearInterval(timerInterval)
+        let conditionsFailed = false;
+        Keyboard.dismiss()
+
+
+        if (classStateData.OTP == '' && classStateData.isOTPSent) {
+            MessageFunctions.showError(`Please enter OTP sent to your ${step == 50 ? 'email' : 'Phone'}`)
+            conditionsFailed = true;
+            return
+        }
+
+        if (conditionsFailed) {
+            return false
+        } else {
+            setState({ isVerifying: true })
+            let url = Configurations.baseURL + "api-service-provider-login";
+            var data = new FormData();
+
+            const fcm = await FBPushNotifications.getFcmToken()
+
+            data.append('phone_number', contact)
+            data.append('code', classStateData.OTP)
+            data.append('device_type', Configurations.device_type)
+            data.append('fcm_token', fcm)
+
+            console.log(data._parts);
+            API.post(url, data, 1).then((obj) => {
+                setState({ isVerifying: false })
+                if (obj.status == true) {
+
+                    dispatch(setUserLoginData(obj?.result))
+                    dispatch(setUserFCMToken(fcm))
+                    dispatch(setRememberedEmail(contact))
+                    AsyncStorage.setItem('userId', obj?.result?.user_id)
+
+                    resetState()
+
+                    setTimeout(() => {
+                        reset({
+                            index: 0,
+                            routes: [{ name: ScreenReferences.Home }],
+                        });
+                    }, 700);
+
+                } else {
+                    setTimeout(() => {
+                        MessageFunctions.showError(obj.message)
+                    }, 700);
+                    return false;
+                }
+            }).catch((error) => {
+                setState({ isVerifying: false })
+                MessageFunctions.showError('Something went wrong, please try again later')
+                console.log("Login------ error ------- ", error)
+
+            })
+        }
 
     }
 
@@ -240,49 +360,51 @@ const OTP = ({
                             keyboardShouldPersistTaps='handled'
                             contentContainerStyle={{
                                 height: windowHeight,
-                                paddingTop: Platform.OS == 'ios' ? insets.top : 0
+                                // paddingTop: Platform.OS == 'ios' ? insets.top : 0
                             }}
                             showsVerticalScrollIndicator={false}>
+
+
 
                             <View
                                 style={{
                                     width: "100%",
+                                    height: (windowWidth * 30) / 100,
                                     flexDirection: 'row',
                                     alignItems: 'center',
-                                    justifyContent: 'center',
+                                    paddingTop: Platform.OS == 'ios' ? insets.top : 0,
                                 }}>
-                                <View style={{ justifyContent: 'center' }}>
-                                    <Image
-                                        style={{
-                                            width: (windowWidth * 40) / 100,
-                                            height: (windowWidth * 40) / 100,
-                                            alignSelf: 'center',
+
+                                {
+                                    secondsRemaining <= 0 &&
+
+                                    <TouchableHighlight
+                                        underlayColor={Colors.Highlight}
+                                        onPress={() => {
+                                            resetState()
                                         }}
-                                        resizeMode='contain'
-                                        source={Icons.LogoWithText} />
-                                </View>
+                                        style={{ height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
+                                    >
+                                        <SvgXml xml={leftArrow} height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
+
+                                    </TouchableHighlight>
 
 
-                                <TouchableHighlight
-                                    underlayColor={Colors.Highlight}
-                                    onPress={() => {
-                                        resetState()
-                                    }}
-                                    style={{ position: 'absolute', left: 0, height: vs(40), width: s(40), justifyContent: 'center', alignItems: 'center' }}
-                                >
-                                    <SvgXml xml={leftArrow} height={vs(17.11)} width={s(9.72)} fill={'red'} fillOpacity={1} />
-
-                                </TouchableHighlight>
-
+                                }
                             </View>
 
                             <Toast />
 
 
-                            <View style={{ paddingHorizontal: s(18) }}>
+                            <View style={{ paddingHorizontal: s(16) }}>
 
-                                <Text style={styles.title}>{step == 50 ? 'Email Verification' : 'Phone Number Verification'}</Text>
-                                <Text style={styles.desc}>{`We have sent code to your ${step == 50 ? 'email' : 'Phone'}:  +${contact}`}</Text>
+                                <Text style={styles.title}>{step == 50 ? 'Email Verification' : 'Phone Verification'}</Text>
+                                {
+                                    step == 50 ?
+                                        <Text style={styles.desc}>{`We have sent code to your email:  ${secureEmail(contact)}`}</Text>
+                                        :
+                                        <Text style={styles.desc}>{`We have sent code to your Phone:  +${secureNumber(contact)}`}</Text>
+                                }
 
                                 <View style={{ paddingHorizontal: s(25), marginTop: (windowWidth * 8) / 100, }}>
                                     {/* <OTPTextInput
@@ -366,7 +488,7 @@ const OTP = ({
                                                                 <Text
                                                                     style={{
                                                                         fontSize: Font.xlarge,
-                                                                        fontFamily: Font.Medium,
+                                                                        fontFamily: Font.Regular,
                                                                         color: (secondsRemaining > 0 && classStateData.isOTPSent) ? Colors.DarkGrey : Colors.buttoncolorblue
                                                                     }}
                                                                 >{'Resend'}</Text>
@@ -392,7 +514,7 @@ const OTP = ({
                         <StickyButton
                             text={'VERIFY'}
                             onPress={() => {
-                                VerifyOTP()
+                                type == 'Login' ? Login() : VerifyOTP()
                             }}
                             onLoading={classStateData.isVerifying}
                         />

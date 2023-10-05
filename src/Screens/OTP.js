@@ -182,8 +182,8 @@ export default OTP = ({ navigation, route }) => {
             }}>
             <Text
               style={{
-                fontSize: Font.headingblack,
-                fontFamily: Font.SemiBold,
+                fontSize: Font.xxxlarge,
+                fontFamily: Font.Regular,
                 textAlign: Configurations.textRotate
               }}>
               {LanguageConfiguration.opt[Configurations.language]}
@@ -200,8 +200,8 @@ export default OTP = ({ navigation, route }) => {
               <Text
                 style={{
 
-                  fontSize: Font.headinggray,
-                  fontFamily: Font.headingfontfamily,
+                  fontSize: Font.medium,
+                  fontFamily: Font.Regular,
                   color: Colors.placeholder_text,
                   textAlign: Configurations.textRotate
                 }}>
@@ -289,8 +289,8 @@ export default OTP = ({ navigation, route }) => {
             <Text
               style={{
                 textAlign: Configurations.textRotate,
-                fontSize: Font.textsize,
-                fontFamily: Font.headingfontfamily,
+                fontSize: Font.small,
+                fontFamily: Font.Regular,
                 color: Colors.textgray,
               }}>
               {LanguageConfiguration.Signuptext3[Configurations.language]}
@@ -317,8 +317,8 @@ export default OTP = ({ navigation, route }) => {
             <Text
               style={{
                 color: Colors.textwhite,
-                fontFamily: Font.Medium,
-                fontSize: Font.buttontextsize,
+                fontFamily: Font.Regular,
+                fontSize: Font.large,
                 alignSelf: 'flex-end',
                 textAlign: Configurations.textalign,
                 alignSelf: 'center',
@@ -341,7 +341,7 @@ export default OTP = ({ navigation, route }) => {
 
                 textAlign: Configurations.textalign,
                 fontSize: mobileW * 4 / 100,
-                fontFamily: Font.headingfontfamily,
+                fontFamily: Font.Regular,
                 color: Colors.textgray,
               }}>
               {LanguageConfiguration.notrectext[Configurations.language]}
@@ -351,7 +351,7 @@ export default OTP = ({ navigation, route }) => {
 
                 textAlign: Configurations.textalign,
                 fontSize: mobileW * 4 / 100,
-                fontFamily: Font.SemiBold,
+                fontFamily: Font.Regular,
                 color: Colors.theme_color,
 
               }}>

@@ -28,7 +28,7 @@ const StickyButton = ({
         bottom: 0,
         backgroundColor: Colors.white_color,
         paddingTop: (windowWidth * 2) / 100,
-        paddingBottom: Platform.OS == 'ios' ? insets.bottom - vs(12) : (windowWidth * 2) / 100,
+        paddingBottom: Platform.OS == 'ios' ? insets.bottom - vs(5) : (windowWidth * 2) / 100,
         alignItems: "center",
         zIndex: 99999,
       }}>
@@ -84,15 +84,15 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontFamily: Font.Medium,
-    fontSize: Font.buttontext_size,
+    fontFamily: Font.Regular,
+    fontSize: Font.medium,
     textAlign: Configurations.textalign,
     alignSelf: 'center',
   },
   buttonText1: {
     color: Colors.textblue,
-    fontFamily: Font.Medium,
-    fontSize: Font.buttontext_size,
+    fontFamily: Font.Regular,
+    fontSize: Font.medium,
     textAlign: Configurations.textalign,
     alignSelf: 'center',
   }

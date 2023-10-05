@@ -8,9 +8,12 @@ import { vs, s } from 'react-native-size-matters';
 import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Progress from 'react-native-progress';
+import Ellipse from 'react-native-vector-icons/Ionicons';
+import Check from 'react-native-vector-icons/Ionicons';
 
 import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageFunctions, MessageTexts, Media, windowHeight, windowWidth } from '../Helpers/Utils';
-import { AuthInputBoxSec, DropDownboxSec, Button } from '.'
+import AuthInputBoxSec from './AuthInputBoxSec';
+import DropDownboxSec from './DropDownboxSec';
 import { Icons } from '../Icons/IReferences';
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { _Cross, leftArrow, rightArrow, dummyUser, roundCheck } from '../Icons/SvgIcons/Index';
@@ -22,6 +25,7 @@ import { getServiceCountries, getSpecialities } from '../Helpers/APIFunctions';
 import MediaOptions from './MediaOptions';
 import OTP from './OTP';
 import StickyButton from './StickyButton';
+import FinalSignupStep from './FinalSignupStep';
 
 export default SignupForm = ({ navigation }) => {
 
@@ -100,40 +104,44 @@ export default SignupForm = ({ navigation }) => {
         docTitle: {
             fontSize: Font.xlarge,
             fontFamily: Font.Regular,
-            color: Colors.DarkGrey
+            color: Colors.DarkGrey,
+            marginHorizontal: 5
         },
         profilePic: {
             height: (windowWidth * 32) / 100,
             width: (windowWidth * 32) / 100,
             borderRadius: (windowWidth * 32) / 100,
-            borderWidth: 1.5,
-            borderColor: Colors.DarkGrey,
+            borderWidth: 1,
+            borderColor: '#e8e8e8',
             backgroundColor: Colors.white_color,
             justifyContent: 'center',
             alignItems: 'center'
         },
         finalTextOne: {
             fontSize: (windowWidth * 10) / 100,
-            color: Colors.Green,
+            color: Colors.Black,
             fontFamily: Font.Regular,
-            alignSelf: 'center'
+            alignSelf: 'center',
+            marginTop: windowWidth / 20
         },
         finalTextTwo: {
             fontSize: Font.xxxlarge,
-            color: Colors.textblue,
+            color: Colors.Black,
             fontFamily: Font.Regular,
             alignSelf: 'center',
-            textAlign: 'center'
+            textAlign: 'center',
+            paddingHorizontal: '5%'
         },
         finalTextThree: {
             fontSize: Font.xxxlarge,
-            color: Colors.textblue,
+            color: Colors.Black,
             fontFamily: Font.Regular,
             alignSelf: 'center',
-            textAlign: 'center'
+            textAlign: 'center',
+            paddingHorizontal: '5%',
+           
         }
     })
-
 
     useEffect(() => {
         if (progress == 75) {
@@ -149,10 +157,19 @@ export default SignupForm = ({ navigation }) => {
 
     const RenderDocTypes = ({ item, index }) => {
         return (
-            <View
+            // <View
 
-                style={[styles.docType, { marginTop: index == 0 ? 0 : (windowWidth / 20) }]}>
-                <Text style={styles.docTitle}>{`${index + 1}. ${item.title}`}</Text>
+            //     style={[styles.docType, { marginTop: index == 0 ? 0 : (windowWidth / 20) }]}>
+            //     <Text style={styles.docTitle}>{`${index + 1}. ${item.title}`}</Text>
+            // </View>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                <Ellipse style={{ alignSelf: 'center' }}
+                    name={'ellipse'}
+                    size={12}
+                    color={Colors.field_border_color}
+                />
+                <Text style={styles.docTitle}>{`${item.title}`}</Text>
             </View>
         )
     }
@@ -240,13 +257,21 @@ export default SignupForm = ({ navigation }) => {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     returnKeyType="next"
+                    disableImg={true}
+                    iconName={classStateData.isEmailVerified ? 'check' : ''}
+                    iconColor={Colors.White}
+                    iconBackground={classStateData.isEmailVerified ? Colors.Green : Colors.White}
+                    iconSize={16}
+                    iconPressAction={() => {
+
+                    }}
                     onSubmitEditing={() => {
                         passRef.current.focus();
                     }}
                 />
 
                 {
-                    (classStateData.email != '') &&
+                    (classStateData.email != '' && !classStateData.isEmailVerified) &&
 
                     <View style={{
                         marginTop: (windowWidth / 35),
@@ -262,7 +287,7 @@ export default SignupForm = ({ navigation }) => {
                             onPress={() => {
                                 SendOTP()
                             }}
-                            style={{alignSelf:'flex-end'}}
+                            style={{ alignSelf: 'flex-end' }}
                         >
                             {
                                 (classStateData.sendOTP && progress == 50) ?
@@ -271,10 +296,10 @@ export default SignupForm = ({ navigation }) => {
                                     <Text
                                         style={{
                                             fontSize: Font.medium,
-                                            fontFamily: Font.Medium,
+                                            fontFamily: Font.Regular,
                                             color: classStateData?.isEmailVerified ? Colors.Green : Colors.buttoncolorblue
                                         }}
-                                    >{classStateData?.isEmailVerified ? 'Verified' : 'Verify'}</Text>
+                                    >{'Verify'}</Text>
                             }
 
                         </TouchableOpacity>
@@ -343,7 +368,7 @@ export default SignupForm = ({ navigation }) => {
         return (
             <>
                 <DropDownboxSec
-                    lableText={classStateData.selectedCountry == null ? 'Select Country' : classStateData.selectedCountry.title}
+                    lableText={classStateData.selectedCountry == null ? 'Select Country' : `${classStateData.selectedCountry.title}`}
                     boxPressAction={() => {
                         setDropdown(3)
                         setDropdownTitle('Select Country')
@@ -395,6 +420,14 @@ export default SignupForm = ({ navigation }) => {
                             keyboardType="number-pad"
                             autoCapitalize="none"
                             returnKeyType="done"
+                            disableImg={true}
+                            iconName={classStateData.isNmbrVerified ? 'check' : ''}
+                            iconColor={Colors.White}
+                            iconBackground={classStateData.isNmbrVerified ? Colors.Green : Colors.White}
+                            iconSize={16}
+                            iconPressAction={() => {
+
+                            }}
                             onSubmitEditing={() => {
                                 Keyboard.dismiss()
                             }}
@@ -406,8 +439,8 @@ export default SignupForm = ({ navigation }) => {
                             <Text
                                 style={{
                                     textAlign: Configurations.textRotate,
-                                    fontSize: Font.textsize,
-                                    fontFamily: Font.headingfontfamily,
+                                    fontSize: Font.small,
+                                    fontFamily: Font.Regular,
                                     color: Colors.textgray,
                                 }}>
                                 {LanguageConfiguration.mobletexttitle[Configurations.language]}
@@ -419,7 +452,7 @@ export default SignupForm = ({ navigation }) => {
 
 
                 {
-                    (classStateData.selectedCountry && classStateData.mobile != '') &&
+                    (classStateData.selectedCountry && classStateData.mobile != '' && !classStateData.isNmbrVerified) &&
 
                     <View style={{
                         marginTop: (windowWidth / 35),
@@ -434,7 +467,7 @@ export default SignupForm = ({ navigation }) => {
                             onPress={() => {
                                 SendOTP()
                             }}
-                            style={{alignSelf:'flex-end'}}
+                            style={{ alignSelf: 'flex-end' }}
                         >
                             {
                                 (classStateData.sendOTP && progress == 75) ?
@@ -443,10 +476,10 @@ export default SignupForm = ({ navigation }) => {
                                     <Text
                                         style={{
                                             fontSize: Font.medium,
-                                            fontFamily: Font.Medium,
+                                            fontFamily: Font.Regular,
                                             color: classStateData?.isNmbrVerified ? Colors.Green : Colors.buttoncolorblue
                                         }}
-                                    >{classStateData?.isNmbrVerified ? 'Verified' : 'Verify'}</Text>
+                                    >{'Verify'}</Text>
                             }
                         </TouchableOpacity>
 
@@ -1166,8 +1199,8 @@ export default SignupForm = ({ navigation }) => {
                             <Text
                                 style={{
                                     color: Colors.buttoncolorblue,
-                                    fontFamily: Font.Medium,
-                                    fontSize: Font.Remember,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.medium,
                                 }}>
                                 {`Terms of Service`}
                             </Text>
@@ -1236,8 +1269,8 @@ export default SignupForm = ({ navigation }) => {
                             <Text
                                 style={{
                                     color: Colors.buttoncolorblue,
-                                    fontFamily: Font.Medium,
-                                    fontSize: Font.Remember,
+                                    fontFamily: Font.Regular,
+                                    fontSize: Font.medium,
                                 }}>
                                 {`Privacy Policy`}
                             </Text>
@@ -1252,8 +1285,39 @@ export default SignupForm = ({ navigation }) => {
     const FinalStep = () => {
         return (
             <>
+
+                <View style={{
+                    width: (windowWidth / 8),
+                    height: (windowWidth / 8),
+                    borderRadius: (windowWidth / 10),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: Colors.Green,
+                    marginTop: windowWidth / 5,
+                    alignSelf: 'center'
+
+                }}>
+                    <Image source={Icons.Tick} style={{
+                        width: (windowWidth / 15),
+                        height: (windowWidth / 15),
+                        tintColor: Colors.white_color
+                    }} />
+                </View>
+
                 <Text style={styles.finalTextOne}>{'THANK YOU!\n'}</Text>
-                <Text style={styles.finalTextTwo}>{'You have successfully finished registering a new account.\n\n\n\n\n\n'}</Text>
+                <Text style={styles.finalTextTwo}>{'You account has been created successfully.\n\n'}</Text>
+
+                <Image source={{ uri: classStateData.profileImage.uri }}
+                    style={{
+                        height: (windowWidth * 30) / 100,
+                        width: (windowWidth * 30) / 100,
+                        borderRadius: (windowWidth * 30) / 100,
+                        alignSelf: 'center'
+                    }}
+                />
+
+
+                <Text style={[styles.finalTextThree,{ marginTop: windowWidth / 10}]}>{`You have registered as Nurse\n`}</Text>
                 <Text style={styles.finalTextThree}>{`Your request is now under review and you’ll receive an email confirmation once it’s approved`}</Text>
             </>
         )
@@ -1293,7 +1357,6 @@ export default SignupForm = ({ navigation }) => {
     }
 
     const onSelction = async (item, index) => {
-
         dropdown == 1 ?
             (
                 setState({ userType: item, speciality: null }),
@@ -1306,7 +1369,12 @@ export default SignupForm = ({ navigation }) => {
             dropdown == 2 ?
                 setState({ speciality: item })
                 :
-                setState({ selectedCountry: item })
+                setState({
+                    selectedCountry: {
+                        ...item,
+                        title: `${item.name == 'UAE' ? 'United Arab Emirates' : item.name} (${item.title})`
+                    }
+                })
     }
 
 
@@ -1848,11 +1916,13 @@ export default SignupForm = ({ navigation }) => {
                 flexDirection: 'row',
                 width: '100%',
                 justifyContent: 'space-between',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 paddingHorizontal: '5%',
-                top: (insets.top + windowWidth/30),
+                paddingTop: (insets.top + windowWidth / 30),
                 position: 'absolute',
-                zIndex: 9999
+                zIndex: 9999,
+                backgroundColor: Colors.White
+                // height:windowWidth/10
             }}>
                 <Progress.Bar color={Colors.buttoncolorblue} progress={(progress >= 25) ? 1 : 0} width={windowWidth / 4.7} />
                 <Progress.Bar color={Colors.buttoncolorblue} progress={progress >= 50 ? 1 : 0} width={windowWidth / 4.7} />
@@ -1881,14 +1951,17 @@ export default SignupForm = ({ navigation }) => {
                         justifyContent: 'center',
                     }}>
                     <View style={{ justifyContent: 'center' }}>
-                        <Image
-                            style={{
-                                width: (mobileW * 40) / 100,
-                                height: (mobileW * 40) / 100,
-                                alignSelf: 'center',
-                            }}
-                            resizeMode='contain'
-                            source={Icons.LogoWithText} />
+                        {
+                            !isRegistered &&
+                            <Image
+                                style={{
+                                    width: (mobileW * 40) / 100,
+                                    height: (mobileW * 40) / 100,
+                                    alignSelf: 'center',
+                                }}
+                                resizeMode='contain'
+                                source={Icons.LogoWithText} />
+                        }
                     </View>
 
                     {
@@ -1931,6 +2004,7 @@ export default SignupForm = ({ navigation }) => {
                                             fontSize: Font.xxxlarge,
                                             fontFamily: Font.Regular,
                                             color: Colors.Black,
+                                            marginTop: windowWidth / 15
                                         }}>
                                         {LanguageConfiguration.Signuptext1[Configurations.language]}
                                     </Text>
@@ -1941,8 +2015,8 @@ export default SignupForm = ({ navigation }) => {
                                         (progress == 25 || progress == 50) &&
                                         <Text
                                             style={{
-                                                fontSize: Font.headingblack,
-                                                fontFamily: Font.blackheadingfontfamily,
+                                                fontSize: Font.xxxlarge,
+                                                fontFamily: Font.Regular,
                                                 textAlign: Configurations.textRotate,
                                                 color: Colors.Black,
                                             }}>
@@ -2016,7 +2090,7 @@ export default SignupForm = ({ navigation }) => {
                     Platform.OS == 'android' &&
 
                     <StickyButton
-                        text={classStateData.isRegistered ? 'COMPLETED' : progress == 100 ? 'FINISH' : 'NEXT'}
+                        text={classStateData.isRegistered ? 'COMPLETED' : progress == 100 ? 'DONE' : 'NEXT'}
                         onPress={() => {
                             isRegistered ?
                                 (navigation.pop())
@@ -2039,7 +2113,7 @@ export default SignupForm = ({ navigation }) => {
                 Platform.OS == 'ios' &&
 
                 <StickyButton
-                    text={classStateData.isRegistered ? 'COMPLETED' : progress == 100 ? 'FINISH' : 'NEXT'}
+                    text={classStateData.isRegistered ? 'COMPLETED' : progress == 100 ? 'DONE' : 'NEXT'}
                     onPress={() => {
                         isRegistered ?
                             (navigation.pop())
@@ -2067,6 +2141,10 @@ export default SignupForm = ({ navigation }) => {
                 }}
                 onCancel={() => { setIsDatePicker(false) }}
             />
+
+            {/* <FinalSignupStep
+            
+            /> */}
 
             <ListBottomSheet
                 visible={isDropdown}

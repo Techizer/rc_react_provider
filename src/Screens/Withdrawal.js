@@ -187,7 +187,7 @@ export default Withdrawal = ({ navigation, route }) => {
                     style={{
                       textAlign: 'right',
                       color: Colors.buttoncolorhgreen,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: mobileW * 5 / 100,
                     }}>
                     {classStateData.abal}
@@ -498,7 +498,7 @@ export default Withdrawal = ({ navigation, route }) => {
                                 // marginLeft: mobileW * 1.5 / 100,
                                 textAlign: Configurations.textRotate,
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 2.5 / 100,
                               }}>Bank:</Text>
                             <Text
@@ -520,7 +520,7 @@ export default Withdrawal = ({ navigation, route }) => {
                               style={{
                                 textAlign: Configurations.textRotate,
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 2.5 / 100,
                               }}>A/C Name:</Text>
                             <Text
@@ -541,7 +541,7 @@ export default Withdrawal = ({ navigation, route }) => {
                               style={{
                                 textAlign: Configurations.textRotate,
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 2.5 / 100,
                               }}>A/C No:</Text>
                             <Text
@@ -586,7 +586,7 @@ export default Withdrawal = ({ navigation, route }) => {
                               style={{
                                 textAlign: Configurations.textRotate,
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 2.5 / 100,
                               }}>Address:</Text>
                             <Text
@@ -608,7 +608,7 @@ export default Withdrawal = ({ navigation, route }) => {
                               style={{
                                 textAlign: Configurations.textRotate,
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 2.5 / 100,
                               }}>IBAN No:</Text>
                             <Text
@@ -630,7 +630,7 @@ export default Withdrawal = ({ navigation, route }) => {
                               style={{
                                 textAlign: Configurations.textRotate,
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 2.5 / 100,
                               }}>Swift Code:</Text>
                             <Text
@@ -700,7 +700,7 @@ export default Withdrawal = ({ navigation, route }) => {
                               style={{
                                 textAlign: 'right',
                                 color: Colors.textblue,
-                                fontFamily: Font.Medium,
+                                fontFamily: Font.Regular,
                                 fontSize: mobileW * 3.6 / 100,
                               }}>
                               Add bank

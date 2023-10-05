@@ -4,6 +4,8 @@ import { getReduxState, setConnection, setLogout, setUserData } from './ReduxSta
 import { API, Configurations } from './Utils';
 import NetInfo from "@react-native-community/netinfo";
 import { UserTypes } from './Constants';
+import { store } from '../Redux/Store';
+import { setNotificationCount, setNotificationsData } from '../Redux/Actions/UserActions';
 
 const Network = (state) => {
   setConnection(state.isConnected)
@@ -133,7 +135,33 @@ const getServiceCountries = async () => {
   }
 }
 
+const getNotifications = async (loader = false) => {
 
+  let url = Configurations.baseURL + "api-get-all-notification";
+
+  const loginUserData = getReduxState().loginUserData;
+
+  var data = new FormData();
+  data.append('id', loginUserData?.user_id)
+
+  API.post(url, data, 1).then((obj) => {
+
+    if (obj.status == true) {
+      // console.log({ notis: obj?.result });
+      if (obj.result && obj.result.length > 0) {
+        store.dispatch(setNotificationCount(obj?.result))
+      } else {
+        store.dispatch(setNotificationCount(0))
+      }
+    } else {
+      store.dispatch(setNotificationCount(0))
+      return false;
+    }
+  }).catch((error) => {
+    store.dispatch(setNotificationCount(0))
+    console.log("-------- error getting notifications ------- ", error)
+  })
+}
 
 
 
@@ -143,4 +171,5 @@ export {
   callRejectNotification,
   getSpecialities,
   getServiceCountries,
+  getNotifications
 }

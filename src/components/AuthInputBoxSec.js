@@ -23,6 +23,8 @@ const AuthInputBoxSec = (props) => {
     inputRef,
     showCode,
     iconColor,
+    iconBackground,
+    iconSize,
     onChangeText,
     value,
     secureTextEntry
@@ -70,12 +72,16 @@ const AuthInputBoxSec = (props) => {
                   name={iconName}
                   onPress={iconPressAction}
                   forceTextInputFocus={false}
-                  color={Colors.regulartextcolor}
+                  color={!!!iconColor ? Colors.regulartextcolor : iconColor}
+                  size={!!!iconSize ? 23 : iconSize}
                   style={{
                     marginTop: 12,
                     alignSelf: 'center',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    // height:15,
+                    // width:15,
+                    backgroundColor: !!!iconBackground ? Colors.White : iconBackground
                   }}
 
                 />

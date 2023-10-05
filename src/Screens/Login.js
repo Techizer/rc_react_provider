@@ -1,23 +1,25 @@
-import { Text, Dimensions, View, Platform, BackHandler, Alert, ScrollView, StatusBar, SafeAreaView, Image, TouchableOpacity, Keyboard } from 'react-native';
+import { Text, Dimensions, View, Platform, BackHandler, Alert, ScrollView, TextInput, SafeAreaView, Image, TouchableOpacity, Keyboard, StyleSheet, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions, windowHeight } from '../Helpers/Utils';
-import GestureRecognizer from 'react-native-swipe-gestures';
+import Ellipse from 'react-native-vector-icons/Ionicons';
+
+import { Colors, Font, mobileH, Configurations, mobileW, LanguageConfiguration, API, MessageTexts, MessageFunctions, windowHeight, windowWidth } from '../Helpers/Utils';
 import { AuthInputBoxSec, DropDownboxSec, Button } from '../Components'
 import { FBPushNotifications } from '../Helpers/FirebasePushNotifications';
 import { Icons } from '../Icons/IReferences'
 import { ScreenReferences } from '../Stacks/ScreenReferences';
 import { useDispatch, useSelector } from 'react-redux';
 import { onUserLogout, setRememberedEmail, setRememberedPassword, setShouldAutoLogin, setUserFCMToken, setUserLoginData, setUserLoginType } from '../Redux/Actions/UserActions';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useRef } from 'react';
-import { UserTypes } from '../Helpers/Constants';
+import { UserTypes, countries } from '../Helpers/Constants';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { vs } from 'react-native-size-matters';
-import { Cross, _Cross } from '../Icons/SvgIcons/Index';
+import { s, vs } from 'react-native-size-matters';
+import { Cross, _Cross, rightArrow } from '../Icons/SvgIcons/Index';
 import { SvgXml } from 'react-native-svg';
-import { BottomSheetProps, BottomSheetStyles, BottomSheetViewStyles } from '../Styles/Sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import OTP from '../Components/OTP';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 global.current_lat_long = 'NA';
 global.myLatitude = 'NA';
@@ -25,18 +27,111 @@ global.myLongitude = 'NA';
 
 export default Login = ({ navigation, route }) => {
 
+  const { navigate } = useNavigation()
+  const insets = useSafeAreaInsets()
+
   const { shouldAutoLogin, userEmail, userPassword } = useSelector(state => state.StorageReducer)
 
   const [classStateData, setClassStateData] = useState({
-    isSecurePassword: true,
-    email: userEmail,
-    password: userPassword,
+    code: '966',
+    number: '',
     device_lang: 'AR',
     isRememberChecked: shouldAutoLogin,
-    isLoadingInButton: false,
+    isLoading: false,
+    showCountries: false
   })
+  const [showOTPModal, setShowOTPModal] = useState(false);
 
-  const userTypeSheetRef = useRef()
+  const numberRef = useRef()
+
+
+  const styles = StyleSheet.create({
+
+    inputMainContainer: {
+      width: "90%",
+      height: windowWidth / 6,
+      alignItems: 'flex-end',
+      alignSelf: 'center',
+      flexDirection: 'row',
+      // alignItems:'center',
+      marginTop: windowWidth / 10,
+      zIndex: 999
+    },
+    inputContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      height: windowWidth / 7.5,
+      borderColor: Colors.field_border_color,
+      borderRadius: 8,
+      borderBottomLeftRadius: classStateData.showCountries ? 0 : 8,
+      borderWidth: 1,
+      backgroundColor: Colors.white_color
+    },
+
+    codeContainer: {
+      width: '32%',
+      height: '100%',
+    },
+
+    numberContainer: {
+      width: '65%',
+      height: '100%',
+      justifyContent: 'center',
+      paddingHorizontal: '2%'
+    },
+    separator: {
+      width: 1,
+      height: '65%',
+      backgroundColor: Colors.field_border_color
+    },
+
+    titleContainer: {
+      position: 'absolute',
+      paddingHorizontal: 5,
+      // paddingVertical: 1,
+      backgroundColor: Colors.white_color,
+      top: 5,
+      left: '3%',
+      zIndex: 9999
+    },
+    title: {
+      fontSize: Font.small,
+      fontFamily: Font.Regular,
+      includeFontPadding: false,
+      color: Colors.buttoncolorblue
+    },
+    flag: {
+      height: windowWidth / 14,
+      width: windowWidth / 14,
+    },
+    inputText: {
+      fontSize: Font.medium,
+      fontFamily: Font.Regular,
+      includeFontPadding: false,
+      color: Colors.Black
+    },
+    countryContainer: {
+      paddingVertical: 10,
+      // height: 100,
+      width: '100%',
+      position: 'absolute',
+      top: '99%',
+      left: -1,
+      backgroundColor: Colors.white_color,
+      borderBottomLeftRadius: 8,
+      borderBottomRightRadius: 8,
+      borderLeftColor: Colors.field_border_color,
+      borderRightColor: Colors.field_border_color,
+      borderBottomColor: Colors.field_border_color,
+      borderLeftWidth: 1,
+      borderRightWidth: 1,
+      borderBottomWidth: 1
+
+    }
+  });
+
+
 
   const setState = (payload) => {
     setClassStateData(prev => ({
@@ -83,117 +178,101 @@ export default Login = ({ navigation, route }) => {
       focusListener();
       blurListener();
     };
-  }, [navigation]); 
+  }, [navigation]);
 
-  const checkIsValid = () => {
-    let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+  // const checkIsValid = () => {
+  //   let regemail = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
-    if (classStateData?.email.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
-      return false;
+  //   if (classStateData?.email.trim().length <= 0) {
+  //     MessageFunctions.showError(MessageTexts.emptyEmail[Configurations.language])
+  //     return false;
+  //   }
+
+  //   if (regemail.test(classStateData?.email.trim()) !== true) {
+  //     MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
+  //     return false
+  //   }
+
+  //   if (classStateData?.password.length <= 0 || classStateData?.password.trim().length <= 0) {
+  //     MessageFunctions.showError(MessageTexts.emptyPassword[Configurations.language])
+  //     return false
+  //   }
+
+  //   return true
+  // }
+
+
+  const SendOTP = async () => {
+
+    let conditionsFailed = false;
+    Keyboard.dismiss();
+    numberRef.current && numberRef.current.blur();
+
+    let number = `${classStateData.code}${classStateData.number}`
+    if (classStateData.number.length <= 0 || classStateData.number.trim().length <= 0) {
+      MessageFunctions.showError(MessageTexts.emptymobileNumber[Configurations.language])
+      conditionsFailed = true;
+      return
+    }
+    if (classStateData.number.length < 9 || classStateData.number.trim().length < 9) {
+      MessageFunctions.showError('Invalid Number')
+      conditionsFailed = true;
+      return
     }
 
-    if (regemail.test(classStateData?.email.trim()) !== true) {
-      MessageFunctions.showError(MessageTexts.validEmail[Configurations.language])
+    if (classStateData.number.length > 9 || classStateData.number.trim().length > 9) {
+      MessageFunctions.showError('Invalid Number')
+      conditionsFailed = true;
+      return
+    }
+
+    if (conditionsFailed) {
       return false
-    }
+    } else {
 
-    if (classStateData?.password.length <= 0 || classStateData?.password.trim().length <= 0) {
-      MessageFunctions.showError(MessageTexts.emptyPassword[Configurations.language])
-      return false
-    }
-
-    return true
-  }
-
-  const onLogin = async () => {
-
-    Keyboard.dismiss()
-    const isValid = checkIsValid()
-
-    if (!isValid) return isValid
-    else {
-      setState({
-        isLoadingInButton: true
-      })
-
-      let url = Configurations.baseURL + "api-service-provider-login";
+      setState({ isLoading: true })
+      let url = Configurations.baseURL + "api-login-send-otp";
       var data = new FormData();
+      data.append('countrycode', classStateData.code)
+      data.append('phone_number', `${classStateData.code}${classStateData.number}`)
+      data.append('type', `provider`)
 
-      const fcm = await FBPushNotifications.getFcmToken()
-
-      data.append('email', classStateData?.email)
-      data.append('password', classStateData?.password)
-      data.append('device_type', Configurations.device_type)
-      data.append('device_lang', 'ENG')
-      data.append('fcm_token', fcm)
-
+      console.log(data._parts);
       API.post(url, data, 1).then((obj) => {
 
-        console.log({ Login: obj?.result?.user_id })
+        console.log('Send OTP Response', obj)
         if (obj.status == true) {
-
-          dispatch(setUserLoginData(obj?.result))
-          dispatch(setUserFCMToken(fcm))
-          dispatch(setShouldAutoLogin(classStateData?.isRememberChecked))
-          AsyncStorage.setItem('userId', obj?.result?.user_id)
-
-          if (classStateData?.isRememberChecked == true) {
-            dispatch(setRememberedEmail(classStateData?.email))
-            dispatch(setRememberedPassword(classStateData?.password))
-          }
-
+          MessageFunctions.showSuccess('OTP sent to your number')
+          setState({ isLoading: false })
           setTimeout(() => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: ScreenReferences.Home }],
-            });
-          }, 700);
+            setShowOTPModal(true)
+          }, 500);
+
 
         } else {
-          setTimeout(() => {
-            MessageFunctions.showError(obj.message)
-          }, 700);
-          return false;
+          setState({ isLoading: false })
+          MessageFunctions.showError(obj?.message)
         }
       }).catch((error) => {
-        console.log("-------- error ------- ", error)
-        setState({
-          loading: false
-        })
-      }).finally(() => {
-        setState({
-          isLoadingInButton: false
-        })
+        setState({ isLoading: false })
+        MessageFunctions.showError(error.message)
+        console.log("Send OTP-error ------- ", error)
       })
-
     }
+
   }
-
-  const onSwipeLeft = (gestureState) => {
-    navigation.navigate(ScreenReferences.Signup)
-  }
-
-  const GestureConfigurations = {
-    velocityThreshold: 1,
-    directionalOffsetThreshold: mobileW,
-  };
-
 
   return (
 
-    <GestureRecognizer
-      onSwipeLeft={(classStateData) => onSwipeLeft(classStateData)}
-      Configurations={GestureConfigurations}
+    <View
       style={{
         flex: 1,
-        backgroundColor: classStateData?.backgroundColor
+        backgroundColor: Colors.white_color
       }}
     >
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          // paddingBottom: mobileW * 2 / 500,
           height: mobileH + 30
         }}
         keyboardDismissMode="interactive"
@@ -203,16 +282,14 @@ export default Login = ({ navigation, route }) => {
         <KeyboardAwareScrollView>
 
           <View style={{ flex: 1 }}>
-            <SafeAreaView
-              style={{ backgroundColor: Colors.statusbarcolor, flex: 0 }}
-            />
 
             <View
               style={{
-                paddingBottom: (mobileW * 6) / 100,
+                // paddingBottom: (mobileW * 6) / 100,
                 backgroundColor: '#fff',
 
               }}>
+
               <View
                 style={[Dimensions.get('window').height >= 700 ? {
                   width: '90%',
@@ -232,6 +309,8 @@ export default Login = ({ navigation, route }) => {
                   }}
                   source={Icons.LogoWithText}></Image>
               </View>
+
+
               <View
                 style={[Dimensions.get('window').height >= 700 ? {
                   width: '90%',
@@ -245,11 +324,13 @@ export default Login = ({ navigation, route }) => {
                 ]}>
 
                 <Text
+                  allowFontScaling={false}
                   style={{
-                    fontSize: mobileW * 4.5 / 100,
-                    fontFamily: Font.blackheadingfontfamily,
+                    fontSize: Font.xxlarge,
+                    fontFamily: Font.Bold,
                     textAlign: Configurations.textRotate,
-                    color: Colors.textblack,
+                    color: Colors.Black,
+                    alignSelf: 'center'
                   }}>
                   {LanguageConfiguration.Login[Configurations.language]}
                 </Text>
@@ -257,219 +338,227 @@ export default Login = ({ navigation, route }) => {
 
               <View
                 style={{
-                  width: '90%',
+                  width: '60%',
                   alignSelf: 'center',
-                  marginTop: (mobileW * 1) / 100,
+                  marginTop: windowWidth / 40,
                 }}>
                 <Text
+                  allowFontScaling={false}
                   style={{
-
-                    fontSize: Font.headinggray,
-                    fontFamily: Font.headingfontfamily,
+                    fontSize: Font.medium,
+                    fontFamily: Font.Light,
                     color: '#515C6F',
-                    textAlign: Configurations.textRotate,
+                    textAlign: 'center'
                   }}>
                   {LanguageConfiguration.Logintext[Configurations.language]}
                 </Text>
               </View>
-              <View
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 4) / 100,
-                }}>
 
-              </View>
 
-              <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 2) / 100,
-                }}>
-                <AuthInputBoxSec
-                  mainContainer={{
-                    width: '100%',
-                  }}
-                  // icon={layer9_icon}
-                  lableText={LanguageConfiguration.Mobileno[Configurations.language]}
-                  inputRef={(ref) => {
-                    emailInput = ref;
-                  }}
-                  onChangeText={(text) =>
-                    setState({
-                      email: text
-                    })
-                  }
-                  value={classStateData?.email}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  onSubmitEditing={() => {
-                    passwordInput.focus();
-                  }}
-                />
+              <View style={[styles.inputMainContainer,]}>
+                <View style={styles.titleContainer}>
+                  <Text allowFontScaling={false} style={styles.title}>{'Phone Number'}</Text>
+                </View>
 
-              </View>
+                <View style={[styles.inputContainer]}>
 
-              <View
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => setState({ showCountries: !classStateData.showCountries })}
+                    style={[styles.codeContainer]}>
 
-                style=
-                {{
-                  width: '90%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 2) / 100,
-                  flexDirection: 'row',
-                }}>
-                <AuthInputBoxSec
-                  mainContainer={{
-                    width: '100%',
-                  }}
-                  // icon={layer9_icon}
-                  lableText={LanguageConfiguration.password[Configurations.language]}
-                  inputRef={(ref) => {
-                    passwordInput = ref;
-                  }}
-                  onChangeText={(text) =>
-                    setState({
-                      password: text
-                    })
-                  }
-                  value={classStateData?.password}
-                  keyboardType="default"
-                  autoCapitalize="none"
-                  returnKeyLabel="done"
-                  returnKeyType="done"
-                  secureTextEntry={classStateData?.isSecurePassword}
-                  disableImg={true}
-                  iconName={classStateData?.isSecurePassword ? 'eye-off' : 'eye'}
-                  iconPressAction={() => {
-                    setState({
-                      isSecurePassword: !classStateData?.isSecurePassword,
-                    })
-                  }}
-                  onSubmitEditing={() => Keyboard.dismiss()}
-                />
+                    <View style={{
+                      height: '100%',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingHorizontal: '10%',
+                      justifyContent: 'space-between',
+                    }}>
+                      <Image source={classStateData.code === '966' ? Icons.Saudia : Icons.UAE} style={styles.flag} />
+                      <Text
+                        allowFontScaling={false}
+                        style={styles.inputText}>
+                        {`+${classStateData.code}`}
 
-              </View>
-              <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 4) / 100,
-                  flexDirection: 'row',
-                }}>
-
-                <TouchableOpacity activeOpacity={0.9} style={{ width: '45%', flexDirection: 'row', paddingLeft: mobileW * 1 / 100 }} onPress={() => {
-                  setState({
-                    isRememberChecked: !classStateData.isRememberChecked
-                  })
-                }}>
-                  <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ width: '20%' }}>
-                      <Image style={{ height: 23, width: 23, resizeMode: 'contain', }}
-                        source={classStateData?.isRememberChecked == false ? Icons.BlackBox : Icons.CheckedBox}></Image>
+                      </Text>
+                      <SvgXml xml={rightArrow} height={s(13)} width={s(13)} style={{ transform: [{ rotate: classStateData.showCountries ? "270deg" : "90deg" }] }} />
                     </View>
 
-                    <Text
-                      style={{
-                        color: Colors.regulartextcolor,
-                        fontFamily: Font.Regular,
-                        fontSize: Font.Remember,
-                      }}>
-                      {LanguageConfiguration.Remember[Configurations.language]}
-                    </Text>
+                    {
+                      classStateData.showCountries &&
+                      <View style={styles.countryContainer}>
+                        {
+                          countries.map((item, index) => {
+                            return (
+                              <Pressable
+                                key={item.code}
+                                onPress={() => {
+                                  setState({ showCountries: false, code: item.code })
+                                }}
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  paddingHorizontal: '10%',
+                                  marginTop: index == 0 ? 0 : 5
+                                }}>
+                                <Image source={item.icon} style={styles.flag} />
+                                <Text
+                                  allowFontScaling={false}
+                                  style={styles.inputText}>
+                                  {`+${item.code}`}
+
+                                </Text>
+                              </Pressable>
+                            )
+                          })
+                        }
+                      </View>
+                    }
+
+                  </TouchableOpacity>
+
+                  <View style={{ justifyContent: 'center' }}>
+                    <View style={[styles.separator]} />
                   </View>
-                </TouchableOpacity>
 
+                  <View style={[styles.numberContainer]}>
 
+                    <TextInput
+                      maxLength={9}
+                      ref={numberRef}
+                      style={{}}
+                      onChangeText={(val) => setState({ number: val })}
+                      placeholder={'Phone Number'}
+                      editable={true}
+                      blurOnSubmit={false}
+                      autoCapitalize="none"
+                      value={classStateData.number}
+                      allowFontScaling={false}
+                      keyboardType='decimal-pad'
+                      returnKeyType='done'
+                      onSubmitEditing={() => Keyboard.dismiss()}
+                    />
+                  </View>
 
-
-                <View style={{ width: '55%', alignSelf: 'center', }}>
-                  <Text
-                    onPress={() => {
-                      navigation.navigate(ScreenReferences.ForgotPassword);
-                    }}
-                    style={{
-                      color: Colors.textblue,
-                      fontFamily: Font.Regular,
-                      fontSize: Font.Forgot,
-                      alignSelf: 'flex-end',
-                      textAlign: Configurations.textalign,
-                    }}>
-                    {LanguageConfiguration.Forgotpassword[Configurations.language]}
-                  </Text>
                 </View>
               </View>
 
-              <Button
-                text={LanguageConfiguration.Contiunebtn[Configurations.language]}
-                onLoading={classStateData.isLoadingInButton}
-                onPress={() => onLogin()}
-              />
 
-            </View>
+              <View style={{ width: '90%', alignSelf: 'center', marginTop: windowWidth / 20 }}>
 
-            <View style={{ width: '100%', backgroundColor: '#eef0f2', paddingVertical: mobileW * 3 / 100 }}>
-
-            </View>
-
-            <View
-              style={{
-                backgroundColor: Colors.backgroundcolorlight,
-                paddingBottom: (mobileW * 15) / 100,
-              }}>
-              <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 5) / 100,
-
-                }}>
                 <Text
                   style={{
-                    textAlign: Configurations.textalign,
                     fontFamily: Font.Regular,
-                    fontSize: Font.Forgot,
-                    alignSelf: 'center',
+                    fontSize: Font.medium,
                     color: Colors.regulartextcolor,
+                    // fontWeight:'600'
                   }}>
-                  {LanguageConfiguration.donot[Configurations.language]}
+                  {'YOUR PHONE NUMBER MUST CONTAIN'}
+
                 </Text>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 13 }}>
+                  <Ellipse style={{ alignSelf: 'center' }}
+                    name={'ellipse'}
+                    size={12}
+                    color={Colors.field_border_color}
+                  />
+
+                  <Text
+                    style={{
+                      fontFamily: Font.Regular,
+                      fontSize: Font.medium,
+                      color: Colors.regulartextcolor,
+                      marginHorizontal: 5
+                    }}>
+                    {'An area code'}
+
+                  </Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 13 }}>
+                  <Ellipse style={{ alignSelf: 'center' }}
+                    name={'ellipse'}
+                    size={12}
+                    color={Colors.field_border_color}
+                  />
+
+                  <Text
+                    style={{
+                      fontFamily: Font.Regular,
+                      fontSize: Font.medium,
+                      color: Colors.regulartextcolor,
+                      marginHorizontal: 5
+                    }}>
+                    {'Exactly 9 numbers'}
+
+                  </Text>
+                </View>
+
               </View>
 
-
-              <Button
-                text={LanguageConfiguration.createnewaccountbtn[Configurations.language]}
-                onPress={() => navigation.navigate(ScreenReferences.Signup)}
-              />
-
-              <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  marginTop: (mobileW * 1.1) / 100,
-                  paddingBottom: mobileW * 5 / 100,
-                }}>
-                <Text
-                  style={{
-                    textAlign: Configurations.textalign,
-                    fontFamily: Font.Regular,
-                    fontSize: Font.Forgot,
-                    alignSelf: 'center',
-                    color: Colors.regulartextcolor,
-                  }}>
-                  {LanguageConfiguration.swipe_text[Configurations.language]}
-                </Text>
-              </View>
             </View>
+
           </View>
 
         </KeyboardAwareScrollView>
+
+        <View style={{ width: '100%', position: 'absolute', bottom: insets.bottom + (windowWidth * 10) / 100, zIndex: 9999 }}>
+          <Button
+            text={'REQUEST  OTP'}
+            onLoading={classStateData.isLoading}
+            onPress={() => SendOTP()}
+          />
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', height: 30, zIndex: -1 }}>
+
+            <Text
+              style={{
+                fontFamily: Font.Regular,
+                fontSize: Font.medium,
+                color: Colors.regulartextcolor,
+              }}>
+              {LanguageConfiguration.donot[Configurations.language]}
+
+            </Text>
+
+            <TouchableOpacity style={{
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+              onPress={() => navigate(ScreenReferences.Signup)}
+            >
+
+              <Text
+                style={{
+                  fontFamily: Font.Bold,
+                  fontSize: Font.medium,
+                  color: Colors.buttoncolorblue,
+                }}>
+                {' Signup'}
+              </Text>
+
+            </TouchableOpacity>
+
+
+          </View>
+        </View>
+
+        <OTP
+          visible={showOTPModal}
+          onRequestClose={() => setShowOTPModal(false)}
+          contact={`${classStateData?.code}${classStateData?.number}`}
+          countryCode={`${classStateData?.code}`}
+          type={'Login'}
+        />
+
       </ScrollView>
 
 
-    </GestureRecognizer>
+
+    </View >
   );
 
 }

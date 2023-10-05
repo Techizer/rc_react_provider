@@ -84,9 +84,6 @@ export default MyProfile = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, }}>
-      <SafeAreaView
-        style={{ backgroundColor: Colors.statusbarcolor, flex: 0 }}
-      />
 
       <View style={{ flex: 1, }}>
 
@@ -153,7 +150,7 @@ export default MyProfile = ({ navigation, route }) => {
                 }}>
                   <Text style={{
                     color: Colors.placeholder_text_color,
-                    fontFamily: Font.Medium, fontSize: 18,
+                    fontFamily: Font.Regular, fontSize: 18,
                     textAlign: Configurations.textRotate,
                     width: '75%'
                   }}>{profileData?.first_name}</Text>
@@ -277,7 +274,7 @@ export default MyProfile = ({ navigation, route }) => {
                     style={{
                       marginTop: (mobileW * 2) / 100,
                       color: Colors.lightgraytext,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: 16,
                       textAlign: Configurations.textRotate,
                     }}>{profileData?.user_type == "lab" ? `${profileData?.experience}` : `${profileData?.experience} YR`}
@@ -302,7 +299,7 @@ export default MyProfile = ({ navigation, route }) => {
                     style={{
                       marginTop: (mobileW * 2) / 100,
                       color: Colors.lightgraytext,
-                      fontFamily: Font.Medium,
+                      fontFamily: Font.Regular,
                       fontSize: 16,
                       textAlign: Configurations.textRotate,
                     }}>
@@ -338,7 +335,7 @@ export default MyProfile = ({ navigation, route }) => {
                     <Text
                       style={{
                         color: Colors.lightgraytext,
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         fontSize: 16,
                         textAlign: Configurations.textRotate,
                       }}>{parseFloat(profileData?.avg_rating).toFixed(1)}

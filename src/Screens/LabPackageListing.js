@@ -124,7 +124,7 @@ const LabPackageListing = (props) => {
                 // marginTop: (mobileW * 4) / 100,
                 paddingHorizontal: (mobileW * 2) / 100,
                 color: "#000",
-                fontFamily: Font.Medium,
+                fontFamily: Font.Regular,
                 fontSize: (mobileW * 4.5) / 100,
                 textAlign: "left",
               }}
@@ -196,7 +196,7 @@ const LabPackageListing = (props) => {
                         // marginTop: (mobileW * 3) / 100,
                         paddingHorizontal: (mobileW * 2) / 100,
                         color: "#000",
-                        fontFamily: Font.Medium,
+                        fontFamily: Font.Regular,
                         fontSize: (mobileW * 4.5) / 100,
                         textAlign: "left",
                       }}
@@ -241,7 +241,7 @@ const LabPackageListing = (props) => {
                       fontFamily: Font.Regular,
                       textAlign: "left",
                       color: Colors.tablightcolo,
-                      fontSize: Font.sregulartext_size,
+                      fontSize: Font.small,
                     }}
                   >
                     {item.task_count}
@@ -251,7 +251,7 @@ const LabPackageListing = (props) => {
                       paddingVertical: (mobileW * 1.5) / 100,
                       paddingHorizontal: (mobileW * 2) / 100,
                       fontFamily: Font.Regular,
-                      fontSize: Font.sregulartext_size,
+                      fontSize: Font.small,
                       color: Colors.theme_color,
                       textAlign: Configurations.textRotate,
                     }}
@@ -267,7 +267,7 @@ const LabPackageListing = (props) => {
                             paddingHorizontal: (mobileW * 2) / 100,
                             fontFamily: Font.Regular,
                             textAlign: "left",
-                            fontSize: Font.sregulartext_size,
+                            fontSize: Font.small,
                             marginTop: (mobileW * 3) / 100,
                             color: Colors.tablightcolo,
                             textDecorationLine: "line-through",
@@ -288,7 +288,7 @@ const LabPackageListing = (props) => {
                           <Text
                             style={{
                               textAlign: Configurations.textalign,
-                              fontFamily: Font.Medium,
+                              fontFamily: Font.Regular,
                               fontSize: (mobileW * 4) / 100,
                             }}
                           >
@@ -312,7 +312,7 @@ const LabPackageListing = (props) => {
                                 fontFamily: Font.Regular,
                                 textAlign: "left",
                                 color: Colors.textGreenColor,
-                                fontSize: Font.sregulartext_size,
+                                fontSize: Font.small,
                               }}
                             >
                               {item.dis_off}
@@ -326,7 +326,7 @@ const LabPackageListing = (props) => {
                             paddingHorizontal: (mobileW * 2) / 100,
                             fontFamily: Font.Regular,
                             textAlign: "left",
-                            fontSize: Font.sregulartext_size,
+                            fontSize: Font.small,
                             marginTop: (mobileW * 3) / 100,
                             color: Colors.tablightcolo,
                             // textDecorationLine: "line-through",
@@ -347,7 +347,7 @@ const LabPackageListing = (props) => {
                           <Text
                             style={{
                               textAlign: Configurations.textalign,
-                              fontFamily: Font.Medium,
+                              fontFamily: Font.Regular,
                               fontSize: (mobileW * 4) / 100,
                             }}
                           >
@@ -371,7 +371,7 @@ const LabPackageListing = (props) => {
                           fontFamily: Font.Regular,
                           textAlign: "left",
                           color: Colors.textGreenColor,
-                          fontSize: Font.sregulartext_size,
+                          fontSize: Font.small,
                         }}
                       >
                         {item.dis_off}

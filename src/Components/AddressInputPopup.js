@@ -9,7 +9,6 @@ import { Cross, _Cross } from "../Icons/SvgIcons/Index";
 import { s, vs } from "react-native-size-matters";
 import { SvgXml } from "react-native-svg";
 import AuthInputBoxSec from "./AuthInputBoxSec";
-import Button from "./Button";
 import { ScreenReferences } from "../Stacks/ScreenReferences";
 import { useSelector } from "react-redux";
 import { TextInput } from "react-native-paper";
@@ -26,7 +25,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', edite
     isDefaultParam = '',
     longitudeParam = '',
     latitudeParam = '',
-    shouldShowEditParam = true,
+    shouldShowEditParam,
     navToBackThen = false
 }) => {
 
@@ -113,8 +112,6 @@ const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', edite
 
 
         setIsLoading(true)
-
-        console.log('addData...', data);
         API
             .post(url, data, 1)
             .then((obj) => {
@@ -135,9 +132,13 @@ const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', edite
                 onRequestClose()
                 console.log("-------- error ------- " + error);
             }).finally(() => {
-                if (navToBackThen) {
+                onRequestClose()
+
+                setTimeout(() => {
                     navigation.replace(ScreenReferences.ServiceAddress)
-                }
+                }, 1000);
+
+
             })
     };
 
@@ -221,11 +222,10 @@ const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', edite
                                     activeOutlineColor={Colors.placholderactive}
                                     allowFontScaling={false}
                                     right={
-                                        (shouldShowEditParam) &&
+                                        (shouldShowEditParam==true) &&
                                         <TextInput.Icon
                                             name={'pencil'}
                                             onPress={shouldShowEditParam ? () => {
-                                                refe.current.close()
                                                 setTimeout(() => {
                                                     navigation.navigate(ScreenReferences.SearchPlace, {
                                                         address_id: addressIDParam,
@@ -245,6 +245,7 @@ const AddressInputPopup = ({ visible, onRequestClose, type = 'addAddress', edite
                                         />
 
                                     }
+                                // iconPressAction={() => onRequestClose()}
                                 />
 
                                 <AuthInputBoxSec

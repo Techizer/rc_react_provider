@@ -150,7 +150,7 @@ export const AudioPlayer = ({ url, style, repeatOnComponent, repeatOffComponent 
                     <Text
                         style={{
                             width: '30%',
-                            fontFamily: Font.Medium,
+                            fontFamily: Font.Regular,
                             fontSize: Font.small,
                             color: Colors.detailTitles,
                             textAlign: 'left',

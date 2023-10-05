@@ -9,12 +9,18 @@ import { _Cross } from "../Icons/SvgIcons/Index";
 
 
 const MediaOptions = ({
+    length,
     visible,
     onRequestClose,
     selectedOption = () => { }
 }) => {
 
     const options = [
+        {
+            id: '1',
+            title: 'Document',
+            icon: Icons.Documents
+        },
         {
             id: '2',
             title: 'Camera',
@@ -25,10 +31,23 @@ const MediaOptions = ({
             title: 'Gallery',
             icon: Icons.Gallery
         },
+        // {
+        //     id: '4',
+        //     title: 'Audio',
+        //     icon: Icons.Audio
+        // },
+    ]
+
+    const optionsX = [
         {
             id: '1',
             title: 'Document',
             icon: Icons.Documents
+        },
+        {
+            id: '3',
+            title: 'Gallery',
+            icon: Icons.Gallery
         },
         // {
         //     id: '4',
@@ -37,6 +56,7 @@ const MediaOptions = ({
         // },
     ]
 
+    const final = length == 2 ? optionsX : options
     return (
         <Modal
             animationType='fade'
@@ -79,7 +99,7 @@ const MediaOptions = ({
                                 justifyContent: 'center'
                             }}>
                             {
-                                options.map((item, index) => {
+                                final.map((item, index) => {
                                     return (
                                         <View key={index} style={{ alignItems: 'center', marginLeft: index == 0 ? 0 : (windowWidth * 8) / 100 }}>
                                             <TouchableOpacity
@@ -104,12 +124,12 @@ const MediaOptions = ({
                                                     style={{
                                                         width: (windowWidth * 6) / 100,
                                                         height: (windowWidth * 6) / 100,
-                                                        tintColor:(item.id == '4') ? Colors.lightGrey: Colors.textblue
+                                                        tintColor: (item.id == '4') ? Colors.lightGrey : Colors.textblue
                                                     }}
                                                 />
                                             </TouchableOpacity>
                                             <Text style={{
-                                                fontFamily: Font.Medium,
+                                                fontFamily: Font.Regular,
                                                 fontSize: 10,
                                                 color: Colors.Black
                                             }}>
