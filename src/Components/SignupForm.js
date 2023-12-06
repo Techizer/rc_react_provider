@@ -41,8 +41,6 @@ export default SignupForm = ({ navigation }) => {
         experience: '',
         scfhs_number: '',
         selectedCountry: null,
-        password: '',
-        confirm: '',
         mobile: '',
         isLoadingInButton: false,
         imageType: '',
@@ -67,8 +65,6 @@ export default SignupForm = ({ navigation }) => {
     const [isDropdown, setIsDropdown] = useState(false)
     const [dropdownList, setDropdownList] = useState([])
     const [dropdownTitle, setDropdownTitle] = useState('')
-    const [securePass, setSecurePass] = useState(true)
-    const [confirmSecurePass, setConfirmSecurepass] = useState(true)
     const [isDatePicker, setIsDatePicker] = useState(false)
     const [mediaOptions, setMediaOptions] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
@@ -256,7 +252,7 @@ export default SignupForm = ({ navigation }) => {
                     value={classStateData.email}
                     keyboardType="email-address"
                     autoCapitalize="none"
-                    returnKeyType="next"
+                    returnKeyType="done"
                     disableImg={true}
                     iconName={classStateData.isEmailVerified ? 'check' : ''}
                     iconColor={Colors.White}
@@ -266,7 +262,7 @@ export default SignupForm = ({ navigation }) => {
 
                     }}
                     onSubmitEditing={() => {
-                        passRef.current.focus();
+                        Keyboard.dismiss()
                     }}
                 />
 
@@ -308,7 +304,7 @@ export default SignupForm = ({ navigation }) => {
                     </View >
                 }
 
-                <AuthInputBoxSec
+                {/* <AuthInputBoxSec
                     mainContainer={{
                         width: '100%',
                         marginTop: (windowWidth / 25)
@@ -357,7 +353,7 @@ export default SignupForm = ({ navigation }) => {
                     onSubmitEditing={() => {
                         Keyboard.dismiss()
                     }}
-                />
+                /> */}
 
 
             </>
@@ -1523,31 +1519,31 @@ export default SignupForm = ({ navigation }) => {
                 conditionsFailed = true;
                 return
             }
-            if (classStateData.password.length <= 0) {
-                MessageFunctions.showError(MessageTexts.validataionnewpass[Configurations.language])
-                conditionsFailed = true;
-                return
-            }
-            if (classStateData.password.length <= 7) {
-                MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
-                conditionsFailed = true;
-                return
-            }
-            if (classStateData.confirm.length <= 0) {
-                MessageFunctions.showError(MessageTexts.emptyconfirmPassword[Configurations.language])
-                conditionsFailed = true;
-                return
-            }
-            if (classStateData.confirm.length <= 7) {
-                MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
-                conditionsFailed = true;
-                return
-            }
-            if (classStateData.confirm != classStateData.password) {
-                MessageFunctions.showError(MessageTexts.Password_notmatch[Configurations.language])
-                conditionsFailed = true;
-                return
-            }
+            // if (classStateData.password.length <= 0) {
+            //     MessageFunctions.showError(MessageTexts.validataionnewpass[Configurations.language])
+            //     conditionsFailed = true;
+            //     return
+            // }
+            // if (classStateData.password.length <= 7) {
+            //     MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
+            //     conditionsFailed = true;
+            //     return
+            // }
+            // if (classStateData.confirm.length <= 0) {
+            //     MessageFunctions.showError(MessageTexts.emptyconfirmPassword[Configurations.language])
+            //     conditionsFailed = true;
+            //     return
+            // }
+            // if (classStateData.confirm.length <= 7) {
+            //     MessageFunctions.showError(MessageTexts.emptyPasswordValid[Configurations.language])
+            //     conditionsFailed = true;
+            //     return
+            // }
+            // if (classStateData.confirm != classStateData.password) {
+            //     MessageFunctions.showError(MessageTexts.Password_notmatch[Configurations.language])
+            //     conditionsFailed = true;
+            //     return
+            // }
             if (!classStateData.isEmailVerified) {
                 MessageFunctions.showError('Please verify your email.')
                 conditionsFailed = true;
@@ -1767,8 +1763,6 @@ export default SignupForm = ({ navigation }) => {
             data.append('work_area', classStateData.selectedCountry.name)
             data.append('dob', classStateData.dob)
             data.append('gender', classStateData.gender)
-            data.append('password', classStateData.password)
-            data.append('confirm_password', classStateData.confirm)
             data.append('device_type', Configurations.device_type)
             data.append('device_lang', 'ENG')
             data.append('fcm_token', localFCM)
